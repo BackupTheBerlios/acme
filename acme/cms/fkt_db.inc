@@ -253,7 +253,7 @@ function getuserbyid($id)
       $name = $row->user_name;
       mysql_free_result($my_result);
       return $name;
-      }
+      } else return "";
 }      
 
 ?>

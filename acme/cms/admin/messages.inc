@@ -96,7 +96,7 @@ function messages_new($new_messages_topic, $new_messages_message, $new_messages_
         "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_messages_message)) . "</textarea></td>";
    echo "</tr>".
         "<tr><td>";
-   createsel_user("new_message_tuser", $message_tuser); 
+   createsel_user("new_messages_tuser", $message_tuser); 
    echo "</td></tr>".
         "<tr><td>";          
    echo "</td></tr>".     
@@ -126,7 +126,7 @@ function messages_browse() {
    echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_new\">".$lang["messages_neu"]."</a>";
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_messages where status = 'N' order by created DESC");
+   $result = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["user_id"]. " order by created DESC");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
