@@ -53,18 +53,10 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       mysql_free_result($img_typ_result);
 
       $tplfile = "cms/tpl/" . gettemplatebyid($img_typ_tpl) . ".tpl";
-      if ($img_typ_left_bar  <> 0){
-         $data->left_bar  = parse_bar($img_typ_tpl, $img_typ_left_bar,  "left");
-      }
-      if ($img_typ_right_bar <> 0){
-         $data->right_bar = parse_bar($img_typ_tpl, $img_typ_right_bar, "right");
-      }
-      if ($img_typ_top_bar   <> 0){
-         $data->top_bar   = parse_bar($img_typ_tpl, $img_typ_top_bar,   "top");
-      }
-      if ($img_typ_foo_bar   <> 0){
-         $data->foo_bar   = parse_bar($img_typ_tpl, $img_typ_foo_bar,   "foo");
-      }
+      $data->left_bar  = parse_bar($img_typ_tpl, $img_typ_left_bar,  "left");
+      $data->right_bar = parse_bar($img_typ_tpl, $img_typ_right_bar, "right");
+      $data->top_bar   = parse_bar($img_typ_tpl, $img_typ_top_bar,   "top");
+      $data->foo_bar   = parse_bar($img_typ_tpl, $img_typ_foo_bar,   "foo");
       $data->titel                 = $img_typ_name;
       $data->home_img              = gethomeimg();
       $data->home_url              = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];

@@ -72,8 +72,9 @@ function parse_bbcode($contblock, $page_tpl){
 
 
 function parse_bar($page_tpl, $bar_id, $side){
-   global $conf, $lang;
+global $conf, $lang;
 
+if ($bar_id<>""){
    $getbar  = "Select * from acme_bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
    $result  = dbquery($getbar);
    if (mysql_num_rows($result) > 0) {
@@ -84,6 +85,7 @@ function parse_bar($page_tpl, $bar_id, $side){
       mysql_free_result($result);
    }
    return $bar;
+}else {return "<!-- leer -->";}
 }
 
 function parse_navigation($page_tpl, $nav_id, $side){

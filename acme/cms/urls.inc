@@ -65,10 +65,10 @@ function renderurls($id,$uid){
          $data->urls->parent->url  = $conf["indexname"]."urls/".$url_typ_parent;
       }
       geturl_typdata(&$data, $url_typ_id, $uid);
-      if ($url_typ_left_bar   <> 0){$data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left");}else{$data->left_bar  = "<!-- leer -->";}
-      if ($url_typ_right_bar  <> 0){$data->right_bar = parse_bar($url_typ_tpl, $url_typ_right_bar,"right");}else{$data->right_bar  = "<!-- leer -->";}
-      if ($url_typ_top_bar    <> 0){$data->top_bar   = parse_bar($url_typ_tpl, $url_typ_top_bar,  "top");}else{$data->top_bar  = "<!-- leer -->";}
-      if ($url_typ_foo_bar    <> 0){$data->foo_bar   = parse_bar($url_typ_tpl, $url_typ_foo_bar,  "foo");}else{$data->foo_bar  = "<!-- leer -->";}
+      $data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left");
+      $data->right_bar = parse_bar($url_typ_tpl, $url_typ_right_bar,"right");
+      $data->top_bar   = parse_bar($url_typ_tpl, $url_typ_top_bar,  "top");
+      $data->foo_bar   = parse_bar($url_typ_tpl, $url_typ_foo_bar,  "foo");
       $data->urls->titel = $url_typ_titel;
       $data->titel       = $url_typ_titel;      
       $data->home_img    = gethomeimg();

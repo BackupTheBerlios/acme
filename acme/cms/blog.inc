@@ -62,10 +62,10 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       getblogdata(&$data, $blog_id, $bj, $bm, $blog_tpl, $cat);
       getblogcats(&$data, $blog_id);
       getblogarchiv(&$data, $blog_id);      
-      if ($blog_left_bar  <> 0){$data->left_bar  = parse_bar($blog_tpl, $blog_left_bar, "left");}else{$data->left_bar  = "<!-- leer -->";}
-      if ($blog_right_bar  <> 0){$data->right_bar = parse_bar($blog_tpl, $blog_right_bar,"right");}else{$data->right_bar  = "<!-- leer -->";}
-      if ($blog_top_bar  <> 0){$data->top_bar   = parse_bar($blog_tpl, $blog_top_bar,  "top");}else{$data->top_bar  = "<!-- leer -->";}
-      if ($blog_foo_bar  <> 0){$data->foo_bar   = parse_bar($blog_tpl, $blog_foo_bar,  "foo");}else{$data->foo_bar  = "<!-- leer -->";}
+      $data->left_bar  = parse_bar($blog_tpl, $blog_left_bar, "left");
+      $data->right_bar = parse_bar($blog_tpl, $blog_right_bar,"right");
+      $data->top_bar   = parse_bar($blog_tpl, $blog_top_bar,  "top");
+      $data->foo_bar   = parse_bar($blog_tpl, $blog_foo_bar,  "foo");
       $data->blog->titel     = $blog_titel;
       $data->home_img  = gethomeimg();
       $data->home_url  = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];

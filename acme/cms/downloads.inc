@@ -64,10 +64,10 @@ function renderdownloads($id, $did){
          $data->downloads->parent->url  = $conf["indexname"]."downloads/".$download_typ_parent;
       }
       getdownload_typdata(&$data, $download_typ_id, $did);
-      if ($download_typ_left_bar   <> 0){$data->left_bar  = parse_bar($download_typ_tpl, $download_typ_left_bar, "left");}else{$data->left_bar  = "<!-- leer -->";}
-      if ($download_typ_right_bar  <> 0){$data->right_bar = parse_bar($download_typ_tpl, $download_typ_right_bar,"right");}else{$data->right_bar  = "<!-- leer -->";}
-      if ($download_typ_top_bar    <> 0){$data->top_bar   = parse_bar($download_typ_tpl, $download_typ_top_bar,  "top");}else{$data->top_bar  = "<!-- leer -->";}
-      if ($download_typ_foo_bar    <> 0){$data->foo_bar   = parse_bar($download_typ_tpl, $download_typ_foo_bar,  "foo");}else{$data->foo_bar  = "<!-- leer -->";}
+      $data->left_bar  = parse_bar($download_typ_tpl, $download_typ_left_bar, "left");
+      $data->right_bar = parse_bar($download_typ_tpl, $download_typ_right_bar,"right");
+      $data->top_bar   = parse_bar($download_typ_tpl, $download_typ_top_bar,  "top");
+      $data->foo_bar   = parse_bar($download_typ_tpl, $download_typ_foo_bar,  "foo");
       $data->downloads->titel = $download_typ_titel;
       $data->titel       = $download_typ_titel;      
       $data->home_img    = gethomeimg();

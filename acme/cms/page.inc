@@ -153,10 +153,10 @@ function renderpage($id, $anfang){
       $data->home_url = "index/".$conf["home_page_typ"] ."/". $conf["home_page"];
       incpagecounter($page_id, $page_counter);
       $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
-      if ($page_left_bar  <> 0){$data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");}else{$data->left_bar  = "<!-- leer -->";}
-      if ($page_right_bar <> 0){$data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");}else{$data->right_bar  = "<!-- leer -->";}
-      if ($page_top_bar   <> 0){$data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");}else{$data->top_bar  = "<!-- leer -->";}
-      if ($page_foo_bar   <> 0){$data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");}else{$data->foo_bar  = "<!-- leer -->";}
+      $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
+      $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
+      $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
+      $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");
       getpagechildsforpreview(&$data, $page_id, $page_childs, $anfang, $page_tpl);
       $page_output = sprintt($data, $tplfile);
       if ($page_long_text_typ == "H"){echo $page_output;}

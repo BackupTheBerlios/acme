@@ -60,10 +60,10 @@ function rendertermin($id){
       $data->termine->text         = parse_bbcode(nltobr($termin_text), $page_tpl);
       $data->termine->counter      = $termin_counter;
       getterminchildsdata(&$data, $termin_id, $termin_tpl);
-      if ($termin_left_bar  <> 0){$data->left_bar  = parse_bar($termin_tpl, $termin_left_bar, "left");}else{$data->left_bar  = "<!-- leer -->";}
-      if ($termin_right_bar <> 0){$data->right_bar = parse_bar($termin_tpl, $termin_right_bar,"right");}else{$data->right_bar  = "<!-- leer -->";}
-      if ($termin_top_bar   <> 0){$data->top_bar   = parse_bar($termin_tpl, $termin_top_bar,  "top");}else{$data->top_bar  = "<!-- leer -->";}
-      if ($termin_foo_bar   <> 0){$data->foo_bar   = parse_bar($termin_tpl, $termin_foo_bar,  "foo");}else{$data->foo_bar  = "<!-- leer -->";}
+      $data->left_bar  = parse_bar($termin_tpl, $termin_left_bar, "left");
+      $data->right_bar = parse_bar($termin_tpl, $termin_right_bar,"right");
+      $data->top_bar   = parse_bar($termin_tpl, $termin_top_bar,  "top");
+      $data->foo_bar   = parse_bar($termin_tpl, $termin_foo_bar,  "foo");
       $data->termine->titel     = $termin_titel;
       $data->titel     = $termin_titel;      
       $data->home_img  = gethomeimg();

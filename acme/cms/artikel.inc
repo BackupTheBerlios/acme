@@ -135,10 +135,10 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
          }
          $data->artikel->print_url  = $conf["indexname"]."aprint/" . $page_id . "/".$artikel_id;
          $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
-         if ($page_left_bar  <> 0){$data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");}
-         if ($page_right_bar <> 0){$data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");}
-         if ($page_top_bar   <> 0){$data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");}
-         if ($page_foo_bar   <> 0){$data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");}
+         $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
+         $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
+         $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
+         $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");
          $data->titel                 = $artikel_headline;
          $data->home_img              = gethomeimg();
          $data->home_url              = $conf["indexname"].$conf["home_page_typ"] . "/".$conf["home_page"];

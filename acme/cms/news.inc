@@ -97,10 +97,10 @@ function rendernews(){
    $data->home_img  = gethomeimg();
    $data->home_url  = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
    $tplfile = "cms/tpl/" . gettemplatebyid($conf["home_tpl"]) . ".tpl";
-   if ($conf["home_left_bar"]  <> 0) {$data->left_bar  = parse_bar($conf["home_tpl"], $conf["home_left_bar"],  "left");}
-   if ($conf["home_right_bar"] <> 0){$data->right_bar = parse_bar($conf["home_tpl"], $conf["home_right_bar"], "right");}
-   if ($conf["home_top_bar"]   <> 0)  {$data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");}
-   if ($conf["home_foo_bar"]   <> 0)  {$data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");}
+   $data->left_bar  = parse_bar($conf["home_tpl"], $conf["home_left_bar"],  "left");
+   $data->right_bar = parse_bar($conf["home_tpl"], $conf["home_right_bar"], "right");
+   $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
+   $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
    $query = "select * from acme_pages where page_top_thema = 'Y'";
    $my_result = dbquery($query);
