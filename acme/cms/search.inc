@@ -64,7 +64,6 @@ function rendersearch($search){
    $akt=1;
    searchIt(&$data, $akt, $search);
    
-   $tplfile= "cms/tpl/home.tpl";
    $page_output = sprintt($data, $tplfile);
    echo $page_output;
 }

@@ -31,10 +31,10 @@
 */
 
 if ($page == "sitemap"){
-   rendersitemap($navid);
+   rendersitemap($id);
    }
   
-function rendersitemap($nav_id){
+function rendersitemap($id){
    global $conf, $lang;
    
    $akt=0;

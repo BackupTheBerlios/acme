@@ -29,3 +29,4 @@ function search_artikel($search) {
    }
    if ($akt > 0) return $artikel_result;  
 }
+?>

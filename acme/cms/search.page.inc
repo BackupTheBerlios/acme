@@ -13,3 +13,4 @@ function search_page($search) {
    }
    if ($akt > 0) return $page_result;  
 }
+?>

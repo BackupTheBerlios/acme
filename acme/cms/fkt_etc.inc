@@ -161,27 +161,40 @@ function getnavimg($modul, $id){
       $modul_result = dbquery($Statement);
       if ( mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
-         $picid = $modulrow[$row->navimg] ;
+         $picid_a = $modulrow[$row->navimg] ;
+         $picid_p = $modulrow[$row->navimg."_inactive"] ;
       }
       mysql_free_result($modul_result);
    }
 
-   if ( $picid ){
-      $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$picid."'";
+   if ( $picid_a ){
+      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_a."'";
       dbconnect();
       $result = dbquery($getpic);
       if(mysql_affected_rows() > 0)         {
          $row = mysql_fetch_object($result);
-         return "<img class = \"nav_elem_img\" src = \"". $conf["images"] . $row->img_real_name. "\" alt = \"" . $row->img_description . "\">";
-      }
-      else{
-         return gethomenavimg();
+         $act_pic->name  =  $row->img_name;
+         $act_pic->src   =  $conf["images"] . $row->img_real_name;
+         $act_pic->desc  =  $row->img_description;
       }
       mysql_free_result($result);
    }
-   else {
-      return gethomenavimg();
+   if ( $picid_p ){
+      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_p."'";
+      dbconnect();
+      $result = dbquery($getpic);
+      if(mysql_affected_rows() > 0)         {
+         $row = mysql_fetch_object($result);
+         $pas_pic->name  =  $row->img_name;
+         $pas_pic->src   =  $conf["images"] . $row->img_real_name;
+         $pas_pic->desc  =  $row->img_description;
+      }
+      mysql_free_result($result);
    }
+   
+   $navimg->act = $act_pic;
+   $navimg->pas = $pas_pic;
+   return $navimg;
 }
 
 function gethomeimg(){
