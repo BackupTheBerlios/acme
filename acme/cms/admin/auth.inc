@@ -24,7 +24,8 @@ if (!isset($PHP_AUTH_USER) || !isset($PHP_AUTH_PW)) {
 } else {
   $USER = addslashes($PHP_AUTH_USER);
   $PW = $PHP_AUTH_PW;
-  $result = dbquery("SELECT author_id, author_name, author_active, author_groups FROM acme_author WHERE author_passwd = '" . $PW . "' AND author_name = '" . $USER . "'") or die("Couldn't query the user-database.");   
+  $query = "SELECT author_id,author_active,author_name,author_groups FROM acme_author WHERE author_passwd = '" . $PW . "' AND author_name = '" . $USER . "';";
+  $result = dbquery($query) or die("Couldn't query the database.". mysql_error());   
    if ( mysql_num_rows($result) > 0 ) {
       $row = mysql_fetch_array($result);
       $conf["author_id"]       = $row["author_id"];

@@ -6,6 +6,7 @@ $lang["autoren_gruppe"]="Gruppe";
 $lang["autoren_aktiv"]="aktiv";
 $lang["autoren_self"]="-----";
 $lang["autoren_pass"]="Passwort";
+$lang["autoren_passw"]="Passwort wiederholen";
 $lang["autoren_nachname"]="Nachname";
 $lang["autoren_vorname"]="Vorname";
 $lang["autoren_email"]="email";
