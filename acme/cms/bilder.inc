@@ -1,24 +1,47 @@
 <?php
 /*
-
-  gültig in {mask:main}
-    titel             überschrift des artikels
-    left_bar
-    right_bar
-    top_bar
-    foo_bar
-    home_img
-    home_url
-    gültig in {mask:bilder}
-       img_small
-       img_big
-	    name
-       text
-	    create_date
-	    create_time
-	    modify_date
-	    modify_time
-
+{mask:main}
+   titel
+   left_bar
+   right_bar
+   top_bar
+   foo_bar
+   home_img
+   home_url
+   {mask:img_typ}
+      img_small
+      img_big
+      name
+      text
+	  create_date
+	  create_time
+	  modify_date
+	  modify_time
+	  {mask:parent}
+	     name
+	     url
+      {mask:img_row}
+         {mask:img_col}
+            name
+            desc_short
+            thumb_src
+            url
+      {mask:img_typ_url_first}
+         url
+       {mask:img_typ_url_prev}
+          url
+       {mask:img_typ_url_seiten}
+          nr
+          url
+       {mask:img_typ_url_next}
+          url
+       {mask:img_typ_url_last}
+          url
+       {mask:image}
+          name
+          desc_short
+          desc_long
+          src
 */
 
    $id = array_shift($path);
@@ -36,6 +59,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
    if (mysql_num_rows($img_typ_result) == 1) {
       $img_typ_row = mysql_fetch_object($img_typ_result);
       $img_typ_id = $img_typ_row->img_typ_id;
+      $img_typ_parent = $img_typ_row->img_typ_parent_id;      
       $img_typ_name = $img_typ_row->img_typ_name;
       $img_typ_tpl = $img_typ_row->img_typ_tpl;
       $img_typ_img_small = $img_typ_row->img_typ_img_small;
@@ -69,6 +93,10 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       $data->img_typ->modify_date  = mydate2date($img_typ_modify_date);
       $data->img_typ->modify_time  = mydate2time($img_typ_modify_date);
       $data->img_typ->counter      = $artikel_counter;
+      if ($img_typ_parent <> 0){
+         $data->img_typ->parent->name = getimg_typnamebyid($img_typ_parent);
+         $data->img_typ->parent->url  = $conf["indexname"]."bilder/".$img_typ_parent;
+      }      
       incimg_typcounter($img_typ_id, $img_typ_counter);
       getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
       getbigimage(&$data, $img_id, $img_typ_tpl);
@@ -173,4 +201,17 @@ function img_anzahlbilder($img_typ_id){
    return mysql_num_rows($my_result);
    mysql_free_result($my_result);
 }   
+
+function getimg_typnamebyid($id){
+   global $conf, $lang;
+   
+   $my_result = dbquery("select img_typ_name from acme_bilder_typs where img_typ_id='".$id."'");
+   if ( mysql_num_rows($my_result) == 1 )
+      {
+      $row = mysql_fetch_object($my_result);
+      $name = $row->img_typ_name;
+      mysql_free_result($my_result);
+      return $name;
+      }
+}    
 ?>
