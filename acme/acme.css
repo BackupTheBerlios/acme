@@ -341,7 +341,7 @@ a:active.navbuttonlink
 
 
 
-/* Hierarchie in Tabellen im Admin-Bereich */'
+/* Hierarchie in Tabellen im Admin-Bereich */
 /* z.B. bei der Page-Verwaltung */
 
 /* stufe 0 (top) */
@@ -770,7 +770,7 @@ a:active
 
 
 
-/* Hierarchie in Tabellen im Admin-Bereich */'
+/* Hierarchie in Tabellen im Admin-Bereich */
 /* z.B. bei der Page-Verwaltung */
 
 /* stufe 0 (top) */
@@ -878,6 +878,20 @@ td.nav_button_td_c
 /* Navbutton Kategorie LAYOUT (Struktur) */
 td.nav_button_td_l
 
+              {
+                padding-left:6px;
+                 padding-right:6px;
+                 padding-top:3px;
+                 padding-bottom:3px;
+                 margin-left:0px;
+                 margin-right:0px;
+                 border-color:white;
+                 background-color:#025106;
+                 border-width:1px;
+                 border-style:solid;
+                 text-align:center;
+              }
+td.nav_button_rd_status
               {
                 padding-left:6px;
                  padding-right:6px;

@@ -181,25 +181,15 @@ echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" cla
 
 echo "<tr><td><a href=" . $conf["admp"] ."&section=logout class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
 
-echo "<tr><td><b>User:</b></td></tr>\n";
+echo "<tr><td class=\"nav_button_td_status\"><b>User:</b><br>". $conf["user_name"] . "<br><br>";
 
-echo "<tr><td>" . $conf["user_name"] . "</td></tr>\n";
+echo "<b>Gruppen:</b><br>" . getgroupnamesbyarray($conf["user_groups"]) ."<br><br>";
 
-echo "<tr><td><b>Gruppen:</b></td></tr>\n";
+echo "<b>Rechte in:</b><br>  " . $section . getgrouprights($section, $conf["user_groups"]) . "<br><br>";
 
-echo "<tr><td>" . getgroupnamesbyarray($conf["user_groups"]) . "</td></tr>\n";
+echo "<b>Date:</b><br>" . date("d.m.Y.") . "<br><br>";
 
-echo "<tr><td><b>Rechte in  \"" . $section . "\"</b></td></tr>\n";
-
-echo "<tr><td>" . getgrouprights($section, $conf["user_groups"]) . "</td></tr>\n";
-
-echo "<tr><td><b>Date:</b></td></tr>\n";
-
-echo "<tr><td>" . date("d.m.Y.") . "</td></tr>\n";
-
-echo "<tr><td><b>Time:</b></td></tr>\n";
-
-echo "<tr><td>" . date("H:i") ."</td></tr>\n";
+echo "<b>Time:</b><br>" . date("H:i") ."</td></tr>\n";
 
 echo "</table>\n</div>";
 
