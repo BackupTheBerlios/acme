@@ -34,7 +34,7 @@ function acl_check($acltyp, $usergroups, $user, $modul, $modulid){
 function acl_user_set($user, $modul, $modulid, $rights, $insert, $edit, $delete){
    global $conf, $lang;
    
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
    if ( mysql_num_rows($result) > 0 )  {
       $result = dbquery("update acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
    } else {

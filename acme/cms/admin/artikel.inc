@@ -165,12 +165,8 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " '". $new_artikel_comments ."')";
    $insert1_result = dbquery($Statement);
    if ($insert1_result) {
-   	  $result = dbquery("select artikel_id from acme_artikel where artikel_id = LAST_INSERTED_ID()");
-      if ($result)  {
-         $row = mysql_fetch_object($result);
-         $modulid = $row->artikel_id;
-         acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
-      }
+      $modulid = mysql_insert_id();
+      acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
       $Statement = "INSERT INTO acme_artikel_daten (".
                    " artikel_long_text ,  ".
                    " artikel_part, ".
@@ -206,7 +202,7 @@ function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_a
    $Statement = "UPDATE acme_artikel_daten SET ".
                 " artikel_long_text = '". $edit_artikel_long_text ."'".
                 " WHERE artikel_id = '". $edit_artikel_id."' ".
-                "   AND artikel_part = '".$edit_artikel_part . "'";
+                " AND artikel_part = '".$edit_artikel_part . "'";
    $update_result = dbquery($Statement);
    return $update_result;
 }
@@ -249,7 +245,7 @@ function artikel_delete($delete_id){
    global $conf, $lang;
    
    $delete_result = dbquery("delete from acme_artikel where artikel_id = '". $delete_id . "'");
-   
+   acl_delete("artikel", $delete_id);   
    return $delete_result;
 }
 

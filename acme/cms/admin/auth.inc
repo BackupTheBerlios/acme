@@ -4,7 +4,7 @@ include("lang/auth." . $conf["lang"] . ".inc");
 session_start();
 
 if ($section == "logout") {
-   $result = dbquery("update acme_author set author_login = 'N' WHERE autor_name = '" . $conf["author_name"] . "'");
+   $result = dbquery("update acme_author set author_login = 'N' WHERE author_name = '" . $conf["author_name"] . "'");
    displayLogin();
 }
 
@@ -24,7 +24,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
          $_SESSION['username'] = $_POST['uname'];
          $_SESSION['password'] = $_POST['password'];
 
-         $result = dbquery("update acme_author set author_login = 'Y', set author_last_login = NOW() WHERE author_name = '" . $USER . "'");
+         $result = dbquery("update acme_author set author_login = 'Y', author_last_login = NOW() WHERE author_name = '" . $USER . "'");
       } 
       else {displayLogin("ad");}     
    } 

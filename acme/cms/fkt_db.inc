@@ -24,6 +24,7 @@ function dbquery($sqlcommand)
 {
    global $conf, $lang;
    $func_result = mysql_db_query($conf["dbname"], $sqlcommand);
+   if (!$func_result){echo "<p>DBERROR: ". mysql_errno() . ": " . mysql_error(). "\n<br>".$sqlcommand ."</p>";}
    return $func_result;
 }
 

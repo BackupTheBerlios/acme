@@ -55,7 +55,7 @@ function img_browse($img_typ_id){
    
 	echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
 	echo "<h2>" . get_img_typ_name($img_typ_id) . "</h2>";
-	if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
+	if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $img_typ_id) == 1) {
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_new&img_typ_id=" . $img_typ_id . "\">".$lang["bilder_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
@@ -68,9 +68,13 @@ function img_browse($img_typ_id){
          echo "<td>".$row->img_description."</td>";
          echo "<td><img src=\"".$conf["images"]."thumb_".$row->img_real_name."\"></td>";         
          echo "<td>";
-         if ( checkgroupmodify($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_edit&section=bilder&img_id=" . $row->img_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></td>";}
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "bilder", $img_typ_id) == 1) {
+         	echo "<a href=\"" . $conf["admp"] . "&action=img_edit&section=bilder&img_id=" . $row->img_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></td>";
+         }
          echo "<td>";
-         if ( checkgroupdelete($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_delete&section=bilder&img_id=" . $row->img_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "bilder", $img_typ_id) == 1) {
+         	echo "<a href=\"" . $conf["admp"] . "&action=img_delete&section=bilder&img_id=" . $row->img_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
+         }
          echo "</td>";
          echo "</tr>";
       }
@@ -83,7 +87,7 @@ function img_typ_browse(){
    global $conf, $lang;
    
    echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
-   if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", 0) == 1) {
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_typ_new\">".$lang["bilder_typ_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
@@ -226,11 +230,17 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
                 " img_typ_foo_bar = '". $new_img_typ_foo_bar . "',".
                 " img_typ_maxheight = '". $new_img_typ_maxheight . "',".
                 " img_typ_maxwidth = '". $new_img_typ_maxwidth . "',".
-                " img_typ_parent_id = '". $new_img_typ_parent_id . "'";
+                " img_typ_parent_id = '". $new_img_typ_parent_id . "', ".
+                " img_typ_author_id = '" . $conf["author_id"] ."',".                
+                " img_typ_create_date = NOW(), ".
+                " img_typ_modify_date = NOW()";
 
   $my_result = dbquery($Statement);
    
-   if ($my_result) {echo $lang["bilder_typ_insert_erfolgreich"]."\n";}
+   if ($my_result) {
+   	  echo $lang["bilder_typ_insert_erfolgreich"]."\n";
+      acl_user_set($conf["author_id"], "bilder", mysql_insert_id(), "Y", "Y", "Y", "Y");
+   }
    else            {echo $lang["bilder_typ_insert_fehlerhaft"]."\n<br>".$Statement;}
    img_typ_browse();
 }    
@@ -342,7 +352,8 @@ function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text
                 " img_typ_foo_bar = '". $edit_img_typ_foo_bar . "',".
                 " img_typ_maxwidth = '". $edit_img_typ_maxwidth . "',".
                 " img_typ_maxheight = '". $edit_img_typ_maxheight . "',".
-                " img_typ_parent_id = '". $edit_img_typ_parent_id . "'".
+                " img_typ_parent_id = '". $edit_img_typ_parent_id . "', ".
+                " img_typ_modify_date = NOW() ".
                 " WHERE img_typ_id = '". $edit_img_typ_id . "'";
    $my_result = dbquery($Statement);
    if ($my_result) {echo $lang["bilder_typ_update_erfolgreich"]."\n";}
@@ -354,7 +365,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
    global $conf, $lang;
 
 	$Statement = "UPDATE acme_bilder Set ".
-	                           " img_name = '" . $img_name . "', ".
+	                          " img_name = '" . $img_name . "', ".
                               " img_description = '". $img_description . "', ".
                               " img_desc_long = '". $img_desc_long . "', ".
                               " img_author_id = '". $conf["author_id"] . "' ".
@@ -392,7 +403,9 @@ function img_typ_delete($img_typ_id){
 
   	$Statement = "DELETE FROM acme_bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
    $delete_result = dbquery($Statement);
-   if ($delete_result){echo $lang["bilder_typ_delete_erfolgreich"];}
+   if ($delete_result){
+   	acl_delete("bilder", $img_typ_id);
+   	echo $lang["bilder_typ_delete_erfolgreich"];}
    else {echo $lang["bilder_typ_delete_fehlerhaft"];}
    img_typ_browse();
 }
@@ -625,7 +638,7 @@ function createsel_img_typ_parent($select_name,$id,$selfid="0"){
 }
 function getimgparent4select($parent, &$h_level, $grouplist, $selfid){
    global $conf, $lang;
-   echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa";
+
    $result = dbquery("select * from acme_bilder_typs where img_typ_parent_id = " . $parent . " order by img_typ_name");
    echo mysql_errno() . ": " . mysql_error(). "\n";
    if ( mysql_num_rows($result) > 0 ){
