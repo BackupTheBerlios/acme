@@ -137,7 +137,7 @@ function termin_data_update($termin_data_id, $termin_typ, $termin_data_headline,
                 "termin_data_Ort = '". $termin_data_Ort . "', ".
                 "termin_data_URL = '". $termin_data_URL . "', ".
                 "termin_data_content   = '". $termin_data_content . "', ".
-                "termin_data_user_id = '" . $conf["author_id"] . "', ".
+                "termin_data_author_id = '" . $conf["author_id"] . "', ".
                 "termin_typ  = '". joingrouparray($termin_typ) . "' ".
                 "WHERE termin_data_id = '". $termin_data_id . "'";
    $update_result = dbquery($Statement);
@@ -195,7 +195,7 @@ function termin_data_insert($termin_id, $termin_typ, $termin_data_headline, $ter
                      "termin_data_URL = '". $termin_data_URL . "',".
                      "termin_data_content   = '". $termin_data_content . "',".
                      "termin_typ  = '". joingrouparray($termin_typ) . "', ".
-                     "termin_data_user_id = '" . $conf["author_id"] . "'";
+                     "termin_data_author_id = '" . $conf["author_id"] . "'";
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["termin_eintrag_insert_erfolgreich"];}
    else{echo $lang["termin_eintrag_insert_fehlgeschlagen"];};
@@ -292,7 +292,7 @@ function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl,
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
-                           " termin_user_id = '" . $conf["author_id"] . "' ".
+                           " termin_author_id = '" . $conf["author_id"] . "' ".
                            " WHERE termin_id = '". $termin_id . "'";
    $update_result = dbquery($Statement);
    if($update_result){echo $lang["termin_update_erfolgreich"];}
@@ -363,7 +363,7 @@ function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
-                           " termin_user_id = '" . $conf["author_id"] . "' ";
+                           " termin_author_id = '" . $conf["author_id"] . "' ";
    $edit_result = dbquery($Statement);
    if($edit_result){echo $lang["termin_insert_erfolgreich"];}
    else{echo $lang["termin_insert_fehlgeschlagen"];};

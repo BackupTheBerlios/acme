@@ -9,9 +9,6 @@ echo "</td><td><input type=\"submit\" value=\"" . $lang["artikel_anzeigen"] . "\
 echo "<tr><td>" . $lang["artikel_des_autors"] . "</td><td colspan = \"2\">";
 createsel_author("author_id", $author_id); 
 echo "</td></tr>\n";
-echo "<tr><td>" . $lang["artikel_des_users"] . "</td><td colspan = \"2\">";
-createsel_user("user_id", $user_id); 
-echo "</td></tr>\n";
 echo "</table>\n";
 echo "</form>\n";
 echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
@@ -19,7 +16,6 @@ if ($page_id <> ""){
    echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
    $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
    if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
-   if ($user_id <> ""){ $Statement .= " and artikel_user_id = '" . $user_id . "'";}
    $Statement .= " order by artikel_publish_date DESC";
    $result = dbquery($Statement);
    if ( mysql_num_rows($result) > 0 ){

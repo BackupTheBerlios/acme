@@ -39,24 +39,6 @@ function createsel_author($select_name, $id){
    return;
 }
 
-function createsel_user($select_name, $id){
-   global $conf, $lang;
-   
-   $allgroups = dbquery("select * from acme_user order by user_name");
-   echo "<select size = \"1\" name=\"" . $select_name . "\">";
-   if (!isset($id)){echo "<option value=\"\" selected></option>";}
-   else {echo "<option value=\"\" ></option>";}
-   if ( mysql_num_rows($allgroups) > 0 )   {
-      while ( $g_row = mysql_fetch_object($allgroups) )         {
-         echo "<option value=" . $g_row->user_id;
-         if ( $g_row->user_id == $id ){ echo " selected ";}
-         echo ">" . $g_row->user_name . "</option>";
-      }
-      mysql_free_result($allgroups);
-   }
-   echo "</select>";
-   return;
-}
 function createsel_startpage($select_name,$grouplist){
    global $conf, $lang;
    

@@ -20,7 +20,7 @@ switch($action){
 
    case "messages_insert":
       $error=0;
-      if (getuserbyid($new_messages_tuser) == ""){echo $lang["messages_tuser_fehlt"]."<br>";$error=1;}
+      if (getauthorbyid($new_messages_tuser) == ""){echo $lang["messages_tuser_fehlt"]."<br>";$error=1;}
       if ($new_messages_topic == ""){echo $lang["messages_topic_fehlt"]."<br>";$error=1;}
       if ($new_messages_message == ""){echo $lang["messages_text_fehlt"]."<br>";$error=1;}
       if ($error==1){
@@ -55,7 +55,7 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
            "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
-           "<tr><td>".$lang["messages_fuser"]. " ". getuserbyid($acme_messages->fuser) . "</td></tr>".           
+           "<tr><td>".$lang["messages_fuser"]. " ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
            "<tr><td>". htmlspecialchars($acme_messages->topic) . "</td></tr>".
            "<tr><td>". htmlspecialchars($acme_messages->message) . "</td>";
       if ($acme_messages->status == "P" || $acme_messages->status == "N"){     
@@ -94,7 +94,7 @@ function messages_new($new_messages_topic, $new_messages_message, $new_messages_
         "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_messages_message)) . "</textarea></td>";
    echo "</tr>".
         "<tr><td>";
-   createsel_user("new_messages_tuser", $message_tuser); 
+   createsel_author("new_messages_tuser", $message_tuser); 
    echo "</td></tr>".
         "<tr><td>";          
    echo "</td></tr>".     
@@ -111,7 +111,7 @@ function messages_insert($topic, $message, $tuser){
                 "status = 'N', ".                
                 "tuser = ". $tuser . ", ".  
                 "created = now(),".
-                "fuser = ". $conf["user_id"];
+                "fuser = ". $conf["author_id"];
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["messages_insert_erfolgreich"];}
    else{echo $lang["messages_insert_fehlgeschlagen"];};
@@ -122,9 +122,9 @@ function messages_browse($status) {
 
    echo "<h1>".$lang["messages_verwaltung"]."</h1>\n";
    echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_new\">".$lang["messages_neu"]."</a>";
-   $nresult = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["user_id"]. " order by created DESC");
-   $presult = dbquery("select * from acme_messages where status = 'P' and tuser = " . $conf["user_id"]. " order by created DESC");
-   $fresult = dbquery("select * from acme_messages where status = 'F' and tuser = " . $conf["user_id"]. " order by created DESC");
+   $nresult = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $presult = dbquery("select * from acme_messages where status = 'P' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $fresult = dbquery("select * from acme_messages where status = 'F' and tuser = " . $conf["author_id"]. " order by created DESC");
    echo "<table class=\"reda_td\">\n\n";
    echo "<tr>\n";
    if ($status == "N"){
@@ -156,7 +156,7 @@ function messages_browse($status) {
       echo "<tr>";
       echo "<td>". $row->topic ."</td>";
       echo "<td>". mydate2datetime($row->created) ."</td>";
-      echo "<td>". getuserbyid($row->fuser) ."</td>";
+      echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
@@ -169,7 +169,7 @@ function messages_browse($status) {
       echo "<tr>";
       echo "<td>". $row->topic ."</td>";
       echo "<td>". mydate2datetime($row->created) ."</td>";
-      echo "<td>". getuserbyid($row->fuser) ."</td>";
+      echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
@@ -182,7 +182,7 @@ function messages_browse($status) {
       echo "<tr>";
       echo "<td>". $row->topic ."</td>";
       echo "<td>". mydate2datetime($row->created) ."</td>";
-      echo "<td>". getuserbyid($row->fuser) ."</td>";
+      echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";

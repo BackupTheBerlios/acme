@@ -230,8 +230,7 @@ function getimagedescription($img_id)
 	mysql_free_result($result);
 }
 
-function getauthorbyid($id)
-{
+function getauthorbyid($id){
    global $conf, $lang;
    $my_result = dbquery("select * from acme_author where author_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 ) {
@@ -243,14 +242,13 @@ function getauthorbyid($id)
 }      
 
 
-function getuserbyid($id)
-{
+function getauthornickbyid($id){
    global $conf, $lang;
-   $my_result = dbquery("select * from acme_user where user_id='".$id."'");
+   $my_result = dbquery("select * from acme_author where author_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
-      $name = $row->user_name;
+      $name = $row->author_name;
       mysql_free_result($my_result);
       return $name;
       } else return "";

@@ -1,6 +1,11 @@
 <?php
 $lang["autoren_management"]="authors";
 $lang["autoren_neu_anlegen"]="create new author";
+$lang["autoren_name"]="Name";
+$lang["autoren_gruppe"]="Gruppe";
+$lang["autoren_activ"]="aktiv";
+$lang["autoren_self"]="-----";
+$lang["autoren_pass"]="Passwort";
 $lang["autoren_nachname"]="surname";
 $lang["autoren_vorname"]="given name";
 $lang["autoren_email"]="email";

@@ -50,7 +50,6 @@ function renderaprint($page_id, $artikel_id){
       $artikel_modify_date = $row->artikel_modify_date;
       $artikel_publish_date =  $row->artikel_publish_date;
       $artikel_author = $row->artikel_author_id;
-      $artikel_user_id = $row->artikel_user_id;
       $artikel_active = $row->artikel_active;
       $artikel_counter = $row->artikel_counter;
       mysql_free_result($my_result);

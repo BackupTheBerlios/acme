@@ -42,7 +42,7 @@ switch($action){
          $result = artikel_insert($new_artikel_page, $new_artikel_publish_date,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text, $new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments);
          if ($result) {
             echo $lang["artikel_insert_erfolgreich"];
-            artikel_browse($page_id, $author_id, $user_id);
+            artikel_browse($page_id, $author_id);
          }
          else {
          	echo $lang["artikel_insert_fehlgeschlagen"];
@@ -100,7 +100,7 @@ switch($action){
          else {
          	echo $lang["artikel_update_fehlgeschlagen"]."<br>";
          }
-         artikel_browse($page_id, $author_id, $user_id);
+         artikel_browse($page_id, $author_id);
       }
       else{artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_long_text, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext);}
 		
@@ -128,7 +128,7 @@ switch($action){
          	echo $lang["artikel_daten_delete_fehlgeschlagen"];
          }
       }
-      artikel_browse($page_id, $author_id, $user_id);
+      artikel_browse($page_id, $author_id);
       
       break;
       

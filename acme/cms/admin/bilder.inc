@@ -332,7 +332,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
 	                           " img_name = '" . $img_name . "', ".
                               " img_description = '". $img_description . "', ".
                               " img_desc_long = '". $img_desc_long . "', ".
-                              " img_user_id = '". $conf["author_id"] . "' ".
+                              " img_author_id = '". $conf["author_id"] . "' ".
                               " WHERE img_id = '" . $img_id . "'";
    $result = dbquery($Statement);
    if ($result){echo $lang["bilder_update_erfolgreich"]."<br>";}
@@ -401,7 +401,7 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
                               " img_description = '". $new_img_description ."', ".
                               " img_desc_long  = '". $new_img_desc_long ."', ".
                               " img_typ_id  =  '". $new_img_typ_id ."', ".
-                              " img_user_id =  '". $conf["author_id"]."'";
+                              " img_author_id =  '". $conf["author_id"]."'";
          $insert_result = dbquery($Statement);
          if ($insert_result){
          	echo $lang["bilder_upload_copy_finished"];

@@ -73,7 +73,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       $img_typ_counter = $img_typ_row->img_typ_counter;
       $img_typ_create_date = $img_typ_row->img_typ_create_date;
       $img_typ_modify_date = $img_typ_row->img_typ_modify_date;
-      $img_typ_user_id = $img_typ_row->img_typ_user_id;
+      $img_typ_author_id = $img_typ_row->img_typ_author_id;
       mysql_free_result($img_typ_result);
 
       $tplfile = $conf["templates"] . gettemplatebyid($img_typ_tpl) . ".tpl";
