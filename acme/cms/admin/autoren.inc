@@ -6,27 +6,27 @@ switch ($action)  {
       authoredit($edit_author_id);
       break;
    case "new":
-      authornew($new_author_nachname, $new_author_vorname);
+      authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text);
       break;
    case "add":
-      $result = authoradd($new_author_nachname, $new_author_vorname);
+      $result = authoradd($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text);
       if ($result){
          echo $lang["autoren_insert_erfolgreich"];
          authorbrowse();
-      }
-      else{
-      echo $lang["autoren_insert_fehlgeschlagen"];
-      // authoradd($admp, $author_groups, $new_author_name, $new_author_groups, $new_author_passwd, $new_author_active, $new_allow_module, $new_allow_artikel, $new_allow_glossar, $new_allow_pics, $new_allow_bars, $new_allow_blocks, $new_allow_author, $new_allow_groups, $new_allow_prefs);
+      }else{
+         echo $lang["autoren_insert_fehlgeschlagen"];
+         authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text);
       }
       break;
 	case "update":
-      $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname);
+      $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text);
       if ($result){
       	 echo $lang["autoren_update_erfolgreich"];
+      	 authorbrowse();
       }else{
          echo $lang["autoren_update_fehlgeschlagen"];
+         authoredit($edit_author_id);
       }
-      authorbrowse();
       break;
 	case "delete":
       $result = authordelete($delete_id);
@@ -47,26 +47,34 @@ function authordelete($delete_id){
    global $conf, $lang;
 
    $delete_result = dbquery("delete from acme_author where author_id = '". $delete_id . "'");
-   
+  
    return $delete_result;
 }
    
-function authoradd($new_author_nachname, $new_author_vorname){ 
+function authoradd($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text){ 
    global $conf, $lang;
    
    $Statement = "INSERT INTO acme_author SET ".
                 " author_nachname = '" . $new_author_nachname . "', ".
-                " author_vorname = '" . $new_author_vorname . "'";               
+                " author_vorname = '" . $new_author_vorname . "', ".
+                " author_img = '". $new_author_img ."',".
+                " author_url = '". $new_author_url ."',".
+                " author_email = '". $new_author_email ."',".
+                " author_text = '". $new_author_text ."'";
    $insert_result = dbquery($Statement);
    
    return $insert_result;
 }
  
-function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname){ 
+function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text){ 
    global $conf, $lang;
    $Statement = "UPDATE acme_author SET ".
                 " author_nachname = '" . $edit_author_nachname . "', ".
-                " author_vorname = '" . $edit_author_vorname . "'".               
+                " author_vorname = '" . $edit_author_vorname . "', ".
+                " author_img = '". $edit_author_img ."',".
+                " author_url = '". $edit_author_url ."',".
+                " author_email = '". $edit_author_email ."',".
+                " author_text = '". $edit_author_text ."' ".
                 " WHERE author_id = '" . $edit_author_id . "'";
    $update_result = dbquery($Statement);
    return $update_result;
@@ -111,6 +119,10 @@ function authornew(){
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["autoren_nachname"]."</td><td><input name=new_author_nachname size=30 maxlength=128></td></tr>";
    echo "<tr><td>".$lang["autoren_vorname"]."</td><td><input name=new_author_vorname size=30 maxlength=128></td></tr>";
+   echo "<tr><td>".$lang["autoren_email"]."</td><td><input name=new_author_email size=30 maxlength=128></td></tr>";
+   echo "<tr><td>".$lang["autoren_url"]."</td><td><input name=new_author_url size=30 maxlength=128></td></tr>";
+   echo "<tr><td>".$lang["autoren_img"]."</td><td><input name=new_author_img size=30 maxlength=128></td></tr>";
+   echo "<tr><td>".$lang["autoren_text"]."</td><td><textarea  name=new_author_text  wrap=virtual rows=4 cols=60></textarea></td></tr>";            
    echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"add\"></td></tr>";
    echo "</table>";
    echo "</form>";
@@ -127,6 +139,10 @@ function authoredit($edit_id){
       echo "<table class=\"reda_td\">\n";
       echo "<tr><td>".$lang["autoren_nachname"]."</td><td><input name=edit_author_nachname value=\"" . $row->author_nachname . "\"></td></tr>\n";
       echo "<tr><td>".$lang["autoren_vorname"]."</td><td><input name=edit_author_vorname value=\"" . $row->author_vorname . "\"></td></tr>\n";
+      echo "<tr><td>".$lang["autoren_email"]."</td><td><input name=edit_author_email size=30 maxlength=128  value=\"" . $row->author_email . "\"></td></tr>";
+      echo "<tr><td>".$lang["autoren_url"]."</td><td><input name=edit_author_url size=30 maxlength=128  value=\"" . $row->author_url . "\"></td></tr>";
+      echo "<tr><td>".$lang["autoren_img"]."</td><td><input name=edit_author_img size=30 maxlength=128  value=\"" . $row->author_img . "\"></td></tr>";
+      echo "<tr><td>".$lang["autoren_text"]."</td><td><textarea  name=edit_author_text  wrap=virtual rows=4 cols=60>" . $row->author_text . "</textarea></td></tr>";            
       echo "<tr><td><input type=submit name=my_edit_author value=Submit></td></tr>\n";
       echo "</table>";
       echo "</form>";
