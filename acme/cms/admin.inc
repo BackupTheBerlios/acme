@@ -103,7 +103,7 @@ echo "<table>\n";
 
 echo "<tr><td align = center><img src=\"" . $conf["images_admin"] . "omikron_logo.png\" alt=\"Logografik: ACME\" width=\"70\" height=\"70\" align=\"left\" border=\"0\"></td></tr>\n";
 
-echo "<tr><td><br></td></tr>";
+
 
 echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
