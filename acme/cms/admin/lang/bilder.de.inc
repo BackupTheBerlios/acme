@@ -25,6 +25,7 @@ $lang["bilder_beschreibung"]="Beschreibung";
 $lang["bilder_beschreibung_lang"]="Beschreibung(lang)";
 $lang["bilder_thumb"]="Thumbnail";
 $lang["bilder_anzahl"]="Anzahl";
+$lang["bilder_link"]="link";
 $lang["bilder_loesche_datei"]="entferne Bild";
 $lang["bilder_datei_geloescht"]="Bilddatei erfolgreich gel&ouml;scht";
 $lang["bilder_datei_nicht_geloescht"]="Fehler: Bilddatei konnte nicht gel&ouml;scht werden";

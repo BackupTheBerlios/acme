@@ -25,6 +25,7 @@ $lang["bilder_beschreibung"]="description";
 $lang["bilder_beschreibung_lang"]="description (long)";
 $lang["bilder_thumb"]="thumbnail";
 $lang["bilder_anzahl"]="number";
+$lang["bilder_link"]="link";
 $lang["bilder_loesche_datei"]="removing image";
 $lang["bilder_datei_geloescht"]="image file deleted successfully";
 $lang["bilder_datei_nicht_geloescht"]="error: image file could not be deleted";
