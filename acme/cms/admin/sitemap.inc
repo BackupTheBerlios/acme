@@ -66,7 +66,7 @@ function sitemapbrowse(){
    global $conf, $lang;
 
    echo "<h1>".$lang["sitemap_verwaltung"]."</h1>\n";
-   if (checkgroupcreate($conf["author_groups"], "sitemap") == 1 ){
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) {
       echo "<a href=\"". $conf["admp"] . "&section=sitemap&action=new\">".$lang["sitemap_anlegen"]."</a>\n";
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
@@ -78,12 +78,12 @@ function sitemapbrowse(){
          echo "<td>".$row->sitemap_name."</td>";
          echo "<td>".$row->sitemap_nav_id."</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["author_groups"], "sitemap") == 1){ 
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) {
             echo "<a href=\"" . $conf["admp"] . "&section=sitemap&action=edit&edit_sitemap_id=" . $row->sitemap_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["author_groups"], "sitemap") == 1){ 
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) { 
             echo "<a href=\"" . $conf["admp"] . "&section=sitemap&action=delete&delte_id=" . $row->sitemap_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
