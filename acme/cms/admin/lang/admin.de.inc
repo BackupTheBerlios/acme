@@ -15,6 +15,7 @@ $lang["admin_profile"]="Seitenprofile";
 $lang["admin_termine"]="Termine";
 $lang["admin_autoren"]="Autoren";
 $lang["admin_urls"]="Linklisten";
+$lang["admin_messages"]="Nachrichten";
 $lang["admin_downloads"]="Downloads";
 $lang["admin_bar"]="Seitenbereiche";
 $lang["admin_news"]="News";
