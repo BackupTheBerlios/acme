@@ -1,6 +1,6 @@
 <?php
 $lang["sitemap_verwaltung"]="sitemaps";
-$lang["sitemap_titel"]="name";
+$lang["sitemap_name"]="name";
 $lang["sitemap_counter"]="counter";
 $lang["sitemap_nav"]="Navigation";
 $lang["sitemap_anlegen"]="sitemap erstellen";
