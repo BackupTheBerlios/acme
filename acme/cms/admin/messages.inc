@@ -126,7 +126,7 @@ function messages_browse() {
    echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_new\">".$lang["messages_neu"]."</a>";
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["user_id"]. " order by created DESC");
+   $result = dbquery("select * from acme_messages where status = 'N' order by created DESC");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
