@@ -182,7 +182,11 @@ function getnavimg($modul, $id){
          $act_pic->name  =  $row->img_name;
          $act_pic->src   =  $conf["images"] . $row->img_real_name;
          $act_pic->desc  =  $row->img_description;
-      }
+      } else {
+         $act_pic->name  =  "";
+         $act_pic->src   =  "";
+         $act_pic->desc  =  "";
+      }      
       mysql_free_result($result);
    }
    if ( $picid_p ){
@@ -194,6 +198,10 @@ function getnavimg($modul, $id){
          $pas_pic->name  =  $row->img_name;
          $pas_pic->src   =  $conf["images"] . $row->img_real_name;
          $pas_pic->desc  =  $row->img_description;
+      } else {
+         $pas_pic->name  =  "";
+         $pas_pic->src   =  "";
+         $pas_pic->desc  =  "";
       }
       mysql_free_result($result);
    }
