@@ -160,7 +160,7 @@ function glossar_browse() {
    global $conf, $lang;
 
    echo "<h1>".$lang["glossar_verwaltung"]."</h1>";
-   if (checkgroupcreate($conf["author_groups"], "glossar") == 1){
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "glossar", 0) == 1) {
       echo "<a href=\"" . $conf["admp"] . "&section=glossar&action=glossar_new\">".$lang["glossar_neu"]."</a>";
    }
    echo "<table class=\"reda_td\">";
@@ -171,12 +171,12 @@ function glossar_browse() {
          echo "<tr>";
          echo "<td>".$row->glossar_titel."</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["author_groups"], "glossar") == 1){
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "glossar", 0) == 1) {
             echo "<a href=\"" . $conf["admp"] . "&section=glossar&action=glossar_edit&glossar_id=" . $row->glossar_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["author_groups"], "glossar") == 1){
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "glossar", 0) == 1) {
             echo "<a href=\"" . $conf["admp"] . "&section=glossar&action=glossar_delete&glossar_id=" . $row->glossar_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
