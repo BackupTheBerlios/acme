@@ -58,7 +58,7 @@ function img_browse($img_typ_id){
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_new&img_typ_id=" . $img_typ_id . "\">".$lang["bilder_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
-   echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_realname"]."</td><td>".$lang["bilder_beschreibung"]."</td><td>".$lang["bilder_thumb"]."</td><td></td><td></tr>";
+   echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_realname"]."</td><td>".$lang["bilder_beschreibung"]."</td><td>".$lang["bilder_thumb"]."</td><td></td><td></td></tr>";
    $result = dbquery("select * from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)){
