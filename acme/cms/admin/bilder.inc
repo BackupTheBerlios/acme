@@ -51,7 +51,8 @@ switch ($action) {
 }
 
 function img_browse($img_typ_id){
-	global $conf;
+   global $conf, $lang;
+   
 	echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
 	echo "<h2>" . get_img_typ_name($img_typ_id) . "</h2>";
 	if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
@@ -79,22 +80,25 @@ function img_browse($img_typ_id){
 }
 
 function img_typ_browse(){
-	global $conf;
-	echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
-	if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
+   global $conf, $lang;
+   
+   echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
+   if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_typ_new\">".$lang["bilder_typ_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
-   echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></tr>";
+   echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></tr>";
    $result = dbquery("select * from acme_bilder_typs");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)){
          $img_count = count_img_from_typ($row->img_typ_id);
-         echo "<tr><td>";
+         echo "<tr><td>\n";
          if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
-            echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\">".$row->img_typ_name."</a>";
-         }else{echo $row->img_typ_name;}
-         echo "</td><td>" . $img_count . "</td><td>";
+            echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\">".$row->img_typ_name."</a>\n";
+         }else{
+         	echo $row->img_typ_name;
+         }
+         echo "</td><td>" . $img_count . "</td><td>\n";
          if ( checkgroupmodify($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_edit&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "<td>";
@@ -108,7 +112,7 @@ function img_typ_browse(){
 }
    
 function img_new($img_typ_id){
-	global $conf;
+   global $conf, $lang;
    
    echo "<h1>".$lang["bilder_neu"]."<h1>\n".
         "<form action=\"" . $conf["admp"] ."&action=img_add&section=bilder&img_typ_id=" . $img_typ_id . "\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n".
@@ -322,7 +326,7 @@ function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text
 }
     
 function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_typ_id){
-	global $conf;
+   global $conf, $lang;
 
 	$Statement = "UPDATE acme_bilder Set ".
 	                           " img_name = '" . $img_name . "', ".
@@ -337,7 +341,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
 }
 
 function img_delete($img_id){
-	global $conf;
+   global $conf, $lang;
 
    $result = dbquery("select img_real_name, img_typ_id from acme_bilder where img_id='$img_id'");
    if ($result){
@@ -359,7 +363,7 @@ function img_delete($img_id){
 }
 
 function img_typ_delete($img_typ_id){
-	global $conf;
+   global $conf, $lang;
 
   	$Statement = "DELETE FROM acme_bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
    $delete_result = dbquery($Statement);
@@ -369,7 +373,7 @@ function img_typ_delete($img_typ_id){
 }
 
 function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_description, $new_img_desc_long, $new_img_typ_id){
-	global $conf;
+   global $conf, $lang;
 
    if ($realsize >= 180000) {
    	  echo $lang["bilder_upload_filesizeerror"];
@@ -507,6 +511,7 @@ function count_img_from_typ($img_typ_id){
 }      
 function createsel_img_typ($select_name,$grouplist){
    global $conf, $lang;
+   
    $grouplist=explode(":", $grouplist);
    $allgroups = dbquery("select * from acme_bilder_typs order by img_typ_name");
    echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
@@ -527,6 +532,7 @@ function createsel_img_typ($select_name,$grouplist){
 }
 function createsel_img_typ_parent($select_name,$id){
    global $conf, $lang;
+   
    $allgroups = dbquery("select * from acme_bilder_typs where img_typ_parent_id = '' order by img_typ_name");
    echo "<select size = \"1\" name=\"" . $select_name . "\">";
    if (!isset($id)){echo "<option value=\"\" selected></option>";}
