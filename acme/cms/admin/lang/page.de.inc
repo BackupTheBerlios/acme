@@ -1,6 +1,7 @@
 <?php
 $lang["page_verwaltung"]="Seitenverwaltung";
-$lang["page_logo_klein"]="kleines Seitenlogo";
+$lang["page_logo_klein"]="kleines Seitenlogo (nav aktiv)";
+$lang["page_logo_klein_inactive"]="kleines Seitenlogo (nav inaktiv)";
 $lang["page_logo_gross"]="grosses Seitenlogo";
 $lang["page_bar_top"]="Seitenbereich oben";
 $lang["page_bar_right"]="Seitenbereich rechts";

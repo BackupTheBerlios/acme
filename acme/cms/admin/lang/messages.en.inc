@@ -2,6 +2,10 @@
 $lang["messages_verwaltung"]="messages";
 $lang["messages_neu"]="create message";
 $lang["messages_topic"]="subject";
+$lang["messages_status"]="status";
+$lang["messages_answer"]="answer";
+$lang["messages_anwsertopic"]="re:";
+$lang["messages_anwsermsg"]="--------";
 $lang["messages_bearbeiten"]="edit";
 $lang["messages_loeschen"]="delete";
 $lang["messages_status_neu"]="new";

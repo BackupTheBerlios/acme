@@ -8,7 +8,7 @@ switch($action)
       pagedit($id);
       break;
    case "new":
-       pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
+       pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
        break;
    case "add":
        $error = 0;
@@ -21,16 +21,16 @@ switch($action)
           $error = 1;
        }
        if ($error==0) { 	
-          pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
+          pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small,$new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
           pagebrowse();
        }
        else{ 
        	  echo $errortext;
-       	  pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
+       	  pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small,$new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
        }	   
        break;
    case "update":
-       pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent,$edit_page_img_small, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments);
+       pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent,$edit_page_img_small, $edit_page_img_small_inactive,$edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments);
        pagebrowse();
        break;
    case "delete":
@@ -61,13 +61,14 @@ function pagedeletequest($id){
    }
 }   
 
-function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id, $new_page_childs,$new_page_comments){
+function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id, $new_page_childs,$new_page_comments){
    global $conf, $lang;
    $Statement = "INSERT INTO acme_pages SET".
                 " page_name = '". $new_page_name . "',".
                 " page_tpl = '". $new_page_tpl . "', ".
                 " page_parent = '". $new_page_parent . "',".
                 " page_img_small = '". $new_page_img_small . "',".
+                " page_img_small_inactive = '". $new_page_img_small_inactive . "',".                
                 " page_img_big = '". $new_page_img_big . "',".
                 " page_titelbild = '". $new_page_titelbild . "',".                
                 " page_left_bar = '". $new_page_left_bar . "',".
@@ -87,7 +88,7 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    if ($my_result) {echo $lang["page_insert_erfolgreich"];}
    else            {echo $lang["page_insert_fehlerhaft"];}
 }
-function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent, $edit_page_img_small, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments){
+function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent, $edit_page_img_small, $edit_page_img_small_inactive, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments){
    global $conf, $lang;
               
    $Statement = "UPDATE acme_pages SET".
@@ -95,6 +96,7 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
                 " page_tpl = '". $edit_page_tpl . "', ".
                 " page_parent = '". $edit_page_parent . "',".
                 " page_img_small = '". $edit_page_img_small . "',".
+                " page_img_small_inactive = '". $edit_page_img_small_inactive . "',".                
                 " page_img_big = '". $edit_page_img_big . "',".
                 " page_titelbild = '". $edit_page_titelbild . "',".                
                 " page_left_bar = '". $edit_page_left_bar . "',".
@@ -133,7 +135,7 @@ function pagebrowse(){
    writepagechilds($parent,$h_level);
    echo "</table>";
 }      
-function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments){
+function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small,$new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments){
    global $conf, $lang;
 
    if ($new_page_long_text_typ=="")$new_page_long_text_typ = "B";
@@ -163,7 +165,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    createsel_bar("new_page_foo_bar", $new_page_foo_bar);
    echo "</td>";
    echo "</tr>";
-   echo "<tr><td>".$lang["page_tpl"]."</td><td>".$lang["page_logo_klein"]."</td><td>".$lang["page_logo_gross"]."</td><td>".$lang["page_titelbild"]."</td></tr>";
+   echo "<tr><td>".$lang["page_tpl"]."</td><td>".$lang["page_logo_klein"]."</td><td>".$lang["page_logo_klein_inactive"]."</td><td>".$lang["page_logo_gross"]."</td></tr>";
    echo "<tr>";
    echo "<td colspan=1>";
    createsel_tpl("new_page_tpl", $new_page_tpl);
@@ -172,14 +174,14 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    createsel_img("new_page_img_small",  $new_page_img_small);
    echo "</td>";
    echo "<td colspan=1>";
-   createsel_img("new_page_img_big",  $new_page_img_big);
+   createsel_img("new_page_img_small_inactive",  $new_page_img_small_inactive);
    echo "</td>";
    echo "<td colspan=1>";
-   createsel_img("new_page_titelbild",  $new_page_titelbild);
+   createsel_img("new_page_img_big",  $new_page_img_big);
    echo "</td>";
    echo "</tr>";
    echo "<tr><td colspan=\"4\">&nbsp;</td></tr>";
-   echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>&nbsp;</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td></tr>";
+   echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>&nbsp;</td><td>".$lang["page_childs"]."</td><td>".$lang["page_titelbild"]."</td></tr>";
    echo "<tr>";
    echo "<td>";
    createsel_ltt("new_page_long_text_typ",$new_page_long_text_typ);
@@ -188,7 +190,9 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "<td>";
    createsel_childs("new_page_childs", $new_page_childs);
    echo "</td>";
-   echo "<td>&nbsp;</td>";
+   echo "<td colspan=1>";
+   createsel_img("new_page_titelbild",  $new_page_titelbild);
+   echo "</td>";
    echo "</tr>";
    echo "<tr><td colspan=4>".$lang["page_ueberschrift"]."</td></tr>";
    echo "<tr><td colspan=4><input name=new_page_headline size=75 maxlength=127 value = \"" . htmlspecialchars(stripslashes($new_page_headline)) . "\"></td></tr>";
@@ -233,7 +237,7 @@ function pagedit($id){
       createsel_bar("edit_page_foo_bar",  $row["page_foo_bar"]);
       echo "</td>";
       echo "</tr>\n";
-      echo "<tr><td>".$lang["page_tpl"]."</td><td>".$lang["page_logo_klein"]."</td><td>".$lang["page_logo_gross"]."</td><td>".$lang["page_titelbild"]."</td></tr>";
+      echo "<tr><td>".$lang["page_tpl"]."</td><td>".$lang["page_logo_klein"]."</td><td>".$lang["page_logo_klein_inactive"]."</td><td>".$lang["page_logo_gross"]."</td></tr>";
       echo "<tr>";
       echo "<td>";
       createsel_tpl("edit_page_tpl",  $row["page_tpl"]);
@@ -242,24 +246,24 @@ function pagedit($id){
       createsel_img("edit_page_img_small",  $row["page_img_small"]);
       echo "</td>";
       echo "<td>";
+      createsel_img("edit_page_img_small_inactive",  $row["page_img_small_inactive"]);
+      echo "</td>";
+      echo "<td>";
       createsel_img("edit_page_img_big",  $row["page_img_big"]);
       echo "</td>";
-      echo "<td colspan=1>";
-      createsel_img("edit_page_titelbild",  $row["page_titelbild"]);
-      echo "</td>";
       echo "</tr>\n";
-      echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_childs"]."</td><td></td></tr>";
+      echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>&nbsp;</td><td>".$lang["page_childs"]."</td><td>".$lang["page_titelbild"]."</td></tr>";
       echo "<tr>";
       echo "<td>";
       createsel_ltt("edit_page_long_text_typ",$row["page_long_text_typ"]);
       echo "</td>";
-      echo "<td>";
-      createsel_author("edit_page_author_id", $row["page_author_id"]);
+      echo "<td>&nbsp;";
       echo "</td>";
       echo "<td>";
       createsel_childs("edit_page_childs", $row["page_childs"]);
       echo "</td>";
       echo "<td>";
+      createsel_img("edit_page_titelbild",  $row["page_titelbild"]);
       echo "</td>";
       echo "</tr>\n";
       echo "<tr><td colspan=4>&nbsp;</td></tr><tr><td colspan=4>&nbsp;</td></tr>\n";

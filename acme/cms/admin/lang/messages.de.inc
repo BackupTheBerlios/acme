@@ -2,6 +2,10 @@
 $lang["messages_verwaltung"]="Nachrichten";
 $lang["messages_neu"]="neu";
 $lang["messages_topic"]="Betreff";
+$lang["messages_status"]="Status";
+$lang["messages_answer"]="antworten";
+$lang["messages_anwsertopic"]="antw:";
+$lang["messages_anwsermsg"]="--------";
 $lang["messages_bearbeiten"]="bearbeiten";
 $lang["messages_loeschen"]="löschen";
 $lang["messages_status_neu"]="neu";

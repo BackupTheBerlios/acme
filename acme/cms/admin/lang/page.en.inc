@@ -1,6 +1,7 @@
 <?php
 $lang["page_verwaltung"]="pages";
-$lang["page_logo_klein"]="small page icon";
+$lang["page_logo_klein"]="small page icon (nav active)";
+$lang["page_logo_klein_inactive"]="small page icon (nav inactive)";
 $lang["page_logo_gross"]="large page icon";
 $lang["page_bar_top"]="top bar";
 $lang["page_bar_right"]="right bar";

@@ -8,7 +8,11 @@ switch($action){
 	case "messages_edit":
       messages_edit($messages_id, $edit_messages_topic, $edit_messages_message, $edit_messages_status);
       break;
-
+      
+	case "messages_answer":
+      messages_answer($messages_id);
+      break;
+      
 	case "messages_update":
       messages_update($messages_id, $edit_messages_status);
       messages_browse($status);
@@ -55,10 +59,11 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
            "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
-           "<tr><td>".$lang["messages_fuser"]. " ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
-           "<tr><td>". htmlspecialchars($acme_messages->topic) . "</td></tr>".
+           "<tr><td>".$lang["messages_fuser"]. ": ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
+           "<tr><td>".$lang["messages_topic"]. ": ". htmlspecialchars($acme_messages->topic) . "</td></tr>".
            "<tr><td>". htmlspecialchars($acme_messages->message) . "</td>";
-      if ($acme_messages->status == "P" || $acme_messages->status == "N"){     
+      if ($acme_messages->status == "P" || $acme_messages->status == "N"){
+         echo "<tr><td>". $lang["messages_status"]."</td></tr>";
          echo "<tr><td><input type=radio name=edit_messages_status value=P checked>".$lang["messages_status_inbearb"]."</td></tr>";      	
          echo "<tr><td><input type=radio name=edit_messages_status value=F>".$lang["messages_status_abgeschl"]."</td></tr>";
       }
@@ -66,10 +71,36 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
       echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
            "</table>".
            "</form>";
+      echo "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_answer&messages_id=" . $acme_messages->id . "\"  method=POST>".           
+           "<input type=submit name=add value=".$lang["messages_answer"].">".
+           "</form>";           
       mysql_free_result($result);
    }
    else{echo $lang["messages_notfound"];}
 }
+
+function messages_answer($messages_id){
+
+   global $conf, $lang;
+
+   $result = dbquery("select * from acme_messages where id=$messages_id");
+   if ($result)  {
+      $acme_messages = mysql_fetch_object($result);
+      echo "<h1>".$lang["messages_answer"]."</h1>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_insert&messages_id=" . $acme_messages->id . "\"  method=POST>".
+           "<table class=\"reda_td\">".
+        "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . $lang["messages_anwsertopic"] . " " .  htmlspecialchars(stripslashes($acme_messages->topic)) . "\"></td></tr>".
+        "<tr><td>".$lang["messages_text"]."</td></tr>".
+        "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . $lang["messages_anwsermsg"] . htmlspecialchars(stripslashes($acme_messages->message)) . "</textarea></td>";
+      echo "<tr><td><input type=hidden name=new_messages_tuser size=70 maxlength=128 value=\"" .$acme_messages->fuser . "\"></td></tr>";
+      echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
+           "</table>".
+           "</form>";
+      mysql_free_result($result);
+   }
+   else{echo $lang["messages_notfound"];}
+}
+
 
 function messages_update($messages_id, $messages_status){
    global $conf, $lang;
@@ -156,9 +187,10 @@ function messages_browse($status) {
 
    echo "<table class=\"reda_td\">\n\n";
    
-   if ($status == "S"){echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_tuser"]."</font></td><td width=\"30\"> </td></tr>\n";}
-   else{echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";}
-   echo "<tr><td><br><br></td></tr>\n";
+   if ($status == "S"){echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_tuser"]."</font></td><td>".$lang["messages_status"]."</td><td width=\"30\"> </td></tr>\n";
+      echo "<tr><td colspan=\"5\"><hr></tr>\n";}
+   else{echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";
+   echo "<tr><td colspan=\"4\"><hr></tr>\n";}
 
    if ($status == "N"){
    while ($row = mysql_fetch_object($nresult)) {
@@ -206,10 +238,15 @@ function messages_browse($status) {
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->tuser) ."</td>";
       echo "<td>";
+      if ($row->status == "N"){echo $lang["messages_status_neu"];}
+      if ($row->status == "P"){echo $lang["messages_status_inbearb"];}
+      if ($row->status == "F"){echo $lang["messages_status_abgeschl"];}
+      echo "</td>";
+      echo "<td>";
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
-     echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
+     echo "<tr><td colspan=\"5\"><hr></td></tr>\n";
    }
    }
 
