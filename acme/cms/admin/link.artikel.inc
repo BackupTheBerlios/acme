@@ -2,7 +2,7 @@
 
 include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
 
-echo "<form action=\"".$conf["admurl"]."/link.php?modul=artikel\" method=\"post\">";
+echo "<form action=\"".$conf["indexbase"]."/link.php?modul=artikel\" method=\"post\">";
 echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
 echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
 createsel_pagenCAs("page_id", $page_id); 

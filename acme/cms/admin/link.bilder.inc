@@ -1,10 +1,10 @@
 <?php
 include($conf["admbase"] . "/lang/bilder." . $conf["lang"] . ".inc");
-
+echo "<form action=\"".$conf["indexbase"]."/link.php?modul=bilder\" method=\"post\">";
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>";
 $result = dbquery("select * from acme_bilder_typs order by img_typ_name");
-echo "<select size = \"1\" name=\"img_typ\">";
+echo "<select size = \"1\" name=\"img_typ_id\">";
 if (!isset($img_typ)){echo "<option value=\"\" selected></option>";}
 if ( mysql_num_rows($result) > 0 )   {
    while ( $row = mysql_fetch_object($result)) {
@@ -16,7 +16,7 @@ if ( mysql_num_rows($result) > 0 )   {
    mysql_free_result($allgroups);
 }
 echo "</select>";
-echo "</td></tr></table>";
+echo "</td></tr></table></form>";
 
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_thumb"]."</td><td>".$lang["bilder_link"]."</td></tr>";

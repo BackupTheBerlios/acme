@@ -12,13 +12,14 @@ if( !$included["config.inc"] )
    
    $conf["htdocs"]		= "/var/www";
    $conf["domain"]    	= "http://www.doerrstadt.org";
-   $conf["indexbase"] 	= "/acme_dev";
-   $conf["cmsbase"]  	= $conf["htdocs"] . $conf["indexbase"] . "/cms";
+   $conf["subdir"] 	    = "/acme_dev";
+   $conf["indexbase"]   = $conf["domain"] . $conf["subdir"];
+   $conf["cmsbase"]  	= $conf["htdocs"] . $conf["subdir"] . "/cms";
    $conf["admbase"] 	= $conf["cmsbase"] . "/admin";
-   $conf["cmsurl"]    	= $conf["domain"]. $conf["indexbase"]  . "/cms";
+   $conf["cmsurl"]    	= $conf["domain"]. $conf["subdir"]  . "/cms";
    $conf["admurl"]      = $conf["cmsurl"] . "/admin";
    
-   $conf["indexname"]    = $conf["indexbase"]. "/index/";
+   $conf["indexname"]    = $conf["subdir"]. "/index/";
    $conf["templates"]    = $conf["cmsbase"]."/tpl/";
    $conf["images"]       = $conf["cmsurl"]."/bilder/";
    $conf["images_admin"] = $conf["images"] . "admin/"; 
