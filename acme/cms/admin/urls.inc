@@ -15,7 +15,8 @@ switch($action){
        url_typ_new($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_id, $new_url_typ_tpl, $new_url_typ_img_small,  $new_url_typ_img_big, $new_url_typ_left_bar, $new_url_typ_right_bar, $new_url_typ_topbar, $new_url_typ_foo_bar);
        break;
    case "add_url":
-       if (count($new_url_typ) == 0){echo $lang["urls_eintrag_urlerror"];
+       if (count($new_url_typ) == 0){
+          echo $lang["urls_eintrag_urlerror"];
        	  url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
        }
        else {
@@ -113,11 +114,15 @@ function url_typ_update($edit_url_typ_id, $edit_url_typ_name, $edit_url_typ_text
                 " url_typ_parent_id = '". $edit_url_typ_parent_id . "'".
                 " WHERE url_typ_id = '". $edit_url_typ_id . "'";
    $my_result = dbquery($Statement);
-   if ($my_result) {echo $lang["urls_update_erfolgreich"];}
-  else             {echo $lang["urls_update_fehlgeschlagen"];}
+   if ($my_result) {
+   	  echo $lang["urls_update_erfolgreich"];
+   }
+   else {
+   	  echo $lang["urls_update_fehlgeschlagen"];
+   }
 }
   
-function url_delete($delete_id){
+function url_delete($delete_id) {
    global $conf, $lang;
    $my_result = dbquery("delete from acme_url where url_id = '". $delete_id . "'");
    if ($my_result) {echo $lang["urls_eintrag_delete_erfolgreich"];}
@@ -131,16 +136,16 @@ function url_typ_delete($delete_id){
    else            {echo $lang["urls_delete_fehlgeschlagen"];}
 }
    
-function url_browse(){
+function url_browse() {
    global $conf, $lang;
 
-   echo "<h1>$lang["urls_verwaltung"]</h1>\n";
+   echo "<h1>".$lang["urls_verwaltung"]."</h1>\n";
    if (checkgroupcreate($conf["author_groups"], "urls") == 1 ){
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url_typ\">".$lang["urls_anlegen"]."</a><br>\n";
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url\">".$lang["urls_eintrag_anlegen"]."</a>\n";
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<th><tr><td>".$lang["urls_name"]."</td><td>".$lang["urls_counter"]."</td></tr><td> </td><td> </td>\n";
+   echo "<th><tr><td>".$lang["urls_titel"]."</td><td>".$lang["urls_counter"]."</td></tr><td> </td><td> </td>\n";
    writeurltypchilds($parent,$h_level);
    echo "</table>";
 }      
