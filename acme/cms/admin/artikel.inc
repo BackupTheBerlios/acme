@@ -455,7 +455,7 @@ function artikel_browse($page_id, $author_id){
             $artikelpage = explode(":", $row->artikel_page);
       	    $artikelpage = $artikelpage[1];
       	    echo "<td>". $row->artikel_id . "</td>";
-            echo "<td><a href=\"" . $conf["indexname"] . "?page=artikel&id=". $artikelpage ."&aid=".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."</a></td>";
+            echo "<td><a href=\"" . $conf["indexname"] . "/artikel/".$artikelpage ."/".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."</a></td>";
  		    echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
 		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
             echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
