@@ -16,6 +16,7 @@ if ($page_id <> ""){
    echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
    $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
    if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
+   if ($user_id <> ""){ $Statement .= " and artikel_user_id = '" . $user_id . "'";}
    $Statement .= " order by artikel_publish_date DESC";
    $result = dbquery($Statement);
    if ( mysql_num_rows($result) > 0 ){
