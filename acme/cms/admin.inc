@@ -1,15 +1,13 @@
 <?php
-include($conf["cmsbase"]  . "/debuglib.inc");
+include($conf["cmsbase"] . "/debuglib.inc");
 include($conf["cmsbase"] . "/ets.inc");
 include($conf["cmsbase"] . "/fkt_createsel.inc");
 include($conf["cmsbase"] . "/fkt_groups.inc");
-include($conf["cmsbase"]  . "/fkt_db.inc");
-include($conf["cmsbase"]  . "/fkt_etc.inc");
-include($conf["cmsbase"]  . "/fkt_rte.inc");
-include($conf["cmsbase"]  . "/fkt_date." . $conf["lang"] . ".inc");
+include($conf["cmsbase"] . "/fkt_db.inc");
+include($conf["cmsbase"] . "/fkt_etc.inc");
+include($conf["cmsbase"] . "/fkt_rte.inc");
+include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
 dbconnect();
-
-
 
 $conf["admp"] = "acme-admin.php?";
 
