@@ -143,7 +143,14 @@ function messages_browse($status) {
       echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=F\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>\n";
    }         
    echo "<td></td></tr>\n";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["messages_fuser"]."</td><td width=\"30\"> </td></tr>\n";
+   echo "</table>\n";
+
+   echo "<br>\n";
+
+   echo "<table class=\"reda_td\">\n\n";
+   echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";
+   echo "<tr><td><br></td></tr>\n";
+
    if ($status == "N"){
    while ($row = mysql_fetch_object($nresult)) {
       echo "<tr>";
@@ -154,7 +161,8 @@ function messages_browse($status) {
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
-   }
+     echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
+    }
    }
    if ($status == "P"){
    while ($row = mysql_fetch_object($presult)) {
@@ -166,6 +174,7 @@ function messages_browse($status) {
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
+     echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
    }
    }	
    if ($status == "F"){   	
@@ -178,8 +187,10 @@ function messages_browse($status) {
       echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
+     echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
    }
    }
+
    mysql_free_result($nresult);
    mysql_free_result($presult);
    mysql_free_result($fresult);
