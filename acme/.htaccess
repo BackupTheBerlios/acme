@@ -4,7 +4,7 @@ allow from all
 </FilesMatch>
 RewriteEngine On
 RewriteBase /medinet
-RewriteRule ^page/([0-9]+)$                        /medinet/index.php?page=page&pageid=$1                    [QSA,L]
+RewriteRule ^page/([0-9]+)$                        /medinet/index.php?page=page&pageid=$1&pagestart=0                    [QSA,L]
 RewriteRule ^page/([0-9]+)/([0-9]+)$               /medinet/index.php?page=page&pageid=$1&pagestart=$2                    [QSA,L]
 RewriteRule ^artikel/([0-9]+)$                     /medinet/index.php?page=artikel&artikel_id=$1&artikel_part=1                    [QSA,L]
 RewriteRule ^artikel/([0-9]+)/([0-9]+)$            /medinet/index.php?page=artikel&page_id=$1&artikel_id=$2&artikel_part=1                    [QSA,L]
