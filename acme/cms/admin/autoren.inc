@@ -1,6 +1,6 @@
 <?php
 include("lang/autoren." . $conf["lang"] . ".inc");
-
+$author_img, $author_url,$author_email, $author_text
 switch ($action)  {
    case "edit":
       authoredit($edit_author_id);
