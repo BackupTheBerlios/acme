@@ -125,18 +125,25 @@ function messages_browse($status) {
    $nresult = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["user_id"]. " order by created DESC");
    $presult = dbquery("select * from acme_messages where status = 'P' and tuser = " . $conf["user_id"]. " order by created DESC");
    $fresult = dbquery("select * from acme_messages where status = 'F' and tuser = " . $conf["user_id"]. " order by created DESC");
-
    echo "<table class=\"reda_td\">";
    echo "<tr>";
-   echo "<td class=\"messages_subnav\"><a href=\"" . $conf["admp"] . "&section=messages&status=N\" class=\"messagelink\">".$lang["messages_status_neu"]."(". mysql_num_rows($nresult) .")</a></td>";
-   echo "<td class=\"messages_subnav\"><a href=\"" . $conf["admp"] . "&section=messages&status=P\" class=\"messagelink\">".$lang["messages_status_inbearb"]."(". mysql_num_rows($presult) .")</a></td>";
-   echo "<td class=\"messages_subnav\"><a href=\"" . $conf["admp"] . "&section=messages&status=F\" class=\"messagelink\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>";
-   echo "</tr>";
-   echo "<tr><td colspan=\"3\"><br></td></tr>";
-   echo "</table>";
-
-   echo "<table class=\"reda_td\">";
-   echo "<tr><td><strong>".$lang["messages_topic"]."</strong></td><td><strong>".$lang["messages_created"]."</strong></td><td><strong>".$lang["messages_fuser"]."</strong></td><td width=\"30\"> </td></tr>";
+   if ($status == "N"){
+      echo "<td class=\"message_nav_td_active\"><a class=\"message_nav_link_active\" href=\"" . $conf["admp"] . "&section=messages&status=N\">".$lang["messages_status_neu"]."(". mysql_num_rows($nresult) .")</a></td>";
+   }else{
+   	  echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=N\">".$lang["messages_status_neu"]."(". mysql_num_rows($nresult) .")</a></td>";
+   }	  
+   if ($status == "P"){   
+      echo "<td class=\"message_nav_td_active\"><a class=\"message_nav_link_active\" href=\"" . $conf["admp"] . "&section=messages&status=P\">".$lang["messages_status_inbearb"]."(". mysql_num_rows($presult) .")</a></td>";
+   }else{      
+      echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=P\">".$lang["messages_status_inbearb"]."(". mysql_num_rows($presult) .")</a></td>";
+   }   
+   if ($status == "F"){            
+      echo "<td class=\"message_nav_td_active\"><a class=\"message_nav_link_active\" href=\"" . $conf["admp"] . "&section=messages&status=F\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>";
+   }else{      
+      echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=F\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>";
+   }         
+   echo "<td></td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["messages_fuser"]."</td><td width=\"30\"> </td></tr>";
    if ($status == "N"){
    while ($row = mysql_fetch_object($nresult)) {
       echo "<tr>";
