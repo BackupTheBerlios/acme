@@ -14,9 +14,7 @@
       $page = $conf["home_page_typ"];
       $id   = $conf["home_page"];
    }
-   if ($page <> "admin"){
-      include($conf["cms"] . "/page.inc");
-   }
+   include($conf["cms"] . "/page.inc");
    if (checkmodul($page)) {
       if ($page <> "page"){
          include($conf["cms"] . "/" . $page . ".inc");
