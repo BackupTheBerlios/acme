@@ -125,7 +125,7 @@ function glossar_browse() {
 
    echo "<h1>".$lang["glossar_verwaltung"]."</h1>";
    if (checkgroupcreate($conf["user_groups"], "glossar") == 1){
-      echo "<a href=\"" . $conf["admp"] . "&section=glossar&action=glossar_new\">Neuen Glossareintrag anlegen</a>";
+      echo "<a href=\"" . $conf["admp"] . "&section=glossar&action=glossar_new\">".$lang["glossar_neu"]."</a>";
    }
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["glossar_titel"]."</td><td width=\"30\"> </td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
