@@ -21,7 +21,7 @@ switch($action){
               "</tr>".
               "<tr><td colspan=\"3\">".$lang["blocks_inhalt"]."</td></tr>".
               "<tr><td colspan=\"3\"><textarea name=edit_block_content wrap=virtual rows=4 cols=60>" . htmlspecialchars($row->block_content) . "</textarea></td></tr>".
-              "<tr><td colspan=\"3\" align=\"right\"><input type=submit name=edit value=".$lang["blocks_speichern"]."</td></tr>".
+              "<tr><td colspan=\"3\" align=\"right\"><input type=submit name=edit value=".$lang["blocks_speichern"]."></td></tr>".
               "</table>".
               "</form>";
          mysql_free_result($result);

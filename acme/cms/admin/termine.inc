@@ -99,11 +99,11 @@ function termin_data_edit($termin_data_id){
           echo "</td></tr>".                 
                "<tr><td>".$lang["termin_eintrag_veranstalter"]."</td></tr>".
                "<tr><td><input name=edit_termin_data_Veranstalter size=70 maxlength=128 value=\"" . htmlspecialchars($acme_termin_data->termin_data_Veranstalter) . "\"></td></tr>".
-               "<tr><td>$lang["termin_eintrag_ort"]</td></tr>".
+               "<tr><td>".$lang["termin_eintrag_ort"]."</td></tr>".
                "<tr><td><input name=edit_termin_data_Ort size=70 maxlength=128 value=\"" . htmlspecialchars($acme_termin_data->termin_data_Ort) . "\"></td></tr>".
-               "<tr><td>$lang["termin_eintrag_url"]</td></tr>".
+               "<tr><td>".$lang["termin_eintrag_url"]."</td></tr>".
                "<tr><td><input name=edit_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars($acme_termin_data->termin_data_URL) . "\"></td></tr>".
-               "<tr><td>$lang["termin_eintrag_beschreibung"]</td></tr>".
+               "<tr><td>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
                "<tr><td><textarea name=\"edit_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($acme_termin_data->termin_data_content) . "</textarea></td>".
                "<tr><td><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
                "</table>".
