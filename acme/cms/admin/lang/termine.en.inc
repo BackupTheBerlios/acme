@@ -20,6 +20,7 @@ $lang["termin_bearbeiten"]="edit dates";
 $lang["termin_parent"]="parent date";
 $lang["termin_tpl"]="template";
 $lang["termin_logo_klein"]="small icon";
+$lang["termin_logo_klein_inactive"]="small icon (inactive)";
 $lang["termin_logo_gross"]="large icon";
 $lang["termin_bar_top"]="Seitenbereich oben";
 $lang["termin_bar_right"]="Seitenbereich rechts";
