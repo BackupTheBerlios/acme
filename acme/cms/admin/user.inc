@@ -1,4 +1,6 @@
 <?php
+include($conf["admbase"] . "/lang/user." . $conf["lang"] . ".inc");
+
 switch($action)
    {
    case "edit":
@@ -137,7 +139,7 @@ function usernew(){
       echo "</td></tr>";
    }
    echo "<tr><td>".$lang["user_aktiv"]."</td><td><input type=radio name=new_user_active value=\"Y\" checked>Y</input><input type=radio name=new_user_active value=\"N\">N</input></td></tr>";
-   echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"\".$lang["user_speichern"].></td></tr>";
+   echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"".$lang["user_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";
    echo "</table";
