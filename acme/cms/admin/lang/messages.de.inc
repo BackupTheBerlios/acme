@@ -9,6 +9,7 @@ $lang["messages_status_inbearb"]="in bearbeitung";
 $lang["messages_status_abgeschl"]="erledigt";
 $lang["messages_speichern"]="speichern";
 $lang["messages_notfound"]="nachricht nicht gefunden";
+$lang["messages_tusernotfound"]="Empfänger fehlt";
 $lang["messages_insert_erfolgreich"]="Nachricht erfolgreich eingefügt"; // ????
 $lang["messages_insert_fehlgeschlagen"]="Nachricht konnte nicht eingefügt werden"; // ???
 $lang["messages_update_erfolgreich"]="Nachricht erfolgreich geändert"; // ????

@@ -17,8 +17,14 @@ switch($action){
       break;
 
    case "messages_insert":
-      messages_insert($new_messages_topic, $new_messages_message, $new_messages_tuser);
-      messages_browse();
+      if (getuserbyid($new_messages_tuser) == ""){
+      	echo $lang["messages_tusernotfound"];
+      	messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser);
+      }
+      else{ 
+         messages_insert($new_messages_topic, $new_messages_message, $new_messages_tuser);
+         messages_browse();
+      }
 
       break;
 
@@ -100,10 +106,12 @@ function messages_insert($topic, $message, $tuser){
    global $conf, $lang;
 
    $Statement = "INSERT INTO acme_messages SET ".
-                "topic = '". $messages_titel . "', ".
-                "message = '". $messages_img . "', ".                
-                "tuser = ". $messages_tpl . ", ".  
+                "topic = '". $topic . "', ".
+                "message = '". $message . "', ".
+                "status = 'N', ".                
+                "tuser = ". $tuser . ", ".  
                 "fuser = ". $conf["user_id"];
+                echo $Statement;
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["messages_insert_erfolgreich"];}
    else{echo $lang["messages_insert_fehlgeschlagen"];};
