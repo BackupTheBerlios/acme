@@ -121,7 +121,7 @@ function messages_browse() {
    if ( mysql_num_rows($result) > 0 )           {
    echo "<table class=\"reda_td\">";
    echo "<tr><td colspan = 4>".$lang["messages_status_neu"]."(". mysql_num_rows($result) .")</td></tr>";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["messages_fuser"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
          echo "<td>!".$row->topic."</td>";
@@ -141,7 +141,7 @@ function messages_browse() {
    if ( mysql_num_rows($result) > 0 )           {
    echo "<table class=\"reda_td\">";
    echo "<tr><td colspan = 4>".$lang["messages_status_inbearb"]."(". mysql_num_rows($result) .")</td></tr>";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["messages_fuser"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
          echo "<td>!".$row->topic."</td>";
@@ -161,7 +161,7 @@ function messages_browse() {
    if ( mysql_num_rows($result) > 0 )           {
    echo "<table class=\"reda_td\">";
    echo "<tr><td colspan = 4>".$lang["messages_status_abgeschl"]."(". mysql_num_rows($result) .")</td></tr>";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td>".$lang["messages_created"]."</td><td>".$lang["messages_fuser"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
          echo "<td>!".$row->topic."</td>";
