@@ -223,33 +223,39 @@ function getimagebyname($name, $style,$page_tpl){
    $result = dbquery($getpic);
    if(mysql_affected_rows() == 1)         {
       $row = mysql_fetch_object($result);
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-         list($width, $height, $type, $attr) = getimagesize($conf["images"] . "small_".$row->img_real_name);
-      } else {
-         list($width, $height, $type, $attr) = getimagesize($conf["images"] . $row->img_real_name);      
+      if (file_exists($conf["images"] . $row->img_real_name)){
+         // vorsichtshalber wegen altdaten
+         if (file_exists($conf["images"] . "small_".$row->img_real_name)){
+            list($width, $height, $type, $attr) = getimagesize($conf["images"] . "small_".$row->img_real_name);
+         } else {
+            list($width, $height, $type, $attr) = getimagesize($conf["images"] . $row->img_real_name);      
+         }
+         $data->img_width  = $width;
+         $data->img_height = $height;
+         // vorsichtshalber wegen altdaten
+         if (file_exists($conf["images"] . "thumb_".$row->img_real_name)){
+            $data->img_small_url    = $conf["images"] . "thumb_" . $row->img_real_name;
+         }else{
+            $data->img_small_url    = $conf["images"] . $row->img_real_name;
+         }
+         // vorsichtshalber wegen altdaten
+         if (file_exists($conf["images"] . "small_".$row->img_real_name)){
+            $data->img_small_url    = $conf["images"] . "small_" . $row->img_real_name;
+         }else{
+            $data->img_small_url    = $conf["images"] . $row->img_real_name;
+         }  
+         $data->img_big_url      = $conf["images"] . $row->img_real_name;
+         $data->img_name   = $row->img_name;
+         $data->img_desc   = $row->img_description;
+
+         if ($style==""){$style="c";}
+         $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
+         return " " . sprintt($data, $tplfile) . " ";
       }
-      $data->img_width  = $width;
-      $data->img_height = $height;
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "thumb_".$row->img_real_name)){
-         $data->img_small_url    = $conf["images"] . "thumb_" . $row->img_real_name;
-      }else{
-         $data->img_small_url    = $conf["images"] . $row->img_real_name;
-      }
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-         $data->img_small_url    = $conf["images"] . "small_" . $row->img_real_name;
-      }else{
-         $data->img_small_url    = $conf["images"] . $row->img_real_name;
-      }  
-      $data->img_big_url      = $conf["images"] . $row->img_real_name;
-      $data->img_name   = $row->img_name;
-      $data->img_desc   = $row->img_description;
-   }
-   if ($style==""){$style="c";}
-   $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
-   return " " . sprintt($data, $tplfile) . " ";
+      else {
+      	 return " ";
+      }	
+   }   
 
    mysql_free_result($result);
 }

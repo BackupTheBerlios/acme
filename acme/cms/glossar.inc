@@ -82,7 +82,7 @@ function renderglossar($titel, $part){
    $data->glossar_parts[16]->url   = $conf["indexname"] . "glossar//o";
    $data->glossar_parts[16]->part  = "O";
    $data->glossar_parts[17]->url   = $conf["indexname"] . "glossar//ö";
-   $data->glossar_parts[17]->part  = "&OumL";
+   $data->glossar_parts[17]->part  = "&Ouml;";
    $data->glossar_parts[18]->url   = $conf["indexname"] . "glossar//p";
    $data->glossar_parts[18]->part  = "P";
    $data->glossar_parts[19]->url   = $conf["indexname"] . "glossar//q";
