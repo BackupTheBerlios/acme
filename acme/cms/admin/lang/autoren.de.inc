@@ -21,6 +21,7 @@ $lang["autoren_pw_error"]="Passwörter fehlen oder sind verschieden";
 $lang["autoren_name_fehlt"]="Name fehlt";
 $lang["autoren_nn_fehlt"]="Vorname fehlt";
 $lang["autoren_vn_fehlt"]="Nachname fehlt";
+$lang["autoren_chpasswd"]="Passwort ändern";
 $lang["autoren_insert_erfolgreich"]="Autor erfolgreich eingef&uuml;gt"; // ????
 $lang["autoren_insert_fehlgeschlagen"]="Fehler: Autor konnte nicht eingef&uuml;gt werden"; // ???
 $lang["autoren_update_erfolgreich"]="Autor erfolgreich ge&auml;ndert"; // ????
