@@ -14,27 +14,27 @@ switch($action)
    case "add":
       $result = useradd($new_user_name, $new_user_groups, $new_user_passwd, $new_user_active);
       if ($result){
-         echo "insert erfolgreich";
+         echo $lang["user_insert_erfolgreich"];
          userbrowse();
       }
       else{
-      echo "insert misslungen";
+      echo $lang["user_insert_fehlgeschlagen"];
       // useradd($admp, $user_groups, $new_user_name, $new_user_groups, $new_user_passwd, $new_user_active, $new_allow_module, $new_allow_artikel, $new_allow_glossar, $new_allow_pics, $new_allow_bars, $new_allow_blocks, $new_allow_user, $new_allow_groups, $new_allow_prefs);
       }
       break;
 
 	case "update":
       $result = userupdate($edit_user_id, $edit_user_name, $edit_user_groups, $edit_user_passwd, $edit_user_active);
-      if ($result){echo "update erfolgreich";}
-      else{echo "update misslungen";}
+      if ($result){echo $lang["user_update_erfolgreich"];}
+      else{echo $lang["user_update_fehlgeschlagen"];}
       userbrowse();
       
       break;
       
 	case "delete":
       $result = userdelete($delete_id);
-      if ($result){echo "delele erfolgreich";}
-      else{echo "delete misslungen";}
+      if ($result){echo $lang["user_delete_erfolgreich"];}
+      else{echo $lang["user_delete_fehlgeschlagen"];}
       userbrowse();
       
       break;
@@ -81,15 +81,15 @@ function userupdate($edit_user_id, $edit_user_name, $edit_user_groups, $edit_use
 function userbrowse(){
    global $conf, $lang;
    
-   echo "<h1>User managemant</h1>\n";
+   echo "<h1>".$lang["user_verwaltung"]."</h1>\n";
 	if (checkgroupcreate($conf["user_groups"], "user") == 1){ 
-      echo "<a href=\"" . $conf["admp"] . "&action=new&section=user\">Neuen User anlegen</a>\n";
+      echo "<a href=\"" . $conf["admp"] . "&action=new&section=user\">".$lang["user_neu"]."</a>\n";
    }
    echo "<table class=\"reda_td\">\n";
    echo "<tr>";
-   echo "<td>Username</td>";
-   echo "<td>Group</td>";
-   echo "<td>Active</td>";
+   echo "<td>".$lang["user_name"]."</td>";
+   echo "<td>".$lang["user_gruppe"]."</td>";
+   echo "<td>".$lang["user_aktiv"]."</td>";
    echo "<td width=\"30\">&nbsp;</td>";
    echo "<td width=\"30\">&nbsp;</td>";
    echo "</tr>\n";
@@ -113,7 +113,7 @@ function userbrowse(){
                echo "<a href=\"" . $conf["admp"] . "&action=delete&section=user&delete_id=" . $row->user_id . "&delname=" . $row->user_name . "\"><img src=\"" . $conf["images_admin"] . "con_delete.png\" width=\"25\" height=\"25\"></a>";
             }
          }
-         else {echo "--you--";}
+         else {echo $lang["user_self"];}
          echo "</td>";
          echo "</tr>\n"; 
       }
@@ -125,19 +125,19 @@ function userbrowse(){
 function usernew(){
    global $conf, $lang;
    
-   echo "<h1>Add a new user</h1>";
+   echo "<h1>".$lang["user_neu"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=user\" method= \"POST\">";
    echo "<table class=\"reda_td\">";
-   echo "<tr><td>Username</td><td><input name=new_user_name size=10 maxlength=20></td></tr>";
-   echo "<tr><td>Password:</td><td><input name=new_user_passwd type=password size=8 maxlength=20></td></tr>";
+   echo "<tr><td>".$lang["user_name"]."</td><td><input name=new_user_name size=10 maxlength=20></td></tr>";
+   echo "<tr><td>".$lang["user_pass"]."</td><td><input name=new_user_passwd type=password size=8 maxlength=20></td></tr>";
    if (checkgroupcreate($conf["user_groups"], "user") == 1){
-      echo "<tr><td>Usergroup</td>";
+      echo "<tr><td>".$lang["user_gruppe"]."</td>";
       echo "<td>";
       createsel_groups("new_user_groups","null");
       echo "</td></tr>";
    }
-   echo "<tr><td>Active</td><td><input type=radio name=new_user_active value=\"Y\" checked>Y</input><input type=radio name=new_user_active value=\"N\">N</input></td></tr>";
-   echo "<tr><td colspan = \"2\"><input type=submit name=add value=add></td></tr>";
+   echo "<tr><td>".$lang["user_aktiv"]."</td><td><input type=radio name=new_user_active value=\"Y\" checked>Y</input><input type=radio name=new_user_active value=\"N\">N</input></td></tr>";
+   echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"\".$lang["user_speichern"].></td></tr>";
    echo "</table>";
    echo "</form>";
    echo "</table";
@@ -149,16 +149,16 @@ function useredit($edit_id){
    $result = dbquery("select * from acme_user where user_id='". $edit_id . "'");
    if ($result){
       $row = mysql_fetch_object($result);
-      echo "\n<h1>Edit User</h1>\n";
+      echo "\n<h1>".$lang["user_bearbeiten"]."</h1>\n";
       echo "<form action=\"" . $conf["admp"] . "&action=update&section=user&edit_user_id=" . $row->user_id . "\" method=\"POST\">\n";
       echo "<table class=\"reda_td\">\n";
-      echo "<tr><td>Username:</td><td><input name=edit_user_name value=\"" . $row->user_name . "\"></td></tr>\n";
-      echo "<tr><td>Password:</td><td><input type=password name=edit_user_passwd value=\"" . $row->user_passwd . "\"></td></tr>\n";
-      echo "<tr><td>Groups</td><td>\n";
+      echo "<tr><td>".$lang["user_name"]."</td><td><input name=edit_user_name value=\"" . $row->user_name . "\"></td></tr>\n";
+      echo "<tr><td>".$lang["user_pass"]."</td><td><input type=password name=edit_user_passwd value=\"" . $row->user_passwd . "\"></td></tr>\n";
+      echo "<tr><td>".$lang["user_gruppe"]."</td><td>\n";
       createsel_groups("edit_user_groups",$row->user_groups);
       echo "</td></tr>\n";
       if ($row->user_name != $conf["user_name"]){
-         echo "<tr><td>Active</td><td>";
+         echo "<tr><td>".$lang["user_aktiv"]."</td><td>";
          echo "<input type=radio name=edit_user_active value=\"Y\""; 
          if ($row->user_active == "Y" ) echo "checked";
          echo ">Y";
@@ -169,7 +169,7 @@ function useredit($edit_id){
       else {
          echo "<tr><td colspan = \"2\"><input type=hidden name=edit_user_active value=Y></td></tr>";
       }
-      echo "<tr><td><input type=submit name=my_edit_user value=Submit></td></tr>\n";
+      echo "<tr><td><input type=submit name=my_edit_user value=\"".$lang["user_speichern"]."\"></td></tr>\n";
       echo "</table>";
       echo "</form>";
       mysql_free_result($result);
