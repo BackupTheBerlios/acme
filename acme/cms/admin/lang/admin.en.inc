@@ -19,9 +19,9 @@ $lang["admin_messages"]="messages";
 $lang["admin_downloads"]="downloads";
 $lang["admin_bar"]="page bars";
 $lang["admin_news"]="news";
-$lang["admin_hilfe"]="Hilfe";
-$lang["admin_content"]="Inhalt";
-$lang["admin_layout"]="Aufbau";
-$lang["admin_admin"]="Optionen";
+$lang["admin_hilfe"]="help-wiki";
+$lang["admin_content"]="content";
+$lang["admin_layout"]="structure";
+$lang["admin_admin"]="options";
 $lang["admin_logout"]="logout";
 ?>
