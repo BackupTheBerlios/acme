@@ -29,7 +29,7 @@ include($conf["admbase"] . "/auth.inc");
 </head>
 <body>
 <?php
-echo "<form action=\"".$conf["admurl"]."/link.php\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
+echo "<form action=\"".$conf["indexbase"]."/link.php\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
 echo "<table>\n";
 echo "<tr><td>Modul</td><td>\n";
 echo "<select size = \"1\" name=\"modul\">\n";

@@ -1,5 +1,6 @@
 <?php
 include($conf["admbase"] . "/lang/bilder." . $conf["lang"] . ".inc");
+
 echo "<form action=\"".$conf["indexbase"]."/link.php?modul=bilder\" method=\"post\">";
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>";
@@ -16,7 +17,7 @@ if ( mysql_num_rows($result) > 0 )   {
    mysql_free_result($allgroups);
 }
 echo "</select>";
-echo "</td></tr></table></form>";
+echo "<input type=\"submit\" name = ok value=\"ok\"></td></tr></table></form>";
 
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_thumb"]."</td><td>".$lang["bilder_link"]."</td></tr>";
@@ -36,4 +37,10 @@ if ( mysql_num_rows($result) > 0 ){
    echo "</table>";
    mysql_free_result($result);
 }
+function count_img_from_typ($img_typ_id){
+   global $conf, $lang;
+   
+   $query = dbquery("select img_id from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
+   return mysql_num_rows($query);
+}     
 ?>
