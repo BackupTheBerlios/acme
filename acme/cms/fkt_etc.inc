@@ -52,7 +52,7 @@ function parse_bbcode($contblock, $page_tpl){
   // iurl's
   $contblock = eregi_replace("\[iurl=&quot;","[iurl=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
-  $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."urls//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // glossar
   $contblock = eregi_replace("\[glossar\]([^\[]+)\[/glossar\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   $contblock = eregi_replace("\[\[([^\[]+)\]\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
@@ -63,7 +63,7 @@ function parse_bbcode($contblock, $page_tpl){
   // artikellink
   $contblock = eregi_replace("\[artikel=&quot;","[artikel=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
-  $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
 
   return $contblock;
 
