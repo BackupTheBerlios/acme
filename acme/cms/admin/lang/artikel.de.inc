@@ -24,6 +24,7 @@ $lang["artikel_loeschen"]="Artikel l&ouml;schen";
 $lang["artikel_seite"]="Seite";
 $lang["artikel_neue_seite"]="Neue Seite";
 $lang["artikel_seite_fehlt"]="Seitenzuweisung fehlt";
+$lang["artikel_link"]="Link";
 $lang["artikel_ueberschrift1_fehlt"]="&Uuml;berschrift 1 fehlt";
 $lang["artikel_ueberschrift2_fehlt"]="&Uuml;berschrift 2 fehlt";
 $lang["artikel_kurztext_fehlt"]="Teaser fehlt";

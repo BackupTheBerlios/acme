@@ -24,6 +24,7 @@ $lang["artikel_loeschen"]="delete article";
 $lang["artikel_seite"]="page";
 $lang["artikel_neue_seite"]="new page";
 $lang["artikel_seite_fehlt"]="not assigned to a page yet";
+$lang["artikel_link"]="Link";
 $lang["artikel_ueberschrift1_fehlt"]="headline 1 is missing";
 $lang["artikel_ueberschrift2_fehlt"]="headline 2 is missing";
 $lang["artikel_kurztext_fehlt"]="teaser is missing";
