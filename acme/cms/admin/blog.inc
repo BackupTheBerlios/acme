@@ -246,7 +246,7 @@ function blog_browse() {
    global $conf, $lang;
 
    echo "<h1>".$lang["blog_verwaltung"]."</h1>";
-   if (checkgroupcreate($conf["user_groups"], "blog") == 1){
+   if (checkgroupcreate($conf["author_groups"], "blog") == 1){
       echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_new\">Neuen Blog anlegen</a>";
    }
    echo "<table class=\"reda_td\">";
@@ -257,17 +257,17 @@ function blog_browse() {
          echo "<tr>";
          echo "<td>".$row->blog_name."</td>";
          echo "<td>";
-         if (checkgroupcreate($conf["user_groups"], "artikel") == 1){ 
+         if (checkgroupcreate($conf["author_groups"], "artikel") == 1){ 
             echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_new&blog_id=" . $row->blog_id . "\"><img src=\"" . $conf["images_admin"] . "icon_nbe.png\" width=\"25\" height=\"25\"></a>";
          }   
          echo "</td>";         
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "artikel") == 1){ 
+         if (checkgroupmodify($conf["author_groups"], "artikel") == 1){ 
             echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_edit&blog_id=" . $row->blog_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "artikel") == 1){ 
+         if (checkgroupdelete($conf["author_groups"], "artikel") == 1){ 
             echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_delete&blog_id=" . $row->blog_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";

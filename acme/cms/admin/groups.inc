@@ -40,7 +40,7 @@ function groups_browse() {
    global $conf, $lang;
 
    echo "<h1>".$lang["groups_verwaltung"]."</h1>";
-	if (checkgroupcreate($conf["user_groups"], "groups") == 1){ 
+	if (checkgroupcreate($conf["author_groups"], "groups") == 1){ 
       echo "<a href=\"" . $conf["admp"] . "&section=groups&action=groups_new\">Neue Gruppe anlegen</a>";
    }
    echo "<table class=\"reda_td\">";
@@ -51,13 +51,13 @@ function groups_browse() {
          echo "<tr>";
          echo "<td>".$row->group_name."</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "groups") == 1){ 
+         if (checkgroupmodify($conf["author_groups"], "groups") == 1){ 
             echo "<a href=\"" . $conf["admp"] . "&section=groups&action=groups_edit&edit_id=" . $row->group_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (checkingroup($conf["user_groups"], $row->group_id) == 0){
-            if (checkgroupdelete($conf["user_groups"], "groups") == 1){ 
+         if (checkingroup($conf["author_groups"], $row->group_id) == 0){
+            if (checkgroupdelete($conf["author_groups"], "groups") == 1){ 
                echo "<a href=\"" . $conf["admp"] . "&section=groups&action=groups_delete&delete_id=" . $row->group_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
             }
          }   

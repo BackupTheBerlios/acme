@@ -63,7 +63,7 @@ function news_browse(){
         "</tr>".
         "</table>".
         "<form>";
-   if ( checkgroupcreate($conf["user_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_new\">Neuen Eintrag anlegen</a>";}
+   if ( checkgroupcreate($conf["author_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_new\">Neuen Eintrag anlegen</a>";}
    $news_result = dbquery("select * from acme_pages where page_news_rank <> 0 order by page_news_rank");
    if ( mysql_num_rows($news_result) > 0 )  {
       echo "<table class=\"reda_td\">";
@@ -77,10 +77,10 @@ function news_browse(){
           if ($news->page_news_rank == news_gethighest_rank($news->page_id)){echo "<td>&nbsp;</td>";}
           else{echo "<td><a href=\"" . $conf["admp"] . "&section=news&action=topic_move&topic_id=" . $news->page_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
           echo "<td>";
-          if ( checkgroupmodify($conf["user_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_edit&edit_id=" . $news->page_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
+          if ( checkgroupmodify($conf["author_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_edit&edit_id=" . $news->page_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
           echo "</td>".
                "<td>";
-          if ( checkgroupdelete($conf["user_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_delete&delete_id=" . $news->page_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
+          if ( checkgroupdelete($conf["author_groups"], "news") == 1){echo "<a href=\"" . $conf["admp"] . "&section=news&action=topic_delete&delete_id=" . $news->page_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
           echo "</td>".
                "</tr>";
           }

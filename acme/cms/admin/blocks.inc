@@ -110,7 +110,7 @@ function block_browse(){
    global $conf, $lang;
 
    echo "<h1>".$lang["blocks_verwaltung"]."</h1>";
-   if ( checkgroupcreate($conf["user_groups"], "blocks") == 1){
+   if ( checkgroupcreate($conf["author_groups"], "blocks") == 1){
       echo "<a href=\"" . $conf["admp"] . "&section=blocks&action=new\">Neuen Block anlegen</a>";
    }
    echo "<table class=\"reda_td\">";
@@ -125,12 +125,12 @@ function block_browse(){
          if ($row->block_type == "H"){echo "<td>HTML</td>";}
          if ($row->block_type == "P"){echo "<td>PHP</td>";}
          echo "<td>";
-         if ( checkgroupmodify($conf["user_groups"], "blocks") == 1){
+         if ( checkgroupmodify($conf["author_groups"], "blocks") == 1){
             echo "<a href=" . $conf["admp"] . "&section=blocks&action=edit&edit_id=" . $row->block_id . "><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if ( checkgroupdelete($conf["user_groups"], "blocks") == 1){
+         if ( checkgroupdelete($conf["author_groups"], "blocks") == 1){
             echo "<a href=" . $conf["admp"] . "&section=blocks&action=delete&delete_id=" . $row->block_id ."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";                 

@@ -16,7 +16,7 @@ echo "</table>\n";
 echo "</form>\n";
 echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
 if ($page_id <> ""){
-   echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_user"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
+   echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
    $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
    if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
    if ($user_id <> ""){ $Statement .= " and artikel_user_id = '" . $user_id . "'";}
@@ -31,7 +31,6 @@ if ($page_id <> ""){
  		 echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
 		 echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
          echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
-         echo "<td>". getuserbyid($row->artikel_user_id) ."</td>";                  
          echo "<td>". $row->artikel_counter."</td>";
          echo "<td>[artikel=\"". $row->artikel_id."\"]".$row->artikel_headline."[/artikel]</td>";
          echo "</tr>\n";

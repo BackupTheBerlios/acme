@@ -84,7 +84,7 @@ function nav_edit($edit_id){
    if ($nav_result) {
       $acme_nav = mysql_fetch_object($nav_result);
       echo "<h1>".$lang["navigation_bearbeiten"]."</h1>";
-      if ( checkgroupcreate($conf["user_groups"], "navigation") == 1){
+      if ( checkgroupcreate($conf["author_groups"], "navigation") == 1){
          echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_new&nav_id=" . $acme_nav->nav_id . "\">neuer Eintrag</a>";
       }
       echo "<form action=\"" . $conf["admp"] . "&section=navigation&action=nav_update\"  method=\"POST\">";
@@ -107,10 +107,10 @@ function nav_edit($edit_id){
             if ($acme_nav_topics->nav_topic_rank == nav_gethighest_topic($acme_nav_topics->nav_id)){echo "<td>&nbsp;</td>";}
             else{echo "<td><a href=\"" . $conf["admp"] . "&section=navigation&action=topic_move&nav_id=" . $acme_nav_topics->nav_id . "&topic_id=" . $acme_nav_topics->nav_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
             echo "<td>";
-            if ( checkgroupmodify($conf["user_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_edit&nav_id=" . $acme_nav_topics->nav_id . "&edit_id=" .  $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
+            if ( checkgroupmodify($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_edit&nav_id=" . $acme_nav_topics->nav_id . "&edit_id=" .  $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
             echo "</td>";
             echo "<td>";
-            if ( checkgroupdelete($conf["user_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_delete&nav_id=" . $acme_nav_topics->nav_id . "&delete_id=" . $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
+            if ( checkgroupdelete($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_delete&nav_id=" . $acme_nav_topics->nav_id . "&delete_id=" . $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
             echo "</td>";
             echo "</tr>";
          }

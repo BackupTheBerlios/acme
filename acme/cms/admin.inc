@@ -21,7 +21,7 @@ include($conf["admbase"] . "/auth.inc");
 
 include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
 
-if ($conf["user_id"] <> 0) {
+if ($conf["author_id"] <> 0) {
 
 ?>
 
@@ -117,7 +117,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
    while ($row = mysql_fetch_object($result)) {
 
-       if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
+       if (checkgroupaccess($conf["author_groups"], $row->modul) == 1) {
 
           echo "<tr><td class=\"nav_button_td_c\"><a href= " . $conf["admp"] ."&section=" . $row->modul . " class=\"navlink\">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
@@ -141,7 +141,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
    while ($row = mysql_fetch_object($result)) {
 
-       if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
+       if (checkgroupaccess($conf["author_groups"], $row->modul) == 1) {
 
           echo "<tr><td class=\"nav_button_td_l\"><a href=" . $conf["admp"] ."&section=" . $row->modul . " class=\"navlink\">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
@@ -165,7 +165,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
    while ($row = mysql_fetch_object($result)) {
 
-       if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
+       if (checkgroupaccess($conf["author_groups"], $row->modul) == 1) {
 
           echo "<tr><td class=\"nav_button_td_a\"><a href=" . $conf["admp"] ."&section=" . $row->modul . " class=\"navlink\">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
@@ -181,11 +181,11 @@ echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" cla
 
 echo "<tr><td><a href=" . $conf["admp"] ."&section=logout class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
 
-echo "<tr><td class=\"nav_button_td_status\"><b>User:</b><br>". $conf["user_name"] . "<br><br>";
+echo "<tr><td class=\"nav_button_td_status\"><b>User:</b><br>". $conf["author_name"] . "<br><br>";
 
-echo "<b>Gruppen:</b><br>" . getgroupnamesbyarray($conf["user_groups"]) ."<br><br>";
+echo "<b>Gruppen:</b><br>" . getgroupnamesbyarray($conf["author_groups"]) ."<br><br>";
 
-echo "<b>Rechte in:</b><br>  " . $section . getgrouprights($section, $conf["user_groups"]) . "<br><br>";
+echo "<b>Rechte in:</b><br>  " . $section . getgrouprights($section, $conf["author_groups"]) . "<br><br>";
 
 echo "<b>Date:</b><br>" . date("d.m.Y.") . "<br><br>";
 

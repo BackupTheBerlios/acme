@@ -1,6 +1,6 @@
 <?php
 include("lang/autoren." . $conf["lang"] . ".inc");
-$author_img, $author_url,$author_email, $author_text
+
 switch ($action)  {
    case "edit":
       authoredit($edit_author_id);
@@ -99,10 +99,10 @@ function authorbrowse(){
          echo "<td>" . $row->author_nachname . "</td>";
          echo "<td>" . $row->author_vorname  . "</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&section=autoren&action=edit&edit_author_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
+         if (checkgroupmodify($conf["author_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&section=autoren&action=edit&edit_author_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&action=delete&section=autoren&delete_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
+         if (checkgroupdelete($conf["author_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&action=delete&section=autoren&delete_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "</tr>\n"; 
       }

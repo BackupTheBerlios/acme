@@ -82,7 +82,6 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
       $artikel_modify_date = $row->artikel_modify_date;
       $artikel_publish_date =  $row->artikel_publish_date;
       $artikel_author = $row->artikel_author_id;
-      $artikel_user_id = $row->artikel_user_id;
       $artikel_active = $row->artikel_active;
       $artikel_counter = $row->artikel_counter;
       mysql_free_result($my_result);
@@ -194,5 +193,13 @@ function incartikeldatencounter($artikel_daten_id,$artikel_counter) {
    $inc_query  = "update acme_artikel_daten set artikel_counter = ".$artikel_counter." where artikel_daten_id=".$artikel_daten_id;
    dbconnect();
    dbquery($inc_query);
+}
+function getfirstpageid($list){
+   global $conf, $lang;
+   
+   $listarray = explode(":", $list);
+   while (list ($key, $value) = each ($listarray) ) {
+      if ($value <> "") {return $value;}
+      }
 }
 ?>

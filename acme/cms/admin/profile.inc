@@ -107,7 +107,7 @@ function profilebrowse(){
    global $conf, $lang;
    
    echo "<h1>".$lang["profile_verwaltung"]."</h1>\n";
-	if (checkgroupcreate($conf["user_groups"], "profile") == 1){ 
+	if (checkgroupcreate($conf["author_groups"], "profile") == 1){ 
       echo "<a href=\"" . $conf["admp"] . "&action=new&section=profile\">Neuen profile anlegen</a>\n";
    }
    echo "<table class=\"reda_td\">\n";
@@ -125,7 +125,7 @@ function profilebrowse(){
       while ($row = mysql_fetch_object($result)) 	      {
          echo "<tr>";	   
          echo "<td>$row->home_activ ";
-         if (checkgroupcreate($conf["user_groups"], "profile") == 1){ 
+         if (checkgroupcreate($conf["author_groups"], "profile") == 1){ 
            echo "<a href=\"" . $conf["admp"] . "&action=activate&section=profile&activate_id=" . $row->home_id . "\">akt</a>\n";
          }
          echo "</td>";
@@ -134,12 +134,12 @@ function profilebrowse(){
          echo "<td>". getpageheadlinebyid($row->home_404)  . "</td>";
          echo "<td>". getimagenamebyid($row->home_img_id)  . "</td>";         
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "profile") == 1){ 
+         if (checkgroupmodify($conf["author_groups"], "profile") == 1){ 
             echo "<a href=\"" . $conf["admp"] . "&section=profile&action=edit&edit_profile_id=" . $row->home_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "profile") == 1){
+         if (checkgroupdelete($conf["author_groups"], "profile") == 1){
                echo "<a href=\"" . $conf["admp"] . "&action=delete&section=profile&delete_id=" . $row->home_id . "&delname=" . $row->home_name . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";

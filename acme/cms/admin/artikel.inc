@@ -33,10 +33,6 @@ switch($action){
       	$errortext .= $lang["artikel_kurztext_fehlt"]."<br>";
       	$error = 1;
       }
-	  if ($new_artikel_author_id == ""){
-	  	$errortext .= $lang["artikel_autor_fehlt"]."<br>";
-	  	$error = 1;
-	  }
       if ($new_artikel_publish_date_day == "" || $new_artikel_publish_date_month == "" || $new_artikel_publish_date_year == "" || $new_artikel_publish_date_hour == "" || $new_artikel_publish_date_minute == ""){
         $errortext .= $lang["artikel_veroeffentlichungsdatum_fehlt"];
       	$error = 1;
@@ -78,10 +74,6 @@ switch($action){
       	 $errortext .= $lang["artikel_ueberschrift2_fehlt"]."<br>";
       	 $error = 1;
       }            
-	  if ($edit_artikel_author_id == ""){
-	  	 $errortext .= $lang["artikel_autor_fehlt"]."<br>";
-	  	 $error = 1;
-	  }
       if ($edit_artikel_publish_date_day == "" || $edit_artikel_publish_date_month == "" || $edit_artikel_publish_date_year == "" || $edit_artikel_publish_date_hour == "" || $edit_artikel_publish_date_minute == ""){
          $errortext .= $lang["artikel_veroeffentlichungsdatum_fehlt"]."<br>";
          $error = 1;
@@ -141,7 +133,7 @@ switch($action){
       break;
       
    default:
-      artikel_browse($page_id, $author_id, $user_id);
+      artikel_browse($page_id, $author_id);
       
       break;
 }
@@ -157,7 +149,6 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " artikel_short_text , ".
                 " artikel_create_date , ".
                 " artikel_author_id , ".
-                " artikel_user_id , ".
                 " artikel_aktiv , ".
                 " artikel_comments ".
                 ") VALUES (  ".
@@ -167,8 +158,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " '". $new_artikel_sub_headline . "' , ".
                 " '". $new_artikel_short_text ."' , ".
                 " NOW() , ".
-                " '". $new_artikel_author_id ."',".
-                " '". $conf["user_id"] ."' , ".
+                " '". $conf["author_id"] ."' , ".
                 " '". $new_artikel_aktiv ."' , ".
                 " '". $new_artikel_comments ."')";
    $insert1_result = dbquery($Statement);
@@ -195,8 +185,7 @@ function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publi
                 " artikel_sub_headline = '". $edit_artikel_sub_headline ."',".
                 " artikel_short_text   = '". $edit_artikel_short_text ."',".
                 " artikel_modify_date  = NOW(),".
-                " artikel_author_id    = '". $edit_artikel_author_id ."',".
-                " artikel_user_id      = '". $conf["user_id"] ."',".
+                " artikel_author_id      = '". $conf["author_id"] ."',".
                 " artikel_aktiv        = '". $edit_artikel_aktiv ."',".
                 " artikel_comments     = '". $edit_artikel_comments ."'".
                 " WHERE artikel_id = '". $edit_artikel_id."'";
@@ -298,11 +287,9 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "</td>";
    echo "</tr>";
    echo "<tr><td colspan=\"3\">&nbsp;</td></tr>";
-   echo "<tr><td colspan=\"1\">".$lang["artikel_autor"]."</td><td colspan=\"2\">" . $lang["artikel_seite_zuordnen"] . "</td></tr>";
+   echo "<tr><td colspan=\"1\"></td><td colspan=\"2\">" . $lang["artikel_seite_zuordnen"] . "</td></tr>";
    echo "<tr>";
-   echo "<td colspan=\"1\">";
-   createsel_author("new_artikel_author_id",$new_artikel_author_id);
-   echo "</td>";
+   echo "<td colspan=\"1\"></td>";
    echo "<td colspan=\"2\">";
    createsel_pagenCAm("new_artikel_page",$new_artikel_page);
    echo "</td>";
@@ -406,9 +393,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
         "<td>";
    createsel_pagenCAm("edit_artikel_page",$edit_artikel_page);
    echo "</td>".
-        "<td>";
-   createsel_author("edit_artikel_author_id",$edit_artikel_author_id);
-   echo "</td>".
+        "<td></td>".
         "</tr>".
         "<tr><td colspan=\"5\">&nbsp;</td></tr>".
         "<tr><td colspan=\"5\">" . $lang["artikel_kurztext"] . "</td></tr>".
@@ -443,30 +428,26 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
         "</table>".
         "</form>";
 }
-function artikel_browse($page_id, $author_id, $user_id){
+function artikel_browse($page_id, $author_id){
 	global $conf,$lang;
 
 	echo "\n<h1>" . $lang["artikel_verwaltung"] . "</h1>\n";
-	if (checkgroupcreate($conf["user_groups"], "artikel") == 1){ echo "<a href=\"" . $conf["admp"] . "&action=new&section=artikel\">" . $lang["artikel_anlegen"] ."</a>";}
+	if (checkgroupcreate($conf["author_groups"], "artikel") == 1){ echo "<a href=\"" . $conf["admp"] . "&action=new&section=artikel\">" . $lang["artikel_anlegen"] ."</a>";}
 	echo "<form action=\"" . $conf["admp"] . "&section=artikel\" method=\"post\">";
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
-   createsel_pagenCAs("page_id", $page_id); 
+    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+    echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
+    createsel_pagenCAs("page_id", $page_id); 
     echo "</td><td><input type=\"submit\" value=\"" . $lang["artikel_anzeigen"] . "\"></td></tr>\n";
 	echo "<tr><td>" . $lang["artikel_des_autors"] . "</td><td colspan = \"2\">";
 	createsel_author("author_id", $author_id); 
 	echo "</td></tr>\n";
-	echo "<tr><td>" . $lang["artikel_des_users"] . "</td><td colspan = \"2\">";
-	createsel_user("user_id", $user_id); 
-	echo "</td></tr>\n";
-   echo "</table>\n";
-   echo "</form>\n";
-   echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   if ($page_id <> ""){
-	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_user"] . "</td><td>".$lang["artikel_counter"] . "</td><td width=\"30\">".$lang["artikel_bearbeiten_kurz"] . "</td><td width=\"30\">".$lang["artikel_loeschen_kurz"] . "</td></tr>\n";
+    echo "</table>\n";
+    echo "</form>\n";
+    echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+    if ($page_id <> ""){
+	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td width=\"30\">".$lang["artikel_bearbeiten_kurz"] . "</td><td width=\"30\">".$lang["artikel_loeschen_kurz"] . "</td></tr>\n";
 	  $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
 	  if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
-	  if ($user_id <> ""){ $Statement .= " and artikel_user_id = '" . $user_id . "'";}
 	  $Statement .= " order by artikel_publish_date DESC";
 	  $result = dbquery($Statement);
 	  if ( mysql_num_rows($result) > 0 ){
@@ -478,17 +459,16 @@ function artikel_browse($page_id, $author_id, $user_id){
  		    echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
 		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
             echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
-            echo "<td>". getuserbyid($row->artikel_user_id) ."</td>";                  
             echo "<td>". $row->artikel_counter."</td>";
 		    echo "<td>";
-		    if (checkgroupmodify($conf["user_groups"], "artikel") == 1){
+		    if (checkgroupmodify($conf["author_groups"], "artikel") == 1){
 		       echo "<a href=\"" . $conf["admp"] . "&action=edit&section=artikel&edit_artikel_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_bearbeiten_kurz"] . "\"></a>";
 		    } else {
 	           echo "&nbsp;";
 	        }
 		    echo "</td>";
 		    echo "<td>";
-		    if (checkgroupdelete($conf["user_groups"], "artikel") == 1){
+		    if (checkgroupdelete($conf["author_groups"], "artikel") == 1){
 		       echo "<a href=\"" . $conf["admp"] . "&action=delete&section=artikel&delete_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
 		    } else {
 		      echo "&nbsp;";

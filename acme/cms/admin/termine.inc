@@ -137,7 +137,7 @@ function termin_data_update($termin_data_id, $termin_typ, $termin_data_headline,
                 "termin_data_Ort = '". $termin_data_Ort . "', ".
                 "termin_data_URL = '". $termin_data_URL . "', ".
                 "termin_data_content   = '". $termin_data_content . "', ".
-                "termin_data_user_id = '" . $conf["user_id"] . "', ".
+                "termin_data_user_id = '" . $conf["author_id"] . "', ".
                 "termin_typ  = '". joingrouparray($termin_typ) . "' ".
                 "WHERE termin_data_id = '". $termin_data_id . "'";
    $update_result = dbquery($Statement);
@@ -195,7 +195,7 @@ function termin_data_insert($termin_id, $termin_typ, $termin_data_headline, $ter
                      "termin_data_URL = '". $termin_data_URL . "',".
                      "termin_data_content   = '". $termin_data_content . "',".
                      "termin_typ  = '". joingrouparray($termin_typ) . "', ".
-                     "termin_data_user_id = '" . $conf["user_id"] . "'";
+                     "termin_data_user_id = '" . $conf["author_id"] . "'";
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["termin_eintrag_insert_erfolgreich"];}
    else{echo $lang["termin_eintrag_insert_fehlgeschlagen"];};
@@ -212,10 +212,10 @@ function termin_browse() {
    global $conf, $lang;
 
    echo "<h1>".$lang["termin_verwaltung"]."</h1>";
-   if (checkgroupcreate($conf["user_groups"], "termine") == 1){
+   if (checkgroupcreate($conf["author_groups"], "termine") == 1){
       echo "<a href=\"" . $conf["admp"] . "&section=termine&action=termin_new\">".$lang["termin_anlegen"]."</a><br>\n";
    }
-   if (checkgroupcreate($conf["user_groups"], "termine") == 1){
+   if (checkgroupcreate($conf["author_groups"], "termine") == 1){
         echo "<a href=\"" . $conf["admp"] . "&section=termine&action=termin_data_new\">".$lang["termin_eintrag_anlegen"]."</a><br>\n";         
    }
    echo "<table class=\"reda_td\">";
@@ -292,7 +292,7 @@ function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl,
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
-                           " termin_user_id = '" . $conf["user_id"] . "' ".
+                           " termin_user_id = '" . $conf["author_id"] . "' ".
                            " WHERE termin_id = '". $termin_id . "'";
    $update_result = dbquery($Statement);
    if($update_result){echo $lang["termin_update_erfolgreich"];}
@@ -363,7 +363,7 @@ function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
-                           " termin_user_id = '" . $conf["user_id"] . "' ";
+                           " termin_user_id = '" . $conf["author_id"] . "' ";
    $edit_result = dbquery($Statement);
    if($edit_result){echo $lang["termin_insert_erfolgreich"];}
    else{echo $lang["termin_insert_fehlgeschlagen"];};
@@ -392,12 +392,12 @@ function writeterminchilds($parent, &$h_level){
          echo $row->termin_name."</td>";
          echo "<td>&nbsp;</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "termine") == 1 ){
+         if (checkgroupmodify($conf["author_groups"], "termine") == 1 ){
             echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_edit&edit_id=".$row->termin_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "termine") == 1 ){
+         if (checkgroupdelete($conf["author_groups"], "termine") == 1 ){
             if (checkterminchilds($row->termin_id) == 0){
                if (checkterminentrys($row->termin_id) == 0){
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_delete&delete_id=".$row->termin_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
@@ -416,12 +416,12 @@ function writeterminchilds($parent, &$h_level){
                echo "-termin: ". $entry_row->termin_data_headline . "</td>";
                echo "<td></td>";
                echo "<td>";
-               if (checkgroupmodify($conf["user_groups"], "termine") == 1 ){
+               if (checkgroupmodify($conf["author_groups"], "termine") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_edit&edit_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
                }
                echo "</td>";
                echo "<td>";
-               if (checkgroupdelete($conf["user_groups"], "termine") == 1 ){
+               if (checkgroupdelete($conf["author_groups"], "termine") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
                } else {echo "&nbsp;";}
                echo "</td>";

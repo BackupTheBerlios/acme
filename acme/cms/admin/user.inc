@@ -84,7 +84,7 @@ function userbrowse(){
    global $conf, $lang;
    
    echo "<h1>".$lang["user_verwaltung"]."</h1>\n";
-	if (checkgroupcreate($conf["user_groups"], "user") == 1){ 
+	if (checkgroupcreate($conf["author_groups"], "user") == 1){ 
       echo "<a href=\"" . $conf["admp"] . "&action=new&section=user\">".$lang["user_neu"]."</a>\n";
    }
    echo "<table class=\"reda_td\">\n";
@@ -107,11 +107,11 @@ function userbrowse(){
          echo "</td>";
          echo "<td>" . $row->user_active . "</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "user") == 1){ echo "<a href=\"" . $conf["admp"] . "&section=user&action=edit&edit_user_id=" . $row->user_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
+         if (checkgroupmodify($conf["author_groups"], "user") == 1){ echo "<a href=\"" . $conf["admp"] . "&section=user&action=edit&edit_user_id=" . $row->user_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "<td>";
-         if ( $row->user_name != $conf["user_name"] ){
-            if (checkgroupdelete($conf["user_groups"], "user") == 1){
+         if ( $row->user_name != $conf["author_name"] ){
+            if (checkgroupdelete($conf["author_groups"], "user") == 1){
                echo "<a href=\"" . $conf["admp"] . "&action=delete&section=user&delete_id=" . $row->user_id . "&delname=" . $row->user_name . "\"><img src=\"" . $conf["images_admin"] . "con_delete.png\" width=\"25\" height=\"25\"></a>";
             }
          }
@@ -132,7 +132,7 @@ function usernew(){
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["user_name"]."</td><td><input name=new_user_name size=10 maxlength=20></td></tr>";
    echo "<tr><td>".$lang["user_pass"]."</td><td><input name=new_user_passwd type=password size=8 maxlength=20></td></tr>";
-   if (checkgroupcreate($conf["user_groups"], "user") == 1){
+   if (checkgroupcreate($conf["author_groups"], "user") == 1){
       echo "<tr><td>".$lang["user_gruppe"]."</td>";
       echo "<td>";
       createsel_groups("new_user_groups","null");
@@ -159,7 +159,7 @@ function useredit($edit_id){
       echo "<tr><td>".$lang["user_gruppe"]."</td><td>\n";
       createsel_groups("edit_user_groups",$row->user_groups);
       echo "</td></tr>\n";
-      if ($row->user_name != $conf["user_name"]){
+      if ($row->user_name != $conf["author_name"]){
          echo "<tr><td>".$lang["user_aktiv"]."</td><td>";
          echo "<input type=radio name=edit_user_active value=\"Y\""; 
          if ($row->user_active == "Y" ) echo "checked";

@@ -55,7 +55,7 @@ function img_browse($img_typ_id){
    
 	echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
 	echo "<h2>" . get_img_typ_name($img_typ_id) . "</h2>";
-	if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
+	if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_new&img_typ_id=" . $img_typ_id . "\">".$lang["bilder_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
@@ -68,9 +68,9 @@ function img_browse($img_typ_id){
          echo "<td>".$row->img_description."</td>";
          echo "<td><img src=\"".$conf["images"]."thumb_".$row->img_real_name."\"></td>";         
          echo "<td>";
-         if ( checkgroupmodify($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_edit&section=bilder&img_id=" . $row->img_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></td>";}
+         if ( checkgroupmodify($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_edit&section=bilder&img_id=" . $row->img_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></td>";}
          echo "<td>";
-         if ( checkgroupdelete($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_delete&section=bilder&img_id=" . $row->img_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
+         if ( checkgroupdelete($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_delete&section=bilder&img_id=" . $row->img_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "</tr>";
       }
@@ -83,7 +83,7 @@ function img_typ_browse(){
    global $conf, $lang;
    
    echo "<h1>".$lang["bilder_verwaltung"]."</h1>";
-   if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
+   if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_typ_new\">".$lang["bilder_typ_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
@@ -93,16 +93,16 @@ function img_typ_browse(){
       while ($row = mysql_fetch_object($result)){
          $img_count = count_img_from_typ($row->img_typ_id);
          echo "<tr><td>\n";
-         if ( checkgroupcreate($conf["user_groups"], "bilder") == 1){
+         if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
             echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\">".$row->img_typ_name."</a>\n";
          }else{
          	echo $row->img_typ_name;
          }
          echo "</td><td>" . $img_count . "</td><td>\n";
-         if ( checkgroupmodify($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_edit&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
+         if ( checkgroupmodify($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_edit&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "<td>";
-         if ($img_count == 0 && checkgroupdelete($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "con_delete.png\" width=\"25\" height=\"25\"></a>";}
+         if ($img_count == 0 && checkgroupdelete($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "con_delete.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "</tr>";
       }
@@ -332,7 +332,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
 	                           " img_name = '" . $img_name . "', ".
                               " img_description = '". $img_description . "', ".
                               " img_desc_long = '". $img_desc_long . "', ".
-                              " img_user_id = '". $conf["user_id"] . "' ".
+                              " img_user_id = '". $conf["author_id"] . "' ".
                               " WHERE img_id = '" . $img_id . "'";
    $result = dbquery($Statement);
    if ($result){echo $lang["bilder_update_erfolgreich"]."<br>";}
@@ -401,7 +401,7 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
                               " img_description = '". $new_img_description ."', ".
                               " img_desc_long  = '". $new_img_desc_long ."', ".
                               " img_typ_id  =  '". $new_img_typ_id ."', ".
-                              " img_user_id =  '". $conf["user_id"]."'";
+                              " img_user_id =  '". $conf["author_id"]."'";
          $insert_result = dbquery($Statement);
          if ($insert_result){
          	echo $lang["bilder_upload_copy_finished"];

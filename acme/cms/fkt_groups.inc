@@ -1,9 +1,9 @@
 <?php
 
-function joingrouparray($grouparray)
-{
+function joingrouparray($grouparray){
+   
    global $conf, $lang;
-
+   
     while ( list ($key, $value) = each ($grouparray) )      {
          $returnstring .= ":$value";
          }
@@ -11,8 +11,8 @@ function joingrouparray($grouparray)
    return $returnstring;
 }
 
-function checkingroup($usergroups, $group)
-{
+function checkingroup($usergroups, $group){
+
    global $conf, $lang;
 
    $result = 0;
@@ -23,9 +23,9 @@ function checkingroup($usergroups, $group)
    return $result;
 }
 
-function checkgroupaccess($usergroups, $modul)
-{
+function checkgroupaccess($usergroups, $modul){
    global $conf, $lang;
+   
    $groupaccess = 0;
    $singlegroups = explode(":", $usergroups);
    while ( list ($key, $value) = each ($singlegroups) )
@@ -42,15 +42,13 @@ function checkgroupaccess($usergroups, $modul)
    return $groupaccess;
 }
 
-function checkgroupcreate($usergroups, $modul)
-{
+function checkgroupcreate($usergroups, $modul){
    global $conf, $lang;
+   
    $groupcreate = 0;
    $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )
-      {
-      if ( $value != "" )
-         {
+   while ( list ($key, $value) = each ($singlegroups) )      {
+      if ( $value != "" )         {
          $result = dbquery("select rights_create from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
          if ( mysql_num_rows($result) > 0 )  {
              $row = mysql_fetch_object($result);
@@ -61,15 +59,13 @@ function checkgroupcreate($usergroups, $modul)
    return $groupcreate;
 }
 
-function checkgroupmodify($usergroups, $modul)
-{
+function checkgroupmodify($usergroups, $modul){
    global $conf, $lang;
+   
    $groupmodify = 0;
    $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )
-      {
-      if ( $value != "" )
-         {
+   while ( list ($key, $value) = each ($singlegroups) )  {
+      if ( $value != "" ) {
          $result = dbquery("select rights_modify from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
          if ( mysql_num_rows($result) > 0 )  { 
             $row = mysql_fetch_object($result);
@@ -80,15 +76,13 @@ function checkgroupmodify($usergroups, $modul)
    return $groupmodify;
 }
 
-function checkgroupdelete($usergroups, $modul)
-{
+function checkgroupdelete($usergroups, $modul){
    global $conf, $lang;
+   
    $groupdelete = 0;
    $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )
-      {
-      if ( $value != "" )
-         {
+   while ( list ($key, $value) = each ($singlegroups) ) {
+      if ( $value != "" )  {
          $result = dbquery("select rights_delete from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
          if ( mysql_num_rows($result) > 0 )  { 
             $row = mysql_fetch_object($result);
@@ -106,18 +100,9 @@ function explodegroup($grouplist)
    return($grouparray);
 }
 
-function getfirstpageid($list)
-{
-   global $conf, $lang;
-   
-   $listarray = explode(":", $list);
-   while (list ($key, $value) = each ($listarray) ) {
-      if ($value <> "") {return $value;}
-      }
-}
 
-function getgroupsbyarray($groups)
-{
+
+function getgroupsbyarray($groups){
    global $conf, $lang;
    
    $singlegroups = explode(":", $groups);
@@ -159,9 +144,9 @@ function getgroupnamebyid($group) {
    return $groupnames;
 }  
 
-function getgrouprights($modul,$usergroups)
-{
+function getgrouprights($modul,$usergroups){
    global $conf, $lang;
+   
    $groupaccess = "";
    $singlegroups = explode(":", $usergroups);
    while ( list ($key, $value) = each ($singlegroups) ){

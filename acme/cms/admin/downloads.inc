@@ -168,7 +168,7 @@ function download_browse(){
    global $conf, $lang;
 
    echo "<h1>".$lang["downloads_verwaltung"]."</h1>\n";
-   if (checkgroupcreate($conf["user_groups"], "downloads") == 1 ){
+   if (checkgroupcreate($conf["author_groups"], "downloads") == 1 ){
       echo "<a href=\"". $conf["admp"] . "&section=downloads&action=new_download_typ\">".$lang["downloads_typ_neu"]."</a><br>\n";
       echo "<a href=\"". $conf["admp"] . "&section=downloads&action=new_download\">".$lang["downloads_neu"]."</a>\n";
    }
@@ -345,12 +345,12 @@ function writedownloadtypchilds($parent, &$h_level){
          echo $row->download_typ_name."</td>";
          echo "<td>&nbsp;</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "downloads") == 1 ){
+         if (checkgroupmodify($conf["author_groups"], "downloads") == 1 ){
             echo "<a href=" . $conf["admp"] . "&section=downloads&action=edit_download_typ&id=".$row->download_typ_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "downloads") == 1 ){
+         if (checkgroupdelete($conf["author_groups"], "downloads") == 1 ){
             if (checkdownloadtypchilds($row->download_typ_id) == 0){
                if (checkdownloadtypentrys($row->download_typ_id) == 0){
                   echo "<a href=" . $conf["admp"] . "&section=downloads&action=delete_download_typ&delete_id=".$row->download_typ_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
@@ -369,12 +369,12 @@ function writedownloadtypchilds($parent, &$h_level){
                echo "-download: ". $entry_row->download_name    . "</td>";
                echo "<td>" . $entry_row->download_counter . "</td>";
                echo "<td>";
-               if (checkgroupmodify($conf["user_groups"], "downloads") == 1 ){
+               if (checkgroupmodify($conf["author_groups"], "downloads") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=downloads&action=edit_download&id=".$entry_row->download_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
                }
                echo "</td>";
                echo "<td>";
-               if (checkgroupdelete($conf["user_groups"], "downloads") == 1 ){
+               if (checkgroupdelete($conf["author_groups"], "downloads") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=downloads&action=delete_download&delete_id=".$entry_row->download_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
                } else {echo "&nbsp;";}
                echo "</td>";

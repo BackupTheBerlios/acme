@@ -83,7 +83,7 @@ function bar_edit($edit_id){
    if ($bar_result) {
       $acme_bar = mysql_fetch_object($bar_result);
       echo "<h1>" . $lang["bar_bearbeiten"] . "</h1>";
-      if ( checkgroupcreate($conf["user_groups"], "bar") == 1){
+      if ( checkgroupcreate($conf["author_groups"], "bar") == 1){
          echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_new&bar_id=" . $acme_bar->bar_id . "\">".$lang["bar_eintrag_neu"]."</a>";
       }
       echo "<form action=\"" . $conf["admp"] . "&section=bar&action=bar_update\"  method=\"POST\">";
@@ -106,10 +106,10 @@ function bar_edit($edit_id){
             if ($acme_bar_topics->bar_topic_rank == bar_gethighest_topic($acme_bar_topics->bar_id)){echo "<td>&nbsp;</td>";}
             else{echo "<td><a href=\"" . $conf["admp"] . "&section=bar&action=topic_move&bar_id=" . $acme_bar_topics->bar_id . "&topic_id=" . $acme_bar_topics->bar_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
             echo "<td>";
-            if ( checkgroupmodify($conf["user_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_edit&bar_id=" . $acme_bar_topics->bar_id . "&edit_id=" .  $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
+            if ( checkgroupmodify($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_edit&bar_id=" . $acme_bar_topics->bar_id . "&edit_id=" .  $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
             echo "</td>";
             echo "<td>";
-            if ( checkgroupdelete($conf["user_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_delete&bar_id=" . $acme_bar_topics->bar_id . "&delete_id=" . $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
+            if ( checkgroupdelete($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_delete&bar_id=" . $acme_bar_topics->bar_id . "&delete_id=" . $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
             echo "</td>";
             echo "</tr>";
          }

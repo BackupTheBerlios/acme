@@ -132,7 +132,7 @@ function url_browse(){
    global $conf, $lang;
 
    echo "<h1>$lang["urls_verwaltung"]</h1>\n";
-   if (checkgroupcreate($conf["user_groups"], "urls") == 1 ){
+   if (checkgroupcreate($conf["author_groups"], "urls") == 1 ){
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url_typ\">".$lang["urls_anlegen"]."</a><br>\n";
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url\">".$lang["urls_eintrag_anlegen"]."</a>\n";
    }
@@ -308,12 +308,12 @@ function writeurltypchilds($parent, &$h_level){
          echo $row->url_typ_name."</td>";
          echo "<td>&nbsp;</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["user_groups"], "urls") == 1 ){
+         if (checkgroupmodify($conf["author_groups"], "urls") == 1 ){
             echo "<a href=" . $conf["admp"] . "&section=urls&action=edit_url_typ&id=".$row->url_typ_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["user_groups"], "urls") == 1 ){
+         if (checkgroupdelete($conf["author_groups"], "urls") == 1 ){
             if (checkurltypchilds($row->url_typ_id) == 0){
                if (checkurltypentrys($row->url_typ_id) == 0){
                   echo "<a href=" . $conf["admp"] . "&section=urls&action=delete_url_typ&delete_id=".$row->url_typ_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
@@ -332,12 +332,12 @@ function writeurltypchilds($parent, &$h_level){
                echo "-url: ". $entry_row->url_name    . "</td>";
                echo "<td>" . $entry_row->url_counter . "</td>";
                echo "<td>";
-               if (checkgroupmodify($conf["user_groups"], "urls") == 1 ){
+               if (checkgroupmodify($conf["author_groups"], "urls") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=urls&action=edit_url&id=".$entry_row->url_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
                }
                echo "</td>";
                echo "<td>";
-               if (checkgroupdelete($conf["user_groups"], "urls") == 1 ){
+               if (checkgroupdelete($conf["author_groups"], "urls") == 1 ){
                   echo "<a href=" . $conf["admp"] . "&section=urls&action=delete_url&delete_id=".$entry_row->url_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
                } else {echo "&nbsp;";}
                echo "</td>";
