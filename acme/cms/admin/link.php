@@ -1,15 +1,16 @@
 <?php
-include("cms/config.inc");
-include($conf["cms"] . "/debuglib.inc");
-include($conf["cms"] . "/ets.inc");
-include($conf["cms"] . "/fkt_createsel.inc");
-include($conf["cms"] . "/fkt_groups.inc");
-include($conf["cms"] . "/fkt_db.inc");
-include($conf["cms"] . "/fkt_etc.inc");
-include($conf["cms"] . "/fkt_rte.inc");
-include($conf["cms"] . "/fkt_date." . $conf["lang"] . ".inc");
+include("/var/www/acme_dev/cms/config.inc");
+include($conf["cmsbase"] . "/debuglib.inc");
+include($conf["cmsbase"] . "/ets.inc");
+include($conf["cmsbase"] . "/fkt_createsel.inc");
+include($conf["cmsbase"] . "/fkt_groups.inc");
+include($conf["cmsbase"] . "/fkt_db.inc");
+include($conf["cmsbase"] . "/fkt_etc.inc");
+include($conf["cmsbase"] . "/fkt_rte.inc");
+include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
 dbconnect();
 include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
+include($conf["admbase"] . "/auth.inc");
 ?>
 <html>
 <head>
@@ -28,23 +29,23 @@ include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
 </head>
 <body>
 <?php
-echo "<form action=\"admin/link.php\" method=\"post\">";
+echo "<form action=\"".$conf["admurl"]."/link.php\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
 echo "<table>\n";
 echo "<tr><td>Modul</td><td>\n";
-echo "<select size = \"1\" name=\"modul\">";
+echo "<select size = \"1\" name=\"modul\">\n";
 $statement = "SELECT m.modul FROM acme_module m  where m.typ='C' order by m.modul";
 $result = dbquery($statement);
 if ( mysql_num_rows($result) > 0 ) {
    while ($row = mysql_fetch_object($result)) {
        if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
-          echo "<option value=\"". $row->modul . "\" >" . $lang["admin_$row->modul"] . "</option>";       	  
+          echo "<option value=\"". $row->modul . "\" >" . $lang["admin_$row->modul"] . "</option>\n";       	  
           }
    }
 }
-echo "<input type=\"submit\" value=\"ok\"></td></tr></table></form>";
+echo "</select><input type=\"submit\" name = ok value=\"ok\">\n</td></tr></table>\n</form>\n";
 
 if (isset($modul)){
-	include("admin/link.".$modul.".inc");
+	include($conf["admbase"] . "/link.".$modul.".inc");
 }
 ?>
 </body>
