@@ -70,7 +70,7 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       $data->home_img  = gethomeimg();
       $data->home_url  = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
       incblogcounter($blog_id, $blog_counter);
-      $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($blog_tpl).".tpl");
+      $page_output = sprintt($data, $conf["templates"].gettemplatebyid($blog_tpl).".tpl");
       echo $page_output;
    } 
    else {renderpage($conf["home_404"],0);}

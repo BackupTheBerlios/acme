@@ -73,7 +73,7 @@ function renderurls($id,$uid){
       $data->titel       = $url_typ_titel;      
       $data->home_img    = gethomeimg();
       $data->home_url    = $conf["indexname"].$conf["home_page_typ"] . "/".$conf["home_page"];
-      $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($url_typ_tpl).".tpl");
+      $page_output = sprintt($data, $conf["templates"].gettemplatebyid($url_typ_tpl).".tpl");
       echo $page_output;
    } 
    else {renderpage($conf["home_404"],0);}

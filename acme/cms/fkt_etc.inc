@@ -126,7 +126,7 @@ function parse_navigation($page_tpl, $nav_id, $side){
       }
       mysql_free_result($result);
    }
-   $tplfile= "cms/tpl/".gettemplatebyid($page_tpl).".nav.". $side .".tpl";
+   $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".nav.". $side .".tpl";
    return " " . sprintt($data, $tplfile) . " ";
 }
 
@@ -142,7 +142,7 @@ function parse_block($page_tpl, $block_id, $side){
       if ($row->block_type == "P"){$data->block_content = OutputPhpDocument($row->block_content);}
       mysql_free_result($result);
    }
-   $tplfile= "cms/tpl/".gettemplatebyid($page_tpl).".block.". $side .".tpl";
+   $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".block.". $side .".tpl";
    return " " . sprintt($data, $tplfile) . " ";
 }
 

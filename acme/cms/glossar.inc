@@ -129,7 +129,7 @@ function renderglossar($titel, $part){
          
          $sub_data->text = $text; 
          
-         $sub_tplfile = "cms/tpl/" . gettemplatebyid($conf["home_tpl"]) . ".sub." . $glossar_tpl .".tpl";
+         $sub_tplfile = $conf["templates"] . gettemplatebyid($conf["home_tpl"]) . ".sub." . $glossar_tpl .".tpl";
          $sub_page_output = sprintt($sub_data, $sub_tplfile);
 
          $data->glossar->subtpl = $sub_page_output;
@@ -137,7 +137,7 @@ function renderglossar($titel, $part){
       }
    }
 
-   $tplfile = "cms/tpl/" . gettemplatebyid($conf["home_tpl"]) . ".glossar.tpl";
+   $tplfile = $conf["templates"] . gettemplatebyid($conf["home_tpl"]) . ".glossar.tpl";
    $page_output = sprintt($data, $tplfile);
    echo $page_output;
 }

@@ -152,7 +152,7 @@ function renderpage($id, $anfang){
       $data->home_img = gethomeimg();
       $data->home_url = "index/".$conf["home_page_typ"] ."/". $conf["home_page"];
       incpagecounter($page_id, $page_counter);
-      $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
+      $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
       $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
       $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
       $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");

@@ -1,11 +1,11 @@
 <?php
-   include($conf["cms"] . "/debuglib.inc"); 
-   include($conf["cms"] . "/ets.inc");
-   include($conf["cms"] . "/fkt_createsel.inc");
-   include($conf["cms"] . "/fkt_groups.inc");
-   include($conf["cms"] . "/fkt_db.inc");
-   include($conf["cms"] . "/fkt_etc.inc");
-   include($conf["cms"] . "/fkt_date." . $conf["lang"] . ".inc");
+   include($conf["cmsbase"] . "/debuglib.inc"); 
+   include($conf["cmsbase"] . "/ets.inc");
+   include($conf["cmsbase"] . "/fkt_createsel.inc");
+   include($conf["cmsbase"] . "/fkt_groups.inc");
+   include($conf["cmsbase"] . "/fkt_db.inc");
+   include($conf["cmsbase"] . "/fkt_etc.inc");
+   include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
      
    dbconnect();
 
@@ -14,10 +14,10 @@
       $page = $conf["home_page_typ"];
       $id   = $conf["home_page"];
    }
-   include($conf["cms"] . "/page.inc");
+   include($conf["cmsbase"] . "/page.inc");
    if (checkmodul($page)) {
       if ($page <> "page"){
-         include($conf["cms"] . "/" . $page . ".inc");
+         include($conf["cmsbase"] . "/" . $page . ".inc");
       }
    } else {
      renderpage($conf["home_404"], 0);

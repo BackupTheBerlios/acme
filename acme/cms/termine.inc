@@ -73,7 +73,7 @@ function rendertermin($id){
          $data->termine->parent->url  = $conf["indexname"]."urls/".$url_typ_parent;
       }      
       inctermincounter($termin_id, $termin_counter);
-      $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($termin_tpl).".tpl");
+      $page_output = sprintt($data, $conf["templates"].gettemplatebyid($termin_tpl).".tpl");
       echo $page_output;
    } 
    else {renderpage($conf["home_404"],0);}

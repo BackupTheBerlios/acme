@@ -268,7 +268,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
   
    $new_artikel_short_text = RTESafe($new_artikel_short_text);
    $new_artikel_long_text = RTESafe($new_artikel_long_text);
-  
+   echo "<a href =\"".$conf["admurl"]."/link.php\" target=\"new\">links</a>";
    echo "<h1>" . $lang["artikel_neu"]. "</h1>";
    if ($error == 1){echo "<p>" . $errortext . "</p>";}
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".

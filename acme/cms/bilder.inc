@@ -52,7 +52,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       $img_typ_user_id = $img_typ_row->img_typ_user_id;
       mysql_free_result($img_typ_result);
 
-      $tplfile = "cms/tpl/" . gettemplatebyid($img_typ_tpl) . ".tpl";
+      $tplfile = $conf["templates"] . gettemplatebyid($img_typ_tpl) . ".tpl";
       $data->left_bar  = parse_bar($img_typ_tpl, $img_typ_left_bar,  "left");
       $data->right_bar = parse_bar($img_typ_tpl, $img_typ_right_bar, "right");
       $data->top_bar   = parse_bar($img_typ_tpl, $img_typ_top_bar,   "top");
@@ -72,7 +72,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       incimg_typcounter($img_typ_id, $img_typ_counter);
       getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
       getbigimage(&$data, $img_id, $img_typ_tpl);
-      $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($img_typ_tpl).".tpl");
+      $page_output = sprintt($data, $conf["templates"].gettemplatebyid($img_typ_tpl).".tpl");
       echo $page_output;
    } 
    else {renderpage($conf["home_404"],0);}

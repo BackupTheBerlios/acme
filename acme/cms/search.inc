@@ -53,7 +53,7 @@ function rendersearch($search){
    $data->titel     = "";
    $data->home_img  = gethomeimg();
    $data->home_url  = $conf["indexname"] . $conf["home_page_typ"] . "/".$conf["home_page"];
-   $tplfile = "cms/tpl/" . gettemplatebyid($conf["home_tpl"]) . ".tpl";
+   $tplfile = $conf["templates"] . gettemplatebyid($conf["home_tpl"]) . ".tpl";
    $data->left_bar  = parse_bar($conf["home_tpl"], $conf["home_left_bar"],  "left");
    $data->right_bar = parse_bar($conf["home_tpl"], $conf["home_right_bar"], "right");
    $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");

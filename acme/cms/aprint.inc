@@ -72,7 +72,7 @@ function renderaprint($page_id, $artikel_id){
          $page_create_date = $row->page_create_date;
          $page_modify_date = $row->page_modify_date;         
          mysql_free_result($my_result);
-         $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
+         $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
          $data->titel                 = $artikel_headline;
          $data->home_img              = gethomeimg();
          $data->home_url              = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
@@ -93,7 +93,7 @@ function renderaprint($page_id, $artikel_id){
          $data->artikel->counter      = $artikel_counter;
          $data->artikel->self_url    = $conf["indexname"]."artikel/" . $page_id . "/".$artikel_id."/1";
          artikel_getlongtext(&$data, $artikel_id, $page_tpl);
-         $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($page_tpl).".print.tpl");
+         $page_output = sprintt($data, $conf["templates"].gettemplatebyid($page_tpl).".print.tpl");
          echo $page_output;
       }  
       else {renderpage($conf["home_404"],0);}

@@ -134,7 +134,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
             
          }
          $data->artikel->print_url  = $conf["indexname"]."aprint/" . $page_id . "/".$artikel_id;
-         $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
+         $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
          $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
          $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
          $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
@@ -159,7 +159,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
          $data->artikel->author_url   = $conf["indexname"]."author/".$artikel_author;
          $data->artikel->counter      = $artikel_counter;
          incartikelcounter($artikel_id, $artikel_counter);
-         $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($page_tpl).".tpl");
+         $page_output = sprintt($data, $conf["templates"].gettemplatebyid($page_tpl).".tpl");
          echo $page_output;
       }  else {renderpage($conf["home_404"],0);}
    } else {renderpage($conf["home_404"],0);}
