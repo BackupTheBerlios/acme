@@ -29,7 +29,17 @@
  
 */ 
 if ($page == "blog") {
-   renderblog($blog_id, $archiv_j, $archiv_m, $blog_cat);
+   if ((isset($blog_id) && !is_nan($blog_id)) && 
+      ((isset($perma) && !is_nan($perma)) ||
+       (isset($blog_cat) && !is_nan($blog_cat)) ||
+      ((isset($archiv_j) && !is_nan($archiv_j)) &&
+       (isset($archiv_m) && !is_nan($archiv_m)))) ||
+       (!isset($perma) && !isset($blog_cat) && !isset($archiv_j) && !isset($archiv_m)))
+   {    	
+      renderblog($blog_id, $archiv_j, $archiv_m, $blog_cat, $perma);
+   } else {
+   	renderpage($conf["home_404"],0);
+   }	
 }   
  
 function renderblog($bid, $bj, $bm, $cat = 0){
@@ -55,7 +65,11 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       $data->blog->img_big      = getimage($blog_img_big);
       $data->blog->text         = parse_bbcode(nltobr($blog_text), $page_tpl);
       $data->blog->counter      = $blog_counter;
-      getblogdata(&$data, $blog_id, $bj, $bm, $blog_tpl, $cat);
+      if (!isset($perma)) {
+         getblogdata(&$data, $blog_id, $bj, $bm, $blog_tpl, $cat);
+      } else {
+      	 getblogperma(&$data, $blog_id, $oerma, $blog_tpl);
+      }   
       getblogcats(&$data, $blog_id);
       getblogarchiv(&$data, $blog_id);      
       $data->left_bar  = parse_bar($blog_tpl, $blog_left_bar, "left");
@@ -115,12 +129,34 @@ function getblogdata($data, $blog_id, $bj, $bm, $page_tpl, $cat){
          $blog_cat_id = $row->blog_cat_id;         
          $blogcatname = getblogcatname($blog_cat_id);
          $data->blog->blog_data[$akt]->blog_cat_name = $blogcatname;         
-         $data->blog->blog_data[$akt]->blog_cat_url  = $conf["indexname"]."blog/".$blog_id."///".$blog_cat_id."";
+         $data->blog->blog_data[$akt]->blog_cat_url  = $conf["indexname"]."blog/".$blog_id."/".$blog_cat_id."";
          $data->blog->blog_data[$akt]->blog_text     = parse_bbcode(nltobr($row->blog_data_content), $page_tpl);                  
          }
       }
  	mysql_free_result($result);     
 }      
+
+function getblogperma($data, $blog_id, $perma, $page_tpl){
+   global $conf, $lang;
+
+   $akt=0;
+   $query = "select * from acme_blog_data where blog_id = '".$blog_id. "' and blog_data_id = '". $perma ."'";
+   $result = dbquery($query);
+   if ( mysql_num_rows($result) > 0 ){
+      while ( $row = mysql_fetch_object($result) ){
+         $akt++;
+         $data->blog->blog_data[$akt]->create_date   = mydate2date($row->blog_data_date);
+         $data->blog->blog_data[$akt]->create_time   = mydate2time($row->blog_data_date);         
+         $data->blog->blog_data[$akt]->blog_titel    = $row->blog_data_headline;
+         $blog_cat_id = $row->blog_cat_id;         
+         $blogcatname = getblogcatname($blog_cat_id);
+         $data->blog->blog_data[$akt]->blog_cat_name = $blogcatname;         
+         $data->blog->blog_data[$akt]->blog_cat_url  = $conf["indexname"]."blog/".$blog_id."/".$blog_cat_id."";
+         $data->blog->blog_data[$akt]->blog_text     = parse_bbcode(nltobr($row->blog_data_content), $page_tpl);                  
+         }
+      }
+ 	mysql_free_result($result);     
+}  
 
 function getblogarchiv($data, $blog_id){
    global $conf, $lang;
@@ -131,7 +167,7 @@ function getblogarchiv($data, $blog_id){
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
-         $data->blog->blog_archiv[$akt]->url    = $conf["indexname"]."blog/".$blog_id."/" . $row->jahr . "/" . $row->monat . "/";
+         $data->blog->blog_archiv[$akt]->url    = $conf["indexname"]."blog/".$blog_id."/" . $row->jahr . "/" . $row->monat . "";
          $data->blog->blog_archiv[$akt]->monat  = $row->monat;                  
          $data->blog->blog_archiv[$akt]->jahr   = $row->jahr;                  
          $data->blog->blog_archiv[$akt]->anzahl = $row->anzahl;                                    

@@ -1,25 +1,88 @@
 <?php
-
-function checkacl($acltyp, $usergroups, $user, $modul, $modulid){
+function acl_check($acltyp, $usergroups, $user, $modul, $modulid){
    global $conf, $lang;
    
+   // echo "<p>aclcheck: user '" . $user . "' gruppen ". $usergroups . " with acl '". $acltyp."'\n<br>"."select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'"."</p>";   
+   
+   $acltyp = "acl_".$acltyp;
    $access = 0;
-   $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and author_id = " . $user  . "");
    if ( mysql_num_rows($result) > 0 )  {
-   	  if($row->$acltyp == "Y") {$aclresult = 1;}
+   	  $row = mysql_fetch_object($result);
+   	  if($row->$acltyp == "Y") {
+//   	  	echo "<p>found user '" . $user ."' in acl '". $acltyp."'\n</p>";
+   	  	$aclresult = 1;
+   	  	} 
    } else {
      $singlegroups = explode(":", $usergroups);
      while ( list ($key, $value) = each ($singlegroups) ) {
          if ( $value != "" ){
-            $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $value  . "'");
+            $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and group_id = " . $value  . "");
             if ( mysql_num_rows($result) > 0 )  {
                $row = mysql_fetch_object($result);
-               if($row->$acltyp == "Y") {$aclresult = 1;}
-            }   
+               if($row->$acltyp == "Y") {
+//              	echo "<p>found group '" . $value ."' in acl '". $acltyp."'\n</p>";
+               	$aclresult = 1;
+               	}
+            } 
          } 
       }
    }
    return $aclresult;
+}
+
+function acl_user_set($user, $modul, $modulid, $rights, $insert, $edit, $delete){
+   global $conf, $lang;
+   
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   if ( mysql_num_rows($result) > 0 )  {
+      $result = dbquery("update acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
+   } else {
+      $result = dbquery("insert into acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', author_id = '".$user."'");
+   }
+   if (!$result) {
+   die('Ungültige Abfrage: ' . mysql_error());
+}
+   
+   return $result; 
+}
+
+function acl_group_set($group, $modul, $modulid, $rights, $insert, $edit, $delete){
+   global $conf, $lang;
+   
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
+   if ( mysql_num_rows($result) > 0 )  {
+      $result = dbquery("update acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
+   } else {
+      $result = dbquery("insert into acme_acl (acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', group_id = '".$group."')");
+   }
+   return $result; 
+}
+
+function acl_user_delete($user, $modul, $modulid){
+   global $conf, $lang;
+   
+   $access = 0;
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   if ( mysql_num_rows($result) > 0 )  {
+      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
+   } else {
+   	  return true;
+   }
+   return $result; 
+}
+
+function acl_group_delete($group, $modul, $modulid){
+   global $conf, $lang;
+   
+   $access = 0;
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
+   if ( mysql_num_rows($result) > 0 )  {
+      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
+   } else {
+   	  return true;
+   }
+   return $result; 
 }
 
 function joingrouparray($grouparray){
@@ -33,87 +96,18 @@ function joingrouparray($grouparray){
    return $returnstring;
 }
 
-function checkingroup($usergroups, $group){
-
-   global $conf, $lang;
-
+function acl_checkuseringroup($usergroups, $group){
    $result = 0;
-   
    $usergroups = explode(":", $usergroups);
-   if (eregi ($group, $usergroups)) { $result = 1;}
-   
+   foreach ($usergroups as $sgroup){
+     if ($sgroup == $group) {$result = 1;}
+   }
    return $result;
 }
-
-function checkgroupaccess($usergroups, $modul){
-   global $conf, $lang;
-   
-   $groupaccess = 0;
-   $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )
-      {
-      if ( $value != "" )
-         {
-         $result = dbquery("select rights_access from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
-         if ( mysql_num_rows($result) > 0 )  { 
-            $row = mysql_fetch_object($result);  
-            if($row->rights_access == "Y"){ $groupaccess = 1;}
-            } 
-         }
-      }
-   return $groupaccess;
-}
-
-function checkgroupcreate($usergroups, $modul){
-   global $conf, $lang;
-   
-   $groupcreate = 0;
-   $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )      {
-      if ( $value != "" )         {
-         $result = dbquery("select rights_create from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
-         if ( mysql_num_rows($result) > 0 )  {
-             $row = mysql_fetch_object($result);
-             if($row->rights_create== "Y") {$groupcreate = 1;}
-             } 
-         }
-      }
-   return $groupcreate;
-}
-
-function checkgroupmodify($usergroups, $modul){
-   global $conf, $lang;
-   
-   $groupmodify = 0;
-   $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) )  {
-      if ( $value != "" ) {
-         $result = dbquery("select rights_modify from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
-         if ( mysql_num_rows($result) > 0 )  { 
-            $row = mysql_fetch_object($result);
-            if($row->rights_modify == "Y"){ $groupmodify = 1;}
-            } 
-         }
-      }
-   return $groupmodify;
-}
-
-function checkgroupdelete($usergroups, $modul){
-   global $conf, $lang;
-   
-   $groupdelete = 0;
-   $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) ) {
-      if ( $value != "" )  {
-         $result = dbquery("select rights_delete from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
-         if ( mysql_num_rows($result) > 0 )  { 
-            $row = mysql_fetch_object($result);
-            if($row->rights_delete == "Y"){ $groupdelete = 1;}
-            } 
-         }
-      }
-   return $groupdelete;
-}
+function checkgroupaccess($usergroups, $modul){   return 1;}
+function checkgroupcreate($usergroups, $modul){   return 1;}
+function checkgroupmodify($usergroups, $modul){   return 1;}
+function checkgroupdelete($usergroups, $modul){   return 1;}
 
 function explodegroup($grouplist)
 {
@@ -165,26 +159,4 @@ function getgroupnamebyid($group) {
    }
    return $groupnames;
 }  
-
-function getgrouprights($modul,$usergroups){
-   global $conf, $lang;
-   
-   $groupaccess = "";
-   $singlegroups = explode(":", $usergroups);
-   while ( list ($key, $value) = each ($singlegroups) ){
-      if ( $value != "" ){
-         $result = dbquery("select * from acme_rights where modul = '" .  $modul . "' and group_id = '" . $value  . "'");
-         if ( mysql_num_rows($result) > 0 )  { 
-            //$groupaccess .= getgroupnamebyid($value);
-            $row = mysql_fetch_object($result);  
-            if($row->rights_create == "Y"){ $groupaccess .= " C:Y";} else { $groupaccess .= " C:N";}
-            if($row->rights_modify == "Y"){ $groupaccess .= " M:Y";} else { $groupaccess .= " M:N";}
-            if($row->rights_delete == "Y"){ $groupaccess .= " D:Y";} else { $groupaccess .= " D:N";}
-            $groupaccess .= "<br>";         
-         } 
-      }
-
-   }
-   return $groupaccess;
-}
 ?>

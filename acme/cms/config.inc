@@ -36,28 +36,27 @@ if( !$included["config.inc"] )
    if ( mysql_num_rows($result) > 0 )	   {
    	while ($row = mysql_fetch_object($result))
 	   	{
-         $conf["home_img"]      = $row->home_img_id;
-         $conf["home_page"]     = $row->home_page;
-         $conf["home_page_typ"] = $row->home_page_typ;  
-         $conf["home_tpl"]      = $row->home_tpl;  
-         $conf["home_frame"]      = $row->home_frame;
-         $conf["home_left_bar"]      = $row->home_left_bar;                  
-         $conf["home_right_bar"]      = $row->home_right_bar;                  
-         $conf["home_top_bar"]      = $row->home_top_bar;                  
-         $conf["home_foo_bar"]      = $row->home_foo_bar;                  
-         $conf["home_404"]      = $row->home_404;
-         $conf["home_style"]    = $row->style;
+         $conf["home_img"]       = $row->home_img_id;
+         $conf["home_page"]      = $row->home_page;
+         $conf["home_page_typ"]  = $row->home_page_typ;  
+         $conf["home_tpl"]       = $row->home_tpl;  
+         $conf["home_frame"]     = $row->home_frame;
+         $conf["home_left_bar"]  = $row->home_left_bar;                  
+         $conf["home_right_bar"] = $row->home_right_bar;                  
+         $conf["home_top_bar"]   = $row->home_top_bar;                  
+         $conf["home_foo_bar"]   = $row->home_foo_bar;                  
+         $conf["home_404"]       = $row->home_404;
+         $conf["home_style"]     = $row->style;
    	   }
 	   mysql_free_result($result);
 	   }
-   else
-	   {
+   else {
       $conf["home_img"]      = "";
       $conf["home_page"]     = "1";
       $conf["home_page_typ"] = "page";      
       $conf["home_404"]      = "1";
       $conf["home_style"]    = "1";
-	   }
+   }
    $conf["search"] = "";
    $included["config.inc"] = 1;
    }

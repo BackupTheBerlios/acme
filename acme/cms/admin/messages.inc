@@ -6,20 +6,20 @@ if (!isset($status)) $status = "N";
 
 switch($action){
 	case "messages_edit":
-      messages_edit($messages_id, $edit_messages_topic, $edit_messages_message, $edit_messages_status);
+      messages_edit($status, $messages_id, $edit_messages_topic, $edit_messages_message, $edit_messages_status);
       break;
       
 	case "messages_answer":
-      messages_answer($messages_id);
+      messages_answer($status, $messages_id);
       break;
       
 	case "messages_update":
-      messages_update($messages_id, $edit_messages_status);
+      messages_update($status, $messages_id, $edit_messages_status);
       messages_browse($status);
       break;
 
 	case "messages_new":
-		messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser);
+		messages_new($status, $new_messages_topic, $new_messages_message, $new_messages_tuser);
       break;
 
    case "messages_insert":
@@ -28,17 +28,17 @@ switch($action){
       if ($new_messages_topic == ""){echo $lang["messages_topic_fehlt"]."<br>";$error=1;}
       if ($new_messages_message == ""){echo $lang["messages_text_fehlt"]."<br>";$error=1;}
       if ($error==1){
-         messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser);
+         messages_new($status, $new_messages_topic, $new_messages_message, $new_messages_tuser);
       }
       else{ 
-         messages_insert($new_messages_topic, $new_messages_message, $new_messages_tuser);
+         messages_insert($status, $new_messages_topic, $new_messages_message, $new_messages_tuser);
          messages_browse($status);
       }
 
       break;
 
 	case "messages_delete":
-      messages_delete($messages_id);
+      messages_delete($status, $messages_id);
       messages_browse($status);
 
       break;
@@ -49,7 +49,7 @@ switch($action){
       break;
 }
 
-function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_message, $edit_messages_status){
+function messages_edit($status, $edit_messages_id, $edit_messages_topic, $edit_messages_message, $edit_messages_status){
 
    global $conf, $lang;
 
@@ -57,7 +57,7 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
    if ($result)  {
       $acme_messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["messages_fuser"]. ": ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
            "<tr><td>".$lang["messages_topic"]. ": ". htmlspecialchars($acme_messages->topic) . "</td></tr>".
@@ -71,7 +71,7 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
       echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
            "</table>".
            "</form>";
-      echo "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_answer&messages_id=" . $acme_messages->id . "\"  method=POST>".           
+      echo "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_answer&messages_id=" . $acme_messages->id . "\"  method=POST>".           
            "<input type=submit name=add value=".$lang["messages_answer"].">".
            "</form>";           
       mysql_free_result($result);
@@ -79,7 +79,7 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
    else{echo $lang["messages_notfound"];}
 }
 
-function messages_answer($messages_id){
+function messages_answer($status, $messages_id){
 
    global $conf, $lang;
 
@@ -87,7 +87,7 @@ function messages_answer($messages_id){
    if ($result)  {
       $acme_messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_answer"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_insert&messages_id=" . $acme_messages->id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_insert&messages_id=" . $acme_messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
         "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . $lang["messages_anwsertopic"] . " " .  htmlspecialchars(stripslashes($acme_messages->topic)) . "\"></td></tr>".
         "<tr><td>".$lang["messages_text"]."</td></tr>".
@@ -102,7 +102,7 @@ function messages_answer($messages_id){
 }
 
 
-function messages_update($messages_id, $messages_status){
+function messages_update($status, $messages_id, $messages_status){
    global $conf, $lang;
 
    $Statement = "UPDATE acme_messages SET ".
@@ -113,11 +113,11 @@ function messages_update($messages_id, $messages_status){
    else{echo $lang["messages_update_fehlgeschlagen"];};
 }
 
-function messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser) {
+function messages_new($status, $new_messages_topic, $new_messages_message, $new_messages_tuser) {
    global $conf, $lang;
 
    echo "<h1>".$lang["messages_neu"]."</h1>".
-        "<form action=\"" .  $conf["admp"] . "&section=messages&action=messages_insert\"  method=POST>".
+        "<form action=\"" .  $conf["admp"] . "&section=messages&status=".$status."&action=messages_insert\"  method=POST>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["messages_topic"]."</td></tr>".
         "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_messages_topic)) . "\"></td></tr>".
@@ -133,7 +133,7 @@ function messages_new($new_messages_topic, $new_messages_message, $new_messages_
         "</table>".
         "</form>";
 }
-function messages_insert($topic, $message, $tuser){
+function messages_insert($status, $topic, $message, $tuser){
    global $conf, $lang;
 
    $Statement = "INSERT INTO acme_messages SET ".
@@ -199,7 +199,7 @@ function messages_browse($status) {
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
-      echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+      echo "<a href=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
      echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
@@ -212,7 +212,7 @@ function messages_browse($status) {
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
-      echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+      echo "<a href=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
      echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
@@ -225,7 +225,7 @@ function messages_browse($status) {
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
-      echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+      echo "<a href=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
      echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
@@ -243,7 +243,7 @@ function messages_browse($status) {
       if ($row->status == "F"){echo $lang["messages_status_abgeschl"];}
       echo "</td>";
       echo "<td>";
-      echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+      echo "<a href=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
       echo "</td>";
       echo "</tr>\n";
      echo "<tr><td colspan=\"5\"><hr></td></tr>\n";

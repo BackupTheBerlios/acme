@@ -303,7 +303,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "<tr><td colspan=\"3\">";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
-   echo "writeRichText('new_artikel_lang_text', '" . $new_artikel_lang_text . "', 520, 200, true, false);\n";
+   echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
    echo "</td></tr>";

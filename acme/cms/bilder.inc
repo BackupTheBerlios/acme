@@ -50,7 +50,7 @@ renderbilder($img_typ_id, $image_id, $img_typ_anfang);
 function renderbilder($img_typ_id, $img_id, $anfang){
    global $conf, $lang;
 
-   if ($img_typ_id==0 || !isset(img_typ_id)) {
+   if ($img_typ_id==0 || !isset($img_typ_id)) {
       $query = "select * from acme_bilder order by img_id LIMIT 1,1";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
@@ -103,7 +103,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       incimg_typcounter($img_typ_id, $img_typ_counter);
       getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
       getbigimage(&$data, $img_id, $img_typ_tpl);
-      $page_output = sprintt($data, $conf["templates"].gettemplatebyid($img_typ_tpl).".tpl");
+      $page_output = sprintt($data, $tplfile);
       echo $page_output;
    } 
    else {renderpage($conf["home_404"],0);}

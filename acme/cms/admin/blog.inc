@@ -373,7 +373,6 @@ function blog_update($blog_id, $blog_name, $blog_tpl, $blog_img_small,  $blog_im
                            " blog_text = '" . $blog_text . "' ".
                            " WHERE blog_id = '". $blog_id . "'";
    $update_result = dbquery($Statement);
-   echo $Statement;
    if($update_result){echo $lang["blog_update_erfolgreich"];}
    else{echo $lang["blog_update_fehlerhaft"];};
 }
