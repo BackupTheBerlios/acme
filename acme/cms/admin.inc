@@ -121,7 +121,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
        if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
 
-          echo "<tr><td class=\"nav_button_td_c\"><a href=" . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
+          echo "<tr><td bgcolor=\"#5E2222\"><a href= " . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
        }
 
