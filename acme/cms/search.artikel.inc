@@ -22,7 +22,8 @@ function search_artikel($search) {
                $artikel[$akt]->search_name = $parentrow->artikel_headline;
                $artikel[$akt]->search_text = $parentrow->artikel_sub_headline;
                $akt++;  
-   	        }	
+   	        }
+         }   	
       }
       mysql_free_result($main_result);    
    }

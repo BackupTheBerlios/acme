@@ -31,5 +31,5 @@ function writepagechilds($parent, &$h_level){
       }
       mysql_free_result($result);
    }
-
+}
 ?>
