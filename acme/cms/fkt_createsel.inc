@@ -120,23 +120,35 @@ function createsel_tpl($select_name,$grouplist){
 
 function createsel_img($select_name, $grouplist){
    global $conf, $lang;
+
+   echo "\n<select name=" . $select_name . ">\n";
+   if ($grouplist == "") echo "<option value = '' selected>\n";
+   else echo "<option value = ''>\n";
    
-   $allgroups = dbquery("select * from acme_bilder order by img_name");
-   echo "<select name=" . $select_name . ">";
-   if ($grouplist == "") echo "<option value = '' selected>";
-   else echo "<option value = ''>";
-   if ( mysql_num_rows($allgroups) > 0 )
-      {
-      while ( $g_row = mysql_fetch_object($allgroups) )
-         {
-         echo "<option value=" . $g_row->img_id;
-         if ( eregi ( $g_row->img_id, $grouplist ) )
-            echo " selected ";
-         echo ">" . $g_row->img_name. "</option>";
-         }
-      mysql_free_result($allgroups);
+   $imggroups = dbquery("select * from acme_bilder_typs order by img_typ_name");
+   if ( mysql_num_rows($imggroups) > 0 ) {
+      while ( $imggrouprow = mysql_fetch_object($imggroups) ){
+      	 if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $imggrouprow->img_typ_id) == 1) {
+      	 	echo "<optgroup label=\"" . $imggrouprow->img_typ_name .  "\">\n";
+            $imgentrys = dbquery("select * from acme_bilder where img_typ_id = " . $imggrouprow->img_typ_id . " order by img_name");
+            if ( mysql_num_rows($imgentrys) > 0 ) {
+               while ( $imgentryrow = mysql_fetch_object($imgentrys) ) {
+                  echo "<option value=" . $imgentryrow->img_id;
+                  echo " label=" . $imgentryrow->img_name. " ";
+                  if ( eregi ( $imgentryrow->img_id, $grouplist ) )
+                  echo " selected ";
+                  echo ">" . $imgentryrow->img_name. "</option>\n";
+               }
+            }
+            echo "</optgroup>\n";   
+      	 } else {
+      	 	echo "<optgroup label=\"" . $imggrouprow->img_typ_name .  "\" style = \"color:gray;font-style:italic;\">\n";
+      	 	echo "</optgroup>\n";
+      	 }		
       }
-   echo "</select>";
+      mysql_free_result($imggroups);
+   }   
+   echo "</select>\n";
    return;
 }
 function createsel_frame($select_name,$grouplist){

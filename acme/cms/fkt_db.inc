@@ -40,28 +40,21 @@ function checkmodul($page){
    return $found;
 }      	   
 
-function getimage($picid)
-{
-   if( $picid )
-      {
+function getimage($picid){
+   if ( $picid ) {
       $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$picid."'";
       dbconnect();
       $result = dbquery($getpic);
-      if(mysql_affected_rows() > 0)
-         {
+      if (mysql_affected_rows() > 0){
          $row = mysql_fetch_object($result);
          return "<img src = \"cms/bilder/" . $row->img_real_name."\" alt = \"" . $row->img_description . "\">";
-         }
-      else
-         {
+      }else{
          return "<img src = \"cms/bilder/pixel.gif\" alt = \"blank\">";
-         }
+      }
       mysql_free_result($result);
-      }
-    else
-      {
+   }else{
       return "<img src = \"cms/bilder/pixel.gif\" alt = \"blank\">";
-      }
+   }
 }
 
 function getimagenamebyid($picid){
@@ -181,23 +174,24 @@ function getblocknamebyid($id)
       }
 }
 
-function getblockcontentbyid($id)
-{
+function getblockcontentbyid($id){
    global $conf, $lang;
+ 
+   $bc = "";
    $my_result = dbquery("select block_content from acme_blocks where block_id='".$id."'");
-   if ( mysql_num_rows($my_result) == 1 )
-      {
+   if ( mysql_num_rows($my_result) == 1 )      {
       $row = mysql_fetch_object($my_result);
-      $name = $row->block_content;
+      $bc = $row->block_content;
       mysql_free_result($my_result);
-      return $name;
-      }
+   }
+   return $bc;
 }
 
 
 
 function artikel_gethighestpart($artikel_id){
    global $conf, $lang;
+   
    $my_result = dbquery("select * from acme_artikel_daten where artikel_id='".$artikel_id."'");
    $partmax = mysql_num_rows($my_result);
    mysql_free_result($my_result);
@@ -205,20 +199,20 @@ function artikel_gethighestpart($artikel_id){
 }
 
 
-function gettemplatebyid($tpl_id)
-{
+function gettemplatebyid($tpl_id){
    global $conf, $lang;
+   
+   $tpl = "";
    $my_result = dbquery("select tpl_name from acme_templates where tpl_id=".$tpl_id);
    if ( mysql_num_rows($my_result) >0)      {
       $row = mysql_fetch_object($my_result);
       $tpl = $row->tpl_name; // sollte mal das template direkt aus der datenbank holen
       mysql_free_result($my_result);
-   return $tpl;
    }
+   return $tpl;
 }
 
-function getimagedescription($img_id)
-{
+function getimagedescription($img_id){
     $getpic = "Select img_description from acme_bilder where img_id=".$img_id;
     dbconnect();
     $result = dbquery($getpic);

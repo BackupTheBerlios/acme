@@ -51,6 +51,13 @@ if ($logged_in == 1) {
                position: absolute;
                left: 176px;
                top: 36px;
+               }
+        #debug {
+               position: absolute;
+               left: 1000px;
+               top: 36px;
+               }
+
         .error
               {color="red";}
               }
@@ -121,6 +128,9 @@ echo "<a href =\"".$conf["indexbase"]."/link.php\" target=\"new\">links</a>";
   }
 
 echo "</div>";
+
+if ($conf["author_name"] == "developer"){echo "<div id=debug>";show_vars();echo "</div>";}
+
 ?>
 </body>
 </html>

@@ -162,13 +162,14 @@ function getnavimg($modul, $id){
       $modul_result = dbquery($Statement);
       if ( mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
+         $picid_a = $modulrow[$row->navimg] ;
+         $picid_p = $modulrow[$row->navimg."_inactive"] ;
+
          if ($modul == $conf["page"] && $conf["page_id"] == $id) {
-            $picid_a = $modulrow[$row->navimg] ;
-            $picid_p = $modulrow[$row->navimg."_inactive"] ;
+            $active = 1;
          } else {
-            $picid_p = $modulrow[$row->navimg] ;
-            $picid_a = $modulrow[$row->navimg."_inactive"] ;
-         }   
+         	$active = 0;
+         }	   
       }
       mysql_free_result($modul_result);
    }
@@ -205,11 +206,24 @@ function getnavimg($modul, $id){
       }
       mysql_free_result($result);
    }
+   if ($active==1) {
+      $navimg->name = $act_pic->name; 
+      $navimg->src  = $act_pic->src;
+      $navimg->desc = $act_pic->desc;
+   } else {
+      $navimg->name = $pas_pic->name; 
+      $navimg->src  = $pas_pic->src;
+      $navimg->desc = $pas_pic->desc;
+   }	           	
    
    $navimg->act = $act_pic;
    $navimg->pas = $pas_pic;
    
-   return $navimg;
+   if ($pas_pic->src == "" && $act_pic->src == "") {
+      return NULL;
+   } else {
+   	  return $navimg;
+   }	   
 }
 
 function gethomeimg(){
@@ -329,5 +343,23 @@ function getimagebyid($id, $style,$page_tpl){
 
    mysql_free_result($result);
 }
+function getnamebymodulandid($modul, $id){
+   global $conf, $lang;
 
+   $Statement = "select * from acme_module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) > 0)  { 
+      $row = mysql_fetch_array($result);
+      $Statement = "select *" . 
+                   " from  " . $row["tablename"] . 
+                   " where " . $row["id"] . " = " . $id;
+      $modul_result = dbquery($Statement);
+      if (mysql_num_rows($modul_result) > 0 )  {
+         $modulrow = mysql_fetch_array($modul_result);
+         $name = $modulrow[$row[name]];
+         mysql_free_result($modul_result);
+         return $name;
+      }
+   } 
+}
 ?>

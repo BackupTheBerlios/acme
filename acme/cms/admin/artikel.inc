@@ -164,15 +164,23 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " '". $new_artikel_aktiv ."' , ".
                 " '". $new_artikel_comments ."')";
    $insert1_result = dbquery($Statement);
-   $Statement = "INSERT INTO acme_artikel_daten (".
-                " artikel_long_text ,  ".
-                " artikel_part, ".
-                " artikel_id ".
-                ") VALUES (  ".
-                " '". $new_artikel_long_text ."' , ".
-                " '" .  1 ."', ".
-                " LAST_INSERT_ID() )";
-   $insert2_result = dbquery($Statement);
+   if ($insert1_result) {
+   	  $result = dbquery("select artikel_id from acme_artikel where artikel_id = LAST_INSERTED_ID()");
+      if ($result)  {
+         $row = mysql_fetch_object($result);
+         $modulid = $row->artikel_id;
+         acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
+      }
+      $Statement = "INSERT INTO acme_artikel_daten (".
+                   " artikel_long_text ,  ".
+                   " artikel_part, ".
+                   " artikel_id ".
+                   ") VALUES (  ".
+                   " '". $new_artikel_long_text ."' , ".
+                   " '" .  1 ."', ".
+                   " ". $modulid . ")";
+      $insert2_result = dbquery($Statement);
+   }
 
    return $insert1_result && $insert2_result;
 }
@@ -187,7 +195,6 @@ function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publi
                 " artikel_sub_headline = '". $edit_artikel_sub_headline ."',".
                 " artikel_short_text   = '". $edit_artikel_short_text ."',".
                 " artikel_modify_date  = NOW(),".
-                " artikel_author_id      = '". $conf["author_id"] ."',".
                 " artikel_aktiv        = '". $edit_artikel_aktiv ."',".
                 " artikel_comments     = '". $edit_artikel_comments ."'".
                 " WHERE artikel_id = '". $edit_artikel_id."'";
@@ -260,8 +267,8 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    $new_artikel_short_text = RTESafe($new_artikel_short_text);
    $new_artikel_long_text = RTESafe($new_artikel_long_text);
 
-   echo "<h1>" . $lang["artikel_neu"]. "</h1>";
-   if ($error == 1){echo "<p>" . $errortext . "</p>";}
+   echo "<h1>" . $lang["artikel_neu"]. "</h1>\n";
+   if ($error == 1){echo "<p>" . $errortext . "</p>\n";}
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
         "<script language=\"JavaScript\" type=\"text/javascript\">\n".
         "<!--\n".
@@ -272,12 +279,12 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
         "}\n";
    echo "initRTE(\"images/\", \"\", \"\");\n //-->\n";
    echo "</script>\n";     
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
-   echo "<tr><td colspan=\"3\">" . $lang["artikel_ueberschrift1"]. "</td></tr>";
+   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+   echo "<tr><td colspan=\"3\">" . $lang["artikel_ueberschrift1"]. "</td></tr>\n";
    echo "<tr><td colspan=\"3\"><input  name=\"new_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($new_artikel_headline)) ."\"></td></tr>";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_ueberschrift2"]. "</td></tr>";
    echo "<tr><td colspan=\"3\"><input  name=\"new_artikel_sub_headline\" size=\"45\" maxlength=\"255\" value = \"" . htmlspecialchars(stripslashes($new_artikel_sub_headline)) . "\"></td></tr>";
-   echo "<tr><td colspan=\"1\" width = 33%>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_aktiv"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_seite_zuordnen"] . "</td></tr>";
+   echo "<tr><td colspan=\"1\" width = 33%>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_aktiv"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_seite_zuordnen"] . "</td></tr>\n";
    echo "<tr>";
    echo "<td colspan=\"1\">";
    createdatetimeinput("new_artikel_publish_date", $new_artikel_publish_date, "");
@@ -288,29 +295,27 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "<td colspan=\"1\">";
    createsel_pagenCAm("new_artikel_page",$new_artikel_page);
    echo "</td>";
-   echo "</tr>";
-   echo " <tr><td colspan=\"3\">&nbsp;</td></tr>";
-   echo "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"]."</td></tr>";
+   echo "</tr>\n";
+   echo " <tr><td colspan=\"3\">&nbsp;</td></tr>\n";
+   echo "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"]."</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('new_artikel_short_text', '" . $new_artikel_short_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>";
-   echo "</td></tr>";
-   echo "<tr><td colspan=\"3\">" . $lang["artikel_langtext"] . "</td></tr>";
-   echo "<tr><td colspan=\"3\">";
+   echo "</td></tr>\n";
+   echo "<tr><td colspan=\"3\">" . $lang["artikel_langtext"] . "</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
-   echo "</td></tr>";
-   echo "</td></tr>";
-   echo "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"add\" value=\"" . $lang["artikel_anlegen"] . "\"></td></tr>";
-   echo "</table>";
-   echo "</form>";
+   echo "</td></tr>\n";
+   echo "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"add\" value=\"" . $lang["artikel_anlegen"] . "\"></td></tr>\n";
+   echo "</table>\n";
+   echo "</form>\n";
 }
 
 function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext){
@@ -340,9 +345,9 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          }
      } 
    }
-   echo "<h1>" . $lang["artikel_bearbeiten"] . "</h1>";
+   echo "<h1>" . $lang["artikel_bearbeiten"] . "</h1>\n";
    if ($error == 1){ 
-   	  echo "<p>" . $errortext . "</p>";
+   	  echo "<p>" . $errortext . "</p>\n";
    }
    echo "<form action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
         "<script language=\"JavaScript\" type=\"text/javascript\">\n".
@@ -356,22 +361,22 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
         " //-->\n";
    echo "</script>\n";     
    echo "<input type=hidden name=edit_artikel_id value=" . $edit_artikel_id . ">".
-        "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>".
+        "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n".
         "<tr>".
         "<td colspan=\"3\">" . $lang["artikel_ueberschrift1"] . "</td>".
-        "</tr>".
+        "</tr>\n".
         "<tr>".
         "<td colspan=\"3\"><input  name=\"edit_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_headline)) . "\"></td>".
-        "</tr>".
+        "</tr>\n".
         "<tr>".
         "<td colspan=\"3\">" . $lang["artikel_ueberschrift2"] . "</td>".
-        "</tr>".
+        "</tr>\n".
         "<tr>".
         "<td colspan=\"3\"><input  name=\"edit_artikel_sub_headline\" size=\"45\" maxlength=\"255\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_sub_headline)) . "\"></td>".
-        "</tr>".
+        "</tr>\n".
         "<tr>".
         "<td>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td>" . $lang["artikel_aktiv"]. "</td><td>" . $lang["artikel_seite"] . "</td>".
-        "</tr>".
+        "</tr>\n".
         "<tr>".
         "<td colspan=\"1\">";
    createdatetimeinput("edit_artikel_publish_date", $edit_artikel_publish_date, "");
@@ -382,9 +387,9 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
         "<td>";
    createsel_pagenCAm("edit_artikel_page",$edit_artikel_page);
    echo "</td>".
-        "</tr>".
-        "<tr><td colspan=\"3\">&nbsp;</td></tr>".
-        "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"] . "</td></tr>".
+        "</tr>\n".
+        "<tr><td colspan=\"3\">&nbsp;</td></tr>\n".
+        "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
@@ -395,33 +400,35 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    $seite=0;     
    foreach ($edit_artikel_long_text as $long_text)  {
       $seite++;
-      echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>".
+      echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
            "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('edit_artikel_long_text[]', '" . $long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
-   echo "</td></tr>";
+   echo "</td></tr>\n";
    }
-   echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>".
+   echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
-   echo "</td></tr>".
-        "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>".
-        "</table>".
-        "</form>";
+   echo "</td></tr>\n".
+        "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>\n".
+        "</table>\n".
+        "</form>\n";
 }
 function artikel_browse($page_id, $author_id){
 	global $conf,$lang;
 
+    if ($author_id=="" || !isset($author_id)) {$author_id = $conf["author_id"];}
+
 	echo "\n<h1>" . $lang["artikel_verwaltung"] . "</h1>\n";
-	if (checkgroupcreate($conf["author_groups"], "artikel") == 1){ echo "<a href=\"" . $conf["admp"] . "&action=new&section=artikel\">" . $lang["artikel_anlegen"] ."</a>";}
-	echo "<form action=\"" . $conf["admp"] . "&section=artikel\" method=\"post\">";
+	if (checkgroupcreate($conf["author_groups"], "artikel") == 1){ echo "<a href=\"" . $conf["admp"] . "&action=new&section=artikel\">" . $lang["artikel_anlegen"] ."</a>\n";}
+	echo "<form action=\"" . $conf["admp"] . "&section=artikel\" method=\"post\">\n";
     echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
     echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
     createsel_pagenCAs("page_id", $page_id); 
@@ -433,35 +440,41 @@ function artikel_browse($page_id, $author_id){
     echo "</form>\n";
     echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
     if ($page_id <> ""){
-	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td width=\"30\">".$lang["artikel_bearbeiten_kurz"] . "</td><td width=\"30\">".$lang["artikel_loeschen_kurz"] . "</td></tr>\n";
+	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
 	  $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
 	  if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
 	  $Statement .= " order by artikel_publish_date DESC";
 	  $result = dbquery($Statement);
 	  if ( mysql_num_rows($result) > 0 ){
          while ($row = mysql_fetch_object($result)){
-            $artikelpage = explode(":", $row->artikel_page);
-      	    $artikelpage = $artikelpage[1];
       	    echo "<td>". $row->artikel_id . "</td>";
-            echo "<td><a href=\"" . $conf["indexname"] . "/artikel/".$artikelpage ."/".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."</a></td>";
+            echo "<td><a href=\"" . $conf["indexname"] . "artikel/".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."</a></td>";
  		    echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
 		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
             echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
             echo "<td>". $row->artikel_counter."</td>";
 		    echo "<td>";
-		    if (checkgroupmodify($conf["author_groups"], "artikel") == 1){
+		    if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
 		       echo "<a href=\"" . $conf["admp"] . "&action=edit&section=artikel&edit_artikel_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_bearbeiten_kurz"] . "\"></a>";
 		    } else {
 	           echo "&nbsp;";
 	        }
 		    echo "</td>";
 		    echo "<td>";
-		    if (checkgroupdelete($conf["author_groups"], "artikel") == 1){
+            if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
 		       echo "<a href=\"" . $conf["admp"] . "&action=delete&section=artikel&delete_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
 		    } else {
 		      echo "&nbsp;";
 		    } 
 		    echo "</td>";
+		    echo "<td>";
+            if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
+		       echo "<a href=" . $conf["admp"] . "&section=rights&modul_name=artikel&modul_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
+		    }else{
+		       echo "&nbsp;";
+		    } 
+		    echo "</td>";
+		    
 		    echo "</tr>\n";
 		 }
 		 mysql_free_result($result);
@@ -472,21 +485,21 @@ function artikel_browse($page_id, $author_id){
 function createsel_aktiv($select_name,$grouplist)
 {
    global $conf, $lang;
-   echo "<select name=\"" . $select_name . "\">";
+   echo "<select name=\"" . $select_name . "\">\n";
    echo "<option";
    if ($grouplist == "J"){echo " selected";};
    echo " value=\"J\">Ja</option>";
    echo "<option";
    if ($grouplist == "N"){echo " selected";};
-   echo " value=\"N\">Nein</option>";
-   echo "</select>";
+   echo " value=\"N\">Nein</option>\n";
+   echo "</select>\n";
    return;
 }
 function createsel_pagenCAm($select_name,$grouplist)
 {
    global $conf, $lang;
    $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
-   echo "<select multiple size = \"8\" name=\"" . $select_name . "[]\">";
+   echo "<select multiple size = \"8\" name=\"" . $select_name . "[]\">\n";
    if ( mysql_num_rows($allgroups) > 0 ){
       while ( $g_row = mysql_fetch_object($allgroups) ){
          echo "<option value=" . $g_row->page_id;
@@ -494,26 +507,31 @@ function createsel_pagenCAm($select_name,$grouplist)
          foreach ($grouplist as $value){
             if ( eregi ( $g_row->page_id, $value ) ){echo " selected ";}
          }
-         echo ">" . $g_row->page_name . "</option>";
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", $g_row->page_id) == 1) {
+            echo ">";
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\" >";
+         }	
+         echo $g_row->page_name . "</option>\n";
       }
       mysql_free_result($allgroups);
    }
-   echo "</select>";
+   echo "</select>\n";
    return;
 }
 function createsel_pagenCAs($select_name,$grouplist){
    global $conf, $lang;
    $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
-   echo "<select name=" . $select_name . ">";
+   echo "<select name=" . $select_name . ">\n";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {
          echo "<option value=" . $g_row->page_id;
          if ( eregi ( $g_row->page_id, $grouplist ) ){            echo " selected ";}
-         echo ">" . $g_row->page_name . "</option>";
+         echo ">" . $g_row->page_name . "</option>\n";
       }
       mysql_free_result($allgroups);
    }
-   echo "</select>";
+   echo "</select>\n";
    return;
 }
 ?>

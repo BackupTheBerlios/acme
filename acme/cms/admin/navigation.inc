@@ -352,26 +352,6 @@ function createsel_navtyp($select_name, $type, $type_id) {
    
 }
 
-function getnamebymodulandid($modul, $id){
-   global $conf, $lang;
-
-   $Statement = "select * from acme_module where modul = '" . $modul . "'";
-   $result = dbquery($Statement);
-   if (mysql_num_rows($result) > 0)  { 
-      $row = mysql_fetch_array($result);
-      $Statement = "select *" . 
-                   " from  " . $row["tablename"] . 
-                   " where " . $row["id"] . " = " . $id;
-      $modul_result = dbquery($Statement);
-      if (mysql_num_rows($modul_result) > 0 )  {
-         $modulrow = mysql_fetch_array($modul_result);
-         $name = $modulrow[$row[name]];
-         mysql_free_result($modul_result);
-         return $name;
-      }
-   } 
-}
-
 function createsel_navtopics($select_name,$grouplist, $nav_id) {
    global $conf, $lang;
    $allgroups = dbquery("select * from acme_nav_topics where nav_id = '" . $nav_id . "' order by nav_topic_rank");

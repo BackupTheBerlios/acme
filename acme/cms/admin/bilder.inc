@@ -12,13 +12,13 @@ switch ($action) {
      img_update($img_id, $edit_img_name, $edit_img_description,$edit_img_desc_long,$img_typ_id);
   break;
   case "img_typ_update" :
-     img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows, $edit_img_typ_cols, $edit_img_typ_maxheight, $edit_img_typ_maxwidth);
+     img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,$edit_img_typ_img_small_inactive,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows, $edit_img_typ_cols, $edit_img_typ_maxheight, $edit_img_typ_maxwidth);
   break;
   case "img_new":
      img_new($img_typ_id);
   break;
   case "img_typ_new":
-     img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small,  $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth);
+     img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth);
   break;
   case "img_add":
      if (!file_exists($HTTP_POST_FILES['datei']['tmp_name'])) { $error .= $lang["bilder_nofile"]."<br>";}
@@ -33,7 +33,7 @@ switch ($action) {
      }
   break;
   case "img_typ_add":
-     img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small,  $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth);
+     img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth);
   break;
   case "img_delete":
      img_delete($img_id);
@@ -87,22 +87,35 @@ function img_typ_browse(){
       echo "<a href=\"" . $conf["admp"] ."&section=bilder&action=img_typ_new\">".$lang["bilder_typ_neu"]."</a>";
    }
    echo "<table class=\"reda_td \">";
-   echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></tr>";
+   echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></td><td></td></tr>";
    $result = dbquery("select * from acme_bilder_typs");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)){
          $img_count = count_img_from_typ($row->img_typ_id);
-         echo "<tr><td>\n";
-         if ( checkgroupcreate($conf["author_groups"], "bilder") == 1){
-            echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\">".$row->img_typ_name."</a>\n";
+         echo "<tr><td>". $row->img_typ_name. "</td><td>" . $img_count . "</td><td>\n";
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1) {
+            echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_nbe.png\" width=\"25\" height=\"25\"></a>\n";
          }else{
-         	echo $row->img_typ_name;
+         	echo "&nbsp;";
          }
-         echo "</td><td>" . $img_count . "</td><td>\n";
-         if ( checkgroupmodify($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_edit&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
-         echo "</td>";
-         echo "<td>";
-         if ($img_count == 0 && checkgroupdelete($conf["author_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
+         echo "</td><td>";	
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1){
+         	echo "<a href=\"" . $conf["admp"] . "&action=img_typ_edit&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+         }else{
+         	echo "&nbsp;";
+         }	
+         echo "</td><td>";
+         if ($img_count == 0 && acl_check("delete", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1){
+         	echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
+         } else {
+         	echo "&nbsp;";
+         }	
+         echo "</td><td>";	
+         if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1){
+         	echo "<a href=" . $conf["admp"] . "&section=rights&modul_name=bilder&modul_id=".$row->img_typ_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";
+         }else{
+         	echo "&nbsp;";
+         }	
          echo "</td>";
          echo "</tr>";
       }
@@ -133,22 +146,21 @@ function img_new($img_typ_id){
 }
 
 
-function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small,  $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
+function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
    global $conf, $lang;
 
    echo "<h1>".$lang["bilder_typ_neu"]."</h1>".
         "<form action=\"" . $conf["admp"] . "&section=bilder&action=img_typ_add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">".
         "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>".
-        "<tr><td colspan = 4>".$lang["bilder_typ_name"]."</td></tr>".
-        "<tr>".
-        "<td colspan=\"4\"><input name=new_img_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_img_typ_name)) . "\"></td>".
-        "</tr>".
-        "<tr><td>".$lang["bilder_typ"]."</td><td>".$lang["bilder_typ_tpl"]."</td><td>".$lang["bilder_typ_logo_gross"]."</td><td>".$lang["bilder_typ_logo_klein"]."</td></tr>\n".
-        "<tr>".
+        "<tr><td colspan = 4>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_typ"]."</td></tr>".
+        "<tr><td colspan=\"4\"><input name=new_img_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_img_typ_name)) . "\"></td>".
         "<td>";
    createsel_img_typ_parent("new_img_typ_parent_id",$new_img_typ_parent_id);
    echo "</td>".
-        "<td";
+        "</tr>".
+        "<tr><td>".$lang["bilder_typ_tpl"]."</td><td>".$lang["bilder_typ_logo_gross"]."</td><td>".$lang["bilder_typ_logo_klein"]."</td><td>".$lang["bilder_typ_logo_klein_inactive"]."</td><td>&nbsp;</td></tr>\n".
+        "<tr>".
+        "<td>";
    createsel_tpl("new_img_typ_tpl",  $new_img_typ_tpl);
    echo "</td>".
         "<td>";
@@ -157,9 +169,15 @@ function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
         "<td>";
    createsel_img("new_img_typ_img_small",  $new_img_typ_img_small);
    echo "</td>".
+        "<td>";
+   createsel_img("new_img_typ_img_small_inactive",  $new_img_typ_img_small_inactive);
+   echo "</td><td>&nbsp;</td>".
         "</tr>".
-        "<tr><td>".$lang["bilder_typ_bar_left"]."</td><td>".$lang["bilder_typ_bar_right"]."</td><td>".$lang["bilder_typ_bar_top"]."</td><td>".$lang["bilder_typ_bar_bottom"]."</td></tr>".
+        "<tr><td>".$lang["bilder_typ_frame"]."</td><td>".$lang["bilder_typ_bar_left"]."</td><td>".$lang["bilder_typ_bar_right"]."</td><td>".$lang["bilder_typ_bar_top"]."</td><td>".$lang["bilder_typ_bar_bottom"]."</td></tr>".
         "<tr>".
+        "<td>";
+      echo "&nbsp;"; // createsel_frame("edit_img_typ_frame", $row["img_typ_frame"]);
+      echo "</td>".        
         "<td>";
    createsel_bar("new_img_typ_left_bar", $new_img_typ_left_bar);
    echo "</td>".
@@ -173,24 +191,24 @@ function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
    createsel_bar("new_img_typ_foo_bar",  $new_img_typ_foo_bar);
    echo "</td>".
         "</tr>\n".
-        "<tr><td>".$lang["bilder_typ_cols"]."</td><td>".$lang["bilder_typ_rows"]."</td><td>".$lang["bilder_typ_maxwidth"]."</td><td>".$lang["bilder_typ_maxheight"]."</td></tr>".
+        "<tr><td>".$lang["bilder_typ_cols"]."</td><td>".$lang["bilder_typ_rows"]."</td><td>".$lang["bilder_typ_maxwidth"]."</td><td>".$lang["bilder_typ_maxheight"]."</td><td>&nbsp;</td></tr>".
         "<tr>".
         "<td><input name=new_img_typ_cols size=5 maxlength=5 value = \"" . $new_img_typ_cols . "\"></td>".
         "<td><input name=new_img_typ_rows size=5 maxlength=5 value = \"" . $new_img_typ_rows . "\"></td>".
         "<td><input name=new_img_typ_maxwidth size=5 maxlength=5 value = \"" . $new_img_typ_maxwidth . "\"></td>".
         "<td><input name=new_img_typ_maxheight size=5 maxlength=5 value = \"" . $new_img_typ_maxheight . "\"></td>".
-        "</tr>".
-        "<tr><td colspan=\"4\">&nbsp;</td></tr>".
-        "<tr><td colspan=\"4\">".$lang["bilder_typ_text"]."</td></tr>".
+        "<td>&nbsp;</td></tr>".
+        "<tr><td colspan=\"5\">&nbsp;</td></tr>".
+        "<tr><td colspan=\"5\">".$lang["bilder_typ_text"]."</td></tr>".
         "<tr>".
-        "<td colspan=\"4\"><textarea name=new_img_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_img_typ_text)) . "</textarea></td>".
+        "<td colspan=\"5\"><textarea name=new_img_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_img_typ_text)) . "</textarea></td>".
         "</tr>".
-        "<tr><td colspan=\"4\"><input type=submit name=edit_page value=".$lang["bilder_speichern"]."></td></tr>".
+        "<tr><td colspan=\"5\"><input type=submit name=edit_page value=".$lang["bilder_speichern"]."></td></tr>".
         "</table>".
         "</form>";
 }
 
-function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id,  $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
+function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
    global $conf, $lang;
 
   $Statement = "INSERT INTO acme_bilder_typs SET".
@@ -200,6 +218,7 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
                 " img_typ_cols = '". $new_img_typ_cols . "',".
                 " img_typ_rows = '". $new_img_typ_rows . "',".
                 " img_typ_img_small = '". $new_img_typ_img_small . "',".
+                " img_typ_img_small_inactive = '". $new_img_typ_img_small_inactive . "',".
                 " img_typ_img_big = '". $new_img_typ_img_big . "',".
                 " img_typ_left_bar = '". $new_img_typ_left_bar . "',".
                 " img_typ_right_bar = '". $new_img_typ_right_bar . "',".
@@ -254,25 +273,27 @@ function img_typ_edit($id){
            "<form action=\"" . $conf["admp"] . "&section=bilder&action=img_typ_update\" ENCTYPE=\"multipart/form-data\" method=\"POST\">".
            "<input type=hidden name=edit_img_typ_id value=\"" . $row->img_typ_id . "\">".
            "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>".
-           "<tr><td colspan=\"4\">".$lang["bilder_typ_name"]."</td></tr>".
-           "<tr><td colspan=\"4\"><input name=edit_img_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->img_typ_name) . "\"></td></tr>".
-           "<tr><td colspan=\"4\">&nbsp;</td></tr>".
-           "<tr><td>".$lang["bilder_typ"]."</td><td>".$lang["bilder_typ_tpl"]."</td><td>".$lang["bilder_typ_logo_gross"]."</td><td>".$lang["bilder_typ_logo_klein"]."</td></tr>\n".
+           "<tr><td colspan=\"4\">".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_typ"]."</td></tr>".
+           "<tr><td colspan=\"4\"><input name=edit_img_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->img_typ_name) . "\"></td>".
            "<td>";
       createsel_img_typ_parent("edit_img_typ_parent_id",$row->img_typ_parent_id,$row->img_typ_id);
-      echo "</td>".   
-           "<td>";
+      echo "</td>".  
+           "<tr><td>".$lang["bilder_typ_tpl"]."</td><td>".$lang["bilder_typ_logo_klein"]."</td><td>".$lang["bilder_typ_logo_klein_inactive"]."</td><td>".$lang["bilder_typ_logo_gross"]."</td><td>&nbsp;</td></tr>\n".
+            "<td>";
       createsel_tpl("edit_img_typ_tpl",  $row->img_typ_tpl);
-      echo "</td>".
-           "<td>";
-      createsel_img("edit_img_typ_img_big",  $row->img_typ_img_big);
       echo "</td>".
            "<td>";
       createsel_img("edit_img_typ_img_small",  $row->img_typ_img_small);
       echo "</td>".
+           "<td>";
+      createsel_img("edit_img_typ_img_small_inactive",  $row->img_typ_img_small_inactive);
+      echo "</td>".
+           "<td>";
+      createsel_img("edit_img_typ_img_big",  $row->img_typ_img_big);
+      echo "</td><td>&nbsp;</td>".
            "</tr>".
-           "<tr><td>".$lang["bilder_typ_bar_left"]."</td><td>".$lang["bilder_typ_bar_right"]."</td><td>".$lang["bilder_typ_bar_top"]."</td><td>".$lang["bilder_typ_bar_bottom"]."</td></tr>".
-           "<tr>".
+           "<tr><td>".$lang["bilder_typ_frame"]."</td><td>".$lang["bilder_typ_bar_left"]."</td><td>".$lang["bilder_typ_bar_right"]."</td><td>".$lang["bilder_typ_bar_top"]."</td><td>".$lang["bilder_typ_bar_bottom"]."</td></tr>".
+           "<tr><td>&nbsp;</td>".
            "<td>";
       createsel_bar("edit_img_typ_left_bar", $row->img_typ_left_bar);
       echo "</td>".
@@ -286,18 +307,18 @@ function img_typ_edit($id){
       createsel_bar("edit_img_typ_foo_bar",  $row->img_typ_foo_bar);
       echo "</td>".
            "</tr>\n".
-           "<tr><td>".$lang["bilder_typ_cols"]."</td><td>".$lang["bilder_typ_rows"]."</td><td>".$lang["bilder_typ_maxwidth"]."</td><td>".$lang["bilder_typ_maxheight"]."</td></tr>".
+           "<tr><td>".$lang["bilder_typ_cols"]."</td><td>".$lang["bilder_typ_rows"]."</td><td>".$lang["bilder_typ_maxwidth"]."</td><td>".$lang["bilder_typ_maxheight"]."</td><td>&nbsp;</td></tr>".
            "<tr>".
            "<td><input name=edit_img_typ_cols size=5 maxlength=5 value = \"" . $row->img_typ_cols . "\"></td>".
            "<td><input name=edit_img_typ_rows size=5 maxlength=5 value = \"" . $row->img_typ_rows . "\"></td>".
            "<td><input name=edit_img_typ_maxwidth size=5 maxlength=5 value = \"" . $row->img_typ_maxwidth . "\"></td>".
            "<td><input name=edit_img_typ_maxheight size=5 maxlength=5 value = \"" . $row->img_typ_maxheight . "\"></td>".
-           "</tr>".
-           "<tr><td colspan=\"4\">".$lang["bilder_typ_text"]."</td></tr>".
+           "<td>&nbsp;</td></tr>".
+           "<tr><td colspan=\"5\">".$lang["bilder_typ_text"]."</td></tr>".
            "<tr>".
-           "<td colspan=\"4\"><textarea name=edit_img_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->img_typ_text) . "</textarea></td>".
+           "<td colspan=\"5\"><textarea name=edit_img_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->img_typ_text) . "</textarea></td>".
            "</tr>".
-           "<tr><td colspan=\"4\"><input type=submit name=edit_page value=Speichern></td></tr>".
+           "<tr><td colspan=\"5\"><input type=submit name=edit_page value=Speichern></td></tr>".
            "</table>".
            "</form>";
       mysql_free_result($result);
@@ -555,43 +576,75 @@ function count_img_from_typ($img_typ_id){
    $query = dbquery("select img_id from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
    return mysql_num_rows($query);
 }      
-function createsel_img_typ($select_name,$grouplist){
+
+function createsel_img_typ($select_name,$id){
+   global $conf, $lang;
+
+   echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
+   echo "<option value= \"\"></option>";
+   getimgtyp4select($parent, &$h_level, $id);
+   echo "</select>";
+   return;
+}
+function getimgtyp4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
-   $grouplist=explode(":", $grouplist);
-   $allgroups = dbquery("select * from acme_bilder_typs order by img_typ_name");
-   echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
-   if ( mysql_num_rows($allgroups) > 0 ) {
-      while ( $g_row = mysql_fetch_object($allgroups) ) {
-         echo "<option value=" . $g_row->img_typ_id;
-         if (is_array($grouplist)){
+   $result = dbquery("select * from acme_img_typs where img_typ_parent_id = '" . $parent . "' order by img_typ_name");
+   if ( mysql_num_rows($result) > 0 ){
+      while ($row = mysql_fetch_object($result)){
+      	 echo "<option value=" . $row->img_typ_id;
+      	 if (is_array($grouplist)){
             foreach ($grouplist as $value){
               if ( eregi ( $g_row->img_typ_id, $value ) ){echo " selected ";}
             }
          }
-         echo ">" . $g_row->img_typ_name . "</option>";
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1 && $row->img_typ_id <> $selfid) {
+            echo ">";
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\">";
+         }	
+         for ($count = 0;$count < $h_level; $count++){echo "-";} 
+         echo $row->img_typ_name . "</option>";
+         $h_level++;
+         getimgtyp4select($row->img_typ_id, $h_level, $grouplist, $selfid);
+         $h_level--;
       }
-      mysql_free_result($allgroups);
+      mysql_free_result($result);
    }
-   echo "</select>";
-   return;
-}
+}   
+
+
 function createsel_img_typ_parent($select_name,$id,$selfid="0"){
    global $conf, $lang;
-   
-   $allgroups = dbquery("select * from acme_bilder_typs where img_typ_parent_id = '' and img_typ_id <> ".$selfid." order by img_typ_name");
-   echo "<select size = \"1\" name=\"" . $select_name . "\">";
-   if (!isset($id)){echo "<option value=\"\" selected></option>";}
-   else {echo "<option value=\"\" ></option>";}
-   if ( mysql_num_rows($allgroups) > 0 ) {
-      while ( $g_row = mysql_fetch_object($allgroups) ) {
-         echo "<option value=" . $g_row->img_typ_id;
-         if ( eregi ( $g_row->img_typ_id, $id ) ){ echo " selected ";}
-         echo ">" . $g_row->img_typ_name . "</option>";
-      }
-      mysql_free_result($allgroups);
-   }
-   echo "</select>";
+
+   echo "\n<select name=" . $select_name . ">\n";
+   echo "<option value= \"\"></option>\n";
+   getimgparent4select(0, &$h_level, $id, $selfid);
+   echo "</select>\n";
    return;
 }
+function getimgparent4select($parent, &$h_level, $grouplist, $selfid){
+   global $conf, $lang;
+   echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa";
+   $result = dbquery("select * from acme_bilder_typs where img_typ_parent_id = " . $parent . " order by img_typ_name");
+   echo mysql_errno() . ": " . mysql_error(). "\n";
+   if ( mysql_num_rows($result) > 0 ){
+      while ($row = mysql_fetch_object($result)){
+      	 echo "<option value=" . $row->img_typ_id;
+         if ( eregi ( $row->img_typ_id, $grouplist ) ){echo " selected ";}
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1 && $row->img_typ_id <> $selfid) {
+            echo ">";
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\">";
+         }	
+         for ($count = 0;$count < $h_level; $count++){echo "-";} 
+         echo $row->img_typ_name . "</option>\n";
+         $h_level++;
+         getimgparent4select($row->img_typ_id, $h_level, $grouplist, $selfid);
+         $h_level--;
+      }
+      mysql_free_result($result);
+   }
+}   
+
 ?>

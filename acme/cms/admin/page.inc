@@ -115,7 +115,6 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
                 " page_short_text = '". $edit_page_short_text . "',".
                 " page_long_text = '". $edit_page_long_text . "',".
                 " page_long_text_typ = '". $edit_page_long_text_typ . "',".
-                " page_author_id = '" . $conf["author_id"] ."',".                
                 " page_childs = '". $edit_page_childs . "',".
                 " page_modify_date = NOW(),".
                 " page_comments = '". $edit_page_comments . "'".
@@ -142,7 +141,7 @@ function pagebrowse(){
       echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
+   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
    writepagechilds($parent,$h_level);
    echo "</table>";
 }      
@@ -204,7 +203,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "</tr>";
    echo "<tr><td colspan=5>&nbsp;</td></tr>\n";
    echo "<tr><td colspan=4>".$lang["page_ueberschrift"]."</td><td>".$lang["page_langtexttyp"]."</td></tr>";
-   echo "<tr><td colspan=4><input name=new_page_headline size=75 maxlength=127 value = \"" . htmlspecialchars(stripslashes($new_page_headline)) . "\"></td></tr>";
+   echo "<tr><td colspan=4><input name=new_page_headline size=75 maxlength=127 value = \"" . htmlspecialchars(stripslashes($new_page_headline)) . "\"></td>";
    echo "<td colspan = 1>";
    createsel_ltt("new_page_long_text_typ",$new_page_long_text_typ);
    echo "</td>";
@@ -312,7 +311,6 @@ function writepagechilds($parent, &$h_level){
          echo "<td>". $row->page_childs."</td>";         
          echo "<td>";
          if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
-
             echo "<a href=" . $conf["admp"] . "&action=edit&section=page&id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
@@ -325,7 +323,7 @@ function writepagechilds($parent, &$h_level){
          echo "</td>";
          echo "<td>";
          if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
-            echo "<a href=" . $conf["admp"] . "&section=rights&action=change&modul=page&modul_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";      			
+            echo "<a href=" . $conf["admp"] . "&section=rights&modul_name=page&modul_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";      			
          } else {echo "&nbsp;";}
          echo "</td>";
          echo "</tr>\n";
@@ -394,14 +392,15 @@ function getpages4select($parent, &$h_level, $grouplist){
    $result = dbquery("select * from acme_pages where page_childs = 'P' and page_parent = '" . $parent . "' order by page_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
-      	// acls sind vorerst aus...
-      	// if (checkacl("access", $conf["author_groups"], $conf["author_id"], "page", $g_row->page_id) == 1) { 
-            echo "<option value=" . $row->page_id;
-            if ( eregi ( $row->page_id, $grouplist ) ){echo " selected ";}
+      	 echo "<option value=" . $row->page_id;
+         if ( eregi ( $row->page_id, $grouplist ) ){echo " selected ";}
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
             echo ">";
-            for ($count = 0;$count < $h_level; $count++){echo "-";} 
-            echo $row->page_name . "</option>";
-      	// }   
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\">";
+         }	
+         for ($count = 0;$count < $h_level; $count++){echo "-";} 
+         echo $row->page_name . "</option>";
          $h_level++;
          getpages4select($row->page_id, $h_level, $grouplist);
          $h_level--;
