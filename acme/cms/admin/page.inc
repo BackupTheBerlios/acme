@@ -328,9 +328,9 @@ function createsel_ltt($select_name,$grouplist)
    echo "</select>";
    return;
 }
-function createsel_pagenCAs($select_name,$grouplist){
+function createsel_pagenCPs($select_name,$grouplist){
    global $conf, $lang;
-   $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
+   $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'P' order by page_name");
    echo "<select name=" . $select_name . ">";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {
