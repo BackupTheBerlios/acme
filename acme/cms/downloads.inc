@@ -29,11 +29,7 @@
 
 */ 
 if ($page="download"){
-   $id  = array_shift($path);
-   if(!isset($id)){$id = "0";}
-   $did = array_shift($path);
-   if(!isset($did)){$did = "0";}
-   renderdownloads($id, $did);
+   renderdownloads($download_typ_id, $download_id);
    }
   
 function renderdownloads($id, $did){

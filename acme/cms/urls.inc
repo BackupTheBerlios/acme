@@ -30,11 +30,7 @@
 */ 
 
 if ($page="urls"){
-   $id  = array_shift($path);
-   if(!isset($id)){$uid = "0";}
-   $uid = array_shift($path);
-   if(!isset($uid)){$uid = "0";}
-   renderurls($id, $uid);
+   renderurls($url_typ_id, $url_id);
    }
   
 function renderurls($id,$uid){

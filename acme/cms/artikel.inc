@@ -59,10 +59,7 @@
 */
 
 if ($page == "artikel"){
-   $page_id = array_shift($path);
-   $artikel_id = array_shift($path);   
-   $artikel_part = array_shift($path);
-   renderartikel($page_id, $artikel_id, $artikel_part);
+   renderartikel($page_id, $artikel_id, $artikel_part, $print);
 }
 
 function renderartikel($page_id, $artikel_id, $artikel_part){
@@ -132,7 +129,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
             }
             
          }
-         $data->artikel->print_url  = $conf["indexname"]."aprint/" . $page_id . "/".$artikel_id;
+         $data->artikel->print_url  = $conf["indexname"]."artikel/" . $page_id . "/".$artikel_id."/print";
          $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
          $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
          $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
@@ -144,7 +141,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
          $data->artikel->img_small    = getimage($page_img_small);
          $data->artikel->img_big      = getimage($page_img_big);
          $data->artikel->page_url     = $conf["indexname"]."page/".$page_id;
-         $data->artikel->page         = getpageheadlinebyid($page_id);
+         $data->artikel->page         = $page_headline;
          $data->artikel->headline     = $artikel_headline;
          $data->artikel->sub_headline = $artikel_sub_headline;
          $data->artikel->short_text   = parse_bbcode(nltobr($artikel_short_text), $page_tpl);

@@ -29,11 +29,7 @@
  
 */ 
 if ($page == "blog") {
-   $id = array_shift($path);
-   $bj = array_shift($path);
-   $bm = array_shift($path);
-   $cat = array_shift($path);
-   renderblog($id, $bj, $bm, $cat);
+   renderblog($blog_id, $archiv_j, $archiv_m, $blog_cat);
 }   
  
 function renderblog($bid, $bj, $bm, $cat = 0){
@@ -153,7 +149,7 @@ function getblogcats($data, $blog_id){
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
-         $data->blog->blog_cat[$akt]->url    = $conf["indexname"]."blog/".$blog_id."///". $row->blog_cat_id . "";
+         $data->blog->blog_cat[$akt]->url    = $conf["indexname"]."blog/".$blog_id."/". $row->blog_cat_id . "";
          $data->blog->blog_cat[$akt]->name   = $row->blog_cat_name;                  
       }
  	   mysql_free_result($result);     

@@ -44,17 +44,20 @@
          src
 */
 
-   $id = array_shift($path);
-   $anfang = array_shift($path);
-   if (! isset($anfang) || $anfang == "") {$anfang = "0";}
-   $image = array_shift($path);
-   if (! isset($image)) {$image = "0";}
-   renderbilder($id, $image, $anfang);
+renderbilder($img_typ_id, $image_id, $img_typ_anfang);
    
 
 function renderbilder($img_typ_id, $img_id, $anfang){
    global $conf, $lang;
 
+   if ($img_typ_id==0 || !isset(img_typ_id)) {
+      $query = "select * from acme_bilder order by img_id LIMIT 1,1";
+      $my_result = dbquery($query);
+      if ( mysql_num_rows($my_result) > 0 ){
+         $row = mysql_fetch_object($my_result);
+         $img_typ_id = $row->img_typ_id;
+      }
+   }
    $img_typ_result = dbquery("select * from acme_bilder_typs where img_typ_id='".$img_typ_id."'");
    if (mysql_num_rows($img_typ_result) == 1) {
       $img_typ_row = mysql_fetch_object($img_typ_result);

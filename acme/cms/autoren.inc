@@ -33,8 +33,7 @@
 */
 
 if ($page == "autor"){
-   $id     = array_shift($path);   
-   renderautor($id);
+   renderautor($autor_id);
 }
   
 function renderautor($id){

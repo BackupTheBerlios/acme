@@ -25,6 +25,7 @@
         modify_time
 
         self_url		  href der seite
+        self_url_print    href der seite fuer druck
        
         {mask:parent}            
            name	  Überschrift Elternseite
@@ -47,7 +48,7 @@
            url
         {/mask:page_url_last}               
         
-        page_url_aktpage	// nummer der aktuellen seite        
+        page_url_aktpage	    
                  
         {mask:page_url_seiten}   nicht existent bei pagespreview
            nr					Seitennummer
@@ -78,19 +79,15 @@
 */
 
 if ($page == "page"){
-   $id     = array_shift($path);
-   $anfang = array_shift($path);
-   if (!isset($anfang)){$anfang = 0;}
-   if (!isset($id)){$id = 0;}   
    $conf["page"]    = "page";
-   $conf["page_id"] = $id;
-   renderpage($id, $anfang);
+   $conf["page_id"] = $pageid;
+   renderpage($pageid, $pagestart, $pageprint);
 }
 
-function renderpage($id, $anfang){
+function renderpage($pageid, $pagestart, $pageprint){
    global $conf, $lang;
    
-   $my_result = dbquery("select * from acme_pages where page_id='".$id."'");
+   $my_result = dbquery("select * from acme_pages where page_id='".$pageid."'");
    if ( mysql_num_rows($my_result) == 1 )      {
       $row = mysql_fetch_object($my_result);
       $page_id = $row->page_id;
@@ -157,7 +154,7 @@ function renderpage($id, $anfang){
       $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
       $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
       $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");
-      getpagechildsforpreview(&$data, $page_id, $page_childs, $anfang, $page_tpl);
+      getpagechildsforpreview(&$data, $page_id, $page_childs, $pagestart, $page_tpl);
       $page_output = sprintt($data, $tplfile);
       if ($page_long_text_typ == "H"){echo $page_output;}
       if ($page_long_text_typ == "B"){echo $page_output;}

@@ -7,21 +7,20 @@ include($conf["cmsbase"] . "/fkt_db.inc");
 include($conf["cmsbase"] . "/fkt_etc.inc");
 include($conf["cmsbase"] . "/fkt_rte.inc");
 include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
+
 dbconnect();
 
 $conf["admp"] = "acme-admin.php?";
 
-if ($typ=="C") {$conf["admp"] = $conf["admp"]."&typ=C";}
-
-if ($typ=="L") {$conf["admp"] = $conf["admp"]."&typ=L";}
-
-if ($typ=="A") {$conf["admp"] = $conf["admp"]."&typ=A";}
-
 include($conf["admbase"] . "/auth.inc");
+
+if ($typ=="C") {$conf["admp"] = $conf["admp"]."&typ=C";}
+if ($typ=="L") {$conf["admp"] = $conf["admp"]."&typ=L";}
+if ($typ=="A") {$conf["admp"] = $conf["admp"]."&typ=A";}
 
 include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
 
-if ($conf["author_id"] <> 0) {
+if ($logged_in == 1) {
 
 ?>
 
@@ -219,6 +218,5 @@ echo "</div>";
 
 <?php
 
-} else {echo "ha";}
-
+}
 ?>
