@@ -343,7 +343,7 @@ function createsel_bartyp($select_name, $type, $type_id) {
    $result = dbquery("select * from acme_module where bar = 'Y'");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_array($result)){
-         $Statement = "select * from " . $row[table] . "";
+         $Statement = "select * from " . $row[tablename] . "";
          $modul_result = dbquery($Statement);
          if ( mysql_num_rows($modul_result) > 0 )  { 
             while ($modulrow = mysql_fetch_array($modul_result)){
@@ -372,8 +372,9 @@ function getnamebymodulandid($modul, $id){
    if (mysql_num_rows($result) > 0)  { 
       $row = mysql_fetch_array($result);
       $Statement = "select *" . 
-                   " from  " . $row["table"] . 
+                   " from  " . $row["tablename"] . 
                    " where " . $row["id"] . " = " . $id;
+                   echo $Statement;
       $modul_result = dbquery($Statement);
       if (mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
