@@ -840,7 +840,7 @@ a:active
               }
 
 /* Navbutton Kategorie ADMIN (optionen) */
-.nav_button_td_a
+td.nav_button_td_a
 
               {
 
@@ -858,7 +858,7 @@ a:active
               }
 
 /* Navbutton Kategorie CONTENT */
-.nav_button_td_c
+td.nav_button_td_c
 
               {
 
@@ -876,7 +876,7 @@ a:active
               }
 
 /* Navbutton Kategorie LAYOUT (Struktur) */
-.nav_button_td_l
+td.nav_button_td_l
 
               {
                 padding-left:6px;

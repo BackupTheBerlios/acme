@@ -130,7 +130,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
        if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
 
-          echo "<tr><td class=\"nav_button_td_c\"><a href=" . $conf["admp"] ."&section=" . $row->modul . " class=\"navbuttonlink\">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
+          echo "<tr><td class=\"nav_button_td_c\"><a href=" . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
        }
 
@@ -178,7 +178,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
        if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
 
-          echo "<tr><td class=\"nav_button_td_a\"><a href=" . $conf["admp"] ."&section=" . $row->modul . " class=\"navbuttonlink\">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
+          echo "<tr><td class=\"nav_button_td_a\"><a href=" . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
        }
 
