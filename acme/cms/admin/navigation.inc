@@ -60,7 +60,7 @@ function nav_browse(){
    global $conf, $lang;
    
    echo "<h1>".$lang["navigation_verwaltung"]."</h1>".
-        "<a href=\"" . $conf["admp"] . "&section=navigation&action=nav_new\">Neue Navigation anlegen</a>".
+        "<a href=\"" . $conf["admp"] . "&section=navigation&action=nav_new\">".$lang["navigation_anlegen"]."</a>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["navigation_name"]."</td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
    $result = dbquery("select * from acme_nav order by nav_name");

@@ -6,7 +6,6 @@ $lang["navigation_eintrag"]="entry";
 $lang["navigation_bearbeiten"]="edit navigation";
 $lang["navigation_anlegen"]="create navigation";
 $lang["navigation_zugriff"]="access";
-$lang["navigation_erstellen"]="create navigation";
 $lang["navigation_speichern"]="save";
 $lang["navigation_inaktiv"]="inactive";
 $lang["navigation_anfang"]="at the top";

@@ -215,6 +215,8 @@ echo "<div id=\"main\">\n";
 
      include($conf["admbase"] . "/" . $section . ".inc");
 
+  } else {
+  	 include($conf["admbase"] . "/messages.inc");
   }
 
 echo "</div>";
