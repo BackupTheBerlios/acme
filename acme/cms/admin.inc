@@ -119,7 +119,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
        if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
 
-          echo "<tr><td bgcolor=\"#5E2222\"><a href= " . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
+          echo "<tr><td class=\"nav_button_td_c\"><a href= " . $conf["admp"] ."&section=" . $row->modul . ">" . $lang["admin_$row->modul"] . "</a></td></tr>\n";
 
        }
 
@@ -177,7 +177,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
 }
 
-echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"Hilfe" . $lang["admin_hilfe"]. "\" border=\"0\" style=\"z-index:2;\"><div style=\"position:relative; left:60px; top:-32px;; z-index:10; \"> " . $lang["admin_hilfe"]. "</div></a>    </td></tr>";
+echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" class=\"navbuttonlink\" alt=\"Öffnet sich im neuen Fenster: Link zum Hilfe-Center\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"Hilfe" . $lang["admin_hilfe"]. "\" border=\"0\" style=\"z-index:2;\"><div style=\"position:relative; left:60px; top:-32px;; z-index:10; \"> " . $lang["admin_hilfe"]. "</div></a>    </td></tr>";
 
 echo "<tr><td><a href=" . $conf["admp"] ."&section=logout class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
 
