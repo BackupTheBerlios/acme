@@ -22,7 +22,7 @@ switch ($action) {
   break;
   case "img_add":
      if (!file_exists($HTTP_POST_FILES['datei']['tmp_name'])) { $error .= $lang["bilder_nofile"]."<br>";}
-     if (file_exists($conf["images"] . "/" . $HTTP_POST_FILES['datei']['name'])) { $error .= $lang["bilder_fileexists"]."<br>";}
+     if (file_exists($conf["imagesdir"] . $HTTP_POST_FILES['datei']['name'])) { $error .= $lang["bilder_fileexists"]."<br>";}
      if ($error <> ""){
         unlink ($HTTP_POST_FILES['datei']['tmp_name']);
         echo $error;
@@ -353,9 +353,9 @@ function img_delete($img_id){
       $imagename = $row->img_real_name;
       $img_typ_id = $row->img_typ_id;      
       echo "<h2>".$lang["bilder_loesche_datei"] ." ". $bild. "</h2><P>";
-      if (unlink ($conf["imagesdir"] . $imagename)){
+      if (unlink ($conf["imagesdir"] . $imagename) && unlink ($conf["imagesdir"] ."thumb_". $imagename) && unlink ($conf["imagesdir"] ."small_". $imagename)){
          echo $lang["bilder_datei_geloescht"]."<br>";
-      	$Statement = "DELETE FROM acme_bilder WHERE img_id = '" . $img_id . "'";
+      	 $Statement = "DELETE FROM acme_bilder WHERE img_id = '" . $img_id . "'";
          $delete_result = dbquery($Statement);
          if ($delete_result){echo $lang["bilder_datei_entfernt"] . "<br>";}
          else {echo $lang["bilder_datei_nicht_entfernt"];}
@@ -387,6 +387,7 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
          echo $lang["bilder_upload_move_rename"];
          echo "<br>";
          echo $lang["bilder_upload_copy"];
+         
          $tmpimagename = $conf["imagesdir"] . "tmp_".$realname;
          copy ($tmpname, $tmpimagename);
          unlink ($tmpname);
@@ -397,7 +398,11 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
          if ($mix > 0){$image->size_width($mix);}
          if ($miy > 0){$image->size_height($miy);}
          $imagename = $conf["imagesdir"] . $realname;
-         $image->save($imagename);
+         if ($mix > 0 && $miy > 0){
+            $image->save($imagename);
+         } else {
+           copy ($tmpimagename, $conf["imagesdir"] . $realname);
+         }   
          
          $thumb = new thumbnail($tmpimagename);
          $thumb->size_width(60);
@@ -464,34 +469,35 @@ class thumbnail{
 			echo "Not Supported File";
 			exit();
 		}
-		@$this->img["lebar"] = imagesx($this->img["src"]);
-		@$this->img["tinggi"] = imagesy($this->img["src"]);
+		@$this->img["width"] = imagesx($this->img["src"]);
+		@$this->img["height"] = imagesy($this->img["src"]);
+        @$this->img["height_thumb"]= $this->img["height"];
+        @$this->img["width_thumb"] = $this->img["width"];
 		//default quality jpeg
 		$this->img["quality"]=75;
 	}
 
-	function size_height($size=100)	{
-		if ($this->img["tinggi"] > $size) {
-       	$this->img["tinggi_thumb"]=$size;
-      	@$this->img["lebar_thumb"] = ($this->img["tinggi_thumb"]/$this->img["tinggi"])*$this->img["lebar"];
-      }
+	function size_height($size)	{
+		if ($this->img["height"] > $size) {
+       	   $this->img["height_thumb"]=$size;
+      	   @$this->img["width_thumb"] = ($this->img["height_thumb"]/$this->img["height"])*$this->img["width"];
+        }
 	}
 
-	function size_width($size=100)	{
-		if ($this->img["lebar"] > $size) {
-    		$this->img["lebar_thumb"]=$size;
-       	@$this->img["tinggi_thumb"] = ($this->img["lebar_thumb"]/$this->img["lebar"])*$this->img["tinggi"];
-      }
+	function size_width($size)	{
+		if ($this->img["width"] > $size) {
+    		$this->img["width_thumb"]=$size;
+            @$this->img["height_thumb"] = ($this->img["width_thumb"]/$this->img["width"])*$this->img["height"];
+        }
 	}
 
-	function size_auto($size=100)	{
-		if ($this->img["lebar"]>=$this->img["tinggi"]) {
-    		$this->img["lebar_thumb"]=$size;
-    		@$this->img["tinggi_thumb"] = ($this->img["lebar_thumb"]/$this->img["lebar"])*$this->img["tinggi"];
-		} 
-		else {
-	    	$this->img["tinggi_thumb"]=$size;
-    		@$this->img["lebar_thumb"] = ($this->img["tinggi_thumb"]/$this->img["tinggi"])*$this->img["lebar"];
+	function size_auto($size)	{
+		if ($this->img["width"]>=$this->img["height"]) {
+    	   $this->img["width_thumb"]=$size;
+    	   @$this->img["height_thumb"] = ($this->img["width_thumb"]/$this->img["width"])*$this->img["height"];
+		} else {
+	       $this->img["height_thumb"]=$size;
+    	   @$this->img["width_thumb"] = ($this->img["height_thumb"]/$this->img["height"])*$this->img["width"];
  		}
 	}
 
@@ -500,14 +506,20 @@ class thumbnail{
 	}
 
 	function save($save="")	{
-		if (empty($save)) $save=strtolower("./thumb.".$this->img["format"]);
-		$this->img["des"] = ImageCreateTrueColor($this->img["lebar_thumb"],$this->img["tinggi_thumb"]);
-  		@imagecopyresized ($this->img["des"], $this->img["src"], 0, 0, 0, 0, $this->img["lebar_thumb"], $this->img["tinggi_thumb"], $this->img["lebar"], $this->img["tinggi"]);
-		if ($this->img["format"]=="JPG" || $this->img["format"]=="JPEG") {imageJPEG($this->img["des"],"$save",$this->img["quality"]);}
-		elseif ($this->img["format"]=="PNG") {imagePNG($this->img["des"],"$save");}
-		elseif ($this->img["format"]=="GIF") {imageGIF($this->img["des"],"$save");}
-		elseif ($this->img["format"]=="WBMP") {imageWBMP($this->img["des"],"$save");}
-	}
+		if (!empty($save)) {
+           $this->img["des"] = ImageCreateTrueColor($this->img["width_thumb"],$this->img["height_thumb"]);
+           @imagecopyresized ($this->img["des"], $this->img["src"], 0, 0, 0, 0, $this->img["width_thumb"], $this->img["height_thumb"], $this->img["width"], $this->img["height"]);
+           if ($this->img["format"]=="JPG" || $this->img["format"]=="JPEG") {
+              imageJPEG($this->img["des"],"$save",$this->img["quality"]);
+           } elseif ($this->img["format"]=="PNG")  {
+              imagePNG($this->img["des"],"$save");
+           } elseif ($this->img["format"]=="GIF")  {
+              imageGIF($this->img["des"],"$save");
+           } elseif ($this->img["format"]=="WBMP") {
+              imageWBMP($this->img["des"],"$save");
+           }
+        }
+     }   
 }
 
 function get_img_typ_name($img_typ_id){

@@ -130,6 +130,7 @@ function parse_navigation($page_tpl, $nav_id, $side){
       }
       mysql_free_result($result);
    }
+   
    $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".nav.". $side .".tpl";
    return " " . sprintt($data, $tplfile) . " ";
 }
@@ -161,8 +162,13 @@ function getnavimg($modul, $id){
       $modul_result = dbquery($Statement);
       if ( mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
-         $picid_a = $modulrow[$row->navimg] ;
-         $picid_p = $modulrow[$row->navimg."_inactive"] ;
+         if ($modul == $conf["page"] && $conf["page_id"] == $id) {
+            $picid_a = $modulrow[$row->navimg] ;
+            $picid_p = $modulrow[$row->navimg."_inactive"] ;
+         } else {
+            $picid_p = $modulrow[$row->navimg] ;
+            $picid_a = $modulrow[$row->navimg."_inactive"] ;
+         }   
       }
       mysql_free_result($modul_result);
    }
@@ -194,6 +200,7 @@ function getnavimg($modul, $id){
    
    $navimg->act = $act_pic;
    $navimg->pas = $pas_pic;
+   
    return $navimg;
 }
 

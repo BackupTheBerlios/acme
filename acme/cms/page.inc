@@ -160,7 +160,6 @@ function renderpage($pageid, $pagestart){
       if ($page_long_text_typ == "B"){echo $page_output;}
       if ($page_long_text_typ == "P"){echo OutputPhpDocument($page_output);}
    } else {renderpage($conf["home_404"], 0);}
-
 }
 
 function incpagecounter($page_id,$page_counter) {

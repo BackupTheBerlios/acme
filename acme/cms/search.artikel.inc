@@ -24,6 +24,6 @@ function search_artikel($search, $data) {
          }   	
       }
       mysql_free_result($main_result);    
-   } else {echo "nf(".mysql_errno() . ") " . mysql_error();}
+   }
 }
 ?>

@@ -58,12 +58,32 @@ function displayLogin($error) {
    $logged_in = 0;
    unset($_SESSION['username']);
    unset($_SESSION['password']);   
-	     
-   echo '<form name="login" method="POST" action="' . $conf["admp"] . '">
-         <input name="username" type="text" id="username" value="user">
-         <input name="password" type="password" id="password" value="password" maxlength="40">
-         <input name="Sign In" type="submit" id="Sign In" value="' . $lang["authorisierung_neu_anmelden"] . '">
-         </form>';
+?>
+<html>
+<head>
+<title>
+<?php $lang["authorisierung"] ?>
+</title>
+<link rel="stylesheet" type="text/css" href="acme.css">
+<style type="text/css">
+        @import "all.css"; /* just some basic formatting, no layout stuff */
+        body  {
+               margin:10px 10px 0px 10px;
+               padding:0px;
+              }
+</style>
+</head>
+<body>
+<table>
+<?php
+   echo "<tr><td align = center rowspan=5><img src=\"" . $conf["images_admin"] . "omikron_logo.png\" alt=\"Logografik: ACME\" width=\"70\" height=\"70\" align=\"left\" border=\"0\"></td></tr>\n";
+   echo "<tr><td colspan=2><br>";
+   echo '<form name="login" method="POST" action="' . $conf["admp"] . '"></td></tr>
+         <tr><td>' . $lang["authorisierung_username"] . '</td><td><input name="username" type="text" id="username" value="user"></td></tr>
+         <tr><td>' . $lang["authorisierung_passwort"] . '</td><td><input name="password" type="password" id="password" value="password" maxlength="40"></td></tr>
+         <tr><td>&nbsp;</td><td><input name="Sign In" type="submit" id="Sign In" value="' . $lang["authorisierung_neu_anmelden"] . '"></td></tr>
+         <tr><td colspan = 2></form></td></tr>';
+   echo "</table>";      
    if (isset($error)){
       echo "<h2>".$lang["authorisierung_fehler"] . "</h2>";
    	  if ($error=="nf") echo $lang["authorisierung_unbekannt"];

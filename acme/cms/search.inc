@@ -1,10 +1,10 @@
 <?php 
 /*
 
-  platzhalter für die Seite:
+  platzhalter fï¿½r die Seite:
 
   {mask:main}
-     titel                Seitenüberschrift
+     titel                Seitenï¿½berschrift
      left_bar             linke Navigation
      right_bar            rechte Navigation
      top_bar              obere Navigation
@@ -19,7 +19,7 @@
     {/mask}
      
   {/mask}   
-  platzhalter für die Navigation:
+  platzhalter fï¿½r die Navigation:
   {mask:main}
     {mask:nav_elem}
        nav_elem_url
@@ -31,7 +31,7 @@
 */
 
 if ($page == "search"){
-   $searchstring = $search;
+   $searchstring = search_strip_badchars($search);
    $modul_result = dbquery("select * from acme_module where search ='Y'");
    if ( mysql_num_rows($modul_result) >0)  {
       while ($row = mysql_fetch_object($modul_result) ){
@@ -62,7 +62,7 @@ function rendersearch($searchstring){
    $data->search->searchstring  = $searchstring;
    
    $akt=1;
-   searchIt(&$data, $akt, $searchstring);
+   if ($searchstring <> "") searchIt(&$data, $akt, $searchstring);
    
    $page_output = sprintt($data, $tplfile);
    echo $page_output;
@@ -84,3 +84,45 @@ function searchIt(&$data, $akt, $search){
       mysql_free_result($modul_result);
    }
 }
+function search_strip_badchars($line) {
+// Strips various characters from $line.
+// 
+ $line = str_replace(".", " ", $line);
+ $line = str_replace("\"", " ", $line);
+ $line = str_replace("'", "", $line);
+ $line = str_replace("+", " ", $line);
+ $line = str_replace("-", " ", $line);
+ $line = str_replace("*", " ", $line);
+ $line = str_replace("/", " ", $line);
+ $line = str_replace("!", " ", $line);
+ $line = str_replace("%", " ", $line);
+ $line = str_replace(">", " ", $line);
+ $line = str_replace("<", " ", $line);
+ $line = str_replace("^", " ", $line);
+ $line = str_replace("(", " ", $line);
+ $line = str_replace(")", " ", $line);
+ $line = str_replace("[", " ", $line);
+ $line = str_replace("]", " ", $line);
+ $line = str_replace("{", " ", $line);
+ $line = str_replace("}", " ", $line);
+ $line = str_replace("\\", " ", $line);
+ $line = str_replace("=", " ", $line);
+ $line = str_replace("$", " ", $line);
+ $line = str_replace("#", " ", $line);
+ $line = str_replace("?", " ", $line);
+ $line = str_replace("~", " ", $line);
+ $line = str_replace(":", " ", $line);
+ $line = str_replace("_", " ", $line);
+ $line = str_replace("  ", " ", $line);
+ $line = str_replace("&amp;", " ", $line);
+ $line = str_replace("&copy;", " ", $line);
+ $line = str_replace("&nbsp;", " ", $line);
+ $line = str_replace("&quot;", " ", $line);
+ $line = str_replace("&uuml;", "Ã¼", $line);
+ $line = str_replace("&Uuml;", "Ãœ", $line);
+ $line = str_replace("&", " ", $line);
+ $line = str_replace(";", " ", $line);
+ $line = str_replace("\n", " ", $line);
+ return $line;
+}
+?>
