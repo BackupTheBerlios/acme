@@ -31,7 +31,6 @@
 */
 
 if ($page == "sitemap"){
-   $navid = array_shift($path);
    rendersitemap($navid);
    }
   

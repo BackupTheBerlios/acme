@@ -10,6 +10,7 @@ $lang["messages_fuser"]="to";
 $lang["messages_tuser"]="from";
 $lang["messages_status_inbearb"]="being edited";
 $lang["messages_status_abgeschl"]="done";
+$lang["messages_status_gesendet"]="send";
 $lang["messages_speichern"]="save";
 $lang["messages_notfound"]="error: message not found";
 $lang["messages_tuser_fehlt"]="error: no recipient";

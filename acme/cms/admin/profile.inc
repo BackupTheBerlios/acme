@@ -71,10 +71,15 @@ function profiledelete($delete_id){
    
 function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar){ 
    global $conf, $lang;
+
+   $type_and_id    = explode("|", $new_home_page);
+   $new_home_page_typ    = $type_and_id[0];
+   $new_home_page = $type_and_id[1];
    
    $Statement = "INSERT INTO acme_profile SET ".
                 " home_img_id = '" . $new_home_img_id . "' , ".
-                " home_page   = '" . $new_home_page   ."' , ".
+                " home_page_typ   = '" . $new_home_page_typ   ."' , ".
+                " home_page   = '" . $new_home_page   ."' , ".                
                 " home_404    = '" . $new_home_404    . "' , ".
                 " home_style  = '" . $new_home_style  . "', ".
                 " home_left_bar  = '" . $new_home_left_bar ."' , ".
@@ -88,9 +93,15 @@ function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_
  
 function profileupdate($edit_id, $edit_home_name,  $edit_home_img_id, $edit_home_page, $edit_home_404, $edit_home_style, $edit_home_left_bar, $edit_home_right_bar, $edit_home_top_bar, $edit_home_foo_bar){ 
    global $conf, $lang;
+   
+   $type_and_id    = explode("|", $edit_home_page);
+   $edit_home_page_typ    = $type_and_id[0];
+   $edit_home_page = $type_and_id[1];
+   
    $Statement = "UPDATE acme_profile SET ".
                 " home_img_id   = '" . $edit_home_img_id ."' , ".
-                " home_page     = '" . $edit_home_page ."' , ".
+                " home_page_typ     = '" . $edit_home_page_typ ."' , ".
+                " home_page     = '" . $edit_home_page ."' , ".                
                 " home_name     = '" . $edit_home_name ."' , ".                
                 " home_404      = '" . $edit_home_404 ."' , ".
                 " home_style    = '" . $edit_home_style ."' , ".
@@ -130,7 +141,7 @@ function profilebrowse(){
          }
          echo "</td>";
          echo "<td>". $row->home_name . "</td>";
-         echo "<td>". getpageheadlinebyid($row->home_page) . "</td>";
+         echo "<td>". $row->home_page_typ . "|" . $row->home_page . "</td>";
          echo "<td>". getpageheadlinebyid($row->home_404)  . "</td>";
          echo "<td>". getimagenamebyid($row->home_img_id)  . "</td>";         
          echo "<td>";
@@ -161,13 +172,13 @@ function profilenew(){
    echo "<tr><td>".$lang["profile_start"]."</td><td>404</td><td>Logo</td></tr>";
    echo "<tr>";
    echo "<td>";
-   createsel_startpage("new_home_page","null");
+   createsel_startpagewtyp("new_home_page", "null", "null");
    echo "</td>";
    echo "<td>";
-   createsel_startpage("new_home_404","null");
+   createsel_startpage("new_home_404", "null");
    echo "</td>";
    echo "<td>";
-   createsel_img("new_home_img_id","null");
+   createsel_img("new_home_img_id", "null");
    echo "</td>";
    echo "</tr>";
    echo "<tr><td>".$lang["profile_bar_left"]."</td><td>".$lang["profile_bar_right"]."</td><td>".$lang["profile_bar_top"]."</td><td>".$lang["profile_bar_bottom"]."</td></tr>";
@@ -205,7 +216,7 @@ function profileedit($edit_id){
       echo "<tr><td>".$lang["profile_start"]."</td><td>404</td><td>".$lang["profile_bild"]."</td></tr>";
       echo "<tr>";
       echo "<td>";
-      createsel_startpage("edit_home_page",$row->home_page);
+      createsel_startpagewtyp("edit_home_page",$row-> home_page_typ, $row->home_page);
       echo "</td>";
       echo "<td>";
       createsel_startpage("edit_home_404",$row->home_404);
@@ -235,5 +246,33 @@ function profileedit($edit_id){
       mysql_free_result($result);
    }
    
+}
+function createsel_startpagewtyp($select_name, $type, $type_id) {
+   global $conf, $lang;
+
+   $check   = $type . "|" . $type_id;
+   echo "\n<select name=\"" . $select_name . "\">";
+   echo "\n<option";
+   $result = dbquery("select * from acme_module where nav = 'Y'");
+   if ( mysql_num_rows($result) > 0 )  { 
+      while ($row = mysql_fetch_array($result)){
+         $Statement = "select * from " . $row[tablename] . "";
+         $modul_result = dbquery($Statement);
+         if ( mysql_num_rows($modul_result) > 0 )  { 
+            while ($modulrow = mysql_fetch_array($modul_result)){
+               $entry   = $row[modul] . "|" . $modulrow[$row[name]] ;
+               $tocheck = $row[modul] . "|" . $modulrow[$row[id]] ;
+               echo "<option value=\"" . $tocheck  . "\"";
+               if ($tocheck == $check)  echo " selected ";
+               echo ">" . $entry . "</option>\n";                
+            }
+            mysql_free_result($modul_result);
+         }
+      } 
+   }
+   
+   echo "</select>\n";
+   
+   return;
 }
 ?>

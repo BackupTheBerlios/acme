@@ -9,10 +9,9 @@
      
    dbconnect();
 
-   $page = array_shift($path);         
    if (!isset($page) or $page =='')  {
       $page = $conf["home_page_typ"];
-      $id   = $conf["home_page"];
+      $pageid   = $conf["home_page"];
    }
    include($conf["cmsbase"] . "/page.inc");
    if (checkmodul($page)) {

@@ -194,6 +194,8 @@ echo "</table>\n</div>";
 
 echo "<div id=\"main\">\n";
 
+echo "<a href =\"".$conf["indexbase"]."/link.php\" target=\"new\">links</a>";
+
 // echo "<h1 class="error">Administrationsbereich tempor&auml;r nicht verf&uuml;gbar<br>Bitte keine &Auml;nderungen durchf&uuml;hren!!!</h1><br>infos unter: icq 142499232<br>email: innomine@gmx.net<br>";
 
 // menu actions

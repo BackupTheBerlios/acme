@@ -353,7 +353,7 @@ function img_delete($img_id){
       $imagename = $row->img_real_name;
       $img_typ_id = $row->img_typ_id;      
       echo "<h2>".$lang["bilder_loesche_datei"] ." ". $bild. "</h2><P>";
-      if (unlink ($conf["images"] . $imagename)){
+      if (unlink ($conf["imagesdir"] . $imagename)){
          echo $lang["bilder_datei_geloescht"]."<br>";
       	$Statement = "DELETE FROM acme_bilder WHERE img_id = '" . $img_id . "'";
          $delete_result = dbquery($Statement);

@@ -10,6 +10,7 @@ $lang["messages_fuser"]="von";
 $lang["messages_tuser"]="an";
 $lang["messages_status_inbearb"]="in Bearbeitung";
 $lang["messages_status_abgeschl"]="erledigt";
+$lang["messages_status_gesendet"]="gesendet";
 $lang["messages_speichern"]="speichern";
 $lang["messages_notfound"]="Nachricht nicht gefunden";
 $lang["messages_tuser_fehlt"]="Fehler: Empfänger fehlt";

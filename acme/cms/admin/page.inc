@@ -81,6 +81,7 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
                 " page_author_id = '" . $conf["author_id"] ."',".                
                 " page_childs = '". $new_page_childs . "',".
                 " page_create_date = NOW(),".
+                " page_modify_date = NOW(),".                
                 " page_comments = '". $new_page_comments . "'";
    $my_result = dbquery($Statement);
    if ($my_result) {echo $lang["page_insert_erfolgreich"];}

@@ -39,7 +39,7 @@ function createsel_author($select_name, $id){
    return;
 }
 
-function createsel_startpage($select_name,$grouplist){
+function createsel_startpage($select_name, $grouplist){
    global $conf, $lang;
    
    $allgroups = dbquery("select * from acme_pages Where page_parent = '' order by page_name");

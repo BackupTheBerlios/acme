@@ -37,9 +37,9 @@ $statement = "SELECT m.modul FROM acme_module m  where m.typ='C' order by m.modu
 $result = dbquery($statement);
 if ( mysql_num_rows($result) > 0 ) {
    while ($row = mysql_fetch_object($result)) {
-       if (checkgroupaccess($conf["user_groups"], $row->modul) == 1) {
-          echo "<option value=\"". $row->modul . "\" >" . $lang["admin_$row->modul"] . "</option>\n";       	  
-          }
+       if (checkgroupaccess($conf["author_groups"], $row->modul) == 1) {
+          echo "<option value=\"". $row->modul . "\" >" . $lang["admin_$row->modul"] . "</option>\n";
+       }
    }
 }
 echo "</select><input type=\"submit\" name = ok value=\"ok\">\n</td></tr></table>\n</form>\n";

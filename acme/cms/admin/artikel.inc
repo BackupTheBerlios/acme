@@ -148,6 +148,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " artikel_sub_headline ,".
                 " artikel_short_text , ".
                 " artikel_create_date , ".
+                " artikel_modify_date , ".
                 " artikel_author_id , ".
                 " artikel_aktiv , ".
                 " artikel_comments ".
@@ -157,6 +158,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " '". $new_artikel_headline ."' , ".
                 " '". $new_artikel_sub_headline . "' , ".
                 " '". $new_artikel_short_text ."' , ".
+                " NOW() , ".
                 " NOW() , ".
                 " '". $conf["author_id"] ."' , ".
                 " '". $new_artikel_aktiv ."' , ".
@@ -257,7 +259,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
   
    $new_artikel_short_text = RTESafe($new_artikel_short_text);
    $new_artikel_long_text = RTESafe($new_artikel_long_text);
-   echo "<a href =\"".$conf["indexbase"]."/link.php\" target=\"new\">links</a>";
+
    echo "<h1>" . $lang["artikel_neu"]. "</h1>";
    if ($error == 1){echo "<p>" . $errortext . "</p>";}
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
@@ -275,7 +277,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "<tr><td colspan=\"3\"><input  name=\"new_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($new_artikel_headline)) ."\"></td></tr>";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_ueberschrift2"]. "</td></tr>";
    echo "<tr><td colspan=\"3\"><input  name=\"new_artikel_sub_headline\" size=\"45\" maxlength=\"255\" value = \"" . htmlspecialchars(stripslashes($new_artikel_sub_headline)) . "\"></td></tr>";
-   echo "<tr><td colspan=\"1\" width = 33%>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_aktiv"] . "</td><td colspan=\"1\" width = 33%></td></tr>";
+   echo "<tr><td colspan=\"1\" width = 33%>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_aktiv"] . "</td><td colspan=\"1\" width = 33%>" . $lang["artikel_seite_zuordnen"] . "</td></tr>";
    echo "<tr>";
    echo "<td colspan=\"1\">";
    createdatetimeinput("new_artikel_publish_date", $new_artikel_publish_date, "");
@@ -284,13 +286,6 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    createsel_aktiv("new_artikel_aktiv",$new_artikel_aktiv);  
    echo "</td>";
    echo "<td colspan=\"1\">";
-   echo "</td>";
-   echo "</tr>";
-   echo "<tr><td colspan=\"3\">&nbsp;</td></tr>";
-   echo "<tr><td colspan=\"1\"></td><td colspan=\"2\">" . $lang["artikel_seite_zuordnen"] . "</td></tr>";
-   echo "<tr>";
-   echo "<td colspan=\"1\"></td>";
-   echo "<td colspan=\"2\">";
    createsel_pagenCAm("new_artikel_page",$new_artikel_page);
    echo "</td>";
    echo "</tr>";
@@ -363,41 +358,34 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "<input type=hidden name=edit_artikel_id value=" . $edit_artikel_id . ">".
         "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>".
         "<tr>".
-        "<td colspan=\"5\">" . $lang["artikel_ueberschrift1"] . "</td>".
+        "<td colspan=\"3\">" . $lang["artikel_ueberschrift1"] . "</td>".
         "</tr>".
         "<tr>".
-        "<td colspan=\"5\"><input  name=\"edit_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_headline)) . "\"></td>".
+        "<td colspan=\"3\"><input  name=\"edit_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_headline)) . "\"></td>".
         "</tr>".
         "<tr>".
-        "<td colspan=\"5\">" . $lang["artikel_ueberschrift2"] . "</td>".
+        "<td colspan=\"3\">" . $lang["artikel_ueberschrift2"] . "</td>".
         "</tr>".
         "<tr>".
-        "<td colspan=\"5\"><input  name=\"edit_artikel_sub_headline\" size=\"45\" maxlength=\"255\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_sub_headline)) . "\"></td>".
+        "<td colspan=\"3\"><input  name=\"edit_artikel_sub_headline\" size=\"45\" maxlength=\"255\" value = \"" . htmlspecialchars(stripslashes($edit_artikel_sub_headline)) . "\"></td>".
         "</tr>".
         "<tr>".
-        "<td colspan=\"5\">" . $lang["artikel_veroeffentlichungsdatum"] . "</td>".
+        "<td>" . $lang["artikel_veroeffentlichungsdatum"] . "</td><td>" . $lang["artikel_aktiv"]. "</td><td>" . $lang["artikel_seite"] . "</td>".
         "</tr>".
         "<tr>".
-        "<td colspan=\"5\">";
+        "<td colspan=\"1\">";
    createdatetimeinput("edit_artikel_publish_date", $edit_artikel_publish_date, "");
    echo "</td>".
-        "</tr>".
-        "<tr><td colspan=\"5\">&nbsp;</td></tr>".
-        "<tr><td>" . $lang["artikel_aktiv"]. "</td><td></td><td>" . $lang["artikel_seite"] . "</td><td>" . $lang["artikel_autor"] . "</td></tr>".
-        "<tr>".
         "<td>";
    createsel_aktiv("edit_artikel_aktiv",$edit_artikel_aktiv);   
    echo "</td>".
         "<td>";
-   echo "</td>".
-        "<td>";
    createsel_pagenCAm("edit_artikel_page",$edit_artikel_page);
    echo "</td>".
-        "<td></td>".
         "</tr>".
-        "<tr><td colspan=\"5\">&nbsp;</td></tr>".
-        "<tr><td colspan=\"5\">" . $lang["artikel_kurztext"] . "</td></tr>".
-        "<tr><td colspan=\"5\">\n";
+        "<tr><td colspan=\"3\">&nbsp;</td></tr>".
+        "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"] . "</td></tr>".
+        "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('edit_artikel_short_text', '" . $edit_artikel_short_text . "', 520, 200, true, false);\n";
@@ -407,8 +395,8 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    $seite=0;     
    foreach ($edit_artikel_long_text as $long_text)  {
       $seite++;
-      echo "<tr><td colspan=\"5\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>".
-           "<tr><td colspan=\"5\">\n";
+      echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>".
+           "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('edit_artikel_long_text[]', '" . $long_text . "', 520, 200, true, false);\n";
@@ -416,15 +404,15 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "</script>\n";
    echo "</td></tr>";
    }
-   echo "<tr><td colspan=\"5\">" . $lang["artikel_neue_seite"] . "</td></tr>".
-        "<tr><td colspan=\"5\">\n";
+   echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>".
+        "<tr><td colspan=\"3\">\n";
    echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
    echo "<!--\n";
    echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
    echo "</td></tr>".
-        "<tr><td colspan=\"5\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>".
+        "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>".
         "</table>".
         "</form>";
 }

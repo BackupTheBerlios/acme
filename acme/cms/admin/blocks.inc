@@ -92,11 +92,11 @@ switch($action){
           $my_result = dbquery("delete from acme_blocks where block_id = '". $delete_id . "'");
           if ($my_result) {
              echo $lang["blocks_delete_erfolgreich"];
-             block_browse($conf["admp"], $user_groups);
+             block_browse();
           }
           else            {
              echo $lang["blocks_delete_fehlerhaft"];
-             block_browse($conf["admp"], $user_groups);
+             block_browse();
           }
           
     break;

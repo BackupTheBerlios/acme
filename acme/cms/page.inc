@@ -81,10 +81,10 @@
 if ($page == "page"){
    $conf["page"]    = "page";
    $conf["page_id"] = $pageid;
-   renderpage($pageid, $pagestart, $pageprint);
+   renderpage($pageid, $pagestart);
 }
 
-function renderpage($pageid, $pagestart, $pageprint){
+function renderpage($pageid, $pagestart){
    global $conf, $lang;
    
    $my_result = dbquery("select * from acme_pages where page_id='".$pageid."'");

@@ -105,7 +105,11 @@ function parse_navigation($page_tpl, $nav_id, $side){
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
          $data->nav_elem[$akt]->nav_elem_img  = getnavimg($row->nav_topic_type, $row->nav_topic_type_id);
-         $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;
+         if ($row->nav_topic_type == "Inaktiv"){
+            $data->nav_elem[$akt]->nav_elem_url  = "";
+         } else {   
+            $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;
+         }   
          $data->nav_elem[$akt]->nav_elem_text = $row->nav_topic_text;
          // sub nav's
          if ($row->nav_topic_type == "page" && $conf["page"] == "page" && ($conf["page_id"] == $row->nav_topic_type_id || $conf["page_parent_id"] == $row->nav_topic_type_id)){

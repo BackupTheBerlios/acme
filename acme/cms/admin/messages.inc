@@ -125,6 +125,7 @@ function messages_browse($status) {
    $nresult = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["author_id"]. " order by created DESC");
    $presult = dbquery("select * from acme_messages where status = 'P' and tuser = " . $conf["author_id"]. " order by created DESC");
    $fresult = dbquery("select * from acme_messages where status = 'F' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $sresult = dbquery("select * from acme_messages where fuser = " . $conf["author_id"]. " order by created DESC");
    echo "<table class=\"reda_td\">\n\n";
    echo "<tr>\n";
    if ($status == "N"){
@@ -141,14 +142,22 @@ function messages_browse($status) {
       echo "<td class=\"message_nav_td_active\"><a class=\"message_nav_link_active\" href=\"" . $conf["admp"] . "&section=messages&status=F\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>\n";
    }else{      
       echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=F\">".$lang["messages_status_abgeschl"]."(". mysql_num_rows($fresult) .")</a></td>\n";
-   }         
-   echo "<td></td></tr>\n";
+   }
+   if ($status == "S"){            
+      echo "<td class=\"message_nav_td_active\"><a class=\"message_nav_link_active\" href=\"" . $conf["admp"] . "&section=messages&status=S\">".$lang["messages_status_gesendet"]."(". mysql_num_rows($sresult) .")</a></td>\n";
+   }else{      
+      echo "<td class=\"message_nav_td_passive\"><a class=\"message_nav_link_passive\" href=\"" . $conf["admp"] . "&section=messages&status=S\">".$lang["messages_status_gesendet"]."(". mysql_num_rows($sresult) .")</a></td>\n";
+   }
+            
+   echo "</tr>\n";
    echo "</table>\n";
 
    echo "<br>\n";
 
    echo "<table class=\"reda_td\">\n\n";
-   echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";
+   
+   if ($status == "S"){echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_tuser"]."</font></td><td width=\"30\"> </td></tr>\n";}
+   else{echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";}
    echo "<tr><td><br><br></td></tr>\n";
 
    if ($status == "N"){
@@ -190,10 +199,24 @@ function messages_browse($status) {
      echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
    }
    }
+   if ($status == "S"){   	
+   while ($row = mysql_fetch_object($sresult)) {
+      echo "<tr>";
+      echo "<td>". $row->topic ."</td>";
+      echo "<td>". mydate2datetime($row->created) ."</td>";
+      echo "<td>". getauthorbyid($row->tuser) ."</td>";
+      echo "<td>";
+      echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
+      echo "</td>";
+      echo "</tr>\n";
+     echo "<tr><td colspan=\"4\"><hr></td></tr>\n";
+   }
+   }
 
    mysql_free_result($nresult);
    mysql_free_result($presult);
    mysql_free_result($fresult);
+   mysql_free_result($sresult);   
    echo "</table>\n";   
 }
 ?>
