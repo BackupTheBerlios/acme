@@ -42,10 +42,10 @@ if ($page == "search"){
    }
    
    
-   rendersearch($searcharray);
+   rendersearch($searchstring);
    }
   
-function rendersearch($search){
+function rendersearch($searchstring){
    global $conf, $lang;
    
    $akt=0;
@@ -59,10 +59,10 @@ function rendersearch($search){
    $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
    $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-   $data->search->searchstring  = $search;
+   $data->search->searchstring  = $searchstring;
    
    $akt=1;
-   searchIt(&$data, $akt, $search);
+   searchIt(&$data, $akt, $searchstring);
    
    $page_output = sprintt($data, $tplfile);
    echo $page_output;
@@ -78,11 +78,9 @@ function searchIt(&$data, $akt, $search){
           $modul = $row->modul;
           $fktname = 'search_'.$modul;
           if (function_exists($fktname)){
-             $data->searchresults->$modul =  call_user_func($fktname, $search);
+             call_user_func($fktname, $search, &$data);
           }              
       }
       mysql_free_result($modul_result);
    }
-
-
 }
