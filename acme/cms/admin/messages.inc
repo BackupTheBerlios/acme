@@ -48,14 +48,14 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
    if ($result)  {
       $acme_messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->messages_id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
-           "<tr><td>".$lang["messages_fuser"]. " ". getuserbyid($acme_messages->messages_topic) . "</td></tr>".           
-           "<tr><td>". htmlspecialchars($acme_messages->messages_topic) . "</td></tr>".
-           "<tr><td>". htmlspecialchars($acme_messages->messages_message) . "</td>";
+           "<tr><td>".$lang["messages_fuser"]. " ". getuserbyid($acme_messages->fuser) . "</td></tr>".           
+           "<tr><td>". htmlspecialchars($acme_messages->topic) . "</td></tr>".
+           "<tr><td>". htmlspecialchars($acme_messages->message) . "</td>";
       if ($acme_messages->status == "P" || $acme_messages->status == "N"){     
-         echo "<tr><td><input type=checkbox name=messages_status value=P selected>".$lang["messages_status_inbearb"]."</td></tr>";      	
-         echo "<tr><td><input type=checkbox name=messages_status value=F>".$lang["messages_status_abgeschl"]."</td></tr>";
+         echo "<tr><td><input type=radio name=edit_messages_status value=P checked>".$lang["messages_status_inbearb"]."</td></tr>";      	
+         echo "<tr><td><input type=radio name=edit_messages_status value=F>".$lang["messages_status_abgeschl"]."</td></tr>";
       }
       else {echo "<tr><td></td></tr>";}                      
       echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
@@ -69,13 +69,6 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
 function messages_update($messages_id, $messages_status){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_messages where id=$edit_messages_id");
-   if ($result)  {
-      $acme_messages = mysql_fetch_object($result);
-      if ($acme_messages->status == 'N' && $messages_status == ''){
-      	 $messages_status = 'P';
-      }
-   }   
    $Statement = "UPDATE acme_messages SET ".
                 "status  = '". $messages_status  . "'".
                 " WHERE id = '". $messages_id . "'";
@@ -112,8 +105,8 @@ function messages_insert($topic, $message, $tuser){
                 "message = '". $message . "', ".
                 "status = 'N', ".                
                 "tuser = ". $tuser . ", ".  
+                "created = now(),".
                 "fuser = ". $conf["user_id"];
-                echo $Statement;
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["messages_insert_erfolgreich"];}
    else{echo $lang["messages_insert_fehlgeschlagen"];};
@@ -124,64 +117,64 @@ function messages_browse() {
 
    echo "<h1>".$lang["messages_verwaltung"]."</h1>";
    echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_new\">".$lang["messages_neu"]."</a>";
-   echo "<table class=\"reda_td\">";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_messages where status = 'N' order by created DESC");
+   $result = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["user_id"]. " order by created DESC");
    if ( mysql_num_rows($result) > 0 )           {
+   echo "<table class=\"reda_td\">";
+   echo "<tr><td colspan = 4>".$lang["messages_status_neu"]."(". mysql_num_rows($result) .")</td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td> </td><td>".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
          echo "<td>!".$row->topic."</td>";
+         echo "<td>". mydate2datetime($row->created) ."</td>";
+         echo "<td>".getuserbyid($row->fuser)."</td>";
          echo "<td>";
          echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          echo "</td>";
-         echo "<td>";
-         echo "<td>".getuserbyid($row->fuser)."</td>";
-         echo "<td>";
-
          echo "</tr>";
       }
    mysql_free_result($result);
+   echo "</table>";
    }
    
-   echo "</table>";
-   echo "<table class=\"reda_td\">";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
+
    $result = dbquery("select * from acme_messages where status = 'P' order by created DESC");
    if ( mysql_num_rows($result) > 0 )           {
+   echo "<table class=\"reda_td\">";
+   echo "<tr><td colspan = 4>".$lang["messages_status_inbearb"]."(". mysql_num_rows($result) .")</td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
-         echo "<td>#".$row->topic."</td>";
+         echo "<td>!".$row->topic."</td>";
+         echo "<td>". mydate2datetime($row->created) ."</td>";
+         echo "<td>".getuserbyid($row->fuser)."</td>";
          echo "<td>";
          echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          echo "</td>";
-         echo "<td>";
-         echo "<td>".getuserbyid($row->fuser)."</td>";
-         echo "<td>";
-
          echo "</tr>";
       }
    mysql_free_result($result);
-   }
    echo "</table>";
+   }
+   
       
-   echo "<table class=\"reda_td\">";
-   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
    $result = dbquery("select * from acme_messages where status = 'F' order by created DESC");
    if ( mysql_num_rows($result) > 0 )           {
+   echo "<table class=\"reda_td\">";
+   echo "<tr><td colspan = 4>".$lang["messages_status_abgeschl"]."(". mysql_num_rows($result) .")</td></tr>";
+   echo "<tr><td>".$lang["messages_topic"]."</td><td width=\"30\"> </td><td width=\"30\">".$lang["admin_user"]."</td><td width=\"30\"> </td></tr>";
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
-         echo "<td>".$row->topic."</td>";
+         echo "<td>!".$row->topic."</td>";
+         echo "<td>". mydate2datetime($row->created) ."</td>";
+         echo "<td>". getuserbyid($row->fuser)."</td>";
          echo "<td>";
          echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_edit&messages_id=" . $row->id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          echo "</td>";
-         echo "<td>";
-         echo "<td>".getuserbyid($row->fuser)."</td>";
-         echo "<td>";
-
          echo "</tr>";
       }
    mysql_free_result($result);
+   echo "</table>"; 
    }
-   echo "</table>";   
+  
 }
 ?>
