@@ -1,7 +1,7 @@
 <?php
 include($conf["admbase"] . "/lang/page." . $conf["lang"] . ".inc");
 
-echo "<table>";
+echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
 echo "<th><tr><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_user"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>".$lang["page_link"]."</td></tr></th>\n";
 
 writepagechilds($parent,$h_level);
