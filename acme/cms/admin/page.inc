@@ -259,7 +259,7 @@ function writepagechilds($parent, &$h_level){
          echo "<tr><td>" . $row->page_id . "</td>";
          echo "<td>";
          for ($count = 0;$count < $h_level; $count++){echo "-";}
-         echo "<a href=\"" . $conf["indexname"] . "?page=page&id=".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
          echo "<td>". $row->page_headline."</td>";
          echo "<td>". mydate2gerdate($row->page_create_date) ."</td>";         
          echo "<td>". mydate2gerdate($row->page_modify_date) ."</td>";
