@@ -1,27 +1,27 @@
 <?php
-$lang["navigation_verwaltung"]="Navigationsverwaltung";
-$lang["navigation_name"]="Name";
-$lang["navigation_typ"]="Typ";
-$lang["navigation_eintrag"]="Eintrag";
-$lang["navigation_bearbeiten"]="Navigation bearbeiten";
-$lang["navigation_anlegen"]="Navigation anlegen";
-$lang["navigation_zugriff"]="Zugriff";
-$lang["navigation_erstellen"]="Erstellen";
-$lang["navigation_speichern"]="speichern";
-$lang["navigation_inaktiv"]="Inaktiv";
-$lang["navigation_anfang"]="am Anfang";
-$lang["navigation_ende"]="am Ende";
-$lang["navigation_insert_erfolgreich"]="Navigation erfolgreich eingefügt"; // ????
-$lang["navigation_insert_fehlgeschlagen"]="Navigatione konnte nicht eingefügt werden"; // ???
-$lang["navigation_update_erfolgreich"]="Navigation erfolgreich geändert"; // ????
-$lang["navigation_update_fehlgeschlagen"]="Navigation konnte nicht geändert werden"; // ???
-$lang["navigation_delete_erfolgreich"]="Navigation erfolgreich gelöscht"; // ????
-$lang["navigation_delete_fehlgeschlagen"]="Navigation konnte nicht gelöscht werden"; // ???
+$lang["navigation_verwaltung"]="navigation";
+$lang["navigation_name"]="name";
+$lang["navigation_typ"]="type";
+$lang["navigation_eintrag"]="entry";
+$lang["navigation_bearbeiten"]="edit navigation";
+$lang["navigation_anlegen"]="create navigation";
+$lang["navigation_zugriff"]="access";
+$lang["navigation_erstellen"]="create navigation";
+$lang["navigation_speichern"]="save";
+$lang["navigation_inaktiv"]="inactive";
+$lang["navigation_anfang"]="at the top";
+$lang["navigation_ende"]="at the bottom";
+$lang["navigation_insert_erfolgreich"]="navigation created successfully"; // ????
+$lang["navigation_insert_fehlgeschlagen"]="error: navigation could not be created"; // ???
+$lang["navigation_update_erfolgreich"]="navigation updated successfully"; // ????
+$lang["navigation_update_fehlgeschlagen"]="error: navigation could not be updated"; // ???
+$lang["navigation_delete_erfolgreich"]="navigation deleted successfully"; // ????
+$lang["navigation_delete_fehlgeschlagen"]="error: navigation could not be deleted"; // ???
 
-$lang["navigation_move_up_erfolgreich"]="Navigation erfolgreich nach oben verschoben"; // ????
-$lang["navigation_move_up_fehlgeschlagen"]="Navigation konnte nicht nach oben verschoben werden"; // ???
+$lang["navigation_move_up_erfolgreich"]="navigation moved to the top successfully"; // ????
+$lang["navigation_move_up_fehlgeschlagen"]="error: navigation could not be moved to the top"; // ???
 
-$lang["navigation_move_down_erfolgreich"]="Navigation erfolgreich nach unten verschoben"; // ????
-$lang["navigation_move_down_fehlgeschlagen"]="Navigation konnte nicht nach unten verschoben werden"; // ???
+$lang["navigation_move_down_erfolgreich"]="navigation moved to the bottom successfully"; // ????
+$lang["navigation_move_down_fehlgeschlagen"]="error: navigation could not be moved to the bottom"; // ???
 
 ?>
