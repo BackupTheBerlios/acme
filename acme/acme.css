@@ -906,16 +906,95 @@ td.nav_button_td_status
                  text-align:center;
               }
 
-.navlink a:link
+a:link.navlink
 
    {
    font-family:verdana, arial, sans-serif;
    color:#FFFFFF;
-	text-decoration:none;
+   text-decoration:none;
+   }
+
+a:hover.navlink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFFFFF;
+   text-decoration:none;
+   }
+
+a:visited.navlink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFFFFF;
+   text-decoration:none;
+   }
+
+a:active.navlink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFFFFF;
+   text-decoration:none;
    }
 
 
+/* SUBNAVS, UNTERSEITEN */
 
+/* SUBNAV bei MESSAGES */
+/* die Topleiste: neu, in Bearbeitung, erledigt */
+              
+td.messages_subnav
+		{
+		   width:100px;
+                 padding-left:6px;
+                 padding-right:6px;
+                 padding-top:5px;
+                 padding-bottom:5px;
+                 margin-left:1px;
+                 margin-right:1px;
+                 border-color:white;
+                 border-width:1px;
+                 border-style:solid;
+                 text-align:center;
+		   background-color:grey;
+              }
+
+
+/* die Links "neu", "in bearbeitung", "erledigt" im menu "messages" */
+a:link.messagelink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFFFFF;
+   text-decoration:none;
+   }
+
+a:visited.messagelink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#ffffff;
+   text-decoration:none;
+   }
+
+a:hover.messagelink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFffff;
+   text-decoration:none;
+   }
+
+a:active.messagelink
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FF9900;
+   text-decoration:none;
+   font-weight:bold;
+   text-transform: uppercase;
+   }
 
 
 .button_td_submit {  text-align: right}
