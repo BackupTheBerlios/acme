@@ -127,7 +127,10 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
 function pagedelete($delete_id){
    global $conf, $lang;
    $my_result = dbquery("delete from acme_pages where page_id = '". $delete_id . "'");
-   if ($my_result) {echo $lang["page_delete_erfolgreich"];}
+   if ($my_result) {
+   	  acl_delete("page", $delete_id);
+   	  echo $lang["page_delete_erfolgreich"];
+   }
    else            {echo $lang["page_delete_fehlerhaft"];}
 }
 
@@ -308,23 +311,22 @@ function writepagechilds($parent, &$h_level){
          echo "<td>". $row->page_counter."</td>";
          echo "<td>". $row->page_childs."</td>";         
          echo "<td>";
-         // if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
-         if (checkgroupmodify($conf["author_groups"], "page") == 1 ){
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
+
             echo "<a href=" . $conf["admp"] . "&action=edit&section=page&id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
          echo "<td>";
-         // if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
-         if (checkgroupdelete($conf["author_groups"], "page") == 1 ){
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
             if (checkpagechilds($row->page_id, $row->page_childs) == 0){
                echo "<a href=" . $conf["admp"] . "&section=page&action=delete&delete_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
             } else {echo "&nbsp;";}
          } else {echo "&nbsp;";}
          echo "</td>";
          echo "<td>";
-         // if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
-         //   echo "<a href=" . $conf["admp"] . "&section=page&action=rights&page_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";      			
-         // } else {echo "&nbsp;";}
+         if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
+            echo "<a href=" . $conf["admp"] . "&section=rights&action=change&modul=page&modul_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";      			
+         } else {echo "&nbsp;";}
          echo "</td>";
          echo "</tr>\n";
          $h_level++;

@@ -58,12 +58,24 @@ function acl_group_set($group, $modul, $modulid, $rights, $insert, $edit, $delet
    }
    return $result; 
 }
+function acl_delete($modul, $modulid){
+   global $conf, $lang;
+   
+   $access = 0;
+   $result = dbquery("select * from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
+   if ( mysql_num_rows($result) > 0 )  {
+      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
+   } else {
+   	  return true;
+   }
+   return $result; 
+}
 
 function acl_user_delete($user, $modul, $modulid){
    global $conf, $lang;
    
    $access = 0;
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
    if ( mysql_num_rows($result) > 0 )  {
       $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
    } else {
