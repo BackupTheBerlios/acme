@@ -124,7 +124,6 @@ function getimgsforpreview($data, $img_typ_id, $img_typ_tpl, $StartImg){
    $akt_row=1;
    $akt_col=0;
    $query = "select * from acme_bilder where img_typ_id = '".$img_typ_id."' order by img_id LIMIT " . $StartImg . ", " . $Bilder_pro_Seite . " ";
-   echo $query;
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){

@@ -8,17 +8,35 @@ switch($action)
       pagedit($id);
       break;
    case "new":
-       pagenew();
+       pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
        break;
    case "add":
-       pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
-       pagebrowse();
+       $error = 0;
+       if ($new_page_name==""){
+       	  $errortext .= $lang["page_name_fehlt"]."<br>";
+          $error = 1;
+       }	
+       if ($new_page_tpl == ""){
+       	  $errortext .= $lang["page_tpl_fehlt"]."<br>";
+          $error = 1;
+       }
+       if ($error==0) { 	
+          pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
+          pagebrowse();
+       }
+       else{ 
+       	  echo $errortext;
+       	  pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments);
+       }	   
        break;
    case "update":
        pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent,$edit_page_img_small, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments);
        pagebrowse();
        break;
    case "delete":
+       pagedeletequest($delete_id);  
+       break;
+   case "dodelete":
        pagedelete($delete_id);
        pagebrowse();       
        break;
@@ -27,7 +45,21 @@ switch($action)
        break;
 }
 
-
+function pagedeletequest($id){
+   global $conf, $lang;
+   
+   $result = dbquery("select * from acme_pages where page_id='" . $id . "'");
+   if ($result) {
+      $row = mysql_fetch_array($result);
+      echo "<h1>".$lang["page_delete_quest"]."</h1>";
+      echo "<h2>". $row["page_name"] ."</h2>";
+      echo "<form action=\"" . $conf["admp"] . "&section=page&action=dodelete\" ENCTYPE=\"multipart/form-data\" method=POST>";
+      echo "<input type=hidden name=delete_id value=\"" . $row["page_id"] . "\">";
+      echo "<input type=submit name=delete_page value=".$lang["page_loeschen"].">";
+      echo "<input type=reset name=delete_page value=".$lang["page_cancel"].">";
+      echo "</form>";
+   }
+}   
 
 function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id, $new_page_childs,$new_page_comments){
    global $conf, $lang;
@@ -51,8 +83,8 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
                 " page_create_date = NOW(),".
                 " page_comments = '". $new_page_comments . "'";
    $my_result = dbquery($Statement);
-   if ($my_result) {echo $lang["page_insert_fehlerhaft"];}
-   else            {echo $lang["page_insert_erfolgreich"];}
+   if ($my_result) {echo $lang["page_insert_erfolgreich"];}
+   else            {echo $lang["page_insert_fehlerhaft"];}
 }
 function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent, $edit_page_img_small, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments){
    global $conf, $lang;
@@ -96,14 +128,14 @@ function pagebrowse(){
       echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">Neue Seite anlegen</a>\n";
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td></td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td></tr><td> </td><td> </td>\n";
+   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td></tr><td> </td><td> </td>\n";
    writepagechilds($parent,$h_level);
    echo "</table>";
 }      
-function pagenew(){
+function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments){
    global $conf, $lang;
 
-   $new_page_long_text_typ = "B";
+   if ($new_page_long_text_typ=="")$new_page_long_text_typ = "B";
 
    echo "<h1>".$lang["page_neu"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&section=page&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
@@ -146,19 +178,16 @@ function pagenew(){
    echo "</td>";
    echo "</tr>";
    echo "<tr><td colspan=\"4\">&nbsp;</td></tr>";
-   echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_childs"]."</td><td></td></tr>";
+   echo "<tr><td>".$lang["page_langtexttyp"]."</td><td>&nbsp;</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td></tr>";
    echo "<tr>";
    echo "<td>";
    createsel_ltt("new_page_long_text_typ",$new_page_long_text_typ);
    echo "</td>";
-   echo "<td>";
-   createsel_author("new_page_author_id",$new_page_author_id);
-   echo "</td>";
+   echo "<td>&nbsp;</td>";
    echo "<td>";
    createsel_childs("new_page_childs", $new_page_childs);
    echo "</td>";
-   echo "<td>$nbsp;";
-   echo "</td>";
+   echo "<td>&nbsp;</td>";
    echo "</tr>";
    echo "<tr><td colspan=4>".$lang["page_ueberschrift"]."</td></tr>";
    echo "<tr><td colspan=4><input name=new_page_headline size=75 maxlength=127 value = \"" . htmlspecialchars(stripslashes($new_page_headline)) . "\"></td></tr>";
@@ -309,7 +338,6 @@ function createsel_childs($select_name,$grouplist) {
    echo "<option";
    if ($grouplist == "A"){echo " selected";};
    echo " value=\"A\">".$lang["page_child_artikel"]."</option>";
-   echo "<option";
    return;
 }
 function createsel_ltt($select_name,$grouplist)

@@ -67,7 +67,6 @@ switch($action){
 
    default:
       glossar_browse();
-
       break;
 }
 

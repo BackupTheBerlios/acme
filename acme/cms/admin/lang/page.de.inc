@@ -36,4 +36,9 @@ $lang["page_update_fehlerhaft"]="Fehler: Seite bearbeiten fehlgeschlagen";
 $lang["page_update_erfolgreich"]="Seite bearbeiten erfolgreich";
 $lang["page_delete_fehlerhaft"]="Fehler: Seite löschen fehlgeschlagen";
 $lang["page_delete_erfolgreich"]="Seite löschen erfolgreich";
+$lang["page_delete_quest"]="sind sie sicher?";
+$lang["page_loeschen"]="löschen";
+$lang["page_cancel"]="Abbrechen";
+$lang["page_name_fehlt"]="name fehlt";
+$lang["page_tpl_fehlt"]="template fehlt";
 ?>

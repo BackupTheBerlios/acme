@@ -1,9 +1,7 @@
 <?php
-
 include($conf["admbase"] . "/lang/urls." . $conf["lang"] . ".inc");
 
-switch($action)
-{
+switch($action){
    case "edit_url":
       url_edit($id);
       break;
@@ -17,8 +15,13 @@ switch($action)
        url_typ_new($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_id, $new_url_typ_tpl, $new_url_typ_img_small,  $new_url_typ_img_big, $new_url_typ_left_bar, $new_url_typ_right_bar, $new_url_typ_topbar, $new_url_typ_foo_bar);
        break;
    case "add_url":
-       if (count($new_url_typ) == 0){echo $lang["urls_eintrag_urlerror"];url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ);}
-       else {url_add($new_url_name, $new_url_url, $new_url_text, $new_url_typ);url_browse();}
+       if (count($new_url_typ) == 0){echo $lang["urls_eintrag_urlerror"];
+       	  url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
+       }
+       else {
+       	url_add($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
+       	url_browse();
+       }
        break;
    case "add_url_typ":
        url_typ_add($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_id, $new_url_typ_tpl, $new_url_typ_img_small,  $new_url_typ_img_big, $new_url_typ_left_bar, $new_url_typ_right_bar, $new_url_typ_top_bar, $new_url_typ_foo_bar);

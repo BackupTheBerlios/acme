@@ -1,85 +1,71 @@
 <?php
-
 include($conf["admbase"] . "/lang/termine." . $conf["lang"] . ".inc");
 
 switch($action){
-	case "termin_edit":
-		termin_edit($edit_id);
+   case "termin_edit":
+      termin_edit($edit_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
       break;
-	case "termin_update":
+   case "termin_update":
       termin_update($edit_termin_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
-		termin_browse();
+	  termin_browse();
       break;
-	case "termin_new":
-		termin_new();
+   case "termin_new":
+      termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
       break;
    case "termin_insert":
       termin_insert($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
-		termin_browse();
+	  termin_browse();
       break;
-     
-	case "termin_delete":
+   case "termin_delete":
       termin_delete($delete_id);
       termin_browse();
-      
       break;
-
-	case "termin_data_edit":
-		termin_data_edit($edit_id);
-		
+   case "termin_data_edit":
+      termin_data_edit($edit_id);
       break;
-
-	case "termin_data_update":
-    	$edit_termin_data_date_von = $edit_termin_data_date_von_year . "-" . 
-    	                             $edit_termin_data_date_von_month . "-" . 
-    	                             $edit_termin_data_date_von_day . " ".
-    	                             $edit_termin_data_date_von_time_hour . ":".
-    	                             $edit_termin_data_date_von_time_minute . ":00";
-    	$edit_termin_data_date_bis = $edit_termin_data_date_bis_year . "-" . 
-    	                             $edit_termin_data_date_bis_month . "-" . 
-    	                             $edit_termin_data_date_bis_day  . " ".
-    	                             $edit_termin_data_date_bis_time_hour . ":".
-    	                             $edit_termin_data_date_bis_time_minute . ":00";
+   case "termin_data_update":
+      $edit_termin_data_date_von = $edit_termin_data_date_von_year . "-" . 
+    	                           $edit_termin_data_date_von_month . "-" . 
+    	                           $edit_termin_data_date_von_day . " ".
+    	                           $edit_termin_data_date_von_time_hour . ":".
+    	                           $edit_termin_data_date_von_time_minute . ":00";
+      $edit_termin_data_date_bis = $edit_termin_data_date_bis_year . "-" . 
+    	                           $edit_termin_data_date_bis_month . "-" . 
+    	                           $edit_termin_data_date_bis_day  . " ".
+    	                           $edit_termin_data_date_bis_time_hour . ":".
+    	                           $edit_termin_data_date_bis_time_minute . ":00";
       termin_data_update($edit_termin_data_id, $edit_termin_typ, $edit_termin_data_headline,$edit_termin_data_date_von, $edit_termin_data_date_bis, $edit_termin_data_Veranstalter, $edit_termin_data_Ort, $edit_termin_data_URL, $edit_termin_data_content);
-		termin_browse();
-		
+      termin_browse();
       break;
-      
-	case "termin_data_new":
-		termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
-		
+   case "termin_data_new":
+      termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
       break;
-      
    case "termin_data_insert":
-    	$new_termin_data_date_von = $new_termin_data_date_von_year . "-" .
-    	                            $new_termin_data_date_von_month . "-" . 
-    	                            $new_termin_data_date_von_day . " ".
-    	                            $new_termin_data_date_von_time_hour . ":".
-    	                            $new_termin_data_date_von_time_minute . ":00";
-    	$new_termin_data_date_bis = $new_termin_data_date_bis_year . "-" .
-    	                            $new_termin_data_date_bis_month . "-" . 
-    	                            $new_termin_data_date_bis_day . " ".
-    	                            $new_termin_data_date_bis_time_hour . ":".
-    	                            $new_termin_data_date_bis_time_minute . ":00";
+      $new_termin_data_date_von = $new_termin_data_date_von_year . "-" .
+    	                          $new_termin_data_date_von_month . "-" . 
+    	                          $new_termin_data_date_von_day . " ".
+    	                          $new_termin_data_date_von_time_hour . ":".
+    	                          $new_termin_data_date_von_time_minute . ":00";
+      $new_termin_data_date_bis = $new_termin_data_date_bis_year . "-" .
+    	                          $new_termin_data_date_bis_month . "-" . 
+    	                          $new_termin_data_date_bis_day . " ".
+    	                          $new_termin_data_date_bis_time_hour . ":".
+    	                          $new_termin_data_date_bis_time_minute . ":00";
       if (count($new_termin_typ) == 0){    	                            
          echo "typ fehlt";
-	   	termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
+         termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
       }
       else {   
          termin_data_insert($termin_id, $new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
          termin_browse();
       }
       break;
-     
-	case "termin_data_delete":
+   case "termin_data_delete":
       termin_data_delete($delete_id);
       termin_browse();
-      
       break;
-         
    default:
       termin_browse();
-      
       break;
 }
 
