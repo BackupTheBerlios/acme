@@ -95,9 +95,9 @@ function authorbrowse(){
    echo "<a href=\"" . $conf["admp"] . "&action=new&section=autoren\">".$lang["autoren_neu_anlegen"]."</a>\n";
    echo "<table class=\"reda_td\">\n";
    echo "<tr>";
-   echo "<td>".$lang["author_name"]."</td>";
-   echo "<td>".$lang["author_gruppe"]."</td>";
-   echo "<td>".$lang["author_aktiv"]."</td>";
+   echo "<td>".$lang["autoren_name"]."</td>";
+   echo "<td>".$lang["autoren_gruppe"]."</td>";
+   echo "<td>".$lang["autoren_aktiv"]."</td>";
    echo "<td>".$lang["autoren_nachname"]."</td>";
    echo "<td>".$lang["autoren_vorname"]."</td>";
    echo "<td width=\"30\">&nbsp;</td>";
@@ -115,13 +115,13 @@ function authorbrowse(){
          echo "<td>" . $row->author_nachname . "</td>";
          echo "<td>" . $row->author_vorname  . "</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["author_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&section=autoren&action=edit&edit_author_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
+         if (checkgroupmodify($conf["autoren_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&section=autoren&action=edit&edit_author_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";}
          echo "</td>";
          echo "<td>";
          if ( $row->author_name != $conf["author_name"] ){         
             if (checkgroupdelete($conf["author_groups"], "autoren") == 1){echo "<a href=\"" . $conf["admp"] . "&action=delete&section=autoren&delete_id=" . $row->author_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";}
          }
-         else {echo $lang["author_self"];}            
+         else {echo $lang["autoren_self"];}            
          echo "</td>";
          echo "</tr>\n"; 
       }
@@ -136,15 +136,15 @@ function authornew(){
    echo "<h1>".$lang["autoren_neu_anlegen"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=autoren\" method= \"POST\">";
    echo "<table class=\"reda_td\">";
-   echo "<tr><td>".$lang["author_name"]."</td><td><input name=new_author_name size=10 maxlength=20></td></tr>";
-   echo "<tr><td>".$lang["author_pass"]."</td><td><input name=new_author_passwd type=password size=8 maxlength=20></td></tr>";
+   echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=new_author_name size=10 maxlength=20></td></tr>";
+   echo "<tr><td>".$lang["autoren_pass"]."</td><td><input name=new_author_passwd type=password size=8 maxlength=20></td></tr>";
    if (checkgroupcreate($conf["author_groups"], "author") == 1){
-      echo "<tr><td>".$lang["author_gruppe"]."</td>";
+      echo "<tr><td>".$lang["autoren_gruppe"]."</td>";
       echo "<td>";
       createsel_groups("new_author_groups","null");
       echo "</td></tr>";
    }
-   echo "<tr><td>".$lang["author_aktiv"]."</td><td><input type=radio name=new_author_active value=\"Y\" checked>Y</input><input type=radio name=new_author_active value=\"N\">N</input></td></tr>";
+   echo "<tr><td>".$lang["autoren_aktiv"]."</td><td><input type=radio name=new_author_active value=\"Y\" checked>Y</input><input type=radio name=new_author_active value=\"N\">N</input></td></tr>";
    echo "<tr><td>".$lang["autoren_nachname"]."</td><td><input name=new_author_nachname size=30 maxlength=128></td></tr>";
    echo "<tr><td>".$lang["autoren_vorname"]."</td><td><input name=new_author_vorname size=30 maxlength=128></td></tr>";
    echo "<tr><td>".$lang["autoren_email"]."</td><td><input name=new_author_email size=30 maxlength=128></td></tr>";
@@ -165,13 +165,13 @@ function authoredit($edit_id){
       echo "<h1>".$lang["autoren_bearbeiten"]."</h1>\n";
       echo "<form action=\"" . $conf["admp"] . "&action=update&section=autoren&edit_author_id=" . $row->author_id . "\" method=\"POST\">\n";
       echo "<table class=\"reda_td\">\n";
-      echo "<tr><td>".$lang["author_name"]."</td><td><input name=edit_author_name value=\"" . $row->author_name . "\"></td></tr>\n";
-      echo "<tr><td>".$lang["author_pass"]."</td><td><input type=password name=edit_author_passwd value=\"" . $row->author_passwd . "\"></td></tr>\n";
-      echo "<tr><td>".$lang["author_gruppe"]."</td><td>\n";
+      echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=edit_author_name value=\"" . $row->author_name . "\"></td></tr>\n";
+      echo "<tr><td>".$lang["autoren_pass"]."</td><td><input type=password name=edit_author_passwd value=\"" . $row->author_passwd . "\"></td></tr>\n";
+      echo "<tr><td>".$lang["autoren_gruppe"]."</td><td>\n";
       createsel_groups("edit_author_groups",$row->author_groups);
       echo "</td></tr>\n";
       if ($row->author_name != $conf["author_name"]){
-         echo "<tr><td>".$lang["author_aktiv"]."</td><td>";
+         echo "<tr><td>".$lang["autoren_aktiv"]."</td><td>";
          echo "<input type=radio name=edit_author_active value=\"Y\""; 
          if ($row->author_active == "Y" ) echo "checked";
          echo ">Y";
