@@ -23,6 +23,7 @@ if( !$included["config.inc"] )
    $conf["templates"]    = $conf["cmsbase"]."/tpl/";
    $conf["images"]       = $conf["cmsurl"]."/bilder/";
    $conf["images_admin"] = $conf["images"] . "admin/"; 
+   $conf["imagesdir"]    = $conf["htdocs"] . $conf["subdir"] . "/cms/bilder/";
    $conf["downloads"]    = $conf["cmsurl"]."/downloads/";
    $conf["styles"]       = $conf["cmsurl"]."/styles";
    
