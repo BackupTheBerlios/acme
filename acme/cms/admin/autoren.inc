@@ -6,27 +6,50 @@ switch ($action)  {
       authoredit($edit_author_id);
       break;
    case "new":
-      authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd, $new_author_active);
+      authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2,$new_author_active);
       break;
    case "add":
-      $result = authoradd($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd, $new_author_active);
-      if ($result){
-         echo $lang["autoren_insert_erfolgreich"];
-         authorbrowse();
-      }else{
-         echo $lang["autoren_insert_fehlgeschlagen"];
-         authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd, $new_author_active);
+      $error = 0;
+      $errors="";
+      if ($new_author_passwd1 != $new_author_passwd2){$errors.=$lang["autoren_pw_error"]."<br>";$error=1;}
+      if ($new_author_groups){$errors.=$lang["autoren_group_error"]."<br>";$error=1;}
+      if ($new_author_name){$errors.=$lang["autoren_name_fehlt"]."<br>";$error=1;}
+      if ($new_author_nachname){$errors.=$lang["autoren_nn_fehlt"]."<br>";$error=1;}
+      if ($new_author_vorname){$errors.=$lang["autoren_vn_fehlt"]."<br>";$error=1;}
+      if($error!=1) {	
+        $result = authoradd($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_active);
+        if ($result){
+           echo $lang["autoren_insert_erfolgreich"];
+           authorbrowse();
+        }else{
+           echo $lang["autoren_insert_fehlgeschlagen"];
+           authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active);
+        }
+      } else {
+        echo $errors;
+      	authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active);
       }
       break;
 	case "update":
-      $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_passwd, $edit_author_active);
-      if ($result){
-      	 echo $lang["autoren_update_erfolgreich"];
-      	 authorbrowse();
-      }else{
-         echo $lang["autoren_update_fehlgeschlagen"];
-         authoredit($edit_author_id);
-      }
+	  $error = 0;
+	  $errors="";
+      if ($edit_author_groups){$errors.=$lang["autoren_group_error"]."<br>";$error=1;}
+      if ($edit_author_name){$errors.=$lang["autoren_name_fehlt"]."<br>";$error=1;}
+      if ($edit_author_nachname){$errors.=$lang["autoren_nn_fehlt"]."<br>";$error=1;}
+      if ($edit_author_vorname){$errors.=$lang["autoren_vn_fehlt"]."<br>";$error=1;}
+      if($error!=1) {	
+         $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active);
+         if ($result){
+         	echo $lang["autoren_update_erfolgreich"];
+      	    authorbrowse();
+         }else{
+            echo $lang["autoren_update_fehlgeschlagen"];
+            authoredit($edit_author_id);
+         }
+      } else {
+        echo $errors;
+        authoredit($edit_author_id);
+      }   
       break;
 	case "delete":
       $result = authordelete($delete_id);
@@ -38,6 +61,23 @@ switch ($action)  {
       }
       authorbrowse();
       break;
+     case "chpasswd":
+      authorchpw($edit_author_id);
+     break; 
+     case "pwupdate":
+       $error = 0;
+       $errors="";
+       if (checkoldpw($old_author_passwd)==0){$errors.=$lang["autoren_pwo_error"]."<br>";$error=1;}
+       if ($new_author_passwd1 != $new_author_passwd2){$errors.=$lang["autoren_pw_error"]."<br>";$error=1;}
+       if ($error == 0) {
+          authorupdatepw($edit_author_id, $new_author_passwd1);
+       }
+       else {
+       	echo $errors;
+       	authorchpw($edit_author_id);
+       }	   
+       break; 
+     
    default:
       authorbrowse();
       break;
@@ -75,7 +115,6 @@ function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorna
    $Statement = "UPDATE acme_author SET ".
                 " author_name   = '" . $edit_author_name . "' , ".
                 " author_groups = '" . joingrouparray($edit_author_groups) . "' , ".
-                " author_passwd = '" . $edit_author_passwd . "' , ".
                 " author_active = '" . $edit_author_active . "'  ".
                 " author_nachname = '" . $edit_author_nachname . "', ".
                 " author_vorname = '" . $edit_author_vorname . "', ".
@@ -87,6 +126,16 @@ function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorna
    $update_result = dbquery($Statement);
    return $update_result;
 }
+
+function authorupdatepw($edit_author_id, $edit_author_password){ 
+   global $conf, $lang;
+   
+   $Statement = "UPDATE acme_author SET ".
+                " author_passwd = '". $edit_author_password ."' ".
+                " WHERE author_id = '" . $edit_author_id . "'";
+   $update_result = dbquery($Statement);
+   return $update_result;
+} 
    
 function authorbrowse(){
    global $conf, $lang;
@@ -137,7 +186,8 @@ function authornew(){
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=autoren\" method= \"POST\">";
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=new_author_name></td></tr>";
-   echo "<tr><td>".$lang["autoren_pass"]."</td><td><input name=new_author_passwd type=password></td></tr>";
+   echo "<tr><td>".$lang["autoren_pass"]."</td><td><input name=new_author_passwd1 type=password></td></tr>";
+   echo "<tr><td>".$lang["autoren_passw"]."</td><td><input name=new_author_passwd2 type=password></td></tr>";
    if (checkgroupcreate($conf["author_groups"], "author") == 1){
       echo "<tr><td>".$lang["autoren_gruppe"]."</td>";
       echo "<td>";
@@ -151,7 +201,7 @@ function authornew(){
    echo "<tr><td>".$lang["autoren_url"]."</td><td><input name=new_author_url size=30 maxlength=128></td></tr>";
    echo "<tr><td>".$lang["autoren_img"]."</td><td><input name=new_author_img size=30 maxlength=128></td></tr>";
    echo "<tr><td>".$lang["autoren_text"]."</td><td><textarea  name=new_author_text  wrap=virtual rows=4 cols=60></textarea></td></tr>";            
-   echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"add\"></td></tr>";
+   echo "<tr><td colspan = \"2\"><input type=submit name=add value=\"".".$lang["autoren_speichern"]."."\"></td></tr>";
    echo "</table>";
    echo "</form>";
 }   
@@ -163,10 +213,10 @@ function authoredit($edit_id){
    if ($result){
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["autoren_bearbeiten"]."</h1>\n";
+      echo "<a href=\"" . $conf["admp"] . "&action=chpasswd&section=autoren&edit_author_id=" . $row->author_id . "\">$lang["autoren_chpasswd"]</a>\n";   
       echo "<form action=\"" . $conf["admp"] . "&action=update&section=autoren&edit_author_id=" . $row->author_id . "\" method=\"POST\">\n";
       echo "<table class=\"reda_td\">\n";
       echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=edit_author_name value=\"" . $row->author_name . "\"></td></tr>\n";
-      echo "<tr><td>".$lang["autoren_pass"]."</td><td><input type=password name=edit_author_passwd value=\"" . $row->author_passwd . "\"></td></tr>\n";
       echo "<tr><td>".$lang["autoren_gruppe"]."</td><td>\n";
       createsel_groups("edit_author_groups",$row->author_groups);
       echo "</td></tr>\n";
@@ -188,10 +238,38 @@ function authoredit($edit_id){
       echo "<tr><td>".$lang["autoren_url"]."</td><td><input name=edit_author_url size=30 maxlength=128  value=\"" . $row->author_url . "\"></td></tr>";
       echo "<tr><td>".$lang["autoren_img"]."</td><td><input name=edit_author_img size=30 maxlength=128  value=\"" . $row->author_img . "\"></td></tr>";
       echo "<tr><td>".$lang["autoren_text"]."</td><td><textarea  name=edit_author_text  wrap=virtual rows=4 cols=60>" . $row->author_text . "</textarea></td></tr>";            
-      echo "<tr><td><input type=submit name=my_edit_author value=Submit></td></tr>\n";
+      echo "<tr><td><input type=submit name=my_edit_author value=\"".".$lang["autoren_speichern"]."."\"></td></tr>\n";
       echo "</table>";
       echo "</form>";
       mysql_free_result($result);
    }
 }
+function authorchpw($edit_id){
+   global $conf, $lang;
+   
+   $result = dbquery("select * from acme_author where author_id='". $edit_id . "'");
+   if ($result){
+      $row = mysql_fetch_object($result);
+      echo "<h1>".$lang["autoren_chpasswd"]."</h1>\n";
+      echo "<form action=\"" . $conf["admp"] . "&action=pwupdate&section=autoren&edit_author_id=" . $row->author_id . "\" method=\"POST\">\n";
+      echo "<table class=\"reda_td\">\n";
+      echo "<tr><td>".$lang["autoren_passo"]."</td><td><input name=old_author_passwd  type=password></td></tr>";      
+      echo "<tr><td>".$lang["autoren_pass"] ."</td><td><input name=new_author_passwd1 type=password></td></tr>";
+      echo "<tr><td>".$lang["autoren_passw"]."</td><td><input name=new_author_passwd2 type=password></td></tr>";
+      echo "<tr><td><input type=submit name=my_edit_author value=\"".".$lang["autoren_speichern"]."."\"></td></tr>\n";
+      echo "</table>";
+      echo "</form>";
+      mysql_free_result($result);
+   }
+}
+function checkoldpw ($id, $pw) {
+	global $conf, $lang;
+	
+    $query = "SELECT author_id FROM acme_author WHERE author_passwd = '" . $pw . "' AND author_id = '" . $id . "';";
+    $result = dbquery($query);   
+    if ( mysql_num_rows($result) > 0 ) {return 1;}
+    else {return 0;}
+    
+	
+}	
 ?>
