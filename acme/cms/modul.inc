@@ -38,7 +38,7 @@ function rendermodul($mid)
       else $data->long_text    = $modul_long_text;
       
       $data->counter      = $modul_counter;
-      $data->last_update  = mydate2gerdatetime($modul_last_update);
+      $data->last_update  = mydate2datetime($modul_last_update);
       if ($modul_parent <> ""){$data->modul   = "<a href=\"".$conf["indexname"]."?page=modul&mid=".$modul_parent."\">".getmodulheadlinebyid($modul_parent)."</a>";}
       getmodulchildsforpreview(&$data, $modul_id, $modul_childs);
       $data->left_bar  = getbarfromcache($modul_left_bar);

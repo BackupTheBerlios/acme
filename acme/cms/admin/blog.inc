@@ -345,7 +345,7 @@ function blog_edit($blog_id) {
           while ($acme_blog_data = mysql_fetch_object($data_result))  {
              echo "<tr>";
              echo "<td>" . $acme_blog_data->blog_data_headline . "</td>";
-             echo "<td>" . mydate2gerdatetime($acme_blog_data->blog_data_date) . "</td>";
+             echo "<td>" . mydate2datetime($acme_blog_data->blog_data_date) . "</td>";
              echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_edit&blog_data_id=" . $acme_blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a></td>";
              echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_delete&blog_data_id=" . $acme_blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a></td>";
              echo "</tr>\n";
