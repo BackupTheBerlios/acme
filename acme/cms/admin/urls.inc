@@ -425,7 +425,7 @@ function geturltyp4select($parent, &$h_level, $grouplist){
       	 echo "<option value=" . $row->url_typ_id;
       	 if (is_array($grouplist)){
             foreach ($grouplist as $value){
-              if ( eregi ( $g_row->url_typ_id, $value ) ){echo " selected ";}
+              if ( eregi ( $row->url_typ_id, $value ) ){echo " selected ";}
             }
          }
          if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "urls", $row->url_typ_id) == 1 && $row->url_typ_id <> $selfid) {

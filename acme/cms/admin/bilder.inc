@@ -608,7 +608,7 @@ function getimgtyp4select($parent, &$h_level, $grouplist){
       	 echo "<option value=" . $row->img_typ_id;
       	 if (is_array($grouplist)){
             foreach ($grouplist as $value){
-              if ( eregi ( $g_row->img_typ_id, $value ) ){echo " selected ";}
+              if ( eregi ( $row->img_typ_id, $value ) ){echo " selected ";}
             }
          }
          if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1 && $row->img_typ_id <> $selfid) {

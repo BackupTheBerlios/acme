@@ -3,17 +3,17 @@ include($conf["admbase"] . "/lang/termine." . $conf["lang"] . ".inc");
 
 switch($action){
    case "termin_edit":
-      termin_edit($edit_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
+      termin_edit($edit_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,$edit_termin_img_small_inactive,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
       break;
    case "termin_update":
-      termin_update($edit_termin_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
+      termin_update($edit_termin_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,$edit_termin_img_small_inactive,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
 	  termin_browse();
       break;
    case "termin_new":
-      termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
+      termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,$new_termin_img_small_inactive,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
       break;
    case "termin_insert":
-      termin_insert($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
+      termin_insert($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small, $new_termin_img_small_inactive, $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
 	  termin_browse();
       break;
    case "termin_delete":
@@ -198,10 +198,10 @@ function termin_browse() {
    global $conf, $lang;
 
    echo "<h1>".$lang["termin_verwaltung"]."</h1>";
-   if (checkgroupcreate($conf["author_groups"], "termine") == 1){
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", 0) == 1) {
       echo "<a href=\"" . $conf["admp"] . "&section=termine&action=termin_new\">".$lang["termin_anlegen"]."</a><br>\n";
    }
-   if (checkgroupcreate($conf["author_groups"], "termine") == 1){
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", 0) == 1) {
         echo "<a href=\"" . $conf["admp"] . "&section=termine&action=termin_data_new\">".$lang["termin_eintrag_anlegen"]."</a><br>\n";         
    }
    echo "<table class=\"reda_td\">";
@@ -236,6 +236,9 @@ function termin_edit($edit_id) {
       echo "<td>";
       createsel_img("edit_termin_img_small",  $acme_termin->termin_img_small);
       echo "</td>";
+      echo "<td>";
+      createsel_img("edit_termin_img_small_inactive",  $acme_termin->termin_img_small_inactive);
+      echo "</td>";      
       echo "</tr>\n";
       echo "<tr><td>".$lang["termin_bar_left"]."</td><td>".$lang["termin_bar_right"]."</td><td>".$lang["termin_bar_top"]."</td><td>".$lang["termin_bar_bottom"]."</td></tr>";
       echo "<tr>";
@@ -263,7 +266,7 @@ function termin_edit($edit_id) {
    }
 }   
 
-function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl, $termin_img_small,  $termin_img_big, $termin_top_bar, $termin_left_bar, $termin_right_bar, $termin_foo_bar, $termin_titel, $termin_text, $termin_groups){
+function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl, $termin_img_small,$termin_img_small_inactive,  $termin_img_big, $termin_top_bar, $termin_left_bar, $termin_right_bar, $termin_foo_bar, $termin_titel, $termin_text, $termin_groups){
    global $conf, $lang;
    
    $Statement = "UPDATE acme_termin SET ".
@@ -271,6 +274,7 @@ function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl,
                            " termin_tpl = '" . $termin_tpl . "', ".
                            " termin_parent_id = '" . $termin_parent_id . "', ".                           
                            " termin_img_small = '" . $termin_img_small . "', ".
+                           " termin_img_small_inactive = '" . $termin_img_small_inactive . "', ".
                            " termin_img_big = '" . $termin_img_big. "', ".
                            " termin_top_bar = '" . $termin_top_bar. "', ".
                            " termin_left_bar = '" . $termin_left_bar . "', ".
@@ -278,6 +282,7 @@ function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl,
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
+                           " termin_modify_date = NOW(), ".
                            " termin_author_id = '" . $conf["author_id"] . "' ".
                            " WHERE termin_id = '". $termin_id . "'";
    $update_result = dbquery($Statement);
@@ -285,21 +290,21 @@ function termin_update($termin_id, $termin_parent_id, $termin_name, $termin_tpl,
    else{echo $lang["termin_update_fehlgeschlagen"];};
 }
 
-function termin_new() {
+function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,$new_termin_img_small_inactive,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups) {
    global $conf, $lang;
    
    echo "<h1>".$lang["termin_anlegen"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&section=termine&action=termin_insert\" method=\"POST\">";
    echo "<table class=\"reda_td\">";
-   echo "<tr colspan = \"4\"><td>".$lang["termin_name"]."</td></tr>";
+   echo "<tr colspan = \"3\"><td>".$lang["termin_name"]."</td><td>".$lang["termin_parent"]."</td></tr>";
    echo "<tr>";
-   echo "<td colspan = \"4\"><input name=\"new_termin_name\" size=\"30\" maxlength=\"128\" value=\"" . htmlspecialchars(stripslashes($new_termin_name)) . "\"></td>";
-   echo "</tr>";
-   echo "<tr><td>".$lang["termin_parent"]."</td><td>".$lang["termin_tpl"]."</td><td>".$lang["termin_logo_gross"]."</td><td>".$lang["termin_logo_klein"]."</td></tr>";
-   echo "<tr>";
+   echo "<td colspan = \"3\"><input name=\"new_termin_name\" size=\"30\" maxlength=\"128\" value=\"" . htmlspecialchars(stripslashes($new_termin_name)) . "\"></td>";
    echo "<td>";
    createsel_terminparent("new_termin_parent_id", $new_termin_parent_id);
    echo "</td>";    
+   echo "</tr>";
+   echo "<tr><td>".$lang["termin_tpl"]."</td><td>".$lang["termin_logo_gross"]."</td><td>".$lang["termin_logo_klein"]."</td><td>".$lang["termin_logo_klein_inactive"]."</td></tr>";
+   echo "<tr>";
    echo "<td>";
    createsel_tpl("new_termin_tpl",  $new_termin_tpl);
    echo "</td>";
@@ -308,6 +313,9 @@ function termin_new() {
    echo "</td>";
    echo "<td colspan=1>";
    createsel_img("new_termin_img_small",  $new_img_small);
+   echo "</td>";
+   echo "<td colspan=1>";
+   createsel_img("new_termin_img_small_inactive",  $new_img_small_inactive);
    echo "</td>";
    echo "</tr>";
    echo "<tr><td>".$lang["termin_bar_left"]."</td><td>".$lang["termin_bar_right"]."</td><td>".$lang["termin_bar_top"]."</td><td>".$lang["termin_bar_bottom"]."</td></tr>";
@@ -334,7 +342,7 @@ function termin_new() {
    echo "</form>";
 }   
    
-function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img_small,  $termin_img_big, $termin_top_bar, $termin_left_bar, $termin_right_bar, $termin_foo_bar, $termin_titel, $termin_text){
+function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img_small,$termin_img_small_inactive,  $termin_img_big, $termin_top_bar, $termin_left_bar, $termin_right_bar, $termin_foo_bar, $termin_titel, $termin_text){
    global $conf, $lang;
    
    $Statement = "INSERT INTO acme_termin  SET ".
@@ -342,6 +350,7 @@ function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img
                            " termin_tpl = '" . $termin_tpl . "', ".
                            " termin_parent_id = '" . $termin_parent_id . "', ".
                            " termin_img_small = '" . $termin_img_small . "', ".
+                           " termin_img_small_inactive = '" . $termin_img_small_inactive . "', ".
                            " termin_img_big = '" . $termin_img_big. "', ".
                            " termin_top_bar = '" . $termin_top_bar. "', ".
                            " termin_left_bar = '" . $termin_left_bar . "', ".
@@ -349,9 +358,14 @@ function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img
                            " termin_foo_bar = '" . $termin_foo_bar . "', ".                                                                                                                                                                  
                            " termin_titel = '". $termin_titel . "', ".
                            " termin_text = '" . $termin_text . "', ".
+                           " termin_create_date = NOW(), ".
+                           " termin_modify_date = NOW(), ".
                            " termin_author_id = '" . $conf["author_id"] . "' ";
    $edit_result = dbquery($Statement);
-   if($edit_result){echo $lang["termin_insert_erfolgreich"];}
+   if ($edit_result){
+   	  acl_user_set($conf["author_id"], "termine", mysql_insert_id(), "Y", "Y", "Y", "Y");
+      echo $lang["termin_insert_erfolgreich"];
+   }
    else{echo $lang["termin_insert_fehlgeschlagen"];};
 }
 
@@ -378,12 +392,12 @@ function writeterminchilds($parent, &$h_level){
          echo $row->termin_name."</td>";
          echo "<td>&nbsp;</td>";
          echo "<td>";
-         if (checkgroupmodify($conf["author_groups"], "termine") == 1 ){
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
             echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_edit&edit_id=".$row->termin_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
          }
          echo "</td>";
          echo "<td>";
-         if (checkgroupdelete($conf["author_groups"], "termine") == 1 ){
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
             if (checkterminchilds($row->termin_id) == 0){
                if (checkterminentrys($row->termin_id) == 0){
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_delete&delete_id=".$row->termin_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
@@ -402,12 +416,12 @@ function writeterminchilds($parent, &$h_level){
                echo "-termin: ". $entry_row->termin_data_headline . "</td>";
                echo "<td></td>";
                echo "<td>";
-               if (checkgroupmodify($conf["author_groups"], "termine") == 1 ){
+               if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_edit&edit_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
                }
                echo "</td>";
                echo "<td>";
-               if (checkgroupdelete($conf["author_groups"], "termine") == 1 ){
+               if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
                   echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
                } else {echo "&nbsp;";}
                echo "</td>";
@@ -447,43 +461,71 @@ function checkterminentrys($termin){
    return $childs;   
 }      
 
-function createsel_termin($select_name,$grouplist){
+function createsel_termin($select_name,$id){
    global $conf, $lang;
-   $grouplist=explode(":", $grouplist);
-   $allgroups = dbquery("select * from acme_termin");
-   echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
-   if ( mysql_num_rows($allgroups) > 0 ) {
-      while ( $g_row = mysql_fetch_object($allgroups) ) {
-         echo "<option value=" . $g_row->termin_id;
-         if (is_array($grouplist)){
+
+   echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
+   echo "<option value= \"\"></option>";
+   gettermin4select($parent, &$h_level, $id);
+   echo "</select>";
+   return;
+}
+function gettermin4select($parent, &$h_level, $grouplist){
+   global $conf, $lang;
+   
+   $result = dbquery("select * from acme_termin where termin_parent_id = '" . $parent . "' order by termin_name");
+   if ( mysql_num_rows($result) > 0 ){
+      while ($row = mysql_fetch_object($result)){
+      	 echo "<option value=" . $row->termin_id;
+      	 if (is_array($grouplist)){
             foreach ($grouplist as $value){
-              if ( eregi ( $g_row->termin_id, $value ) ){echo " selected ";}
+              if ( eregi ( $row->termin_id, $value ) ){echo " selected ";}
             }
          }
-         echo ">" . $g_row->termin_name . "</option>";
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1 && $row->url_typ_id <> $selfid) {
+            echo ">";
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\">";
+         }	
+         for ($count = 0;$count < $h_level; $count++){echo "-";} 
+         echo $row->termin_name . "</option>";
+         $h_level++;
+         gettermin4select($row->termin_id, $h_level, $grouplist, $selfid);
+         $h_level--;
       }
-      mysql_free_result($allgroups);
+      mysql_free_result($result);
    }
-   echo "</select>";
-   return;
-}
+} 
 
-function createsel_terminparent($select_name,$id){
+function createsel_terminparent($select_name,$id,$selfid="0"){
    global $conf, $lang;
-   $allgroups = dbquery("select * from acme_termin where termin_parent_id = ''");
-   echo "<select size = \"1\" name=\"" . $select_name . "\">";
-   if (!isset($id)){echo "<option value=\"\" selected></option>";}
-   else {echo "<option value=\"\" ></option>";}
-   if ( mysql_num_rows($allgroups) > 0 ) {
-      while ( $g_row = mysql_fetch_object($allgroups) ) {
-         echo "<option value=" . $g_row->termin_id;
-         if ( eregi ( $g_row->termin_id, $id ) ){ echo " selected ";}
-         echo ">" . $g_row->termin_name . "</option>";
-      }
-      mysql_free_result($allgroups);
-   }
-   echo "</select>";
+
+   echo "\n<select name=" . $select_name . ">\n";
+   echo "<option value= \"\"></option>\n";
+   getterminparent4select(0, &$h_level, $id, $selfid);
+   echo "</select>\n";
    return;
 }
+function getterminparent4select($parent, &$h_level, $grouplist, $selfid){
+   global $conf, $lang;
+
+   $result = dbquery("select * from acme_termin where termin_parent_id = " . $parent . " order by termin_name");
+   if ( mysql_num_rows($result) > 0 ){
+      while ($row = mysql_fetch_object($result)){
+      	 echo "<option value=" . $row->termin_id;
+         if ( eregi ( $row->termin_id, $grouplist ) ){echo " selected ";}
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1 && $row->url_typ_id <> $selfid) {
+            echo ">";
+         } else {
+         	echo " disabled style = \"color:gray;font-style:italic;\">";
+         }	
+         for ($count = 0;$count < $h_level; $count++){echo "-";} 
+         echo $row->termin_name . "</option>\n";
+         $h_level++;
+         getterminparent4select($row->termin_id, $h_level, $grouplist, $selfid);
+         $h_level--;
+      }
+      mysql_free_result($result);
+   }
+}   
 ?>
-   

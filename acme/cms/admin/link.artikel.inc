@@ -7,6 +7,7 @@ echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
 createsel_pagenCAs("page_id", $page_id); 
 echo "</td><td><input type=\"submit\" value=\"" . $lang["artikel_anzeigen"] . "\"></td></tr>\n";
 echo "<tr><td>" . $lang["artikel_des_autors"] . "</td><td colspan = \"2\">";
+if ($author_id=="" || !isset($author_id)) {$author_id = $conf["author_id"];}
 createsel_author("author_id", $author_id); 
 echo "</td></tr>\n";
 echo "</table>\n";
@@ -16,24 +17,25 @@ if ($page_id <> ""){
    echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
    $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
    if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
-   if ($user_id <> ""){ $Statement .= " and artikel_user_id = '" . $user_id . "'";}
    $Statement .= " order by artikel_publish_date DESC";
    $result = dbquery($Statement);
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
-         $artikelpage = explode(":", $row->artikel_page);
-         $artikelpage = $artikelpage[1];
-         echo "<td>". $row->artikel_id . "</td>";
-         echo "<td>".$row->artikel_headline."</td>";
- 		 echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
-		 echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
-         echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
-         echo "<td>". $row->artikel_counter."</td>";
-         echo "<td>[artikel=\"". $row->artikel_id."\"]".$row->artikel_headline."[/artikel]</td>";
-         echo "</tr>\n";
-		 }
+      	 //if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1 && $row->url_typ_id <> $selfid) {
+            $artikelpage = explode(":", $row->artikel_page);
+            $artikelpage = $artikelpage[1];
+            echo "<tr><td>". $row->artikel_id . "</td>";
+            echo "<td>".$row->artikel_headline."</td>";
+ 		    echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
+		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
+            echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
+            echo "<td>". $row->artikel_counter."</td>";
+            echo "<td>[artikel=\"". $row->artikel_id."\"]".$row->artikel_headline."[/artikel]</td>";
+            echo "</tr>\n";
+      	 //}   
+     }
 	 mysql_free_result($result);
-    }
+   }
 }
 echo "</table>\n";
 

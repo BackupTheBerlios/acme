@@ -60,6 +60,7 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       $blog_titel     = $row->blog_titel;
       $blog_text      = $row->blog_text;
       $blog_counter   = $row->blog_counter;
+      $blog_author    = $row->blog_author_id;   
       mysql_free_result($my_result);
       $data->blog->img_small    = getimage($blog_img_small);
       $data->blog->img_big      = getimage($blog_img_big);
@@ -79,6 +80,7 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       $data->blog->titel     = $blog_titel;
       $data->home_img  = gethomeimg();
       $data->home_url  = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
+      $data->author       = getauthorbyid($blog_author);
       incblogcounter($blog_id, $blog_counter);
       $page_output = sprintt($data, $conf["templates"].gettemplatebyid($blog_tpl).".tpl");
       echo $page_output;
