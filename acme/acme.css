@@ -596,7 +596,6 @@ img
 
 
 
-
 /* **************************************************** */
 
 /* FORMULARE */
@@ -891,7 +890,9 @@ td.nav_button_td_l
                  border-style:solid;
                  text-align:center;
               }
-td.nav_button_rd_status
+
+/* die Status- bzw. Info-Tabelle im Adminbereich, unter der Nav */
+td.nav_button_td_status
               {
                 padding-left:6px;
                  padding-right:6px;
@@ -900,11 +901,21 @@ td.nav_button_rd_status
                  margin-left:0px;
                  margin-right:0px;
                  border-color:white;
-                 background-color:#025106;
                  border-width:1px;
                  border-style:solid;
                  text-align:center;
               }
+
+.navlink a:link
+
+   {
+   font-family:verdana, arial, sans-serif;
+   color:#FFFFFF;
+	text-decoration:none;
+   }
+
+
+
 
 
 .button_td_submit {  text-align: right}
