@@ -62,7 +62,7 @@ function renderurls($id,$uid){
       $data->urls->text         = parse_bbcode(nltobr($url_typ_text), $page_tpl);
       if ($url_typ_parent <> 0){
          $data->urls->parent->name = geturl_typnamebyid($url_typ_parent);
-         $data->urls->parent->url  = $conf["indexname"]."?page=urls&id=".$url_typ_parent;
+         $data->urls->parent->url  = $conf["indexname"]."urls/".$url_typ_parent;
       }
       geturl_typdata(&$data, $url_typ_id, $uid);
       if ($url_typ_left_bar   <> 0){$data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left");}else{$data->left_bar  = "<!-- leer -->";}

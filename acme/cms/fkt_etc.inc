@@ -49,6 +49,10 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[url=&quot;","[url=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
   $contblock = eregi_replace("\[url=\"([^\"]+)\"]([^\[]+)\[/url\]","<a href=\"\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // iurl's
+  $contblock = eregi_replace("\[iurl=&quot;","[iurl=\"",$contblock);
+  $contblock = eregi_replace("&quot;\]","\"]",$contblock);
+  $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."urls//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // glossar
   $contblock = eregi_replace("\[glossar\]([^\[]+)\[/glossar\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   $contblock = eregi_replace("\[\[([^\[]+)\]\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
