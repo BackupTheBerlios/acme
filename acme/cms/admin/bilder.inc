@@ -65,7 +65,7 @@ function img_browse($img_typ_id){
          echo "<td>".$row->img_name."</td>";
          echo "<td>".$row->img_real_name."</td>";         
          echo "<td>".$row->img_description."</td>";
-         echo "<td><img src=\"cms/bilder/thumb_".$row->img_real_name."\"></td>";         
+         echo "<td><img src=\"".$conf["images"]."thumb_".$row->img_real_name."\"></td>";         
          echo "<td>";
          if ( checkgroupmodify($conf["user_groups"], "bilder") == 1){echo "<a href=\"" . $conf["admp"] . "&action=img_edit&section=bilder&img_id=" . $row->img_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></td>";}
          echo "<td>";
