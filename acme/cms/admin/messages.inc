@@ -50,9 +50,11 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
            "<form action=\"" . $conf["admp"] . "&section=messages&action=messages_update&messages_id=" . $acme_messages->messages_id . "\"  method=POST>".
            "<table class=\"reda_td\">".
+           "<tr><td>".$lang["messages_fuser"]. " ". getuserbyid($acme_messages->messages_topic) . "</td></tr>".           
            "<tr><td>". htmlspecialchars($acme_messages->messages_topic) . "</td></tr>".
-           "<tr><td>" . htmlspecialchars($acme_messages->messages_message) . "</td>";
-      if ($acme_messages->status <> "F"){     
+           "<tr><td>". htmlspecialchars($acme_messages->messages_message) . "</td>";
+      if ($acme_messages->status == "P" || $acme_messages->status == "N"){     
+         echo "<tr><td><input type=checkbox name=messages_status value=P selected>".$lang["messages_status_inbearb"]."</td></tr>";      	
          echo "<tr><td><input type=checkbox name=messages_status value=F>".$lang["messages_status_abgeschl"]."</td></tr>";
       }
       else {echo "<tr><td></td></tr>";}                      
@@ -89,12 +91,12 @@ function messages_new($new_messages_topic, $new_messages_message, $new_messages_
         "<form action=\"" .  $conf["admp"] . "&section=messages&action=messages_insert\"  method=POST>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["messages_topic"]."</td></tr>".
-        "<tr><td><input name=new_messages_titel size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_messages_topic)) . "\"></td></tr>".
+        "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_messages_topic)) . "\"></td></tr>".
         "<tr><td>".$lang["messages_text"]."</td></tr>".
         "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_messages_message)) . "</textarea></td>";
    echo "</tr>".
         "<tr><td>";
-   createsel_user("message_tuser", $message_tuser); 
+   createsel_user("new_message_tuser", $message_tuser); 
    echo "</td></tr>".
         "<tr><td>";          
    echo "</td></tr>".     
