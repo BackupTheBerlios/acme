@@ -122,7 +122,7 @@ function img_new($img_typ_id){
         "<td><input name=\"new_img_name\" size=\"25\" maxlength=\"25\"></td>\n".
         "<td><INPUT type=\"file\" name=\"datei\" size=\"15\"></td>\n".
         "</tr>".
-        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
+        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung"]."</td></tr>".
         "<tr><td colspan = \"2\"><input name=\"new_img_description\" size=\"50\" maxlength=\"250\" value = \"\"></td></tr>\n".
         "<tr><td colspan = \"2\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
         "<tr><td colspan = \"2\"><textarea name=\"new_img_desc_long\" wrap=virtual rows=15 cols=75></textarea></td></tr>\n".
@@ -216,7 +216,7 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
    
    
 function img_edit($img_id){
-	global $conf;
+	global $conf, $lang;
    $result = dbquery("select * from acme_bilder where img_id='$img_id'");
 
    if ($result){
