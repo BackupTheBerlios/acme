@@ -332,6 +332,7 @@ function createsel_pagenCPs($select_name,$grouplist){
    global $conf, $lang;
    $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'P' order by page_name");
    echo "<select name=" . $select_name . ">";
+   echo "<option value= \"\"></option>";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {
          echo "<option value=" . $g_row->page_id;

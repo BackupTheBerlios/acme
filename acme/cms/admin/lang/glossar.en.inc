@@ -33,5 +33,7 @@ $lang["glossar_tpl_imglu"]="image: bottom, left";
 $lang["glossar_tpl_imgl"]="image: left";
 $lang["glossar_tpl_imgr"]="image: right";
 $lang["glossar_tpl_nurtext"]="text only";
-
+$lang["glossar_titel_fehlt"]="titel fehlt";
+$lang["glossar_text_fehlt"]="text fehlt";
+$lang["glossar_tpl_fehlt"]="template fehlt";
 ?>

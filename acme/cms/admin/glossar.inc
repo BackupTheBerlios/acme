@@ -8,8 +8,27 @@ switch($action){
       break;
 
 	case "glossar_update":
-      glossar_update($glossar_id, $edit_glossar_titel, $edit_glossar_text, $edit_glossar_img, $edit_glossar_tpl);
-      glossar_browse();
+	  $error=0;
+	  if ($edit_glossar_titel == ""){
+	     $errortext .= $lang["glossar_titel_fehlt"]."<br>";
+      	 $error = 1;
+	  } 	 
+	  if ($edit_glossar_text == ""){
+	     $errortext .= $lang["glossar_text_fehlt"]."<br>";
+      	 $error = 1;
+	  } 	 
+	  if ($edit_glossar_tpl== ""){
+	     $errortext .= $lang["glossar_tpl_fehlt"]."<br>";
+      	 $error = 1;
+	  }
+	  if ($error==0){  	 
+         glossar_update($glossar_id, $edit_glossar_titel, $edit_glossar_text, $edit_glossar_img, $edit_glossar_tpl);
+         glossar_browse();
+	  }
+	  else {
+         echo $errortext;	  	
+	  	 glossar_edit($glossar_id, $edit_glossar_titel, $edit_glossar_text, $edit_glossar_img, $edit_glossar_tpl);
+	  }	   
       break;
 
 	case "glossar_new":
@@ -17,9 +36,27 @@ switch($action){
       break;
 
    case "glossar_insert":
-      glossar_insert($new_glossar_titel, $new_glossar_text, $new_glossar_img, $new_glossar_tpl);
-      glossar_browse();
-
+	  $error=0;
+	  if ($new_glossar_titel == ""){
+	     $errortext .= $lang["glossar_titel_fehlt"]."<br>";
+      	 $error = 1;
+	  } 	 
+	  if ($new_glossar_text == ""){
+	     $errortext .= $lang["glossar_text_fehlt"]."<br>";
+      	 $error = 1;
+	  } 	 
+	  if ($new_glossar_tpl== ""){
+	     $errortext .= $lang["glossar_tpl_fehlt"]."<br>";
+      	 $error = 1;
+	  }
+	  if ($error==0){  	 
+         glossar_insert($new_glossar_titel, $new_glossar_text, $new_glossar_img, $new_glossar_tpl);
+         glossar_browse();
+	  }
+	  else {
+         echo $errortext;	  	
+	  	 glossar_new($new_glossar_titel, $new_glossar_text, $new_glossar_img, $new_glossar_tpl);
+	  }	   
       break;
 
 	case "glossar_delete":
@@ -158,10 +195,6 @@ function createsel_glossar_tpl($select_name,$grouplist){
    echo "<select name=\"" . $select_name . "\">";
 
    echo "<option";
-   if ($grouplist == ""){echo " selected";};
-   echo " value=\"\"></option>";
-
-   echo "<option";
    if ($grouplist == "1"){echo " selected";};
    echo " value=\"1\">".$lang["glossar_tpl_imgzo"]."</option>";
 
@@ -194,7 +227,7 @@ function createsel_glossar_tpl($select_name,$grouplist){
    echo " value=\"8\">".$lang["glossar_tpl_imgr"]."</option>";
 
    echo "<option";
-   if ($grouplist == "9"){echo " selected";};
+   if ($grouplist == "9" || $grouplist == ""){echo " selected";};
    echo " value=\"9\">".$lang["glossar_tpl_nurtext"]."</option>";
 
    echo "</select>";
