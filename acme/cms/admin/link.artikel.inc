@@ -1,5 +1,4 @@
 <?php
-
 include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
 
 echo "<form action=\"".$conf["indexbase"]."/link.php?modul=artikel\" method=\"post\">";
