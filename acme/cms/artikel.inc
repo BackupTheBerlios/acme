@@ -156,7 +156,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
          $data->artikel->modify_date  = mydate2date($artikel_modify_date);
          $data->artikel->modify_time  = mydate2time($artikel_modify_date);		   
          $data->artikel->author       = getauthorbyid($artikel_author);
-         $data->artikel->author_url   = "index/author/".$artikel_author;
+         $data->artikel->author_url   = $conf["indexname"]."author/".$artikel_author;
          $data->artikel->counter      = $artikel_counter;
          incartikelcounter($artikel_id, $artikel_counter);
          $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($page_tpl).".tpl");

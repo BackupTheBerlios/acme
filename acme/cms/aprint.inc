@@ -75,10 +75,10 @@ function renderaprint($page_id, $artikel_id){
          $tplfile = "cms/tpl/" . gettemplatebyid($page_tpl) . ".tpl";
          $data->titel                 = $artikel_headline;
          $data->home_img              = gethomeimg();
-         $data->home_url              = "index/". $conf["home_page_typ"] . "/".$conf["home_page"];
+         $data->home_url              = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
          $data->artikel->img_small    = getimage($page_img_small);
          $data->artikel->img_big      = getimage($page_img_big);
-         $data->artikel->page_url     = "index/page/".$page_id;
+         $data->artikel->page_url     = $conf["indexname"]."page/".$page_id;
          $data->artikel->page         = getpageheadlinebyid($page_id);
          $data->artikel->headline     = $artikel_headline;
          $data->artikel->sub_headline = $artikel_sub_headline;
@@ -89,9 +89,9 @@ function renderaprint($page_id, $artikel_id){
          $data->artikel->modify_date  = mydate2date($artikel_modify_date);
          $data->artikel->modify_time  = mydate2time($artikel_modify_date);
          $data->artikel->author       = getauthorbyid($artikel_author);
-         $data->artikel->author_url   = "index/author/".$id;       
+         $data->artikel->author_url   = $conf["indexname"]."author/".$id;       
          $data->artikel->counter      = $artikel_counter;
-         $data->artikel->self_url    = "index/artikel/" . $page_id . "/".$artikel_id."/1";
+         $data->artikel->self_url    = $conf["indexname"]."artikel/" . $page_id . "/".$artikel_id."/1";
          artikel_getlongtext(&$data, $artikel_id, $page_tpl);
          $page_output = sprintt($data, "cms/tpl/".gettemplatebyid($page_tpl).".print.tpl");
          echo $page_output;
