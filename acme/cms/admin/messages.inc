@@ -61,7 +61,7 @@ function messages_edit($edit_messages_id, $edit_messages_topic, $edit_messages_m
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["messages_fuser"]. ": ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
            "<tr><td>".$lang["messages_topic"]. ": ". htmlspecialchars($acme_messages->topic) . "</td></tr>".
-           "<tr><td>". htmlspecialchars($acme_messages->message) . "</td>";
+           "<tr><td>". nltobr(htmlspecialchars($acme_messages->message)) . "</td>";
       if ($acme_messages->status == "P" || $acme_messages->status == "N"){
          echo "<tr><td>". $lang["messages_status"]."</td></tr>";
          echo "<tr><td><input type=radio name=edit_messages_status value=P checked>".$lang["messages_status_inbearb"]."</td></tr>";      	
