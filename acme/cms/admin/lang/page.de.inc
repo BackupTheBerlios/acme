@@ -1,5 +1,5 @@
 <?php
-$lang["page_verwaltung"]="Seiten-Verwaltung";
+$lang["page_verwaltung"]="Seitenverwaltung";
 $lang["page_logo_klein"]="kleines Seitenlogo";
 $lang["page_logo_gross"]="grosses Seitenlogo";
 $lang["page_bar_top"]="Seitenbereich oben";
