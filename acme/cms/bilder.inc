@@ -28,20 +28,20 @@
             url
       {mask:img_typ_url_first}
          url
-       {mask:img_typ_url_prev}
-          url
-       {mask:img_typ_url_seiten}
-          nr
-          url
-       {mask:img_typ_url_next}
-          url
-       {mask:img_typ_url_last}
-          url
-       {mask:image}
-          name
-          desc_short
-          desc_long
-          src
+      {mask:img_typ_url_prev}
+         url
+      {mask:img_typ_url_seiten}
+         nr
+         url
+      {mask:img_typ_url_next}
+         url
+      {mask:img_typ_url_last}
+         url
+      {mask:image}
+         name
+         desc_short
+         desc_long
+         src
 */
 
    $id = array_shift($path);
