@@ -17,9 +17,12 @@ switch($action){
       break;
 
    case "messages_insert":
-      if (getuserbyid($new_messages_tuser) == ""){
-      	echo $lang["messages_tusernotfound"];
-      	messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser);
+      $error=0;
+      if (getuserbyid($new_messages_tuser) == ""){echo $lang["messages_tuser_fehlt"]."<br>";$error=1;}
+      if ($new_messages_topic == ""){echo $lang["messages_topic_fehlt"]."<br>";$error=1;}
+      if ($new_messages_message == ""){echo $lang["messages_text_fehlt"]."<br>";$error=1;}
+      if ($error==1){
+         messages_new($new_messages_topic, $new_messages_message, $new_messages_tuser);
       }
       else{ 
          messages_insert($new_messages_topic, $new_messages_message, $new_messages_tuser);
