@@ -136,7 +136,7 @@ function authornew(){
    echo "<h1>".$lang["autoren_neu_anlegen"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&action=add&section=autoren\" method= \"POST\">";
    echo "<table class=\"reda_td\">";
-   echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=new_author_name size=10 maxlength=20></td></tr>";
+   echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=new_author_name></td></tr>";
    echo "<tr><td>".$lang["autoren_pass"]."</td><td><input name=new_author_passwd type=password></td></tr>";
    if (checkgroupcreate($conf["author_groups"], "author") == 1){
       echo "<tr><td>".$lang["autoren_gruppe"]."</td>";
