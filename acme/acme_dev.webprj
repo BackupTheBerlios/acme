@@ -1,0 +1,107 @@
+<!DOCTYPE webproject>
+<webproject>
+<project usePreviewPrefix="0" type="Local" previewPrefix="file:file%3A" name="acme_dev" encoding="iso 8859-15" >
+<upload/>
+<author/>
+<email/>
+<defaultDTD>-//W3C//DTD HTML 4.01 Transitional//EN</defaultDTD>
+<templates>templates/</templates>
+<toolbars>toolbars/</toolbars>
+<item url="cms/" />
+<item url="cms/admin/" />
+<item url="cms/admin/admin.inc" />
+<item url="cms/admin/artikel.inc" />
+<item url="cms/admin/auth.inc" />
+<item url="cms/admin/authoren.inc" />
+<item url="cms/admin/bar.inc" />
+<item url="cms/admin/bilder.inc" />
+<item url="cms/admin/blocks.inc" />
+<item url="cms/admin/blog.inc" />
+<item url="cms/admin/downloads.inc" />
+<item url="cms/admin/glossar.inc" />
+<item url="cms/admin/groups.inc" />
+<item url="cms/admin/module.inc" />
+<item url="cms/admin/navigation.inc" />
+<item url="cms/admin/news.inc" />
+<item url="cms/admin/page.inc" />
+<item url="cms/admin/pages.inc" />
+<item url="cms/admin/prefs.inc" />
+<item url="cms/admin/profile.inc" />
+<item url="cms/admin/resize.php" />
+<item url="cms/admin/termine.inc" />
+<item url="cms/admin/urls.inc" />
+<item url="cms/admin/user.inc" />
+<item url="cms/tpl/" />
+<item url="cms/tpl/home.block.left.tpl" />
+<item url="cms/tpl/home.glossar.tpl" />
+<item url="cms/tpl/home.imgtbl.c.tpl" />
+<item url="cms/tpl/home.imgtbl.l.tpl" />
+<item url="cms/tpl/home.imgtbl.r.tpl" />
+<item url="cms/tpl/home.nav.left.tpl" />
+<item url="cms/tpl/home.print.tpl" />
+<item url="cms/tpl/home.sub.1.tpl" />
+<item url="cms/tpl/home.sub.1.tpl~" />
+<item url="cms/tpl/home.sub.2.tpl" />
+<item url="cms/tpl/home.sub.2.tpl~" />
+<item url="cms/tpl/home.sub.3.tpl" />
+<item url="cms/tpl/home.sub.3.tpl~" />
+<item url="cms/tpl/home.sub.4.tpl" />
+<item url="cms/tpl/home.sub.4.tpl~" />
+<item url="cms/tpl/home.sub.5.tpl" />
+<item url="cms/tpl/home.sub.5.tpl~" />
+<item url="cms/tpl/home.sub.6.tpl" />
+<item url="cms/tpl/home.sub.6.tpl~" />
+<item url="cms/tpl/home.sub.7.tpl" />
+<item url="cms/tpl/home.sub.7.tpl~" />
+<item url="cms/tpl/home.sub.8.tpl" />
+<item url="cms/tpl/home.sub.8.tpl~" />
+<item url="cms/tpl/home.tpl" />
+<item url="cms/admin.inc" />
+<item url="cms/aprint.inc" />
+<item url="cms/aprint.inc~" />
+<item url="cms/artikel.inc" />
+<item url="cms/artikel.inc~" />
+<item url="cms/authoren.inc" />
+<item url="cms/authoren.inc~" />
+<item url="cms/bilder.inc" />
+<item url="cms/bilder.inc~" />
+<item url="cms/blocks.inc" />
+<item url="cms/blog.inc" />
+<item url="cms/blog.inc~" />
+<item url="cms/cms.inc" />
+<item url="cms/cms.inc~" />
+<item url="cms/config.inc" />
+<item url="cms/config.inc~" />
+<item url="cms/debuglib.inc" />
+<item url="cms/downloads.inc" />
+<item url="cms/downloads.inc~" />
+<item url="cms/ets.inc" />
+<item url="cms/fkt_createsel.inc" />
+<item url="cms/fkt_db.inc" />
+<item url="cms/fkt_db.inc~" />
+<item url="cms/fkt_etc.inc" />
+<item url="cms/fkt_etc.inc~" />
+<item url="cms/fkt_groups" />
+<item url="cms/fkt_groups.inc" />
+<item url="cms/fkt_url.inc" />
+<item url="cms/glossar.inc" />
+<item url="cms/modul.inc" />
+<item url="cms/news.inc" />
+<item url="cms/page.inc" />
+<item url="cms/page.inc~" />
+<item url="cms/sitemap.inc" />
+<item url="cms/sitemap.inc~" />
+<item url="cms/termine.inc" />
+<item url="cms/termine.inc~" />
+<item url="cms/urls.inc" />
+<item url="cms/urls.inc~" />
+<item url="acme.css" />
+<item url="acme_dev.webprj" />
+<item url="es.css" />
+<item url="es_old.css" />
+<item url="home.tpl" />
+<item url="index.php" />
+<item url="index.php~" />
+<item url="innomine.css" />
+</project>
+</webproject>

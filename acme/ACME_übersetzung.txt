@@ -1,0 +1,243 @@
+<?php
+// nav-leiste:
+$lang["hilfe"]="help";
+$lang["artikel"]="articles";
+$lang["bar"]="bar";
+$lang["bilder"]="images";
+$lang["blocks"]="blocks";
+$lang["blog"]="blog";
+$lang["downloads"]="downloads";
+$lang["glossar"]="glossary";
+$lang["groups"]="groups";
+$lang["navigation"]="navigation";
+$lang["news"]="news";
+$lang["page"]="page";
+$lang["profile"]="profile";
+$lang["styles"]="styles";
+$lang["templates"]="templates";
+$lang["termine"]="dates";
+$lang["urls"]="urls";
+$lang["user"]="user";
+$lang["abmelden"]="logout";
+
+// status-leiste:
+user;user
+gruppen;groups
+rechte in;rights in
+date;date;datum
+time;time;uhrzeit
+
+in "Bar"
+
+Bar Management;bar management;Bar-Management
+Neue Bar anlegen;create new bar;Neue Nav-Leiste anlegen
+Barname;bar name; Name der Nav-Leiste
+edit;edit:erst noch eintragen!!!
+delete;delete;ändern in löschen! erst noch eintragen!!!
+
+in "Neue bar anlegen"
+
+Neue bar anlegen;create new bar;Neue Nav-Leiste anlegen
+barsname;bar name;Name der Nav-Leiste
+sichern;save
+
+in "Bilder Verwaltung"
+
+Bilder Verwaltung;image management;Bilder-Verwaltung
+Neuen Typ anlegen;create new type;eventuell ändern zu "Kategorie/category"?
+Name;name
+Bilder;images
+edit;edit;erst noch eintragen!
+delete;delete;ändern in löschen! erst noch eintragen!
+
+
+in "Block Management"
+
+Block Management;block management;Block-Verwaltung
+Neuen Block anlegen;create new block
+Name;name
+Typ;type;eventuell ändern zu "Kategorie/category"
+
+
+in "Blog management"
+
+Blog Management;blog management;Blog-Verwaltung
+Neuen Blog anlegen;create new blog
+Blogname;blog name
+create;create;auf deutsch:anlegen und ausserdem jeweils auch in dem img-alt-text eintragen!
+edit;edit
+löschen;delete
+
+in "Blog einfügen"
+Blog einfügen;create blog;Blog anlegen
+Blogname; blog name
+Template;template
+Logo gross;big logo
+Logo klein;small logo
+Navigation links;left navigation
+Navigation rechts;right navigation
+Navigation oben;top navigation
+Navigation unten;bottom navigation
+Titel;title
+Text;text
+Sicher;create;anlegen
+
+
+in "Blog bearbeiten"
+
+Blog bearbeiten;edit blog
+Neuer Eintrag;new entry
+Neue Kategorie;new category
+Blogname;blog name;
+Template;template
+Logo gross;big logo
+Logo klein;small logo
+Navigation links;left navigation
+Navigation rechts;right navigation
+Navigation oben;top navigation
+Navigation unten;bottom navigation
+Titel;title
+Text;text
+Sichern;save
+Kategorien;categories
+Einträge;entries
+Headline;headline;Überschrift
+Datum;date
+edit;edit;erst noch eintragen!
+delete;delete;ändern in löschen! erst noch eintragen!
+
+
+in "Blogeintrag bearbeiten"
+
+Blogeintrag bearbeiten;edit blog entry
+Titel;title
+Kategorie;category
+Inhalt;content
+Sichern;save
+
+
+in "Neuen Blogeintrag erfassen"
+
+Neuen Blogeintrag erfassen;create new blog entry
+Titel;title
+Kategorie;category
+Inhalt;content
+Sichern;save
+
+
+in "download Management"
+
+download Management;download management;Download-Verwaltung
+Neuen Typ anlegen;create new type;eventuell ändern in "Neue Kategorie anlegen/creaty new category"
+Neue download anlegen;create new download;Neuen Download anlegen
+Name;name
+Counter;counter;Zähler
+edit;edit;tabelle ist hier kaputt also nachschauen
+delete;delete;ändern in löschen! tabelle ist hier kaputt also nachschauen
+
+
+in "Neuen downloadtyp anlegen"
+
+Neuen downloadtyp anlegen;create new download category;ändern in "Neue Download-Kategorie anlegen"
+Name;name
+Text;text
+Parent;parent
+Template;template
+Logo gross;big logo
+Logo klein;small logo
+Navigation links;left navigation
+Navigation rechts;right navigation
+Navigation oben;top navigation
+Navigation unten;bottom navigation
+Speichern;save
+
+
+in "Glossar Management"
+
+Glossar Management;glossary management;Glossar-Verwaltung
+Neuen Glossareintrag anlegen;create new glossary entry
+
+
+in "Neuen Glossareintrag erfassen"
+
+Neuen Glossareintrag erfassen;create new  glossary entry
+Titel;title
+Text;text
+Bild;image
+Template;template
+Sichern;create;auf deutsch: Anlegen
+
+
+in "Grupppen und Rechte Management"
+
+Gruppen und Rechte Management;groups and rights management;auf deutsch: "Gruppen- und Rechte-Verwaltung"
+Neue Gruppe anlegen;create new group
+edit;edit;erst eintragen!
+delete;delete;ändern in löschen! erst eintragen!
+
+
+in "Gruppe einfügen"
+
+Gruppe einfügen;create group;auf deutsch: "Gruppe anlegen"
+Gruppenname;group name
+Modul;module
+Zugriff;access
+Erstellen;create
+Ändern;edit
+löschen;delete
+Sichern;create;ändern in "anlegen"
+
+
+in "Gruppe bearbeiten"
+
+Gruppe bearbeiten;edit group
+Gruppenname;group name
+Modul;module
+Zugriff;access
+Erstellen;create
+Ändern;edit
+Löschen;delete
+Sichern;save
+
+
+in "Navigations Management
+
+Navigations Management;navigation management;Navigations-Verwaltung
+Neue Navigation anlegen;create new navigation
+Navigationsname;navigation name
+edit;edit
+delete;delete;löschen
+
+
+in "Neue Navigation anlegen"
+Neue Navigation anlegen;create new navigation
+Navigationsname;navigation name
+Sichern;create;ändern in "anlegen"
+
+
+in "News bearbeiten"
+News bearbeiten;edit news
+Seite;page
+Anzahl Artikel; number of articles
+Sichern;save
+Neuen Eintrag anlegen;create new entry
+Name;name
+Artikel;articles
+up;up;eintragen:"hoch"
+down;down;eintragen:"runter"
+edit;edit
+delete;delete;eintragen:löschen
+
+
+in "Newseintrag einfügen"
+Newseintrag einfügen;create news entry
+Seite;page
+Anzahl Artikel;number of articles; checken: sind das Artikel oder Einträge?
+Sicher;create;ändern in "anlegen"
+
+
+
+
+
+
+

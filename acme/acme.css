@@ -1,0 +1,430 @@
+/* provisorisches stylesheet. noch im aufbau. */
+
+
+
+
+
+/* ************************************************ */
+
+/* basics */
+
+
+
+body
+
+    {
+
+    background-color:#333344;
+
+    }
+
+
+
+p, font, *
+
+   {
+
+   font-family:verdana, arial, sans-serif;
+
+   font-style:normal;
+
+   font-size:8pt;
+
+   color:#dddddd;
+
+   }
+
+
+
+h1
+
+  {
+
+        font-family:verdana, arial, sans-serif;
+
+        font-style:normal;
+
+        font-size:12pt;
+
+        font-weight:bold;
+
+        margin-top:10px;
+
+        margin-bottom:10px;
+
+        }
+
+
+
+h2
+
+  {
+
+        font-family:verdana, arial, sans-serif;
+
+        font-style:normal;
+
+        font-size:10pt;
+
+        font-weight:bold;
+
+        margin-top:10px;
+
+        margin-bottom:10px;
+
+        }
+
+
+
+h3
+
+{
+
+        font-family:verdana, arial, sans-serif;
+
+        font-style:normal;
+
+        font-size:10pt;
+
+        font-weight:normal;
+
+        margin-top:5px;
+
+        margin-bottom:5px;
+
+        }
+
+
+
+h4
+
+{
+
+        font-family:verdana, arial, sans-serif;
+
+        font-style:normal;
+
+        font-size:8pt;
+
+        font-weight:bold;
+
+        margin-top:5px;
+
+        margin-bottom:5px;
+
+        }
+
+
+
+img
+
+        {
+
+        border-style:none;
+
+        border-width:0px;
+
+        }
+
+
+
+
+
+/* **************************************************** */
+
+/* FORMULARE */
+
+
+
+option
+
+          {
+
+          color:black;
+
+          }
+
+
+
+/* test */
+
+input, textarea
+
+       {
+
+       color:black;
+
+       }
+
+
+
+
+
+
+
+/* **************************************************** */
+
+
+
+/* LINKS */
+
+
+
+a:link
+
+   {
+
+   font-family:verdana, arial, sans-serif;
+
+   font-style:underline;
+
+   color:#FF9900;
+
+   }
+
+
+
+a:visited
+
+   {
+
+   font-family:verdana, arial, sans-serif;
+
+   font-style:underline;
+
+   color:#FF9900;
+
+   }
+
+
+
+a:hover
+
+   {
+
+   font-family:verdana, arial, sans-serif;
+
+   font-style:underline;
+
+   color:#FF9900;
+
+   }
+
+
+
+a:active
+
+   {
+
+   font-family:verdana, arial, sans-serif;
+
+   font-style:underline;
+
+   color:#FF9900;
+
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ************************************************** */
+
+
+
+/* TABELLEN ALLGEMEIN */
+
+
+
+/* TABELLEN IM REDAKTIONSBEREICH */
+
+
+
+/* die allgemeine Tabelle für alles. Breite: ausgelegt für 800x800, safe */
+
+.reda_td
+
+        {
+
+        width:744px;
+
+        border-width:1px;
+
+        border-color:black;
+
+        background-color:#444455;
+
+        }
+
+/* TDs als toplevel im Admin-Bereich */
+/* also heller zur schnelleren orientierung */
+
+.admin_td_toplevel
+                  {
+                   background-color:#555566;
+                   }
+
+
+/* Tabelle fürs Neu-Anlegen von Modulen, Serien etc */
+
+.reda_new_table
+
+        {
+
+        border-width:1px;
+
+        border-color:black;
+
+        background-color:#444455;
+
+        }
+
+
+
+/* Die Felder der rechten Spalte der reda_new_table */
+
+.reda_new_td_right
+
+                  {
+
+                  text-align:right;
+
+                  }
+
+
+
+/* Hierarchie in Tabellen im Admin-Bereich */'
+/* z.B. bei der Page-Verwaltung */
+
+/* stufe 0 (top) */
+.admin_page_level_td_0
+                  {
+                   background-color:#777788;
+                   }
+
+/* stufe 1 (middle) */
+.admin_page_level_td_1
+                  {
+                   background-color:#666677;
+                   }
+
+/* stufe 2 (low) */
+.admin_page_level_td_2
+                  {
+                   background-color:#555566;
+                   }
+
+
+/* NAVIGATIONSTABELLEN */
+
+
+
+/* die Tabelle, die die Navigationsbuttons simuliert */
+/* nicht zugewiesen */
+
+.nav_button_table
+
+                 {
+
+                 width:650px;
+
+                 border-width:0px;
+
+                 border-style:none;
+
+                 }
+
+.nav_button_td
+
+              {
+
+                 padding-left:6px;
+
+                 padding-right:6px;
+
+                 padding-top:2px;
+
+                 padding-bottom:2px;
+
+                 margin-left:2px;
+
+                 margin-right:2px;
+
+                 border-color:#b2b2b2;
+
+                 background-color:#444455;
+
+                 border-width:1px;
+
+                 border-style:solid;
+
+                 text-align:center;
+
+              }
+
+/* Navbutton Kategorie ADMIN (optionen) */
+.nav_button_td_a
+
+              {
+
+                padding-left:6px;
+                 padding-right:6px;
+                 padding-top:3px;
+                 padding-bottom:3px;
+                 margin-left:0px;
+                 margin-right:0px;
+                 border-color:white;
+                 background-color:#483202;
+                 border-width:1px;
+                 border-style:solid;
+                 text-align:center;
+              }
+
+/* Navbutton Kategorie CONTENT */
+.nav_button_td_c
+
+              {
+
+                padding-left:6px;
+                 padding-right:6px;
+                 padding-top:3px;
+                 padding-bottom:3px;
+                 margin-left:0px;
+                 margin-right:0px;
+                 border-color:white;
+                 background-color:#5E2222;
+                 border-width:1px;
+                 border-style:solid;
+                 text-align:center;
+              }
+
+/* Navbutton Kategorie LAYOUT (Struktur) */
+.nav_button_td_l
+
+              {
+
+                padding-left:6px;
+                 padding-right:6px;
+                 padding-top:3px;
+                 padding-bottom:3px;
+                 margin-left:0px;
+                 margin-right:0px;
+                 border-color:white;
+                 background-color:#025106;
+                 border-width:1px;
+                 border-style:solid;
+                 text-align:center;
+              }
+
+
+.button_td_submit {  text-align: right}

@@ -1,0 +1,37 @@
+<?php
+$lang["termin_verwaltung"]="Terminverwaltung";
+$lang["termin_eintrag"]="Termineintrag";
+$lang["termin_eintrag_titel"]="Titel";
+$lang["termin_eintrag_von"]="von:";
+$lang["termin_eintrag_bis"]="bis:";
+$lang["termin_eintrag_veranstalter"]="Veranstalter";
+$lang["termin_eintrag_ort"]="Ort";
+$lang["termin_eintrag_url"]="URL";
+$lang["termin_eintrag_beschreibung"]="Beschreibung";
+$lang["termin_eintrag_bearbeiten"]="Termineintrag bearbeiten";
+$lang["termin_eintrag_anlegen"]="Termineintrag anlegen";
+$lang["termin_eintrag_speichern"]="speichern";
+$lang["termin_termine"]="Termine";
+$lang["termin_titel"]="Titel";
+$lang["termin_name"]="Name";
+$lang["termin_beschreibung"]="Beschreibung";
+$lang["termin_anlegen"]="Termine anlegen";
+$lang["termin_bearbeiten"]="Termine bearbeiten";
+$lang["termin_parent"]="Übergeordneter Termin";
+$lang["termin_tpl"]="Template";
+$lang["termin_logo_klein"]="Logo klein";
+$lang["termin_logo_gross"]="Logo gross";
+$lang["termin_speichern"]="speichern";
+$lang["termin_insert_erfolgreich"]="Termin erfolgreich eingefügt"; // ????
+$lang["termin_insert_fehlgeschlagen"]="Termin konnte nicht eingefügt werden"; // ???
+$lang["termin_update_erfolgreich"]="termin erfolgreich geändert"; // ????
+$lang["termin_update_fehlgeschlagen"]="Termin konnte nicht geändert werden"; // ???
+$lang["termin_delete_erfolgreich"]="Termin erfolgreich gelöscht"; // ????
+$lang["termin_delete_fehlgeschlagen"]="Termin konnte nicht gelöscht werden"; // ???
+$lang["termin_eintrag_insert_erfolgreich"]="Termineintrag erfolgreich eingefügt"; // ????
+$lang["termin_eintrag_insert_fehlgeschlagen"]="Termineintrag konnte nicht eingefügt werden"; // ???
+$lang["termin_eintrag_update_erfolgreich"]="Termineintrag erfolgreich entfernt"; // ????
+$lang["termin_eintrag_update_fehlgeschlagen"]="Termineintrag konnte nicht entfernt werden"; // ???
+$lang["termin_eintrag_delete_erfolgreich"]="Termineintrag erfolgreich gelöscht"; // ????
+$lang["termin_eintrag_delete_fehlgeschlagen"]="Termineintrag konnte nicht gelöscht werden"; // ???
+?>

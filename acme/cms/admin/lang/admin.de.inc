@@ -1,0 +1,26 @@
+<?php
+$lang["admin_redaktionsbereich"]="ACME :: Redaktionsbereich";
+$lang["admin_artikel"]="Artikel";
+$lang["admin_page"]="Seiten";
+$lang["admin_navigation"]="Navigation";
+$lang["admin_bilder"]="Bilder";
+$lang["admin_blog"]="Blogs";
+$lang["admin_glossar"]="Glossar";
+$lang["admin_templates"]="Templates";
+$lang["admin_styles"]="Stylesheets";
+$lang["admin_user"]="Benutzer";
+$lang["admin_blocks"]="Bereichsbl&ouml;cke";
+$lang["admin_groups"]="Benutzergruppen";
+$lang["admin_profile"]="Seitenprofile";
+$lang["admin_termine"]="Termine";
+$lang["admin_autoren"]="Autoren";
+$lang["admin_urls"]="Linklisten";
+$lang["admin_downloads"]="Downloads";
+$lang["admin_bar"]="Seitenbereiche";
+$lang["admin_news"]="News";
+$lang["admin_hilfe"]="Hilfe";
+$lang["admin_content"]="Inhalt";
+$lang["admin_layout"]="Aufbau";
+$lang["admin_admin"]="Optionen";
+$lang["admin_logout"]="logout";
+?>
