@@ -116,7 +116,7 @@ echo "<tr><td align = center><img src=\"" . $conf["images_admin"] . "omikron_log
 
 echo "<tr><td><br></td></tr>";
 
-echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"> <div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
 if ($typ=="C"){
 
@@ -140,7 +140,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
 }
  
-echo "<tr><td><a href=\"acme-admin.php?&typ=L\" class=\"navbuttonlink\">                              <img src=\"" . $conf["images_admin"] . "layout.png\" alt=\"Administrationsbereich: Layout" . $lang["admin_layout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px;; z-index:10; \">" . $lang["admin_layout"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=L\" class=\"navbuttonlink\">                              <img src=\"" . $conf["images_admin"] . "layout.png\" alt=\"Administrationsbereich: Layout" . $lang["admin_layout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_layout"]. "</div></a></td></tr>";
 
 if ($typ=="L"){
 
