@@ -29,6 +29,7 @@ $lang["page_titelbild"]="Titelbild";
 $lang["page_kurztext"]="Kurztext (Teaser)";
 $lang["page_langtext"]="Langtext";
 $lang["page_speichern"]="speichern";
+$lang["page_link"]="Link";
 $lang["page_insert_fehlerhaft"]="Seite einfügen fehlgeschlagen";
 $lang["page_insert_erfolgreich"]="Seite einfügen erfolgreich";
 $lang["page_update_fehlerhaft"]="Seite bearbeiten fehlgeschlagen";
