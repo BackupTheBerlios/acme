@@ -128,10 +128,10 @@ function pagebrowse(){
 
    echo "<h1>".$lang["page_verwaltung"]."</h1>\n";
    if (checkgroupcreate($conf["author_groups"], "page") == 1 ){
-      echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">Neue Seite anlegen</a>\n";
+      echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td></tr><td> </td><td> </td>\n";
+   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
    writepagechilds($parent,$h_level);
    echo "</table>";
 }      

@@ -25,3 +25,4 @@ RewriteRule ^termine/([0-9]+)$                     /medinet/index.php?page=termi
 RewriteRule ^urls/([0-9]+)$                        /medinet/index.php?page=urls&url_typ_id=$1                    [QSA,L]
 RewriteRule ^urls/([0-9]+)/([0-9]+)$               /medinet/index.php?page=urls&url_typ_id=$1&url_id=$2                    [QSA,L]
 RewriteRule ^url/([0-9]+)$                         /medinet/index.php?page=urls&url_id=$1    
+RewriteRule ^sitemap/([0-9]+)$                     /medinet/index.php?page=sitemap&id=$1    

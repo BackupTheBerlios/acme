@@ -19,6 +19,7 @@ $lang["admin_messages"]="messages";
 $lang["admin_downloads"]="downloads";
 $lang["admin_bar"]="page bars";
 $lang["admin_news"]="news";
+$lang["admin_sitemap"]="sitemap";
 $lang["admin_hilfe"]="help-wiki";
 $lang["admin_content"]="content";
 $lang["admin_layout"]="structure";

@@ -2,6 +2,7 @@
 $lang["sitemap_verwaltung"]="sitemaps";
 $lang["sitemap_titel"]="name";
 $lang["sitemap_counter"]="counter";
+$lang["sitemap_nav"]="Navigation";
 $lang["sitemap_anlegen"]="sitemap erstellen";
 $lang["sitemap_bearbeiten"]="sitemap bearbeiten";
 $lang["sitemap_logo_klein"]="small icon (nav akt)";
