@@ -10,7 +10,8 @@ function search_page($search, $data) {
          $data->search->searchresults->result[$akt]->search_text = $row->page_short_text;
          $akt++;  
       }
-      mysql_free_result($main_result);    
+
    }
+   return mysql_num_rows($result);
 }
 ?>

@@ -30,6 +30,8 @@
 
 */
 
+include($conf["cmsbase"] . "/lang/search." . $conf["lang"] . ".inc");
+
 if ($page == "search"){
    $searchstring = search_strip_badchars($search);
    $modul_result = dbquery("select * from acme_module where search ='Y'");
@@ -59,11 +61,17 @@ function rendersearch($searchstring){
    $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
    $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-   $data->search->searchstring  = $searchstring;
+   $data->search->searchstring  = $lang["search_searching"] . $searchstring;
    
    $akt=1;
-   if ($searchstring <> "") searchIt(&$data, $akt, $searchstring);
-   
+   if ($searchstring <> "") {
+      $anzsearches = searchIt(&$data, $akt, $searchstring);
+   }
+   if ($anzsearches == 0) {
+      $data->search->searchcount  = $lang["search_noresults"];
+   } else {
+      $data->search->searchcount  = $lang["search_results"] . $anzsearches;   
+   }    
    $page_output = sprintt($data, $tplfile);
    echo $page_output;
 }
@@ -72,17 +80,20 @@ function rendersearch($searchstring){
 function searchIt(&$data, $akt, $search){
    global $conf, $lang;
 
+   $found = 0;
+
    $modul_result = dbquery("select * from acme_module where search ='Y'");
    if ( mysql_num_rows($modul_result) >0)  {
       while ($row = mysql_fetch_object($modul_result) ){
           $modul = $row->modul;
           $fktname = 'search_'.$modul;
           if (function_exists($fktname)){
-             call_user_func($fktname, $search, &$data);
+             $found = $found + call_user_func($fktname, $search, &$data);
           }              
       }
       mysql_free_result($modul_result);
    }
+   return $found; 
 }
 function search_strip_badchars($line) {
 // Strips various characters from $line.
