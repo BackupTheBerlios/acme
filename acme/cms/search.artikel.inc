@@ -23,6 +23,6 @@ function search_artikel($search, $data) {
          }   	
       }
    }
-   return mysql_num_rows($result1) + mysql_num_rows($result2)
+   return mysql_num_rows($result1) + mysql_num_rows($result2);
 }
 ?>

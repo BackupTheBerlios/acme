@@ -1,5 +1,27 @@
 <?php
 
+function checkacl($acltyp, $usergroups, $user, $modul, $modulid){
+   global $conf, $lang;
+   
+   $access = 0;
+   $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "''");
+   if ( mysql_num_rows($result) > 0 )  {
+   	  if($row->$acltyp == "Y") {$aclresult = 1;}
+   } else {
+     $singlegroups = explode(":", $usergroups);
+     while ( list ($key, $value) = each ($singlegroups) ) {
+         if ( $value != "" ){
+            $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $value  . "'");
+            if ( mysql_num_rows($result) > 0 )  {
+               $row = mysql_fetch_object($result);
+               if($row->$acltyp == "Y") {$aclresult = 1;}
+            }   
+         } 
+      }
+   }
+   return $aclresult;
+}
+
 function joingrouparray($grouparray){
    
    global $conf, $lang;

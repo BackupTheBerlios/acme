@@ -104,7 +104,7 @@ echo "<tr><td align = center><img src=\"" . $conf["images_admin"] . "omikron_log
 
 echo "<tr><td><br></td></tr>";
 
-echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
 if ($typ=="C"){
 
@@ -128,7 +128,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
 }
  
-echo "<tr><td><a href=\"acme-admin.php?&typ=L\" class=\"navbuttonlink\">                              <img src=\"" . $conf["images_admin"] . "layout.png\" alt=\"Administrationsbereich: Layout" . $lang["admin_layout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_layout"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=L\" class=\"navbuttonlink\">                              <img src=\"" . $conf["images_admin"] . "layout.png\" alt=\"Administrationsbereich: Layout" . $lang["admin_layout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_layout"]. "</div></a></td></tr>";
 
 if ($typ=="L"){
 
@@ -152,7 +152,7 @@ if ( mysql_num_rows($result) > 0 ) {
 
 }
 
-echo "<tr><td><a href=\"acme-admin.php?&typ=A\" class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "admin.png\" alt=\"" . $lang["admin_admin"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px;; z-index:10; \">" . $lang["admin_admin"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=A\" class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "admin.png\" alt=\"" . $lang["admin_admin"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_admin"]. "</div></a></td></tr>";
 
 if ($typ=="A"){
 
@@ -176,9 +176,9 @@ if ( mysql_num_rows($result) > 0 ) {
 
 }
 
-echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" class=\"navbuttonlink\" alt=\"Öffnet sich im neuen Fenster: Link zum Hilfe-Center\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"Hilfe" . $lang["admin_hilfe"]. "\" border=\"0\" style=\"z-index:2;\"><div style=\"position:relative; left:60px; top:-32px;; z-index:10; \"> " . $lang["admin_hilfe"]. "</div></a>    </td></tr>";
+echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\" class=\"navbuttonlink\" alt=\"ï¿½ffnet sich im neuen Fenster: Link zum Hilfe-Center\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"Hilfe" . $lang["admin_hilfe"]. "\" border=\"0\" style=\"z-index:2;\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \"> " . $lang["admin_hilfe"]. "</div></a>    </td></tr>";
 
-echo "<tr><td><a href=" . $conf["admp"] ."&section=logout class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
+echo "<tr><td><a href=" . $conf["admp"] ."&section=logout class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
 
 echo "<tr><td class=\"nav_button_td_status\"><b>User:</b><br>". $conf["author_name"] . "<br><br>";
 
