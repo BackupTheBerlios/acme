@@ -10,20 +10,20 @@ if( !$included["config.inc"] )
    $conf["dbadmuser"] 	= "acme";
    $conf["dbadmpass"] 	= "bop80cms";
    
-   $conf["www"] 	= "www.doerrstadt.org";   
-   $conf["wwwdir"] 	= "/var/www";
+   $conf["htdocs"]		= "/var/www";
+   $conf["domain"]    	= "http://www.doerrstadt.org";
    $conf["indexbase"] 	= "/acme_dev";
-   $conf["base"] 		= $conf["indexbase"] . "";
-   $conf["dir"] 		= $conf["wwwdir"] . $conf["base"];
-   $conf["cms"] 		= $conf["dir"] . "/cms";
-   $conf["admbase"] 	= $conf["cms"] . "/admin";
-
-   $conf["indexname"]    = "/acme_dev/index/";
-   $conf["templates"]    = "cms/tpl/";
-   $conf["images"]       = "http://www.doerrstadt.org/acme_dev/cms/bilder/";
+   $conf["cmsbase"]  	= $conf["htdocs"] . $conf["indexbase"] . "/cms";
+   $conf["admbase"] 	= $conf["cmsbase"] . "/admin";
+   $conf["cmsurl"]    	= $conf["domain"]. $conf["indexbase"]  . "/cms";
+   $conf["admurl"]      = $conf["cmsurl"] . "/admin";
+   
+   $conf["indexname"]    = $conf["indexbase"]. "/index/";
+   $conf["templates"]    = $conf["cmsbase"]."/tpl/";
+   $conf["images"]       = $conf["cmsurl"]."/bilder/";
    $conf["images_admin"] = $conf["images"] . "admin/"; 
-   $conf["downloads"]    = "/acme_dev/index/downloads/";
-   $conf["styles"]       = "/acme_dev/index/styles";
+   $conf["downloads"]    = $conf["cmsurl"]."/downloads/";
+   $conf["styles"]       = $conf["cmsurl"]."/styles";
    
    $conf["page"] 	  = "";
    $conf["page_id"] = "";
