@@ -149,7 +149,7 @@ function messages_browse($status) {
 
    echo "<table class=\"reda_td\">\n\n";
    echo "<tr><td><font class=\"subhead\">".$lang["messages_topic"]."</font></td><td><font class=\"subhead\">".$lang["messages_created"]."</font></td><td><font class=\"subhead\">".$lang["messages_fuser"]."</font></td><td width=\"30\"> </td></tr>\n";
-   echo "<tr><td><br></td></tr>\n";
+   echo "<tr><td><br><br></td></tr>\n";
 
    if ($status == "N"){
    while ($row = mysql_fetch_object($nresult)) {

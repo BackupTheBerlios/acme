@@ -114,7 +114,15 @@ h4
 
         }
 
+hr
+	{
+	height:1px;
+	color:#DDDDDD;
+	}
 
+/* die Subheadlines über den Tabellen */
+.subhead
+	{font-weight: bold;}
 
 img
 
@@ -943,58 +951,63 @@ a:active.navlink
 
 /* SUBNAV bei MESSAGES */
 /* die Topleiste: neu, in Bearbeitung, erledigt */
-              
-td.messages_subnav
+
+/* TDs oben in der Topleiste: neu, in Bearbeitung, erledigt */
+/* active */
+.message_nav_td_active
 		{
-		   width:100px;
-                 padding-left:6px;
-                 padding-right:6px;
-                 padding-top:5px;
-                 padding-bottom:5px;
-                 margin-left:1px;
-                 margin-right:1px;
-                 border-color:white;
-                 border-width:1px;
-                 border-style:solid;
-                 text-align:center;
-		   background-color:grey;
-              }
+		width:150px;
+              padding-left:6px;
+              padding-right:6px;
+              padding-top:5px;
+              padding-bottom:5px;
+              margin-left:1px;
+              margin-right:1px;
+              border-color:white;
+              border-width:1px;
+              border-style:solid;
+              text-align:center;
+		background-color:#5E2222;
+		}
+
+/* passive */
+.message_nav_td_passive
+		{
+		width:150px;
+              padding-left:6px;
+              padding-right:6px;
+              padding-top:5px;
+              padding-bottom:5px;
+              margin-left:1px;
+              margin-right:1px;
+              border-color:#dddddd;;
+              border-width:1px;
+              border-style:solid;
+              text-align:center;
+		background-color:#444455;
+		}
 
 
-/* die Links "neu", "in bearbeitung", "erledigt" im menu "messages" */
-a:link.messagelink
 
-   {
-   font-family:verdana, arial, sans-serif;
-   color:#FFFFFF;
-   text-decoration:none;
-   }
+/* Textlinks in der Topleiste, innerhalb der td.message_nav_td_... (s. oben) */
+/* active */
+a.message_nav_link_active
+   	{
+   	font-family:verdana, arial, sans-serif;
+   	color:#FF9900;
+   	text-decoration:none;
+   	font-weight:bold;
+   	text-transform: uppercase;
+  	}
 
-a:visited.messagelink
+/* passive */
+a.message_nav_link_passive
+   	{
+   	font-family:verdana, arial, sans-serif;
+   	color:#dddddd;
+   	text-decoration:none;
+   	}
 
-   {
-   font-family:verdana, arial, sans-serif;
-   color:#ffffff;
-   text-decoration:none;
-   }
-
-a:hover.messagelink
-
-   {
-   font-family:verdana, arial, sans-serif;
-   color:#FFffff;
-   text-decoration:none;
-   }
-
-a:active.messagelink
-
-   {
-   font-family:verdana, arial, sans-serif;
-   color:#FF9900;
-   text-decoration:none;
-   font-weight:bold;
-   text-transform: uppercase;
-   }
 
 
 .button_td_submit {  text-align: right}
