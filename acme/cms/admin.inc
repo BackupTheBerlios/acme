@@ -128,8 +128,6 @@ echo "<tr><td align = center><img src=\"" . $conf["images_admin"] . "omikron_log
 
 echo "<tr><td><br></td></tr>";
 
-echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"" . $lang["admin_hilfe"]. "\" border=\"0\"><span style=\"position: relative;left: 60px;top: -30px;\">" . $lang["admin_hilfe"]. "</span></a></td></tr>\n";
-
 echo "<tr><td><a href=\"acme-admin.php?&typ=C\"><img src=\"" . $conf["images_admin"] . "content.png\" alt=\"" . $lang["admin_content"]. "\" border=\"0\"> <div style=\"position:relative; left:60px; top:-40px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
 if ($typ=="C"){
@@ -201,6 +199,8 @@ if ( mysql_num_rows($result) > 0 ) {
 }
 
 }
+
+echo "<tr><td><a href=\"http://www.doerrstadt.org/kwiki/\" target=\"_blank\"><img src=\"" . $conf["images_admin"] . "help.png\" alt=\"" . $lang["admin_hilfe"]. "\" border=\"0\"><span style=\"position: relative;left: 60px;top: -30px;\">" . $lang["admin_hilfe"]. "</span></a></td></tr>\n";
 
 echo "<tr><td><a href=" . $conf["admp"] ."&section=logout><img src=\"" . $conf["images_admin"] . "logout.png\" alt=\"" . $lang["admin_logout"]. "\"><div style=\"position:relative; left:60px; top:-38px; z-index:10; \">" . $lang["admin_logout"]. "</div></a></td></tr>\n";
 
