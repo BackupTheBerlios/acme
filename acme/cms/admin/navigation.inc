@@ -331,7 +331,7 @@ function createsel_navtyp($select_name, $type, $type_id) {
    $result = dbquery("select * from acme_module where nav = 'Y'");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_array($result)){
-         $Statement = "select * from " . $row[table] . "";
+         $Statement = "select * from " . $row[tablename] . "";
          $modul_result = dbquery($Statement);
          if ( mysql_num_rows($modul_result) > 0 )  { 
             while ($modulrow = mysql_fetch_array($modul_result)){

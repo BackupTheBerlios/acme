@@ -374,7 +374,6 @@ function getnamebymodulandid($modul, $id){
       $Statement = "select *" . 
                    " from  " . $row["tablename"] . 
                    " where " . $row["id"] . " = " . $id;
-                   echo $Statement;
       $modul_result = dbquery($Statement);
       if (mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
