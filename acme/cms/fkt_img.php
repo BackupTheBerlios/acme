@@ -116,14 +116,13 @@ function getnavimg($modul, $id){
    $result = dbquery("select * from acme_module where modul = '". $modul . "'");
    if ( mysql_num_rows($result) == 1 )  {
       $row = mysql_fetch_object($result);
-      $Statement = "select * from " . $row->tablename . " where " . $row->id . " = '". $id . "'";
+      $Statement = "select ".$row->navimg.", ".$row->navimg."_inactive"."  from " . $row->tablename . " where " . $row->id . " = '". $id . "'";
       $modul_result = dbquery($Statement);
       if ( mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
          $picid_a = $modulrow[$row->navimg] ;
          $picid_p = $modulrow[$row->navimg."_inactive"] ;
-
-         if ($modul == $conf["page"] && $conf["page_id"] == $id) {
+         if ($conf["page_id"] == $id) {
             $active = 1;
          } else {
          	$active = 0;

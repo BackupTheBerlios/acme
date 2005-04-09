@@ -82,7 +82,10 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
       $artikel_active = $row->artikel_active;
       $artikel_counter = $row->artikel_counter;
       mysql_free_result($my_result);
-      if ($page_id == "" || $page_id == "0"){$page_id = getfirstpageid($artikel_page);}
+      if ($page_id == "" || $page_id == "0"){
+      	 $page_id = getfirstpageid($artikel_page);
+      }
+      $conf["page_id"] = $page_id;
       $my_result = dbquery("select * from acme_pages where page_id='".$page_id."'");
       if (mysql_num_rows($my_result) == 1) {
          $row = mysql_fetch_object($my_result);
