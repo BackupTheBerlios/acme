@@ -1,24 +1,6 @@
 <?php
 // Erstellt Selects
-function createsel_groups($select_name,$grouplist){
-   global $conf, $lang;
-   
-   $allgroups = dbquery("select * from acme_groups order by group_name");
-   echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
-   if ( mysql_num_rows($allgroups) > 0 )
-      {
-      while ( $g_row = mysql_fetch_object($allgroups) )
-         {
-         echo "<option value=" . $g_row->group_id;
-         if ( eregi ( $g_row->group_id, $grouplist ) )
-            echo " selected ";
-         echo ">" . $g_row->group_name . "</option>";
-         }
-      mysql_free_result($allgroups);
-      }
-   echo "</select>";
-   return;
-}
+
 
 function createsel_author($select_name, $id){
    global $conf, $lang;
@@ -39,22 +21,7 @@ function createsel_author($select_name, $id){
    return;
 }
 
-function createsel_startpage($select_name, $grouplist){
-   global $conf, $lang;
-   
-   $allgroups = dbquery("select * from acme_pages Where page_parent = '' order by page_name");
-   echo "<select size = \"1\" name=\"" . $select_name . "\">";
-   if ( mysql_num_rows($allgroups) > 0 )      {
-      while ( $g_row = mysql_fetch_object($allgroups) )         {
-         echo "<option value=" . $g_row->page_id;
-         if ( eregi ( $g_row->page_id, $grouplist ) ){            echo " selected ";}
-         echo ">" . $g_row->page_name . "</option>";
-      }
-      mysql_free_result($allgroups);
-   }
-   echo "</select>";
-   return;
-}
+
 function createsel_bar($select_name,$grouplist){
    global $conf, $lang;
    

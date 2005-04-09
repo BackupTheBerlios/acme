@@ -279,4 +279,23 @@ function checkoldpw ($id, $pw) {
     
 	
 }	
+function createsel_groups($select_name,$grouplist){
+   global $conf, $lang;
+   
+   $allgroups = dbquery("select * from acme_groups order by group_name");
+   echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
+   if ( mysql_num_rows($allgroups) > 0 )
+      {
+      while ( $g_row = mysql_fetch_object($allgroups) )
+         {
+         echo "<option value=" . $g_row->group_id;
+         if ( eregi ( $g_row->group_id, $grouplist ) )
+            echo " selected ";
+         echo ">" . $g_row->group_name . "</option>";
+         }
+      mysql_free_result($allgroups);
+      }
+   echo "</select>";
+   return;
+}
 ?>

@@ -152,197 +152,8 @@ function parse_block($page_tpl, $block_id, $side){
 }
 
 
-function getnavimg($modul, $id){
-   global $conf, $lang;
 
-   $result = dbquery("select * from acme_module where modul = '". $modul . "'");
-   if ( mysql_num_rows($result) == 1 )  {
-      $row = mysql_fetch_object($result);
-      $Statement = "select * from " . $row->tablename . " where " . $row->id . " = '". $id . "'";
-      $modul_result = dbquery($Statement);
-      if ( mysql_num_rows($modul_result) > 0 )  {
-         $modulrow = mysql_fetch_array($modul_result);
-         $picid_a = $modulrow[$row->navimg] ;
-         $picid_p = $modulrow[$row->navimg."_inactive"] ;
 
-         if ($modul == $conf["page"] && $conf["page_id"] == $id) {
-            $active = 1;
-         } else {
-         	$active = 0;
-         }	   
-      }
-      mysql_free_result($modul_result);
-   }
-
-   if ( $picid_a ){
-      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_a."'";
-      dbconnect();
-      $result = dbquery($getpic);
-      if(mysql_affected_rows() > 0)         {
-         $row = mysql_fetch_object($result);
-         $act_pic->name  =  $row->img_name;
-         $act_pic->src   =  $conf["images"] . $row->img_real_name;
-         $act_pic->desc  =  $row->img_description;
-      } else {
-         $act_pic->name  =  "";
-         $act_pic->src   =  "";
-         $act_pic->desc  =  "";
-      }      
-      mysql_free_result($result);
-   }
-   if ( $picid_p ){
-      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_p."'";
-      dbconnect();
-      $result = dbquery($getpic);
-      if(mysql_affected_rows() > 0)         {
-         $row = mysql_fetch_object($result);
-         $pas_pic->name  =  $row->img_name;
-         $pas_pic->src   =  $conf["images"] . $row->img_real_name;
-         $pas_pic->desc  =  $row->img_description;
-      } else {
-         $pas_pic->name  =  "";
-         $pas_pic->src   =  "";
-         $pas_pic->desc  =  "";
-      }
-      mysql_free_result($result);
-   }
-   if ($active==1) {
-      $navimg->name = $act_pic->name; 
-      $navimg->src  = $act_pic->src;
-      $navimg->desc = $act_pic->desc;
-   } else {
-      $navimg->name = $pas_pic->name; 
-      $navimg->src  = $pas_pic->src;
-      $navimg->desc = $pas_pic->desc;
-   }	           	
-   
-   $navimg->act = $act_pic;
-   $navimg->pas = $pas_pic;
-   
-   if ($pas_pic->src == "" && $act_pic->src == "") {
-      return NULL;
-   } else {
-   	  return $navimg;
-   }	   
-}
-
-function gethomeimg(){
-   global $conf, $lang;
-
-   $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$conf["home_img"]."'";
-   $result = dbquery($getpic);
-   if(mysql_affected_rows() > 0)         {
-      $row = mysql_fetch_object($result);
-      return "<img class = \"logo\"src = \"" . $conf["images"] . $row->img_real_name."\" alt = \"" . $row->img_description . "\">";
-   }
-   else{
-      return "<img src = \"" . $conf["images"]."pixel.gif\" alt = \"blank\">";
-   }
-   mysql_free_result($result);
-}
-
-function gethomenavimg(){
-   global $conf, $lang;
-
-   $Statement = "select page_img_small from acme_pages where page_id = '". $conf["home_page"] . "'";
-   $modul_result = dbquery($Statement);
-   if ( mysql_num_rows($modul_result) > 0 )  {
-      $modulrow = mysql_fetch_array($modul_result);
-      $picid = $modulrow["page_img_small"] ;
-   }
-   $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$picid."'";
-   $result = dbquery($getpic);
-   if(mysql_affected_rows() > 0)         {
-      $row = mysql_fetch_object($result);
-      return "<img class = \"nav_elem_img\"src = \"" . $conf["images"] . $row->img_real_name."\" alt = \"" . $row->img_description . "\">";
-   }
-   else{
-      return "<img src = \"" . $conf["images"]."pixel.gif\" alt = \"blank\">";
-   }
-   mysql_free_result($result);
-}
-
-function getimagebyname($name, $style,$page_tpl){
-   global $conf, $lang;
-
-   $getpic = "Select img_real_name, img_name, img_description from acme_bilder where img_name  like'%" . $name . "%' ";
-   $result = dbquery($getpic);
-   if(mysql_affected_rows() == 1)         {
-      $row = mysql_fetch_object($result);
-      if (file_exists($conf["images"] . $row->img_real_name)){
-         // vorsichtshalber wegen altdaten
-         if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-            list($width, $height, $type, $attr) = getimagesize($conf["images"] . "small_".$row->img_real_name);
-         } else {
-            list($width, $height, $type, $attr) = getimagesize($conf["images"] . $row->img_real_name);      
-         }
-         $data->img_width  = $width;
-         $data->img_height = $height;
-         // vorsichtshalber wegen altdaten
-         if (file_exists($conf["images"] . "thumb_".$row->img_real_name)){
-            $data->img_small_url    = $conf["images"] . "thumb_" . $row->img_real_name;
-         }else{
-            $data->img_small_url    = $conf["images"] . $row->img_real_name;
-         }
-         // vorsichtshalber wegen altdaten
-         if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-            $data->img_small_url    = $conf["images"] . "small_" . $row->img_real_name;
-         }else{
-            $data->img_small_url    = $conf["images"] . $row->img_real_name;
-         }  
-         $data->img_big_url      = $conf["images"] . $row->img_real_name;
-         $data->img_name   = $row->img_name;
-         $data->img_desc   = $row->img_description;
-
-         if ($style==""){$style="c";}
-         $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
-         return " " . sprintt($data, $tplfile) . " ";
-      }
-      else {
-      	 return " ";
-      }	
-   }   
-
-   mysql_free_result($result);
-}
-
-function getimagebyid($id, $style,$page_tpl){
-   global $conf, $lang;
-
-   $getpic = "Select img_real_name, img_name, img_description from acme_bilder where img_id = '" . $id . "'";
-   $result = dbquery($getpic);
-   if(mysql_affected_rows() == 1)         {
-      $row = mysql_fetch_object($result);
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-         list($width, $height, $type, $attr) = getimagesize($conf["images"] . "small_".$row->img_real_name);
-      } else {
-         list($width, $height, $type, $attr) = getimagesize($conf["images"] . $row->img_real_name);      
-      }
-      $data->img_width  = $width;
-      $data->img_height = $height;
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "thumb_".$row->img_real_name)){
-         $data->img_small_url    = $conf["images"] . "thumb_" . $row->img_real_name;
-      }else{
-         $data->img_small_url    = $conf["images"] . $row->img_real_name;
-      }
-      // vorsichtshalber wegen altdaten
-      if (file_exists($conf["images"] . "small_".$row->img_real_name)){
-         $data->img_small_url    = $conf["images"] . "small_" . $row->img_real_name;
-      }else{
-         $data->img_small_url    = $conf["images"] . $row->img_real_name;
-      }  
-      $data->img_big_url      = $conf["images"] . $row->img_real_name;
-      $data->img_name   = $row->img_name;
-      $data->img_desc   = $row->img_description;
-   }
-   if ($style==""){$style="c";}
-   $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
-   return " " . sprintt($data, $tplfile) . " ";
-
-   mysql_free_result($result);
-}
 function getnamebymodulandid($modul, $id){
    global $conf, $lang;
 
@@ -362,4 +173,26 @@ function getnamebymodulandid($modul, $id){
       }
    } 
 }
+function gettemplatebyid($tpl_id){
+   global $conf, $lang;
+   
+   $tpl = "";
+   $my_result = dbquery("select tpl_name from acme_templates where tpl_id=".$tpl_id);
+   if ( mysql_num_rows($my_result) >0)      {
+      $row = mysql_fetch_object($my_result);
+      $tpl = $row->tpl_name; // sollte mal das template direkt aus der datenbank holen
+      mysql_free_result($my_result);
+   }
+   return $tpl;
+}
+function getauthorbyid($id){
+   global $conf, $lang;
+   $my_result = dbquery("select * from acme_author where author_id='".$id."'");
+   if ( mysql_num_rows($my_result) == 1 ) {
+      $row = mysql_fetch_object($my_result);
+      $name = $row->author_vorname . " " . $row->author_nachname ;
+      mysql_free_result($my_result);
+   }
+   return $name;
+}   
 ?>

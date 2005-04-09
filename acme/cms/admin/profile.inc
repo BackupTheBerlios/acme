@@ -275,4 +275,20 @@ function createsel_startpagewtyp($select_name, $type, $type_id) {
    
    return;
 }
+function createsel_startpage($select_name, $grouplist){
+   global $conf, $lang;
+   
+   $allgroups = dbquery("select * from acme_pages Where page_parent = '' order by page_name");
+   echo "<select size = \"1\" name=\"" . $select_name . "\">";
+   if ( mysql_num_rows($allgroups) > 0 )      {
+      while ( $g_row = mysql_fetch_object($allgroups) )         {
+         echo "<option value=" . $g_row->page_id;
+         if ( eregi ( $g_row->page_id, $grouplist ) ){            echo " selected ";}
+         echo ">" . $g_row->page_name . "</option>";
+      }
+      mysql_free_result($allgroups);
+   }
+   echo "</select>";
+   return;
+}
 ?>

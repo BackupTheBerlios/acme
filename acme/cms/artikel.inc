@@ -199,4 +199,12 @@ function getfirstpageid($list){
       if ($value <> "") {return $value;}
       }
 }
+function artikel_gethighestpart($artikel_id){
+   global $conf, $lang;
+   
+   $my_result = dbquery("select * from acme_artikel_daten where artikel_id='".$artikel_id."'");
+   $partmax = mysql_num_rows($my_result);
+   mysql_free_result($my_result);
+   return $partmax;
+}
 ?>
