@@ -102,7 +102,7 @@ function rendernews(){
    $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
    $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-   $query = "select * from acme_pages where page_top_thema = 'Y'";
+   $query = "select * from ".$conf["db_namespace"]."pages where page_top_thema = 'Y'";
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);
@@ -153,7 +153,7 @@ function rendernews(){
       mysql_free_result($my_result);
    } else {echo "WAAHH".$query;}
 
-   $query = "select * from acme_pages where page_news_rows > 0 and  page_top_thema = 'N' order by page_news_rank ASC";
+   $query = "select * from ".$conf["db_namespace"]."pages where page_news_rows > 0 and  page_top_thema = 'N' order by page_news_rank ASC";
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){
@@ -216,7 +216,7 @@ function rendernews(){
 function getpagechildsfornews($data, $page_id, $aktpage, $page_tpl, $rows){
    global $conf, $lang;
    
-   $query = "select * from acme_artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT 0,".$rows;
+   $query = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT 0,".$rows;
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){
@@ -239,7 +239,7 @@ function getpagechildsfornews($data, $page_id, $aktpage, $page_tpl, $rows){
 function getaktuellchildsfornews($data, $page_id, $page_tpl, $rows){
    global $conf, $lang;
    
-   $query = "select * from acme_artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT 0,".$rows;
+   $query = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT 0,".$rows;
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){

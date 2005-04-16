@@ -29,7 +29,7 @@ function checkmodul($page){
    global $conf, $lang;
    
    $found = false;
-   $result = dbquery("select modul from acme_module order by modul");
+   $result = dbquery("select modul from ".$conf["db_namespace"]."module order by modul");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result)) {
       	if ($page==$row->modul){$found = true;break;}

@@ -1,10 +1,10 @@
 <?php 
 /*
 
-  platzhalter für die Seite:
+  platzhalter fï¿½r die Seite:
 
   {mask:main}
-     titel                Seitenüberschrift
+     titel                Seitenï¿½berschrift
      left_bar             linke Navigation
      right_bar            rechte Navigation
      top_bar              obere Navigation
@@ -19,7 +19,7 @@
        {/mask}
     {/mask}
   {/mask}   
-  platzhalter für die Navigation:
+  platzhalter fï¿½r die Navigation:
   {mask:main}
     {mask:nav_elem}
        nav_elem_url
@@ -39,7 +39,7 @@ function rendersitemap($id){
    
    $akt=0;
 
-   $sitemap_result = dbquery("select * from acme_sitemap where sitemap_id='".$id."'");
+   $sitemap_result = dbquery("select * from ".$conf["db_namespace"]."sitemap where sitemap_id='".$id."'");
    if (mysql_num_rows($sitemap_result) == 1) {
       $sitemap_row = mysql_fetch_object($sitemap_result);
       $sitemap_id = $sitemap_row->sitemap_id;
@@ -62,7 +62,7 @@ function rendersitemap($id){
       $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
       $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-      $getnavtopics  = "Select * from acme_nav_topics where nav_id = '" . $sitemap_nav_id . "' order by nav_topic_rank";
+      $getnavtopics  = "Select * from ".$conf["db_namespace"]."nav_topics where nav_id = '" . $sitemap_nav_id . "' order by nav_topic_rank";
       $result  = dbquery($getnavtopics);
       if (mysql_num_rows($result) > 0) {
          while ( $row = mysql_fetch_object($result) ){
@@ -85,7 +85,7 @@ function rendersitemap($id){
 function writesitemaptopics(&$data, &$akt, $type, $type_id, &$h_level){
    global $conf, $lang;
    
-   $modul_result = dbquery("select * from acme_module where modul ='".$type."'");
+   $modul_result = dbquery("select * from ".$conf["db_namespace"]."module where modul ='".$type."'");
    if ( mysql_num_rows($modul_result) >0)  {
       while ($row = mysql_fetch_object($modul_result) ){
          $modul = $row->modul;

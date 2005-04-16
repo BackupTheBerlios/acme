@@ -38,7 +38,7 @@ function renderglossar($titel, $part){
 
    if ($part == ""){$part = substr($titel,0,1);}
 
-   $query = "select * from acme_glossar where glossar_titel like '".$part."%' order by glossar_titel";
+   $query = "select * from ".$conf["db_namespace"]."glossar where glossar_titel like '".$part."%' order by glossar_titel";
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ($row = mysql_fetch_object($my_result)){
@@ -51,7 +51,7 @@ function renderglossar($titel, $part){
 
    $data->glossar_parts[1]->url   = $conf["indexname"] . "glossar//a";
    $data->glossar_parts[1]->part  = "A";
-   $data->glossar_parts[2]->url   = $conf["indexname"] . "glossar//ä";
+   $data->glossar_parts[2]->url   = $conf["indexname"] . "glossar//ï¿½";
    $data->glossar_parts[2]->part  = "&Auml;";
    $data->glossar_parts[3]->url   = $conf["indexname"] . "glossar//b";
    $data->glossar_parts[3]->part  = "B";
@@ -81,7 +81,7 @@ function renderglossar($titel, $part){
    $data->glossar_parts[15]->part  = "N";
    $data->glossar_parts[16]->url   = $conf["indexname"] . "glossar//o";
    $data->glossar_parts[16]->part  = "O";
-   $data->glossar_parts[17]->url   = $conf["indexname"] . "glossar//ö";
+   $data->glossar_parts[17]->url   = $conf["indexname"] . "glossar//ï¿½";
    $data->glossar_parts[17]->part  = "&Ouml;";
    $data->glossar_parts[18]->url   = $conf["indexname"] . "glossar//p";
    $data->glossar_parts[18]->part  = "P";
@@ -95,7 +95,7 @@ function renderglossar($titel, $part){
    $data->glossar_parts[22]->part  = "T";
    $data->glossar_parts[23]->url   = $conf["indexname"] . "glossar//u";
    $data->glossar_parts[23]->part  = "U";
-   $data->glossar_parts[24]->url   = $conf["indexname"] . "glossar//ü";
+   $data->glossar_parts[24]->url   = $conf["indexname"] . "glossar//ï¿½";
    $data->glossar_parts[24]->part  = "&Uuml;";
    $data->glossar_parts[25]->url   = $conf["indexname"] . "glossar//v";
    $data->glossar_parts[25]->part  = "V";
@@ -109,7 +109,7 @@ function renderglossar($titel, $part){
    $data->glossar_parts[29]->part  = "Z";
 
    if ($titel <> ""){
-      $query = "select * from acme_glossar where glossar_titel Like '%".$titel."%'";
+      $query = "select * from ".$conf["db_namespace"]."glossar where glossar_titel Like '%".$titel."%'";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) == 1 ){
          $row = mysql_fetch_object($my_result);
@@ -145,7 +145,7 @@ function renderglossar($titel, $part){
 function get_glossar_img($img_id, $sub_data){
    global $conf, $lang;
 
-   $getpic = "Select img_real_name, img_name, img_description from acme_bilder where img_id  = '" . $img_id . "'";
+   $getpic = "Select img_real_name, img_name, img_description from ".$conf["db_namespace"]."bilder where img_id  = '" . $img_id . "'";
    $result = dbquery($getpic);
    if(mysql_affected_rows() == 1)         {
       $row = mysql_fetch_object($result);

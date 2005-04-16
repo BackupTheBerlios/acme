@@ -35,7 +35,7 @@ if ($page="download"){
 function renderdownloads($id, $did){
    global $conf, $lang;
 
-   $my_result = dbquery("select * from acme_download_typs where download_typ_id='".$id."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
       $row = mysql_fetch_object($my_result);
       $download_typ_id        = $row->download_typ_id;
@@ -77,7 +77,7 @@ function renderdownloads($id, $did){
 function getdownload_typnamebyid($id){
    global $conf, $lang;
    
-   $my_result = dbquery("select download_typ_name from acme_download_typs where download_typ_id='".$id."'");
+   $my_result = dbquery("select download_typ_name from ".$conf["db_namespace"]."download_typs where download_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
@@ -92,7 +92,7 @@ function getdownload_typdata($data, $download_typ_id){
 
    $stmt = "order by download_typ_name ASC";
    $akt=0;
-   $query = "select * from acme_download_typs where download_typ_parent_id = '".$download_typ_id."' " . $stmt;
+   $query = "select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = '".$download_typ_id."' " . $stmt;
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -106,7 +106,7 @@ function getdownload_typdata($data, $download_typ_id){
    if ($did = "0"){
       $stmt = "order by url_name ASC";
       $akt=0;
-      $query = "select * from acme_url where download_typ like '%:".$download_typ_id.":%' " . $stmt;
+      $query = "select * from ".$conf["db_namespace"]."url where download_typ like '%:".$download_typ_id.":%' " . $stmt;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){
@@ -121,7 +121,7 @@ function getdownload_typdata($data, $download_typ_id){
     else { 
       $stmt = "order by url_name ASC";
       $akt=1;
-      $query = "select * from acme_url where download_id =".$did;
+      $query = "select * from ".$conf["db_namespace"]."url where download_id =".$did;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){

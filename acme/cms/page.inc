@@ -87,7 +87,7 @@ if ($page == "page"){
 function renderpage($pageid, $pagestart){
    global $conf, $lang;
    
-   $my_result = dbquery("select * from acme_pages where page_id='".$pageid."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."pages where page_id='".$pageid."'");
    if ( mysql_num_rows($my_result) == 1 )      {
       $row = mysql_fetch_object($my_result);
       $page_id = $row->page_id;
@@ -166,7 +166,7 @@ function incpagecounter($page_id,$page_counter) {
    global $conf, $lang;
    
    $page_counter = $page_counter + 1;
-   $inc_query  = "update acme_pages set page_counter = ".$page_counter." where page_id = ".$page_id;
+   $inc_query  = "update ".$conf["db_namespace"]."pages set page_counter = ".$page_counter." where page_id = ".$page_id;
    dbconnect();
    dbquery($inc_query);
 }
@@ -177,7 +177,7 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
    $Zeilen_pro_Seite = 10;
    $akt=0;
    if ($page_childs == "P"){
-      $query = "select * from acme_pages where page_parent = '".$page_id."' order by page_create_date DESC";
+      $query = "select * from ".$conf["db_namespace"]."pages where page_parent = '".$page_id."' order by page_create_date DESC";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
          while ( $row = mysql_fetch_object($my_result) ){
@@ -196,11 +196,11 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
   }
       
   if ($page_childs == "A"){
-     $query = "select artikel_id from acme_artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J' and artikel_publish_date <= now() order by artikel_publish_date DESC";
+     $query = "select artikel_id from ".$conf["db_namespace"]."artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J' and artikel_publish_date <= now() order by artikel_publish_date DESC";
      $my_result = dbquery($query);
      $Anzahl = mysql_num_rows($my_result);
      mysql_free_result($my_result);
-     $query = "select * from acme_artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT " . $anfang . ", ". $Zeilen_pro_Seite . " ";
+     $query = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:".$page_id.":%' and artikel_aktiv = 'J'  and artikel_publish_date <= now()  order by artikel_publish_date DESC LIMIT " . $anfang . ", ". $Zeilen_pro_Seite . " ";
      $my_result = dbquery($query);
      if ( mysql_num_rows($my_result) > 0 ){
         while ( $row = mysql_fetch_object($my_result) ){

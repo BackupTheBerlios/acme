@@ -47,7 +47,7 @@ function renderautor($id){
    $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
    $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-   $query = "select * from acme_author where author_id = '".$id."'";
+   $query = "select * from ".$conf["db_namespace"]."author where author_id = '".$id."'";
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);

@@ -51,14 +51,14 @@ function renderbilder($img_typ_id, $img_id, $anfang){
    global $conf, $lang;
 
    if ($img_typ_id==0 || !isset($img_typ_id)) {
-      $query = "select * from acme_bilder order by img_id LIMIT 1,1";
+      $query = "select * from ".$conf["db_namespace"]."bilder order by img_id LIMIT 1,1";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
          $row = mysql_fetch_object($my_result);
          $img_typ_id = $row->img_typ_id;
       }
    }
-   $img_typ_result = dbquery("select * from acme_bilder_typs where img_typ_id='".$img_typ_id."'");
+   $img_typ_result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where img_typ_id='".$img_typ_id."'");
    if (mysql_num_rows($img_typ_result) == 1) {
       $img_typ_row = mysql_fetch_object($img_typ_result);
       $img_typ_id = $img_typ_row->img_typ_id;
@@ -112,7 +112,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
 function getimgsforpreview($data, $img_typ_id, $img_typ_tpl, $StartImg){
    global $conf, $lang;
 
-   $query = "select img_typ_rows, img_typ_cols from acme_bilder_typs where img_typ_id = '".$img_typ_id."'";
+   $query = "select img_typ_rows, img_typ_cols from ".$conf["db_namespace"]."bilder_typs where img_typ_id = '".$img_typ_id."'";
    $my_result = dbquery($query);
    if (mysql_num_rows($my_result)>0){
       $row = mysql_fetch_object($my_result);
@@ -126,7 +126,7 @@ function getimgsforpreview($data, $img_typ_id, $img_typ_tpl, $StartImg){
    
    $akt_row=1;
    $akt_col=0;
-   $query = "select * from acme_bilder where img_typ_id = '".$img_typ_id."' order by img_id LIMIT " . $StartImg . ", " . $Bilder_pro_Seite . " ";
+   $query = "select * from ".$conf["db_namespace"]."bilder where img_typ_id = '".$img_typ_id."' order by img_id LIMIT " . $StartImg . ", " . $Bilder_pro_Seite . " ";
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){
@@ -174,8 +174,8 @@ function getbigimage($data, $img_id, $img_typ_tpl){
    global $conf, $lang;
    
    $akt=0;
-   if ($img_id==0) {$query = "select * from acme_bilder order by img_id LIMIT 1,1";}
-   else {$query = "select * from acme_bilder where img_id = '".$img_id."'";}
+   if ($img_id==0) {$query = "select * from ".$conf["db_namespace"]."bilder order by img_id LIMIT 1,1";}
+   else {$query = "select * from ".$conf["db_namespace"]."bilder where img_id = '".$img_id."'";}
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) > 0 ){
       while ( $row = mysql_fetch_object($my_result) ){
@@ -191,14 +191,14 @@ function getbigimage($data, $img_id, $img_typ_tpl){
 function incimg_typcounter($img_typ_id,$img_typ_counter) {
    global $conf, $lang;
    $img_typ_counter = $img_typ_counter + 1;
-   $inc_query  = "update acme_bilder_typs set img_typ_counter = ".$img_typ_counter." where img_typ_id=".$img_typ_id;
+   $inc_query  = "update ".$conf["db_namespace"]."bilder_typs set img_typ_counter = ".$img_typ_counter." where img_typ_id=".$img_typ_id;
    dbconnect();
    dbquery($inc_query);
 }
 
 
 function img_anzahlbilder($img_typ_id){
-   $query = "select img_id from acme_bilder where img_typ_id = '".$img_typ_id."'";
+   $query = "select img_id from ".$conf["db_namespace"]."bilder where img_typ_id = '".$img_typ_id."'";
    $my_result = dbquery($query);
    return mysql_num_rows($my_result);
    mysql_free_result($my_result);
@@ -207,7 +207,7 @@ function img_anzahlbilder($img_typ_id){
 function getimg_typnamebyid($id){
    global $conf, $lang;
    
-   $my_result = dbquery("select img_typ_name from acme_bilder_typs where img_typ_id='".$id."'");
+   $my_result = dbquery("select img_typ_name from ".$conf["db_namespace"]."bilder_typs where img_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);

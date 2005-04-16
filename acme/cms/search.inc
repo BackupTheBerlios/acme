@@ -34,7 +34,7 @@ include($conf["cmsbase"] . "/lang/search." . $conf["lang"] . ".inc");
 
 if ($page == "search"){
    $searchstring = search_strip_badchars($search);
-   $modul_result = dbquery("select * from acme_module where search ='Y'");
+   $modul_result = dbquery("select * from ".$conf["db_namespace"]."module where search ='Y'");
    if ( mysql_num_rows($modul_result) >0)  {
       while ($row = mysql_fetch_object($modul_result) ){
           $modul = $row->modul;
@@ -82,7 +82,7 @@ function searchIt(&$data, $akt, $search){
 
    $found = 0;
 
-   $modul_result = dbquery("select * from acme_module where search ='Y'");
+   $modul_result = dbquery("select * from ".$conf["db_namespace"]."module where search ='Y'");
    if ( mysql_num_rows($modul_result) >0)  {
       while ($row = mysql_fetch_object($modul_result) ){
           $modul = $row->modul;

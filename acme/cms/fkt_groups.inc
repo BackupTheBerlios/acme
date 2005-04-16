@@ -2,11 +2,11 @@
 function acl_check($acltyp, $usergroups, $user, $modul, $modulid){
    global $conf, $lang;
    
-   // echo "<p>aclcheck: user '" . $user . "' gruppen ". $usergroups . " with acl '". $acltyp."'\n<br>"."select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'"."</p>";   
+   // echo "<p>aclcheck: user '" . $user . "' gruppen ". $usergroups . " with acl '". $acltyp."'\n<br>"."select ".$acltyp." from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'"."</p>";   
    
    $acltyp = "acl_".$acltyp;
    $access = 0;
-   $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and author_id = " . $user  . "");
+   $result = dbquery("select ".$acltyp." from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and author_id = " . $user  . "");
    if ( mysql_num_rows($result) > 0 )  {
    	  $row = mysql_fetch_object($result);
    	  if($row->$acltyp == "Y") {
@@ -17,7 +17,7 @@ function acl_check($acltyp, $usergroups, $user, $modul, $modulid){
      $singlegroups = explode(":", $usergroups);
      while ( list ($key, $value) = each ($singlegroups) ) {
          if ( $value != "" ){
-            $result = dbquery("select ".$acltyp." from acme_acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and group_id = " . $value  . "");
+            $result = dbquery("select ".$acltyp." from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = " . $modulid . " and group_id = " . $value  . "");
             if ( mysql_num_rows($result) > 0 )  {
                $row = mysql_fetch_object($result);
                if($row->$acltyp == "Y") {
@@ -34,11 +34,11 @@ function acl_check($acltyp, $usergroups, $user, $modul, $modulid){
 function acl_user_set($user, $modul, $modulid, $rights, $insert, $edit, $delete){
    global $conf, $lang;
    
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
+   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
    if ( mysql_num_rows($result) > 0 )  {
-      $result = dbquery("update acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
+      $result = dbquery("update ".$conf["db_namespace"]."acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
    } else {
-      $result = dbquery("insert into acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', author_id = '".$user."'");
+      $result = dbquery("insert into ".$conf["db_namespace"]."acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', author_id = '".$user."'");
    }
    if (!$result) {
    die('Ungültige Abfrage: ' . mysql_error());
@@ -50,11 +50,11 @@ function acl_user_set($user, $modul, $modulid, $rights, $insert, $edit, $delete)
 function acl_group_set($group, $modul, $modulid, $rights, $insert, $edit, $delete){
    global $conf, $lang;
    
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
+   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
    if ( mysql_num_rows($result) > 0 )  {
-      $result = dbquery("update acme_acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
+      $result = dbquery("update ".$conf["db_namespace"]."acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
    } else {
-      $result = dbquery("insert into acme_acl (acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', group_id = '".$group."')");
+      $result = dbquery("insert into ".$conf["db_namespace"]."acl (acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', group_id = '".$group."')");
    }
    return $result; 
 }
@@ -62,9 +62,9 @@ function acl_delete($modul, $modulid){
    global $conf, $lang;
    
    $access = 0;
-   $result = dbquery("select * from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
    if ( mysql_num_rows($result) > 0 )  {
-      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
+      $result = dbquery("delete from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "'");
    } else {
    	  return true;
    }
@@ -75,9 +75,9 @@ function acl_user_delete($user, $modul, $modulid){
    global $conf, $lang;
    
    $access = 0;
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
+   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '" . $user  . "'");
    if ( mysql_num_rows($result) > 0 )  {
-      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
+      $result = dbquery("delete from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and author_id = '".$user."'");
    } else {
    	  return true;
    }
@@ -88,9 +88,9 @@ function acl_group_delete($group, $modul, $modulid){
    global $conf, $lang;
    
    $access = 0;
-   $result = dbquery("select author_id from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
+   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
    if ( mysql_num_rows($result) > 0 )  {
-      $result = dbquery("delete from acme_acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
+      $result = dbquery("delete from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
    } else {
    	  return true;
    }
@@ -144,7 +144,7 @@ function getgroupnamesbyarray($groups) {
    global $conf, $lang;
    
    $groupnames = "";
-   $allgroups = dbquery("select * from acme_groups");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."groups");
    if ( mysql_num_rows($allgroups) > 0 ) {
       while ($g_row = mysql_fetch_object($allgroups)) {
          if (eregi ($g_row->group_id, $groups)) { 
@@ -162,7 +162,7 @@ function getgroupnamebyid($group) {
    global $conf, $lang;
    
    $groupnames = "";
-   $allgroups = dbquery("select * from acme_groups where group_id = '" . $group . "'");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."groups where group_id = '" . $group . "'");
    if ( mysql_num_rows($allgroups) > 0 ) {
       while ($g_row = mysql_fetch_object($allgroups)) {
          $groupnames = $groupnames . $g_row->group_name; 

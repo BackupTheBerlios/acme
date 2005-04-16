@@ -2,7 +2,7 @@
 
 function getimage($picid){
    if ( $picid ) {
-      $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$picid."'";
+      $getpic = "Select img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid."'";
       dbconnect();
       $result = dbquery($getpic);
       if (mysql_affected_rows() > 0){
@@ -21,7 +21,7 @@ function getimagenamebyid($picid){
    global $conf, $lang;
 
    if( $picid ){
-      $getpic = "Select img_name from acme_bilder where img_id='".$picid."'";
+      $getpic = "Select img_name from ".$conf["db_namespace"]."bilder where img_id='".$picid."'";
       $result = dbquery($getpic);
       if(mysql_affected_rows() > 0)         {
          $row = mysql_fetch_object($result);
@@ -33,7 +33,7 @@ function getimagenamebyid($picid){
 function getimagebyname($name, $style,$page_tpl){
    global $conf, $lang;
 
-   $getpic = "Select img_real_name, img_name, img_description from acme_bilder where img_name  like'%" . $name . "%' ";
+   $getpic = "Select img_real_name, img_name, img_description from ".$conf["db_namespace"]."bilder where img_name  like'%" . $name . "%' ";
    $result = dbquery($getpic);
    if(mysql_affected_rows() == 1)         {
       $row = mysql_fetch_object($result);
@@ -77,7 +77,7 @@ function getimagebyname($name, $style,$page_tpl){
 function getimagebyid($id, $style,$page_tpl){
    global $conf, $lang;
 
-   $getpic = "Select img_real_name, img_name, img_description from acme_bilder where img_id = '" . $id . "'";
+   $getpic = "Select img_real_name, img_name, img_description from ".$conf["db_namespace"]."bilder where img_id = '" . $id . "'";
    $result = dbquery($getpic);
    if(mysql_affected_rows() == 1)         {
       $row = mysql_fetch_object($result);
@@ -114,7 +114,7 @@ function getimagebyid($id, $style,$page_tpl){
 function getnavimg($modul, $id){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_module where modul = '". $modul . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."module where modul = '". $modul . "'");
    if ( mysql_num_rows($result) == 1 )  {
       $row = mysql_fetch_object($result);
       $Statement = "select ".$row->navimg.", ".$row->navimg."_inactive"."  from " . $row->tablename . " where " . $row->id . " = '". $id . "'";
@@ -133,7 +133,7 @@ function getnavimg($modul, $id){
    }
 
    if ( $picid_a ){
-      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_a."'";
+      $getpic = "Select img_name, img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid_a."'";
       dbconnect();
       $result = dbquery($getpic);
       if(mysql_affected_rows() > 0)         {
@@ -149,7 +149,7 @@ function getnavimg($modul, $id){
       mysql_free_result($result);
    }
    if ( $picid_p ){
-      $getpic = "Select img_name, img_real_name, img_description from acme_bilder where img_id='".$picid_p."'";
+      $getpic = "Select img_name, img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid_p."'";
       dbconnect();
       $result = dbquery($getpic);
       if(mysql_affected_rows() > 0)         {
@@ -187,7 +187,7 @@ function getnavimg($modul, $id){
 function gethomeimg(){
    global $conf, $lang;
 
-   $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$conf["home_img"]."'";
+   $getpic = "Select img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$conf["home_img"]."'";
    $result = dbquery($getpic);
    if(mysql_affected_rows() > 0)         {
       $row = mysql_fetch_object($result);
@@ -202,13 +202,13 @@ function gethomeimg(){
 function gethomenavimg(){
    global $conf, $lang;
 
-   $Statement = "select page_img_small from acme_pages where page_id = '". $conf["home_page"] . "'";
+   $Statement = "select page_img_small from ".$conf["db_namespace"]."pages where page_id = '". $conf["home_page"] . "'";
    $modul_result = dbquery($Statement);
    if ( mysql_num_rows($modul_result) > 0 )  {
       $modulrow = mysql_fetch_array($modul_result);
       $picid = $modulrow["page_img_small"] ;
    }
-   $getpic = "Select img_real_name, img_description from acme_bilder where img_id='".$picid."'";
+   $getpic = "Select img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid."'";
    $result = dbquery($getpic);
    if(mysql_affected_rows() > 0)         {
       $row = mysql_fetch_object($result);

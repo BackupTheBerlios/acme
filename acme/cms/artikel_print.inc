@@ -36,7 +36,7 @@ if ($page == "aprint"){
 function renderaprint($page_id, $artikel_id){
    global $conf, $lang;
    
-   $query = "select * from acme_artikel where artikel_id=".$artikel_id;
+   $query = "select * from ".$conf["db_namespace"]."artikel where artikel_id=".$artikel_id;
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);
@@ -54,7 +54,7 @@ function renderaprint($page_id, $artikel_id){
       $artikel_counter = $row->artikel_counter;
       mysql_free_result($my_result);
       if ($page_id == "" || $page_id == "0"){$page_id = getfirstpageid($artikel_page);}
-      $my_result = dbquery("select * from acme_pages where page_id='".$page_id."'");
+      $my_result = dbquery("select * from ".$conf["db_namespace"]."pages where page_id='".$page_id."'");
       if (mysql_num_rows($my_result) == 1) {
          $row = mysql_fetch_object($my_result);
          $page_id = $row->page_id;
@@ -103,7 +103,7 @@ function renderaprint($page_id, $artikel_id){
 
 function artikel_getlongtext($data, $artikel_id, $page_tpl){
    global $conf, $lang;
-   $my_result = dbquery("select * from acme_artikel_daten where artikel_id='".$artikel_id."' order by artikel_part ASC");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='".$artikel_id."' order by artikel_part ASC");
    $akt=0;
    while ($row = mysql_fetch_object($my_result)){
       $data->artikel->long_text[$akt]->text = parse_bbcode(nltobr($row->artikel_long_text), $page_tpl);

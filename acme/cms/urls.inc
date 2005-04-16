@@ -36,7 +36,7 @@ if ($page="urls"){
 function renderurls($id,$uid){
    global $conf, $lang;
 
-   $my_result = dbquery("select * from acme_url_typs where url_typ_id='".$id."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
       $row = mysql_fetch_object($my_result);
       $url_typ_id        = $row->url_typ_id;
@@ -78,7 +78,7 @@ function renderurls($id,$uid){
 function geturl_typnamebyid($id){
    global $conf, $lang;
    
-   $my_result = dbquery("select url_typ_name from acme_url_typs where url_typ_id='".$id."'");
+   $my_result = dbquery("select url_typ_name from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
@@ -93,7 +93,7 @@ function geturl_typdata($data, $url_typ_id, $uid){
 
    $stmt = "order by url_typ_name ASC";
    $akt=0;
-   $query = "select * from acme_url_typs where url_typ_parent_id = '".$url_typ_id."' " . $stmt;
+   $query = "select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '".$url_typ_id."' " . $stmt;
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -107,7 +107,7 @@ function geturl_typdata($data, $url_typ_id, $uid){
    if($uid = "0") {
       $stmt = "order by url_name ASC";
       $akt=0;
-      $query = "select * from acme_url where url_typ like '%:".$url_typ_id.":%' " . $stmt;
+      $query = "select * from ".$conf["db_namespace"]."url where url_typ like '%:".$url_typ_id.":%' " . $stmt;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){
@@ -122,7 +122,7 @@ function geturl_typdata($data, $url_typ_id, $uid){
    else {
       $stmt = "order by url_name ASC";
       $akt=1;
-      $query = "select * from acme_url where url_id=".$uid;
+      $query = "select * from ".$conf["db_namespace"]."url where url_id=".$uid;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){

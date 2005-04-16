@@ -65,7 +65,7 @@ if ($page == "artikel"){
 function renderartikel($page_id, $artikel_id, $artikel_part){
    global $conf, $lang;
    if (!isset($artikel_part)){$artikel_part=1;}
-   $query = "select * from acme_artikel where artikel_id=".$artikel_id;
+   $query = "select * from ".$conf["db_namespace"]."artikel where artikel_id=".$artikel_id;
    $my_result = dbquery($query);
    if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);
@@ -86,7 +86,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
       	 $page_id = getfirstpageid($artikel_page);
       }
       $conf["page_id"] = $page_id;
-      $my_result = dbquery("select * from acme_pages where page_id='".$page_id."'");
+      $my_result = dbquery("select * from ".$conf["db_namespace"]."pages where page_id='".$page_id."'");
       if (mysql_num_rows($my_result) == 1) {
          $row = mysql_fetch_object($my_result);
          $page_id = $row->page_id;
@@ -166,7 +166,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
 
 function artikel_getlongtext($artikel_id, $artikel_part){
    global $conf, $lang;
-   $my_result = dbquery("select * from acme_artikel_daten where artikel_id='".$artikel_id."' AND artikel_part='".$artikel_part."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='".$artikel_id."' AND artikel_part='".$artikel_part."'");
    if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);
       $long_text = $row->artikel_long_text;
@@ -182,7 +182,7 @@ function artikel_getlongtext($artikel_id, $artikel_part){
 function incartikelcounter($artikel_id,$artikel_counter) {
    global $conf, $lang;
    $artikel_counter = $artikel_counter + 1;
-   $inc_query  = "update acme_artikel set artikel_counter = ".$artikel_counter." where artikel_id=".$artikel_id;
+   $inc_query  = "update ".$conf["db_namespace"]."artikel set artikel_counter = ".$artikel_counter." where artikel_id=".$artikel_id;
    dbconnect();
    dbquery($inc_query);
 }
@@ -190,7 +190,7 @@ function incartikelcounter($artikel_id,$artikel_counter) {
 function incartikeldatencounter($artikel_daten_id,$artikel_counter) {
    global $conf, $lang;
    $artikel_counter = $artikel_counter + 1;
-   $inc_query  = "update acme_artikel_daten set artikel_counter = ".$artikel_counter." where artikel_daten_id=".$artikel_daten_id;
+   $inc_query  = "update ".$conf["db_namespace"]."artikel_daten set artikel_counter = ".$artikel_counter." where artikel_daten_id=".$artikel_daten_id;
    dbconnect();
    dbquery($inc_query);
 }
@@ -205,7 +205,7 @@ function getfirstpageid($list){
 function artikel_gethighestpart($artikel_id){
    global $conf, $lang;
    
-   $my_result = dbquery("select * from acme_artikel_daten where artikel_id='".$artikel_id."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='".$artikel_id."'");
    $partmax = mysql_num_rows($my_result);
    mysql_free_result($my_result);
    return $partmax;

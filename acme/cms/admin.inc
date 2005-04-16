@@ -75,7 +75,7 @@ echo "<tr><td><br></td></tr>";
 echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
 if ($typ=="C"){
-   $statement = "SELECT m.modul FROM acme_module m  where m.typ='C' order by m.modul";
+   $statement = "SELECT m.modul FROM ".$conf["db_namespace"]."module m  where m.typ='C' order by m.modul";
    $result = dbquery($statement);
    if ( mysql_num_rows($result) > 0 ) {
       while ($row = mysql_fetch_object($result)) {
@@ -87,7 +87,7 @@ if ($typ=="C"){
 }
 echo "<tr><td><a href=\"acme-admin.php?&typ=L\" class=\"navbuttonlink\">                              <img src=\"" . $conf["images_admin"] . "layout.png\" alt=\"Administrationsbereich: Layout" . $lang["admin_layout"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_layout"]. "</div></a></td></tr>";
 if ($typ=="L"){
-   $statement = "SELECT m.modul FROM acme_module m  where m.typ='L' order by m.modul";
+   $statement = "SELECT m.modul FROM ".$conf["db_namespace"]."module m  where m.typ='L' order by m.modul";
    $result = dbquery($statement);
    if ( mysql_num_rows($result) > 0 ) {
       while ($row = mysql_fetch_object($result)) {
@@ -99,7 +99,7 @@ if ($typ=="L"){
 }
 echo "<tr><td><a href=\"acme-admin.php?&typ=A\" class=\"navbuttonlink\"><img src=\"" . $conf["images_admin"] . "admin.png\" alt=\"" . $lang["admin_admin"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_admin"]. "</div></a></td></tr>";
 if ($typ=="A"){
-   $statement = "SELECT m.modul FROM acme_module m  where m.typ='A' order by m.modul";
+   $statement = "SELECT m.modul FROM ".$conf["db_namespace"]."module m  where m.typ='A' order by m.modul";
    $result = dbquery($statement);
    if ( mysql_num_rows($result) > 0 ) {
       while ($row = mysql_fetch_object($result)) {

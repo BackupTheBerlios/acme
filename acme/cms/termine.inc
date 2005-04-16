@@ -39,7 +39,7 @@ rendertermin($id);
 function rendertermin($id){
    global $conf, $lang;
 
-   $my_result = dbquery("select * from acme_termin where termin_id='".$id."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."termin where termin_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
       $row = mysql_fetch_object($my_result);
       $termin_id        = $row->termin_id;
@@ -83,7 +83,7 @@ function inctermincounter($termin_id,$termin_counter) {
    global $conf, $lang;
    
    $termin_counter = $termin_counter + 1;
-   $inc_query  = "update acme_termin set termin_counter = ".$termin_counter." where termin_id = ".$termin_id;
+   $inc_query  = "update ".$conf["db_namespace"]."termin set termin_counter = ".$termin_counter." where termin_id = ".$termin_id;
    dbconnect();
    dbquery($inc_query);
 }
@@ -103,7 +103,7 @@ function getterminchildsdata($data, $termin_id, $termin_tpl, $range="week"){
    if ($range=="week")  {$Start = $weekStart; $End = $weekEnd;}
    if ($range=="month") {$Start = $weekStart; $End = $weekEnd;}
 
-   $dataquery = "select * from acme_termin_data where termin_typ like '%:".$termin_id.":%' and termin_data_date_von >= '" . $Start . "' and termin_data_date_bis <= '" . $End . "' order by termin_data_date_von ASC";
+   $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and termin_data_date_von >= '" . $Start . "' and termin_data_date_bis <= '" . $End . "' order by termin_data_date_von ASC";
    $dataresult = dbquery($dataquery);
    if ( mysql_num_rows($dataresult) > 0 ){
       $akt = 0;
@@ -122,14 +122,14 @@ function getterminchildsdata($data, $termin_id, $termin_tpl, $range="week"){
       mysql_free_result($dataresult);     
    }
    
-   $query = "select * from acme_termin where termin_parent_id = '".$termin_id."' order by termin_name ASC";
+   $query = "select * from ".$conf["db_namespace"]."termin where termin_parent_id = '".$termin_id."' order by termin_name ASC";
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       $akt = 0;
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
          $data->termine->termin_childs[$akt]->name   = $row->termin_name;
-         $dataquery = "select * from acme_termin_data where termin_typ like '%:".$row->termin_id.":%' and termin_data_date_von >= '" . $Start . "' and termin_data_date_bis <= '" . $End . "' order by termin_data_date_von ASC";
+         $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$row->termin_id.":%' and termin_data_date_von >= '" . $Start . "' and termin_data_date_bis <= '" . $End . "' order by termin_data_date_von ASC";
          $dataresult = dbquery($dataquery);
          if ( mysql_num_rows($dataresult) > 0 ){
             $data_akt = 0;
@@ -157,7 +157,7 @@ function getterminchildsdata($data, $termin_id, $termin_tpl, $range="week"){
 function getterminnamebyid($id){
    global $conf, $lang;
    
-   $my_result = dbquery("select termin_name from acme_termin where termin_id='".$id."'");
+   $my_result = dbquery("select termin_name from ".$conf["db_namespace"]."termin where termin_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);

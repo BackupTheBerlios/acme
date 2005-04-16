@@ -2,7 +2,7 @@
 function getpageheadlinebyid($id)
 {
    global $conf, $lang;
-   $my_result = dbquery("select page_headline from acme_pages where page_id='".$id."'");
+   $my_result = dbquery("select page_headline from ".$conf["db_namespace"]."pages where page_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
@@ -14,7 +14,7 @@ function getpageheadlinebyid($id)
 function getpagenamebyid($id)
 {
    global $conf, $lang;
-   $my_result = dbquery("select page_name from acme_pages where page_id='".$id."'");
+   $my_result = dbquery("select page_name from ".$conf["db_namespace"]."pages where page_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
@@ -30,7 +30,7 @@ function getpagenamebyidarray($ids){
    $names = "";
    $singlegroups = explode(":", $ids);
    while ( list ($key, $value) = each ($singlegroups) ) {
-      $my_result = dbquery("select page_name from acme_pages where page_id='".$value."'");
+      $my_result = dbquery("select page_name from ".$conf["db_namespace"]."pages where page_id='".$value."'");
       if ( mysql_num_rows($my_result) == 1 ) {
          $row = mysql_fetch_object($my_result);
          if ($names == "") {$names = $row->page_name;}

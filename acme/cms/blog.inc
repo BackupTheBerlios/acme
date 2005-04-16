@@ -45,7 +45,7 @@ if ($page == "blog") {
 function renderblog($bid, $bj, $bm, $cat = 0){
    global $conf, $lang;
 
-   $my_result = dbquery("select * from acme_blog where blog_id='".$bid."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."blog where blog_id='".$bid."'");
    if ( mysql_num_rows($my_result) == 1 )   {
       $row = mysql_fetch_object($my_result);
       $blog_id        = $row->blog_id;
@@ -92,7 +92,7 @@ function incblogcounter($blog_id,$blog_counter) {
    global $conf, $lang;
    
    $blog_counter = $blog_counter + 1;
-   $inc_query  = "update acme_blog set blog_counter = ".$blog_counter." where blog_id = ".$blog_id;
+   $inc_query  = "update ".$conf["db_namespace"]."blog set blog_counter = ".$blog_counter." where blog_id = ".$blog_id;
    dbconnect();
    dbquery($inc_query);
 }
@@ -100,7 +100,7 @@ function incblogcounter($blog_id,$blog_counter) {
 function getblognamebyid($id){
    global $conf, $lang;
    
-   $my_result = dbquery("select blog_name from acme_blog where blog_id='".$id."'");
+   $my_result = dbquery("select blog_name from ".$conf["db_namespace"]."blog where blog_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
       $row = mysql_fetch_object($my_result);
@@ -120,7 +120,7 @@ function getblogdata($data, $blog_id, $bj, $bm, $page_tpl, $cat){
    }
      
    $akt=0;
-   $query = "select * from acme_blog_data where blog_id = '".$blog_id."' " . $stmt;
+   $query = "select * from ".$conf["db_namespace"]."blog_data where blog_id = '".$blog_id."' " . $stmt;
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -142,7 +142,7 @@ function getblogperma($data, $blog_id, $perma, $page_tpl){
    global $conf, $lang;
 
    $akt=0;
-   $query = "select * from acme_blog_data where blog_id = '".$blog_id. "' and blog_data_id = '". $perma ."'";
+   $query = "select * from ".$conf["db_namespace"]."blog_data where blog_id = '".$blog_id. "' and blog_data_id = '". $perma ."'";
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -164,7 +164,7 @@ function getblogarchiv($data, $blog_id){
    global $conf, $lang;
 
    $akt=0;
-   $query = "select month(blog_data_date) as monat, year(blog_data_date) as jahr, count(*) as anzahl from acme_blog_data where blog_id = '".$blog_id."' group by month(blog_data_date), year(blog_data_date) order by month(blog_data_date), year(blog_data_date)";
+   $query = "select month(blog_data_date) as monat, year(blog_data_date) as jahr, count(*) as anzahl from ".$conf["db_namespace"]."blog_data where blog_id = '".$blog_id."' group by month(blog_data_date), year(blog_data_date) order by month(blog_data_date), year(blog_data_date)";
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -182,7 +182,7 @@ function getblogcats($data, $blog_id){
    global $conf, $lang;
 
    $akt=0;
-   $query = "select * from acme_blog_cat where blog_cat_blog_id = '".$blog_id."' order by blog_cat_name";
+   $query = "select * from ".$conf["db_namespace"]."blog_cat where blog_cat_blog_id = '".$blog_id."' order by blog_cat_name";
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       while ( $row = mysql_fetch_object($result) ){
@@ -197,7 +197,7 @@ function getblogcats($data, $blog_id){
 function getblogcatname($blog_cat_id){
    global $conf, $lang;
 
-   $query = "select * from acme_blog_cat where blog_cat_id = '".$blog_cat_id."'";
+   $query = "select * from ".$conf["db_namespace"]."blog_cat where blog_cat_id = '".$blog_cat_id."'";
    $result = dbquery($query);
    if ( mysql_num_rows($result) > 0 ){
       $row = mysql_fetch_object($result);

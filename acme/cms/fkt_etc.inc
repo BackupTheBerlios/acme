@@ -75,7 +75,7 @@ function parse_bar($page_tpl, $bar_id, $side){
 global $conf, $lang;
 
 if ($bar_id<>""){
-   $getbar  = "Select * from acme_bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
+   $getbar  = "Select * from ".$conf["db_namespace"]."bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
    $result  = dbquery($getbar);
    if (mysql_num_rows($result) > 0) {
       while ( $row = mysql_fetch_object($result) ){
@@ -91,7 +91,7 @@ if ($bar_id<>""){
 function parse_navigation($page_tpl, $nav_id, $side){
    global $conf, $lang;
 
-   $getnav  = "Select * from acme_nav where nav_id = '" . $nav_id . "'";
+   $getnav  = "Select * from ".$conf["db_namespace"]."nav where nav_id = '" . $nav_id . "'";
    $result  = dbquery($getnav);
    if (mysql_num_rows($result) > 0) {
       $row = mysql_fetch_object($result);
@@ -99,7 +99,7 @@ function parse_navigation($page_tpl, $nav_id, $side){
       mysql_free_result($result);
    }
 
-   $getnavtopics  = "Select * from acme_nav_topics where nav_id = '" . $nav_id . "' order by nav_topic_rank";
+   $getnavtopics  = "Select * from ".$conf["db_namespace"]."nav_topics where nav_id = '" . $nav_id . "' order by nav_topic_rank";
    $result  = dbquery($getnavtopics);
    if (mysql_num_rows($result) > 0) {
       while ( $row = mysql_fetch_object($result) ){
@@ -113,7 +113,7 @@ function parse_navigation($page_tpl, $nav_id, $side){
          $data->nav_elem[$akt]->nav_elem_text = $row->nav_topic_text;
          // sub nav's
          if ($row->nav_topic_type == "page" && $conf["page"] == "page" && ($conf["page_id"] == $row->nav_topic_type_id || $conf["page_parent_id"] == $row->nav_topic_type_id)){
-            $getsubnavtopics  = "Select * from acme_pages where page_parent = '" . $row->nav_topic_type_id . "' order by page_name";
+            $getsubnavtopics  = "Select * from ".$conf["db_namespace"]."pages where page_parent = '" . $row->nav_topic_type_id . "' order by page_name";
             $subresult  = dbquery($getsubnavtopics);
             if (mysql_num_rows($subresult) > 0) {
                while ($subrow = mysql_fetch_object($subresult) ){
@@ -138,7 +138,7 @@ function parse_navigation($page_tpl, $nav_id, $side){
 function parse_block($page_tpl, $block_id, $side){
    global $conf, $lang;
 
-   $getblock  = "Select * from acme_blocks where block_id = '" . $block_id . "'";
+   $getblock  = "Select * from ".$conf["db_namespace"]."blocks where block_id = '" . $block_id . "'";
    $result  = dbquery($getblock);
    if (mysql_num_rows($result) > 0) {
       $row = mysql_fetch_object($result);
@@ -157,7 +157,7 @@ function parse_block($page_tpl, $block_id, $side){
 function getnamebymodulandid($modul, $id){
    global $conf, $lang;
 
-   $Statement = "select * from acme_module where modul = '" . $modul . "'";
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
    $result = dbquery($Statement);
    if (mysql_num_rows($result) > 0)  { 
       $row = mysql_fetch_array($result);
@@ -173,11 +173,13 @@ function getnamebymodulandid($modul, $id){
       }
    } 
 }
+
+
 function gettemplatebyid($tpl_id){
    global $conf, $lang;
    
    $tpl = "";
-   $my_result = dbquery("select tpl_name from acme_templates where tpl_id=".$tpl_id);
+   $my_result = dbquery("select tpl_name from ".$conf["db_namespace"]."templates where tpl_id=".$tpl_id);
    if ( mysql_num_rows($my_result) >0)      {
       $row = mysql_fetch_object($my_result);
       $tpl = $row->tpl_name; // sollte mal das template direkt aus der datenbank holen
@@ -187,7 +189,7 @@ function gettemplatebyid($tpl_id){
 }
 function getauthorbyid($id){
    global $conf, $lang;
-   $my_result = dbquery("select * from acme_author where author_id='".$id."'");
+   $my_result = dbquery("select * from ".$conf["db_namespace"]."author where author_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 ) {
       $row = mysql_fetch_object($my_result);
       $name = $row->author_vorname . " " . $row->author_nachname ;
