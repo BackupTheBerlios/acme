@@ -141,7 +141,7 @@ switch($action){
 function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text, $new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments)    {
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_artikel (".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel (".
                 " artikel_page ,  ".
                 " artikel_publish_date , ".
                 " artikel_headline , ".
@@ -167,7 +167,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
    if ($insert1_result) {
       $modulid = mysql_insert_id();
       acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
-      $Statement = "INSERT INTO acme_artikel_daten (".
+      $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel_daten (".
                    " artikel_long_text ,  ".
                    " artikel_part, ".
                    " artikel_id ".
@@ -184,7 +184,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
 function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_author_id,	$edit_artikel_aktiv,$edit_artikel_comments){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_artikel SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."artikel SET ".
                 " artikel_page         = '". joingrouparray($edit_artikel_page) ."',".
                 " artikel_publish_date = '". $edit_artikel_publish_date ."',".
                 " artikel_headline     = '". $edit_artikel_headline ."',".
@@ -199,7 +199,7 @@ function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publi
 }
 function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_artikel_part){
    global $conf, $lang;
-   $Statement = "UPDATE acme_artikel_daten SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."artikel_daten SET ".
                 " artikel_long_text = '". $edit_artikel_long_text ."'".
                 " WHERE artikel_id = '". $edit_artikel_id."' ".
                 " AND artikel_part = '".$edit_artikel_part . "'";
@@ -210,7 +210,7 @@ function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_a
 function artikel_daten_insert($edit_artikel_id, $new_artikel_long_text, $part){
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_artikel_daten (".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel_daten (".
                 " artikel_long_text ,  ".
                 " artikel_part, ".
                 " artikel_id ".
@@ -227,7 +227,7 @@ function artikel_daten_insert($edit_artikel_id, $new_artikel_long_text, $part){
 function artikel_delete_abfrage($delete_id){
    global $conf, $lang;
 
-   $result = dbquery("select artikel_headline from acme_artikel where artikel_id = '" . $delete_id . "'");
+   $result = dbquery("select artikel_headline from ".$conf["db_namespace"]."artikel where artikel_id = '" . $delete_id . "'");
    if ($result)  {
       $row = mysql_fetch_object($result);
       echo "<h1>" . $lang["artikel_loeschen"] . "</h1>";
@@ -244,7 +244,7 @@ function artikel_delete_abfrage($delete_id){
 function artikel_delete($delete_id){
    global $conf, $lang;
    
-   $delete_result = dbquery("delete from acme_artikel where artikel_id = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."artikel where artikel_id = '". $delete_id . "'");
    acl_delete("artikel", $delete_id);   
    return $delete_result;
 }
@@ -252,7 +252,7 @@ function artikel_delete($delete_id){
 function artikel_daten_delete($delete_id){
    global $conf, $lang;
   
-   $delete_result = dbquery("delete from acme_artikel_daten where artikel_id = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."artikel_daten where artikel_id = '". $delete_id . "'");
    
    return $delete_result;
 }
@@ -318,7 +318,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    global $conf, $lang;
    
    if ($error == "0"){
-      $result = dbquery("select * from acme_artikel where artikel_id = '" . $edit_artikel_id . "'");
+      $result = dbquery("select * from ".$conf["db_namespace"]."artikel where artikel_id = '" . $edit_artikel_id . "'");
       if ($result)  {
          $row = mysql_fetch_object($result);
          $edit_artikel_id           = $row->artikel_id;
@@ -331,7 +331,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          $edit_artikel_aktiv        = $row->artikel_aktiv;
          $edit_artikel_comments     = $row->artikel_comments;
          mysql_free_result($result);
-         $dataresult = dbquery("select * from acme_artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
+         $dataresult = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
          if ($dataresult)    {
             $edit_artikel_long_text      = array();         
             while ($datarow = mysql_fetch_object($dataresult))  {
@@ -437,7 +437,7 @@ function artikel_browse($page_id, $author_id){
     echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
     if ($page_id <> ""){
 	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
-	  $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
+	  $Statement = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:" . $page_id . ":%'";
 	  if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
 	  $Statement .= " order by artikel_publish_date DESC";
 	  $result = dbquery($Statement);
@@ -494,7 +494,7 @@ function createsel_aktiv($select_name,$grouplist)
 function createsel_pagenCAm($select_name,$grouplist)
 {
    global $conf, $lang;
-   $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
+   $allgroups = dbquery("select page_id, page_name from ".$conf["db_namespace"]."pages Where page_childs = 'A' order by page_name");
    echo "<select multiple size = \"8\" name=\"" . $select_name . "[]\">\n";
    if ( mysql_num_rows($allgroups) > 0 ){
       while ( $g_row = mysql_fetch_object($allgroups) ){
@@ -517,7 +517,7 @@ function createsel_pagenCAm($select_name,$grouplist)
 }
 function createsel_pagenCAs($select_name,$grouplist){
    global $conf, $lang;
-   $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
+   $allgroups = dbquery("select page_id, page_name from ".$conf["db_namespace"]."pages Where page_childs = 'A' order by page_name");
    echo "<select name=" . $select_name . ">\n";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {

@@ -4,7 +4,7 @@ include($conf["admbase"] . "/lang/bilder." . $conf["lang"] . ".inc");
 echo "<form action=\"".$conf["indexbase"]."/link.php?modul=bilder\" method=\"post\">";
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>";
-$result = dbquery("select * from acme_bilder_typs order by img_typ_name");
+$result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs order by img_typ_name");
 echo "<select size = \"1\" name=\"img_typ_id\">";
 if (!isset($img_typ)){echo "<option value=\"\" selected></option>";}
 if ( mysql_num_rows($result) > 0 )   {
@@ -21,7 +21,7 @@ echo "<input type=\"submit\" name = ok value=\"ok\"></td></tr></table></form>";
 
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_thumb"]."</td><td>".$lang["bilder_link"]."</td></tr>";
-$result = dbquery("select * from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
+$result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_typ_id = '" . $img_typ_id . "'");
 if ( mysql_num_rows($result) > 0 ){	
    while ($row = mysql_fetch_object($result)){
       echo "<tr>";
@@ -40,7 +40,7 @@ if ( mysql_num_rows($result) > 0 ){
 function count_img_from_typ($img_typ_id){
    global $conf, $lang;
    
-   $query = dbquery("select img_id from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
+   $query = dbquery("select img_id from ".$conf["db_namespace"]."bilder where img_typ_id = '" . $img_typ_id . "'");
    return mysql_num_rows($query);
 }     
 ?>

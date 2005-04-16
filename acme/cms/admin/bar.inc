@@ -62,7 +62,7 @@ function bar_browse(){
         "<a href=\"" . $conf["admp"] . "&section=bar&action=bar_new\">".$lang["bar_neu"]."</a>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["bar_name"]."</td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_bar order by bar_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bar order by bar_name");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
@@ -79,37 +79,37 @@ function bar_browse(){
 function bar_edit($edit_id){
    global $conf, $lang;   
 
-   $bar_result = dbquery("select * from acme_bar where bar_id='" .$edit_id ."'");
+   $bar_result = dbquery("select * from ".$conf["db_namespace"]."bar where bar_id='" .$edit_id ."'");
    if ($bar_result) {
-      $acme_bar = mysql_fetch_object($bar_result);
+      $bar = mysql_fetch_object($bar_result);
       echo "<h1>" . $lang["bar_bearbeiten"] . "</h1>";
       if ( checkgroupcreate($conf["author_groups"], "bar") == 1){
-         echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_new&bar_id=" . $acme_bar->bar_id . "\">".$lang["bar_eintrag_neu"]."</a>";
+         echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_new&bar_id=" . $bar->bar_id . "\">".$lang["bar_eintrag_neu"]."</a>";
       }
       echo "<form action=\"" . $conf["admp"] . "&section=bar&action=bar_update\"  method=\"POST\">";
-      echo "<input type=\"hidden\" name=\"edit_bar_id\" value=\"" . $acme_bar->bar_id . "\">";
+      echo "<input type=\"hidden\" name=\"edit_bar_id\" value=\"" . $bar->bar_id . "\">";
       echo "<table class=\"reda_td\">";
       echo "<tr><td colspan = \"7\">".$lang["bar_name"]."</td></tr>";
       echo "<tr>";
-      echo "<td colspan = \"7\"><input name=\"edit_bar_name\" size=\"30\" maxlength=\"30\" value=\"" . $acme_bar->bar_name . "\"></td>";
+      echo "<td colspan = \"7\"><input name=\"edit_bar_name\" size=\"30\" maxlength=\"30\" value=\"" . $bar->bar_name . "\"></td>";
       echo "</tr>";
-      $topic_result = dbquery("select * from acme_bar_topics where bar_id=$edit_id order by bar_topic_rank");
+      $topic_result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_id=$edit_id order by bar_topic_rank");
       if ( mysql_num_rows($topic_result) > 0 )  {
          echo "<tr><td>".$lang["bar_eintrag"]."</td><td>".$lang["bar_typ"]."</td><td>".$lang["bar_name"]."</td><td width=\"30\"></td><td width=\"30\"></td><td width=\"30\"></td><td width=\"30\"></td></tr>";
-         while ($acme_bar_topics = mysql_fetch_object($topic_result))  {
+         while ($bar_topics = mysql_fetch_object($topic_result))  {
             echo "<tr>";
-            echo "<td>" . $acme_bar_topics->bar_topic_text . "</td>";
-            echo "<td>" . $acme_bar_topics->bar_topic_type . "</td>";
-            echo "<td>" . getnamebymodulandid($acme_bar_topics->bar_topic_type, $acme_bar_topics->bar_topic_type_id) . "</td>";
-            if ($acme_bar_topics->bar_topic_rank == bar_getlowest_topic($acme_bar_topics->bar_id)){echo "<td>&nbsp;</td>";}
-            else {echo "<td><a href=\"" . $conf["admp"] . "&section=bar&action=topic_move&bar_id=" . $acme_bar_topics->bar_id . "&topic_id=" . $acme_bar_topics->bar_topic_id . "&move=up\"><img src=\"" . $conf["images_admin"] . "icon_up.png\" width=\"25\" height=\"25\" alt=\"nach oben\"></a></td>";}
-            if ($acme_bar_topics->bar_topic_rank == bar_gethighest_topic($acme_bar_topics->bar_id)){echo "<td>&nbsp;</td>";}
-            else{echo "<td><a href=\"" . $conf["admp"] . "&section=bar&action=topic_move&bar_id=" . $acme_bar_topics->bar_id . "&topic_id=" . $acme_bar_topics->bar_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
+            echo "<td>" . $bar_topics->bar_topic_text . "</td>";
+            echo "<td>" . $bar_topics->bar_topic_type . "</td>";
+            echo "<td>" . getnamebymodulandid($bar_topics->bar_topic_type, $bar_topics->bar_topic_type_id) . "</td>";
+            if ($bar_topics->bar_topic_rank == bar_getlowest_topic($bar_topics->bar_id)){echo "<td>&nbsp;</td>";}
+            else {echo "<td><a href=\"" . $conf["admp"] . "&section=bar&action=topic_move&bar_id=" . $bar_topics->bar_id . "&topic_id=" . $bar_topics->bar_topic_id . "&move=up\"><img src=\"" . $conf["images_admin"] . "icon_up.png\" width=\"25\" height=\"25\" alt=\"nach oben\"></a></td>";}
+            if ($bar_topics->bar_topic_rank == bar_gethighest_topic($bar_topics->bar_id)){echo "<td>&nbsp;</td>";}
+            else{echo "<td><a href=\"" . $conf["admp"] . "&section=bar&action=topic_move&bar_id=" . $bar_topics->bar_id . "&topic_id=" . $bar_topics->bar_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
             echo "<td>";
-            if ( checkgroupmodify($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_edit&bar_id=" . $acme_bar_topics->bar_id . "&edit_id=" .  $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
+            if ( checkgroupmodify($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_edit&bar_id=" . $bar_topics->bar_id . "&edit_id=" .  $bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
             echo "</td>";
             echo "<td>";
-            if ( checkgroupdelete($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_delete&bar_id=" . $acme_bar_topics->bar_id . "&delete_id=" . $acme_bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
+            if ( checkgroupdelete($conf["author_groups"], "bar") == 1){echo "<a href=\"" . $conf["admp"] . "&section=bar&action=topic_delete&bar_id=" . $bar_topics->bar_id . "&delete_id=" . $bar_topics->bar_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
             echo "</td>";
             echo "</tr>";
          }
@@ -125,7 +125,7 @@ function bar_edit($edit_id){
 function bar_update($edit_bar_id, $edit_bar_name){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_bar SET bar_name = '". $edit_bar_name . "' WHERE bar_id = '". $edit_bar_id . "'";
+   $Statement = "UPDATE ".$conf["db_namespace"]."bar SET bar_name = '". $edit_bar_name . "' WHERE bar_id = '". $edit_bar_id . "'";
    $edit_result = dbquery($Statement);
    if($edit_result){echo $lang["bar_update_erfolgreich"];}
    else{echo $lang["bar_update_fehlgeschlagen"];};
@@ -134,7 +134,7 @@ function bar_update($edit_bar_id, $edit_bar_name){
 function bar_add($new_bar_name){
    global $conf, $lang;
 
-   $Statement = "INSERT INTO acme_bar (bar_name) VALUES ('". $new_bar_name ."')";
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."bar (bar_name) VALUES ('". $new_bar_name ."')";
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["bar_insert_erfolgreich"];}
    else{echo $lang["bar_insert_fehlgeschlagen"];};
@@ -156,10 +156,10 @@ function bar_new($new_bar_name){
 function bar_delete($delete_id){
    global $conf, $lang;
    
-   $delete_statement1 = "delete from acme_bar_topics where bar_id = ". $delete_id;
+   $delete_statement1 = "delete from ".$conf["db_namespace"]."bar_topics where bar_id = ". $delete_id;
    $delete_result1 = dbquery($delete_statement1);
    if ($delete_result1) {
-      $delete_statement2 ="delete from acme_bar where bar_id = ". $delete_id;
+      $delete_statement2 ="delete from ".$conf["db_namespace"]."bar where bar_id = ". $delete_id;
       $delete_result2 = dbquery($delete_statement2);           
    }   
    if($delete_result2){echo $lang["bar_delete_erfolgreich"];}
@@ -189,20 +189,20 @@ function bar_topic_new($bar_id){
 function bar_topic_edit($edit_id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_bar_topics where bar_topic_id=$edit_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_topic_id=$edit_id");
    if ($result) {
-      $acme_bar_topics = mysql_fetch_object($result);
+      $bar_topics = mysql_fetch_object($result);
       echo "<h1>".$lang["bar_eintrag_bearbeiten"]."</h1>".
-           "<form action=\"" .$conf["admp"] . "&section=bar&action=topic_update&edit_bar_topic_id=" . $acme_bar_topics->bar_topic_id ."\"  method=\"POST\">".
+           "<form action=\"" .$conf["admp"] . "&section=bar&action=topic_update&edit_bar_topic_id=" . $bar_topics->bar_topic_id ."\"  method=\"POST\">".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["bar_eintrag_name"]."</td></tr>".
            "<tr>".
-           "<td><input name=edit_bar_topic_text size=70 maxlength=128 value=\"" . $acme_bar_topics->bar_topic_text . "\"></td>".
+           "<td><input name=edit_bar_topic_text size=70 maxlength=128 value=\"" . $bar_topics->bar_topic_text . "\"></td>".
            "</tr>".
            "<tr><td>".$lang["bar_eintrag_typ"]."</td></tr>".
            "<tr>".
            "<td>";
-      createsel_bartyp("edit_bar_topic_type_and_id",  $acme_bar_topics->bar_topic_type, $acme_bar_topics->bar_topic_type_id);
+      createsel_bartyp("edit_bar_topic_type_and_id",  $bar_topics->bar_topic_type, $bar_topics->bar_topic_type_id);
       echo "</td>".
            "</tr>".
            "<tr><td><input type=submit name=add value=".$lang["bar_speichern"]."></td></tr>".
@@ -219,7 +219,7 @@ function bar_topic_update($edit_bar_topic_id, $edit_bar_topic_text, $edit_bar_to
    $edit_topic_type    = $topic_type_and_id[0];
    $edit_topic_type_id = $topic_type_and_id[1];
 
-   $Statement = "UPDATE acme_bar_topics  SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."bar_topics  SET ".
                 " bar_topic_text ='"       . $edit_bar_topic_text ."',".
                 " bar_topic_type = '"     . $edit_topic_type . "',".
                 " bar_topic_type_id = '"  . $edit_topic_type_id . "'".
@@ -240,7 +240,7 @@ function bar_topic_insert($bar_id, $new_bar_topic_text, $new_bar_topic_type_and_
    $new_topic_type    = $topic_type_and_id[0];
    $new_topic_type_id = $topic_type_and_id[1];
 
-   $Statement = "SELECT bar_topic_rank FROM acme_bar_topics ".
+   $Statement = "SELECT bar_topic_rank FROM ".$conf["db_namespace"]."bar_topics ".
                 " WHERE bar_id = '" . $bar_id . "' order by bar_topic_rank DESC";
    $maxresult = dbquery($Statement);
    if ($maxresult){
@@ -252,7 +252,7 @@ function bar_topic_insert($bar_id, $new_bar_topic_text, $new_bar_topic_type_and_
       $max_rank = 1;
    }
 
-   $Statement = "INSERT INTO acme_bar_topics  SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."bar_topics  SET ".
                 " bar_topic_text = '"       . $new_bar_topic_text ."',".
                 " bar_topic_type = '"     . $new_topic_type . "',".
                 " bar_topic_type_id = '"  . $new_topic_type_id . "',".
@@ -272,16 +272,16 @@ function bar_topic_insert($bar_id, $new_bar_topic_text, $new_bar_topic_type_and_
 function bar_topic_move_up($bar_id, $topic_id){
    global $conf, $lang;
    
-   $akt_result = dbquery("select * from acme_bar_topics where bar_topic_id='" . $topic_id . "'");
+   $akt_result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_topic_id='" . $topic_id . "'");
    if ($akt_result) {
       $akt_topic = mysql_fetch_object($akt_result);
       $akt_pos = $akt_topic->bar_topic_rank;
-      $prev_result = dbquery("select * from acme_bar_topics where bar_id='".$bar_id."' and bar_topic_rank = '" .($akt_pos - 1) . "'");
+      $prev_result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_id='".$bar_id."' and bar_topic_rank = '" .($akt_pos - 1) . "'");
       if ($prev_result) {
          $prev_topic = mysql_fetch_object($prev_result);
          $prev_id = $prev_topic->bar_topic_id;
-         $upd_result1 = dbquery("update acme_bar_topics set bar_topic_rank = '" . ($akt_pos ) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $prev_id ."'");
-         $upd_result2 = dbquery("update acme_bar_topics set bar_topic_rank = '" . ($akt_pos - 1) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $topic_id . "'");
+         $upd_result1 = dbquery("update ".$conf["db_namespace"]."bar_topics set bar_topic_rank = '" . ($akt_pos ) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $prev_id ."'");
+         $upd_result2 = dbquery("update ".$conf["db_namespace"]."bar_topics set bar_topic_rank = '" . ($akt_pos - 1) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $topic_id . "'");
          mysql_free_result($prev_result);
          if ($upd_result1 && $upd_result2){
             echo $lang["bar_eintrag_move_erfolgreich"];
@@ -298,16 +298,16 @@ function bar_topic_move_up($bar_id, $topic_id){
 function bar_topic_move_down($bar_id, $topic_id){
    global $conf, $lang;
       
-   $akt_result = dbquery("select * from acme_bar_topics where bar_topic_id='" . $topic_id . "'");
+   $akt_result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_topic_id='" . $topic_id . "'");
    if ($akt_result) {
       $akt_topic = mysql_fetch_object($akt_result);
       $akt_pos = $akt_topic->bar_topic_rank;
-      $next_result = dbquery("select * from acme_bar_topics where bar_id='" . $bar_id . "' and bar_topic_rank = '" . ($akt_pos + 1) . "'");
+      $next_result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_id='" . $bar_id . "' and bar_topic_rank = '" . ($akt_pos + 1) . "'");
       if ($next_result) {
          $next_topic = mysql_fetch_object($next_result);
          $next_id = $next_topic->bar_topic_id;
-         $upd_result1 = dbquery("update acme_bar_topics set bar_topic_rank = '" . $akt_pos  . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $next_id . "'");
-         $upd_result2 = dbquery("update acme_bar_topics set bar_topic_rank = '" . ($akt_pos + 1) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $topic_id . "'");
+         $upd_result1 = dbquery("update ".$conf["db_namespace"]."bar_topics set bar_topic_rank = '" . $akt_pos  . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $next_id . "'");
+         $upd_result2 = dbquery("update ".$conf["db_namespace"]."bar_topics set bar_topic_rank = '" . ($akt_pos + 1) . "' where bar_id='" . $bar_id . "' and bar_topic_id = '" . $topic_id . "'");
          mysql_free_result($next_result);
       } 
       else {echo $lang["bar_eintrag_move_fehlgeschlagen"];}
@@ -322,7 +322,7 @@ function bar_topic_move_down($bar_id, $topic_id){
 function bar_topic_delete($delete_id){
    global $conf, $lang;
    
-   $delete_result = dbquery("delete from acme_bar_topics where bar_topic_id = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."bar_topics where bar_topic_id = '". $delete_id . "'");
    if($delete_result){
       echo $lang["bar_eintrag_delete_erfolgreich"];
    }
@@ -340,7 +340,7 @@ function createsel_bartyp($select_name, $type, $type_id) {
    echo "\n<option";
    if ($type == "Inaktiv"){echo " selected";};
    echo " value=\"Inaktiv|\">Inaktiv</option>\n";
-   $result = dbquery("select * from acme_module where bar = 'Y'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."module where bar = 'Y'");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_array($result)){
          $Statement = "select * from " . $row[tablename] . "";
@@ -364,29 +364,10 @@ function createsel_bartyp($select_name, $type, $type_id) {
    
 }
 
-function getnamebymodulandid($modul, $id){
-   global $conf, $lang;
-
-   $Statement = "select * from acme_module where modul = '" . $modul . "'";
-   $result = dbquery($Statement);
-   if (mysql_num_rows($result) > 0)  { 
-      $row = mysql_fetch_array($result);
-      $Statement = "select *" . 
-                   " from  " . $row["tablename"] . 
-                   " where " . $row["id"] . " = " . $id;
-      $modul_result = dbquery($Statement);
-      if (mysql_num_rows($modul_result) > 0 )  {
-         $modulrow = mysql_fetch_array($modul_result);
-         $name = $modulrow[$row[name]];
-         mysql_free_result($modul_result);
-         return $name;
-      }
-   } 
-}
 
 function createsel_bartopics($select_name,$grouplist, $bar_id) {
    global $conf, $lang;
-   $allgroups = dbquery("select * from acme_bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank");
    echo "<select name=" . $select_name . ">";
    echo "<option value=\"anf\">".$lang["bar_eintrag_am_anfang"]."</option>";
    echo "<option value=\"end\">".$lang["bar_eintrag_am_ende"]."</option>";
@@ -409,7 +390,7 @@ function createsel_bartopics($select_name,$grouplist, $bar_id) {
 
 function bar_getlowest_topic($bar_id){
    global $conf, $lang;
-   $my_result = dbquery("select bar_topic_rank  from acme_bar_topics where bar_id='".$bar_id."' order by bar_topic_rank ASC");
+   $my_result = dbquery("select bar_topic_rank  from ".$conf["db_namespace"]."bar_topics where bar_id='".$bar_id."' order by bar_topic_rank ASC");
    $row = mysql_fetch_object($my_result);
    $rank = $row->bar_topic_rank;
    mysql_free_result($my_result);
@@ -418,7 +399,7 @@ function bar_getlowest_topic($bar_id){
 
 function bar_gethighest_topic($bar_id){
    global $conf, $lang;
-   $my_result = dbquery("select bar_topic_rank  from acme_bar_topics where bar_id='".$bar_id."' order by bar_topic_rank DESC");
+   $my_result = dbquery("select bar_topic_rank  from ".$conf["db_namespace"]."bar_topics where bar_id='".$bar_id."' order by bar_topic_rank DESC");
    $row = mysql_fetch_object($my_result);
    $rank = $row->bar_topic_rank;
    mysql_free_result($my_result);

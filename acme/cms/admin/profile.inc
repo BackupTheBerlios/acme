@@ -56,15 +56,15 @@ switch($action)
 function profileactivate($activate_id){
    global $conf, $lang;
 
-   $update_result = dbquery("update acme_profile set home_activ = 'N'");
-   $update_result = dbquery("update acme_profile set home_activ = 'Y' where home_id = '" . $activate_id . "'");
+   $update_result = dbquery("update ".$conf["db_namespace"]."profile set home_activ = 'N'");
+   $update_result = dbquery("update ".$conf["db_namespace"]."profile set home_activ = 'Y' where home_id = '" . $activate_id . "'");
    return $update_result;
 } 
    
 function profiledelete($delete_id){
    global $conf, $lang;
 
-   $delete_result = dbquery("delete from acme_profile where pri = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."profile where pri = '". $delete_id . "'");
    
    return $delete_result;
 }
@@ -76,7 +76,7 @@ function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_
    $new_home_page_typ    = $type_and_id[0];
    $new_home_page = $type_and_id[1];
    
-   $Statement = "INSERT INTO acme_profile SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."profile SET ".
                 " home_img_id = '" . $new_home_img_id . "' , ".
                 " home_page_typ   = '" . $new_home_page_typ   ."' , ".
                 " home_page   = '" . $new_home_page   ."' , ".                
@@ -98,7 +98,7 @@ function profileupdate($edit_id, $edit_home_name,  $edit_home_img_id, $edit_home
    $edit_home_page_typ    = $type_and_id[0];
    $edit_home_page = $type_and_id[1];
    
-   $Statement = "UPDATE acme_profile SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."profile SET ".
                 " home_img_id   = '" . $edit_home_img_id ."' , ".
                 " home_page_typ     = '" . $edit_home_page_typ ."' , ".
                 " home_page     = '" . $edit_home_page ."' , ".                
@@ -131,7 +131,7 @@ function profilebrowse(){
    echo "<td width=\"30\">&nbsp;</td>";
    echo "<td width=\"30\">&nbsp;</td>";
    echo "</tr>\n";
-   $result = dbquery("select * from acme_profile");
+   $result = dbquery("select * from ".$conf["db_namespace"]."profile");
    if ( mysql_num_rows($result) > 0 )      {	
       while ($row = mysql_fetch_object($result)) 	      {
          echo "<tr>";	   
@@ -205,7 +205,7 @@ function profilenew(){
 function profileedit($edit_id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_profile where home_id='". $edit_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."profile where home_id='". $edit_id . "'");
    if ($result){
       $row = mysql_fetch_object($result);
       echo "\n<h1>".$lang["profile_bearbeiten"]."</h1>\n";
@@ -253,7 +253,7 @@ function createsel_startpagewtyp($select_name, $type, $type_id) {
    $check   = $type . "|" . $type_id;
    echo "\n<select name=\"" . $select_name . "\">";
    echo "\n<option";
-   $result = dbquery("select * from acme_module where nav = 'Y'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."module where nav = 'Y'");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_array($result)){
          $Statement = "select * from " . $row[tablename] . "";
@@ -278,7 +278,7 @@ function createsel_startpagewtyp($select_name, $type, $type_id) {
 function createsel_startpage($select_name, $grouplist){
    global $conf, $lang;
    
-   $allgroups = dbquery("select * from acme_pages Where page_parent = '' order by page_name");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."pages Where page_parent = '' order by page_name");
    echo "<select size = \"1\" name=\"" . $select_name . "\">";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {

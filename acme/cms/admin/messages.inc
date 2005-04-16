@@ -53,16 +53,16 @@ function messages_edit($status, $edit_messages_id, $edit_messages_topic, $edit_m
 
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_messages where id=$edit_messages_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."messages where id=$edit_messages_id");
    if ($result)  {
-      $acme_messages = mysql_fetch_object($result);
+      $messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_update&messages_id=" . $acme_messages->id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_update&messages_id=" . $messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
-           "<tr><td>".$lang["messages_fuser"]. ": ". getauthorbyid($acme_messages->fuser) . "</td></tr>".           
-           "<tr><td>".$lang["messages_topic"]. ": ". htmlspecialchars($acme_messages->topic) . "</td></tr>".
-           "<tr><td>". nltobr(htmlspecialchars($acme_messages->message)) . "</td>";
-      if ($acme_messages->status == "P" || $acme_messages->status == "N"){
+           "<tr><td>".$lang["messages_fuser"]. ": ". getauthorbyid($messages->fuser) . "</td></tr>".           
+           "<tr><td>".$lang["messages_topic"]. ": ". htmlspecialchars($messages->topic) . "</td></tr>".
+           "<tr><td>". nltobr(htmlspecialchars($messages->message)) . "</td>";
+      if ($messages->status == "P" || $messages->status == "N"){
          echo "<tr><td>". $lang["messages_status"]."</td></tr>";
          echo "<tr><td><input type=radio name=edit_messages_status value=P checked>".$lang["messages_status_inbearb"]."</td></tr>";      	
          echo "<tr><td><input type=radio name=edit_messages_status value=F>".$lang["messages_status_abgeschl"]."</td></tr>";
@@ -71,7 +71,7 @@ function messages_edit($status, $edit_messages_id, $edit_messages_topic, $edit_m
       echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
            "</table>".
            "</form>";
-      echo "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_answer&messages_id=" . $acme_messages->id . "\"  method=POST>".           
+      echo "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_answer&messages_id=" . $messages->id . "\"  method=POST>".           
            "<input type=submit name=add value=".$lang["messages_answer"].">".
            "</form>";           
       mysql_free_result($result);
@@ -83,16 +83,16 @@ function messages_answer($status, $messages_id){
 
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_messages where id=$messages_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."messages where id=$messages_id");
    if ($result)  {
-      $acme_messages = mysql_fetch_object($result);
+      $messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_answer"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_insert&messages_id=" . $acme_messages->id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_insert&messages_id=" . $messages->id . "\"  method=POST>".
            "<table class=\"reda_td\">".
-        "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . $lang["messages_anwsertopic"] . " " .  htmlspecialchars(stripslashes($acme_messages->topic)) . "\"></td></tr>".
+        "<tr><td><input name=new_messages_topic size=70 maxlength=128 value=\"" . $lang["messages_anwsertopic"] . " " .  htmlspecialchars(stripslashes($messages->topic)) . "\"></td></tr>".
         "<tr><td>".$lang["messages_text"]."</td></tr>".
-        "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . $lang["messages_anwsermsg"] . htmlspecialchars(stripslashes($acme_messages->message)) . "</textarea></td>";
-      echo "<tr><td><input type=hidden name=new_messages_tuser size=70 maxlength=128 value=\"" .$acme_messages->fuser . "\"></td></tr>";
+        "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . $lang["messages_anwsermsg"] . htmlspecialchars(stripslashes($messages->message)) . "</textarea></td>";
+      echo "<tr><td><input type=hidden name=new_messages_tuser size=70 maxlength=128 value=\"" .$messages->fuser . "\"></td></tr>";
       echo "<tr><td><input type=submit name=add value=".$lang["messages_speichern"]."></td></tr>".
            "</table>".
            "</form>";
@@ -105,7 +105,7 @@ function messages_answer($status, $messages_id){
 function messages_update($status, $messages_id, $messages_status){
    global $conf, $lang;
 
-   $Statement = "UPDATE acme_messages SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."messages SET ".
                 "status  = '". $messages_status  . "'".
                 " WHERE id = '". $messages_id . "'";
    $update_result = dbquery($Statement);
@@ -136,7 +136,7 @@ function messages_new($status, $new_messages_topic, $new_messages_message, $new_
 function messages_insert($status, $topic, $message, $tuser){
    global $conf, $lang;
 
-   $Statement = "INSERT INTO acme_messages SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."messages SET ".
                 "topic = '". $topic . "', ".
                 "message = '". $message . "', ".
                 "status = 'N', ".                
@@ -153,10 +153,10 @@ function messages_browse($status) {
 
    echo "<h1>".$lang["messages_verwaltung"]."</h1>\n";
    echo "<a href=\"" . $conf["admp"] . "&section=messages&action=messages_new\">".$lang["messages_neu"]."</a>";
-   $nresult = dbquery("select * from acme_messages where status = 'N' and tuser = " . $conf["author_id"]. " order by created DESC");
-   $presult = dbquery("select * from acme_messages where status = 'P' and tuser = " . $conf["author_id"]. " order by created DESC");
-   $fresult = dbquery("select * from acme_messages where status = 'F' and tuser = " . $conf["author_id"]. " order by created DESC");
-   $sresult = dbquery("select * from acme_messages where fuser = " . $conf["author_id"]. " order by created DESC");
+   $nresult = dbquery("select * from ".$conf["db_namespace"]."messages where status = 'N' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $presult = dbquery("select * from ".$conf["db_namespace"]."messages where status = 'P' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $fresult = dbquery("select * from ".$conf["db_namespace"]."messages where status = 'F' and tuser = " . $conf["author_id"]. " order by created DESC");
+   $sresult = dbquery("select * from ".$conf["db_namespace"]."messages where fuser = " . $conf["author_id"]. " order by created DESC");
    echo "<table class=\"reda_td\">\n\n";
    echo "<tr>\n";
    if ($status == "N"){

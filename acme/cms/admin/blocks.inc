@@ -5,7 +5,7 @@ include($conf["admbase"] . "/lang/blocks." . $conf["lang"] . ".inc");
 switch($action){
    case "edit":
    
-      $result = dbquery("select * from acme_blocks where block_id=$edit_id");
+      $result = dbquery("select * from ".$conf["db_namespace"]."blocks where block_id=$edit_id");
       if ($result)            {
          $row = mysql_fetch_object($result);
          echo "<h1>".$lang["blocks_bearbeiten"]."</h1>".
@@ -50,7 +50,7 @@ switch($action){
    break;
 
    case "add":
-           $Statement = "INSERT INTO acme_blocks (".
+           $Statement = "INSERT INTO ".$conf["db_namespace"]."blocks (".
                            " block_name ,".
                            " block_type ,".
                            " block_content ".
@@ -71,7 +71,7 @@ switch($action){
             break;
 
     case "update":
-         $Statement = "UPDATE acme_blocks SET".
+         $Statement = "UPDATE ".$conf["db_namespace"]."blocks SET".
                       " block_name = '". $edit_block_name . "',".
                       " block_type = '". $edit_block_type . "',".
                       " block_content = '". $edit_block_content . "'".
@@ -89,7 +89,7 @@ switch($action){
     break;
 
     case "delete":
-          $my_result = dbquery("delete from acme_blocks where block_id = '". $delete_id . "'");
+          $my_result = dbquery("delete from ".$conf["db_namespace"]."blocks where block_id = '". $delete_id . "'");
           if ($my_result) {
              echo $lang["blocks_delete_erfolgreich"];
              block_browse();
@@ -115,7 +115,7 @@ function block_browse(){
    }
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["blocks_name"]."</td><td>".$lang["blocks_typ"]."</td><td width=\"30\"></td><td width=\"30\"></td></tr>";
-   $result = dbquery("select * from acme_blocks");
+   $result = dbquery("select * from ".$conf["db_namespace"]."blocks");
    if ( mysql_num_rows($result) > 0 )
       {
       while ($row = mysql_fetch_object($result))

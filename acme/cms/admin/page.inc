@@ -48,7 +48,7 @@ switch($action)
 function pagedeletequest($id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_pages where page_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where page_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_array($result);
       echo "<h1>".$lang["page_delete_quest"]."</h1>";
@@ -63,7 +63,7 @@ function pagedeletequest($id){
 
 function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small, $new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id, $new_page_childs,$new_page_comments){
    global $conf, $lang;
-   $Statement = "INSERT INTO acme_pages SET".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."pages SET".
                 " page_name = '". $new_page_name . "',".
                 " page_tpl = '". $new_page_tpl . "', ".
                 " page_parent = '". $new_page_parent . "',".
@@ -86,7 +86,7 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
                 " page_comments = '". $new_page_comments . "'";
    $my_result = dbquery($Statement);
    if ($my_result) {
-      $result = dbquery("select page_id from acme_page where page_id = LAST_INSERTED_ID()");
+      $result = dbquery("select page_id from ".$conf["db_namespace"]."pages where page_id = LAST_INSERTED_ID()");
       if ($result)  {
          $row = mysql_fetch_object($result);
          $modulid = $row->page_id;
@@ -99,7 +99,7 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
 function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_parent, $edit_page_img_small, $edit_page_img_small_inactive, $edit_page_img_big, $edit_page_titelbild, $edit_page_left_bar, $edit_page_right_bar, $edit_page_top_bar, $edit_page_foo_bar, $edit_page_headline, $edit_page_short_text, $edit_page_long_text, $edit_page_long_text_typ, $edit_page_author_id, $edit_page_childs,$edit_page_comments){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_pages SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."pages SET".
                 " page_name = '". $edit_page_name . "',".
                 " page_tpl = '". $edit_page_tpl . "', ".
                 " page_parent = '". $edit_page_parent . "',".
@@ -125,7 +125,7 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
 }
 function pagedelete($delete_id){
    global $conf, $lang;
-   $my_result = dbquery("delete from acme_pages where page_id = '". $delete_id . "'");
+   $my_result = dbquery("delete from ".$conf["db_namespace"]."pages where page_id = '". $delete_id . "'");
    if ($my_result) {
    	  acl_delete("page", $delete_id);
    	  echo $lang["page_delete_erfolgreich"];
@@ -219,7 +219,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
 }
 function pagedit($id){
    global $conf, $lang;
-   $result = dbquery("select * from acme_pages where page_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where page_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_array($result);
       echo "<h1>".$lang["page_bearbeiten"]."</h1>";
@@ -296,7 +296,7 @@ function pagedit($id){
 function writepagechilds($parent, &$h_level){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_pages where  page_parent = '" . $parent . "' order by page_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where  page_parent = '" . $parent . "' order by page_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
          echo "<tr><td>" . $row->page_id . "</td>";
@@ -339,8 +339,8 @@ function checkpagechilds($parent, $typ){
    
    $childs = 0;
    if ($typ <> "N"){
-      if ($typ == "P"){$result = dbquery("select * from acme_pages   where page_parent  = '" . $parent . "'");}
-      if ($typ == "A"){$result = dbquery("select * from acme_artikel where artikel_page like '%:" . $parent . ":%'");}
+      if ($typ == "P"){$result = dbquery("select * from ".$conf["db_namespace"]."pages   where page_parent  = '" . $parent . "'");}
+      if ($typ == "A"){$result = dbquery("select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:" . $parent . ":%'");}
       if ( mysql_num_rows($result) > 0 ){$childs = 1;}
       mysql_free_result($result);
    }
@@ -389,7 +389,7 @@ function createsel_pagenCPs($select_name,$grouplist){
 function getpages4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_pages where page_childs = 'P' and page_parent = '" . $parent . "' order by page_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where page_childs = 'P' and page_parent = '" . $parent . "' order by page_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->page_id;

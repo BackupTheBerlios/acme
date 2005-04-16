@@ -63,7 +63,7 @@ function nav_browse(){
         "<a href=\"" . $conf["admp"] . "&section=navigation&action=nav_new\">".$lang["navigation_anlegen"]."</a>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["navigation_name"]."</td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_nav order by nav_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."nav order by nav_name");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
@@ -80,37 +80,37 @@ function nav_browse(){
 function nav_edit($edit_id){
    global $conf, $lang;   
 
-   $nav_result = dbquery("select * from acme_nav where nav_id='" .$edit_id ."'");
+   $nav_result = dbquery("select * from ".$conf["db_namespace"]."nav where nav_id='" .$edit_id ."'");
    if ($nav_result) {
-      $acme_nav = mysql_fetch_object($nav_result);
+      $nav = mysql_fetch_object($nav_result);
       echo "<h1>".$lang["navigation_bearbeiten"]."</h1>";
       if ( checkgroupcreate($conf["author_groups"], "navigation") == 1){
-         echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_new&nav_id=" . $acme_nav->nav_id . "\">neuer Eintrag</a>";
+         echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_new&nav_id=" . $nav->nav_id . "\">neuer Eintrag</a>";
       }
       echo "<form action=\"" . $conf["admp"] . "&section=navigation&action=nav_update\"  method=\"POST\">";
-      echo "<input type=\"hidden\" name=\"edit_nav_id\" value=\"" . $acme_nav->nav_id . "\">";
+      echo "<input type=\"hidden\" name=\"edit_nav_id\" value=\"" . $nav->nav_id . "\">";
       echo "<table class=\"reda_td\">";
       echo "<tr><td colspan = \"7\">".$lang["navigation_name"]."</td></tr>";
       echo "<tr>";
-      echo "<td colspan = \"7\"><input name=\"edit_nav_name\" size=\"30\" maxlength=\"30\" value=\"" . $acme_nav->nav_name . "\"></td>";
+      echo "<td colspan = \"7\"><input name=\"edit_nav_name\" size=\"30\" maxlength=\"30\" value=\"" . $nav->nav_name . "\"></td>";
       echo "</tr>";
-      $topic_result = dbquery("select * from acme_nav_topics where nav_id=$edit_id order by nav_topic_rank");
+      $topic_result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_id=$edit_id order by nav_topic_rank");
       if ( mysql_num_rows($topic_result) > 0 )  {
          echo "<tr><td>".$lang["navigation_eintrag"]."</td><td>".$lang["navigation_typ"]."</td><td>".$lang["navigation_name"]."</td><td width=\"30\"></td><td width=\"30\"></td><td width=\"30\"></td><td width=\"30\"></td></tr>";
-         while ($acme_nav_topics = mysql_fetch_object($topic_result))  {
+         while ($nav_topics = mysql_fetch_object($topic_result))  {
             echo "<tr>";
-            echo "<td>" . $acme_nav_topics->nav_topic_text . "</td>";
-            echo "<td>" . $acme_nav_topics->nav_topic_type . "</td>";
-            echo "<td>" . getnamebymodulandid($acme_nav_topics->nav_topic_type, $acme_nav_topics->nav_topic_type_id) . "</td>";
-            if ($acme_nav_topics->nav_topic_rank == nav_getlowest_topic($acme_nav_topics->nav_id)){echo "<td>&nbsp;</td>";}
-            else {echo "<td><a href=\"" . $conf["admp"] . "&section=navigation&action=topic_move&nav_id=" . $acme_nav_topics->nav_id . "&topic_id=" . $acme_nav_topics->nav_topic_id . "&move=up\"><img src=\"" . $conf["images_admin"] . "icon_up.png\" width=\"25\" height=\"25\" alt=\"nach oben\"></a></td>";}
-            if ($acme_nav_topics->nav_topic_rank == nav_gethighest_topic($acme_nav_topics->nav_id)){echo "<td>&nbsp;</td>";}
-            else{echo "<td><a href=\"" . $conf["admp"] . "&section=navigation&action=topic_move&nav_id=" . $acme_nav_topics->nav_id . "&topic_id=" . $acme_nav_topics->nav_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
+            echo "<td>" . $nav_topics->nav_topic_text . "</td>";
+            echo "<td>" . $nav_topics->nav_topic_type . "</td>";
+            echo "<td>" . getnamebymodulandid($nav_topics->nav_topic_type, $nav_topics->nav_topic_type_id) . "</td>";
+            if ($nav_topics->nav_topic_rank == nav_getlowest_topic($nav_topics->nav_id)){echo "<td>&nbsp;</td>";}
+            else {echo "<td><a href=\"" . $conf["admp"] . "&section=navigation&action=topic_move&nav_id=" . $nav_topics->nav_id . "&topic_id=" . $nav_topics->nav_topic_id . "&move=up\"><img src=\"" . $conf["images_admin"] . "icon_up.png\" width=\"25\" height=\"25\" alt=\"nach oben\"></a></td>";}
+            if ($nav_topics->nav_topic_rank == nav_gethighest_topic($nav_topics->nav_id)){echo "<td>&nbsp;</td>";}
+            else{echo "<td><a href=\"" . $conf["admp"] . "&section=navigation&action=topic_move&nav_id=" . $nav_topics->nav_id . "&topic_id=" . $nav_topics->nav_topic_id . "&move=down\"><img src=\"" . $conf["images_admin"] . "icon_down.png\" width=\"25\" height=\"25\" alt=\"nach unten\"></a></td>";}
             echo "<td>";
-            if ( checkgroupmodify($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_edit&nav_id=" . $acme_nav_topics->nav_id . "&edit_id=" .  $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
+            if ( checkgroupmodify($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_edit&nav_id=" . $nav_topics->nav_id . "&edit_id=" .  $nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a>";}
             echo "</td>";
             echo "<td>";
-            if ( checkgroupdelete($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_delete&nav_id=" . $acme_nav_topics->nav_id . "&delete_id=" . $acme_nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
+            if ( checkgroupdelete($conf["author_groups"], "navigation") == 1){echo "<a href=\"" . $conf["admp"] . "&section=navigation&action=topic_delete&nav_id=" . $nav_topics->nav_id . "&delete_id=" . $nav_topics->nav_topic_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a>";}
             echo "</td>";
             echo "</tr>";
          }
@@ -126,7 +126,7 @@ function nav_edit($edit_id){
 function nav_update($edit_nav_id, $edit_nav_name){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_nav SET nav_name = '". $edit_nav_name . "' WHERE nav_id = '". $edit_nav_id . "'";
+   $Statement = "UPDATE ".$conf["db_namespace"]."nav SET nav_name = '". $edit_nav_name . "' WHERE nav_id = '". $edit_nav_id . "'";
    $edit_result = dbquery($Statement);
    if($edit_result){echo $lang["navigation_update_erfolgreich"];}
    else{echo $lang["navigation_update_fehlgeschlagen"];};
@@ -135,7 +135,7 @@ function nav_update($edit_nav_id, $edit_nav_name){
 function nav_add($new_nav_name){
    global $conf, $lang;
 
-   $Statement = "INSERT INTO acme_nav (nav_name) VALUES ('". $new_nav_name ."')";
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."nav (nav_name) VALUES ('". $new_nav_name ."')";
    $insert_result = dbquery($Statement);
    if($insert_result){echo $lang["navigation_insert_erfolgreich"];}
    else{echo $lang["navigation_insert_fehlgeschlagen"];};
@@ -157,10 +157,10 @@ function nav_new($new_nav_name){
 function nav_delete($delete_id){
    global $conf, $lang;
    
-   $delete_statement1 = "delete from acme_nav_topics where nav_id = ". $delete_id;
+   $delete_statement1 = "delete from ".$conf["db_namespace"]."nav_topics where nav_id = ". $delete_id;
    $delete_result1 = dbquery($delete_statement1);
    if ($delete_result1) {
-      $delete_statement2 ="delete from acme_nav where nav_id = ". $delete_id;
+      $delete_statement2 ="delete from ".$conf["db_namespace"]."nav where nav_id = ". $delete_id;
       $delete_result2 = dbquery($delete_statement2);           
    }   
    if($delete_result2){echo $lang["navigation_delete_erfolgreich"];}
@@ -190,20 +190,20 @@ function nav_topic_new($nav_id){
 function nav_topic_edit($edit_id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_nav_topics where nav_topic_id=$edit_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_topic_id=$edit_id");
    if ($result) {
-      $acme_nav_topics = mysql_fetch_object($result);
+      $nav_topics = mysql_fetch_object($result);
       echo "<h1>".$lang["navigation_bearbeiten"]."</h1>".
-           "<form action=\"" .$conf["admp"] . "&section=navigation&action=topic_update&edit_nav_topic_id=" . $acme_nav_topics->nav_topic_id ."\"  method=\"POST\">".
+           "<form action=\"" .$conf["admp"] . "&section=navigation&action=topic_update&edit_nav_topic_id=" . $nav_topics->nav_topic_id ."\"  method=\"POST\">".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["navigation_name"]."</td></tr>".
            "<tr>".
-           "<td><input name=edit_nav_topic_text size=70 maxlength=128 value=\"" . $acme_nav_topics->nav_topic_text . "\"></td>".
+           "<td><input name=edit_nav_topic_text size=70 maxlength=128 value=\"" . $nav_topics->nav_topic_text . "\"></td>".
            "</tr>".
            "<tr><td>".$lang["navigation_typ"]."</td></tr>".
            "<tr>".
            "<td>";
-      createsel_navtyp("edit_nav_topic_type_and_id",  $acme_nav_topics->nav_topic_type, $acme_nav_topics->nav_topic_type_id);
+      createsel_navtyp("edit_nav_topic_type_and_id",  $nav_topics->nav_topic_type, $nav_topics->nav_topic_type_id);
       echo "</td>".
            "</tr>".
            "<tr><td><input type=submit name=add value=".$lang["navigation_speichern"]."></td></tr>".
@@ -220,7 +220,7 @@ function nav_topic_update($edit_nav_topic_id, $edit_nav_topic_text, $edit_nav_to
    $edit_topic_type    = $topic_type_and_id[0];
    $edit_topic_type_id = $topic_type_and_id[1];
 
-   $Statement = "UPDATE acme_nav_topics  SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."nav_topics  SET ".
                 " nav_topic_text ='"       . $edit_nav_topic_text ."',".
                 " nav_topic_type = '"     . $edit_topic_type . "',".
                 " nav_topic_type_id = '"  . $edit_topic_type_id . "'".
@@ -237,7 +237,7 @@ function nav_topic_insert($nav_id, $new_nav_topic_text, $new_nav_topic_type_and_
    $new_topic_type    = $topic_type_and_id[0];
    $new_topic_type_id = $topic_type_and_id[1];
 
-   $Statement = "SELECT nav_topic_rank FROM acme_nav_topics ".
+   $Statement = "SELECT nav_topic_rank FROM ".$conf["db_namespace"]."nav_topics ".
                 " WHERE nav_id = '" . $nav_id . "' order by nav_topic_rank DESC";
    $maxresult = dbquery($Statement);
    if ($maxresult){
@@ -249,7 +249,7 @@ function nav_topic_insert($nav_id, $new_nav_topic_text, $new_nav_topic_type_and_
       $max_rank = 1;
    }
 
-   $Statement = "INSERT INTO acme_nav_topics  SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."nav_topics  SET ".
                 " nav_topic_text = '"       . $new_nav_topic_text ."',".
                 " nav_topic_type = '"     . $new_topic_type . "',".
                 " nav_topic_type_id = '"  . $new_topic_type_id . "',".
@@ -265,16 +265,16 @@ function nav_topic_insert($nav_id, $new_nav_topic_text, $new_nav_topic_type_and_
 function nav_topic_move_up($nav_id, $topic_id){
    global $conf, $lang;
    
-   $akt_result = dbquery("select * from acme_nav_topics where nav_topic_id='" . $topic_id . "'");
+   $akt_result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_topic_id='" . $topic_id . "'");
    if ($akt_result) {
       $akt_topic = mysql_fetch_object($akt_result);
       $akt_pos = $akt_topic->nav_topic_rank;
-      $prev_result = dbquery("select * from acme_nav_topics where nav_id='".$nav_id."' and nav_topic_rank = '" .($akt_pos - 1) . "'");
+      $prev_result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_id='".$nav_id."' and nav_topic_rank = '" .($akt_pos - 1) . "'");
       if ($prev_result) {
          $prev_topic = mysql_fetch_object($prev_result);
          $prev_id = $prev_topic->nav_topic_id;
-         $upd_result1 = dbquery("update acme_nav_topics set nav_topic_rank = '" . ($akt_pos ) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $prev_id ."'");
-         $upd_result2 = dbquery("update acme_nav_topics set nav_topic_rank = '" . ($akt_pos - 1) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $topic_id . "'");
+         $upd_result1 = dbquery("update ".$conf["db_namespace"]."nav_topics set nav_topic_rank = '" . ($akt_pos ) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $prev_id ."'");
+         $upd_result2 = dbquery("update ".$conf["db_namespace"]."nav_topics set nav_topic_rank = '" . ($akt_pos - 1) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $topic_id . "'");
          mysql_free_result($prev_result);
          if ($upd_result1 && $upd_result2){
             echo $lang["navigation_move_up_erfolgreich"];
@@ -289,16 +289,16 @@ function nav_topic_move_up($nav_id, $topic_id){
 function nav_topic_move_down($nav_id, $topic_id){
    global $conf, $lang;
       
-   $akt_result = dbquery("select * from acme_nav_topics where nav_topic_id='" . $topic_id . "'");
+   $akt_result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_topic_id='" . $topic_id . "'");
    if ($akt_result) {
       $akt_topic = mysql_fetch_object($akt_result);
       $akt_pos = $akt_topic->nav_topic_rank;
-      $next_result = dbquery("select * from acme_nav_topics where nav_id='" . $nav_id . "' and nav_topic_rank = '" . ($akt_pos + 1) . "'");
+      $next_result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_id='" . $nav_id . "' and nav_topic_rank = '" . ($akt_pos + 1) . "'");
       if ($next_result) {
          $next_topic = mysql_fetch_object($next_result);
          $next_id = $next_topic->nav_topic_id;
-         $upd_result1 = dbquery("update acme_nav_topics set nav_topic_rank = '" . $akt_pos  . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $next_id . "'");
-         $upd_result2 = dbquery("update acme_nav_topics set nav_topic_rank = '" . ($akt_pos + 1) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $topic_id . "'");
+         $upd_result1 = dbquery("update ".$conf["db_namespace"]."nav_topics set nav_topic_rank = '" . $akt_pos  . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $next_id . "'");
+         $upd_result2 = dbquery("update ".$conf["db_namespace"]."nav_topics set nav_topic_rank = '" . ($akt_pos + 1) . "' where nav_id='" . $nav_id . "' and nav_topic_id = '" . $topic_id . "'");
          mysql_free_result($next_result);
       } 
       mysql_free_result($akt_result);
@@ -310,7 +310,7 @@ function nav_topic_move_down($nav_id, $topic_id){
 function nav_topic_delete($delete_id){
    global $conf, $lang;
    
-   $delete_result = dbquery("delete from acme_nav_topics where nav_topic_id = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."nav_topics where nav_topic_id = '". $delete_id . "'");
    if($delete_result){
       echo $lang["navigation_delete_erfolgreich"];
    }
@@ -328,7 +328,7 @@ function createsel_navtyp($select_name, $type, $type_id) {
    echo "\n<option";
    if ($type == "Inaktiv"){echo " selected";};
    echo " value=\"Inaktiv|\">".$lang["navigation_inaktiv"]."</option>\n";
-   $result = dbquery("select * from acme_module where nav = 'Y'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."module where nav = 'Y'");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_array($result)){
          $Statement = "select * from " . $row[tablename] . "";
@@ -354,7 +354,7 @@ function createsel_navtyp($select_name, $type, $type_id) {
 
 function createsel_navtopics($select_name,$grouplist, $nav_id) {
    global $conf, $lang;
-   $allgroups = dbquery("select * from acme_nav_topics where nav_id = '" . $nav_id . "' order by nav_topic_rank");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_id = '" . $nav_id . "' order by nav_topic_rank");
    echo "<select name=" . $select_name . ">";
    echo "<option value=\"anf\">".$lang["navigation_anfang"]."</option>";
    echo "<option value=\"end\">".$lang["navigation_ende"]."</option>";
@@ -377,7 +377,7 @@ function createsel_navtopics($select_name,$grouplist, $nav_id) {
 
 function nav_getlowest_topic($nav_id){
    global $conf, $lang;
-   $my_result = dbquery("select nav_topic_rank  from acme_nav_topics where nav_id='".$nav_id."' order by nav_topic_rank ASC");
+   $my_result = dbquery("select nav_topic_rank  from ".$conf["db_namespace"]."nav_topics where nav_id='".$nav_id."' order by nav_topic_rank ASC");
    $row = mysql_fetch_object($my_result);
    $rank = $row->nav_topic_rank;
    mysql_free_result($my_result);
@@ -387,7 +387,7 @@ function nav_getlowest_topic($nav_id){
 function nav_gethighest_topic($nav_id){
    global $conf, $lang;
    
-   $my_result = dbquery("select nav_topic_rank  from acme_nav_topics where nav_id='".$nav_id."' order by nav_topic_rank DESC");
+   $my_result = dbquery("select nav_topic_rank  from ".$conf["db_namespace"]."nav_topics where nav_id='".$nav_id."' order by nav_topic_rank DESC");
    $row = mysql_fetch_object($my_result);
    $rank = $row->nav_topic_rank;
    mysql_free_result($my_result);

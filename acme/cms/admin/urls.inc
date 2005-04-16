@@ -52,7 +52,7 @@ switch($action){
 function url_add($new_url_name, $new_url_url, $new_url_text, $new_url_typ ){
    global $conf, $lang;
               
-   $Statement = "INSERT INTO acme_url SET".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."url SET".
                 " url_name = '". $new_url_name . "',".
                 " url_url  = '". $new_url_url . "', ".
                 " url_text = '". $new_url_text . "',".
@@ -66,7 +66,7 @@ function url_add($new_url_name, $new_url_url, $new_url_text, $new_url_typ ){
 function url_typ_add($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_id, $new_url_typ_tpl, $new_url_typ_img_small,$new_url_typ_img_small_inactive,  $new_url_typ_img_big, $new_url_typ_left_bar, $new_url_typ_right_bar, $new_url_typ_top_bar, $new_url_typ_foo_bar){
    global $conf, $lang;
               
-   $Statement = "INSERT INTO acme_url_typs SET".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."url_typs SET".
                 " url_typ_name = '". $new_url_typ_name . "',".
                 " url_typ_text = '". $new_url_typ_text . "',".
                 " url_typ_tpl = '". $new_url_typ_tpl . "',".
@@ -94,7 +94,7 @@ function url_typ_add($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_i
 function url_update($edit_url_id, $edit_url_name, $edit_url_url, $edit_url_text, $edit_url_typ ){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_url SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."url SET".
                 " url_name = '". $edit_url_name . "',".
                 " url_url = '". $edit_url_url . "', ".
                 " url_text = '". $edit_url_text . "',".
@@ -108,7 +108,7 @@ function url_update($edit_url_id, $edit_url_name, $edit_url_url, $edit_url_text,
 function url_typ_update($edit_url_typ_id, $edit_url_typ_name, $edit_url_typ_text, $edit_url_typ_parent_id, $edit_url_typ_tpl, $edit_url_typ_img_small,$edit_url_typ_img_small_inactive,  $edit_url_typ_img_big, $edit_url_typ_left_bar, $edit_url_typ_right_bar, $edit_url_typ_top_bar, $edit_url_typ_foo_bar){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_url_typs SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."url_typs SET".
                 " url_typ_name = '". $edit_url_typ_name . "',".
                 " url_typ_text = '". $edit_url_typ_text . "',".
                 " url_typ_tpl = '". $edit_url_typ_tpl . "',".
@@ -133,14 +133,14 @@ function url_typ_update($edit_url_typ_id, $edit_url_typ_name, $edit_url_typ_text
   
 function url_delete($delete_id) {
    global $conf, $lang;
-   $my_result = dbquery("delete from acme_url where url_id = '". $delete_id . "'");
+   $my_result = dbquery("delete from ".$conf["db_namespace"]."url where url_id = '". $delete_id . "'");
    if ($my_result) {echo $lang["urls_eintrag_delete_erfolgreich"];}
    else            {echo $lang["urls_eintrag_delete_fehlgeschlagen"];}
 }
 
 function url_typ_delete($delete_id){
    global $conf, $lang;
-   $my_result = dbquery("delete from acme_url_typs where url_typ_id = '". $delete_id . "'");
+   $my_result = dbquery("delete from ".$conf["db_namespace"]."url_typs where url_typ_id = '". $delete_id . "'");
    if ($my_result) {
    	  acl_delete("urls", $delete_id);
       echo $lang["urls_delete_erfolgreich"];
@@ -240,7 +240,7 @@ function url_typ_new(){
 function url_edit($id){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_url where url_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url where url_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["urls_eintrag_bearbeiten"]."</h1>";
@@ -269,7 +269,7 @@ function url_edit($id){
 function url_typ_edit($id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_url_typs where url_typ_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["urls_bearbeiten"]."</h1>";
@@ -325,7 +325,7 @@ function url_typ_edit($id){
 function writeurltypchilds($parent, &$h_level){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_url_typs where url_typ_parent_id = '" . $parent . "' order by url_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '" . $parent . "' order by url_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
          echo "<tr><td>";
@@ -355,7 +355,7 @@ function writeurltypchilds($parent, &$h_level){
          echo "</tr>\n";
 
          // eintraege
-         $entry_result = dbquery("select * from acme_url where url_typ like '%:" . $row->url_typ_id . ":%' order by url_name");
+         $entry_result = dbquery("select * from ".$conf["db_namespace"]."url where url_typ like '%:" . $row->url_typ_id . ":%' order by url_name");
          if ( mysql_num_rows($entry_result) > 0 ){
             while ($entry_row = mysql_fetch_object($entry_result)){
                echo "<tr><td>";
@@ -387,7 +387,7 @@ function checkurltypchilds($parent_id){
    global $conf, $lang;
    
    $childs = 0;
-   $result = dbquery("select * from acme_url_typs where url_typ_parent_id  = '" . $parent_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id  = '" . $parent_id . "'");
    if (mysql_num_rows($result) > 0 ){
       $childs = 1;
       mysql_free_result($result);
@@ -399,7 +399,7 @@ function checkurltypentrys($urltyp){
    global $conf, $lang;
    
    $childs = 0;
-   $result = dbquery("select * from acme_url where url_typ like '%:" . $urltyp . ":%'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url where url_typ like '%:" . $urltyp . ":%'");
    if (mysql_num_rows($result) > 0 ){
       $childs = 1;
       mysql_free_result($result);
@@ -419,7 +419,7 @@ function createsel_urltyps($select_name,$id){
 function geturltyp4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_url_typs where url_typ_parent_id = '" . $parent . "' order by url_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '" . $parent . "' order by url_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->url_typ_id;
@@ -455,7 +455,7 @@ function createsel_urlparent($select_name,$id,$selfid="0"){
 function geturlparent4select($parent, &$h_level, $grouplist, $selfid){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_url_typs where url_typ_parent_id = " . $parent . " order by url_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = " . $parent . " order by url_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->url_typ_id;

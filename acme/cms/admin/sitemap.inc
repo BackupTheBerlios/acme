@@ -30,7 +30,7 @@ switch($action)
 function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id){
    global $conf, $lang;
 
-   $Statement = "INSERT INTO acme_sitemap SET".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."sitemap SET".
                 " sitemap_name = '". $new_sitemap_name . "',".
                 " sitemap_img_small = '". $new_sitemap_img_small . "',".
                 " sitemap_img_small_inactive = '". $new_sitemap_img_small_inactive . "',".                
@@ -43,7 +43,7 @@ function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
 function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_sitemap SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."sitemap SET".
                 " sitemap_name = '". $edit_sitemap_name . "',".
                 " sitemap_nav_id = '". $edit_sitemap_nav_id . "',".
                 " sitemap_img_small = '". $edit_sitemap_img_small . "',".
@@ -57,7 +57,7 @@ function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_s
 function sitemapdelete($delete_id){
    global $conf, $lang;
    
-   $my_result = dbquery("delete from acme_sitemap where sitemap_id = '". $delete_id . "'");
+   $my_result = dbquery("delete from ".$conf["db_namespace"]."sitemap where sitemap_id = '". $delete_id . "'");
    if ($my_result) {echo $lang["sitemap_delete_erfolgreich"];}
    else            {echo $lang["sitemap_delete_fehlerhaft"];}
 }
@@ -71,7 +71,7 @@ function sitemapbrowse(){
    }
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
    echo "<th><tr><td>".$lang["sitemap_name"]."</td><td>".$lang["sitemap_nav"]."</td></td><td> </td><td> </td></tr></th>\n";
-   $result = dbquery("select * from acme_sitemap order by sitemap_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."sitemap order by sitemap_name");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
@@ -126,7 +126,7 @@ function sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
 function sitemapedit($id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_sitemap where sitemap_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."sitemap where sitemap_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_array($result);
       echo "<h1>".$lang["sitemap_bearbeiten"]."</h1>";
@@ -164,7 +164,7 @@ function createsel_navid($select_name, $id) {
 
    echo "\n<select name=\"" . $select_name . "\">";
    echo "\n<option";
-   $result = dbquery("select * from acme_bar order by bar_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bar order by bar_name");
    if ( mysql_num_rows($result) > 0 )  { 
       while ($row = mysql_fetch_object($result)){
           echo "<option value=\"" . $row->bar_id  . "\"";

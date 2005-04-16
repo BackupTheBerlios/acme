@@ -68,7 +68,7 @@ function download_add($new_download_name, $tmpname, $realname, $realsize, $new_d
 			chmod ($conf["downloads"] . $realname, 0777);
          unlink ($tmpname);
             
-         $Statement = "INSERT INTO acme_download SET".
+         $Statement = "INSERT INTO ".$conf["db_namespace"]."download SET".
                       " download_name = '". $new_download_name . "',".
                       " download_file  = '". $realname . "', ".
                       " download_text = '". $new_download_text . "',".
@@ -89,7 +89,7 @@ function download_add($new_download_name, $tmpname, $realname, $realsize, $new_d
 function download_typ_add($new_download_typ_name, $new_download_typ_text, $new_download_typ_parent_id, $new_download_typ_tpl, $new_download_typ_img_small, $new_download_typ_img_small_inactive, $new_download_typ_img_big, $new_download_typ_top_bar, $new_download_typ_left_bar, $new_download_typ_right_bar, $new_download_typ_foo_bar){
    global $conf, $lang;
 
-  $Statement = "INSERT INTO acme_download_typs SET".
+  $Statement = "INSERT INTO ".$conf["db_namespace"]."download_typs SET".
                 " download_typ_name = '". $new_download_typ_name . "',".
                 " download_typ_text = '". $new_download_typ_text . "',".
                 " download_typ_tpl = '". $new_download_typ_tpl . "',".
@@ -117,7 +117,7 @@ function download_typ_add($new_download_typ_name, $new_download_typ_text, $new_d
 function download_update($edit_download_id, $edit_download_name, $edit_download_text, $edit_download_typ ){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_download SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."download SET".
                 " download_name = '". $edit_download_name . "',".
                 " download_text = '". $edit_download_text . "',".
                 " download_typ = '". joingrouparray($edit_download_typ) . "'".
@@ -130,7 +130,7 @@ function download_update($edit_download_id, $edit_download_name, $edit_download_
 function download_typ_update($edit_download_typ_id, $edit_download_typ_name, $edit_download_typ_text, $edit_download_typ_parent_id, $edit_download_typ_tpl, $edit_download_typ_img_small,$edit_download_typ_img_small_inactive,  $edit_download_typ_img_big, $edit_download_typ_top_bar, $edit_download_typ_left_bar, $edit_download_typ_right_bar, $edit_download_typ_foo_bar){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_download_typs SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."download_typs SET".
                 " download_typ_name = '". $edit_download_typ_name . "',".
                 " download_typ_text = '". $edit_download_typ_text . "',".
                 " download_typ_tpl = '". $edit_download_typ_tpl . "',".
@@ -152,13 +152,13 @@ function download_typ_update($edit_download_typ_id, $edit_download_typ_name, $ed
 function download_delete($delete_id){
    global $conf, $lang;
    
-   $result = dbquery("select download_file from acme_download where download_id='" . $delete_id . "'");
+   $result = dbquery("select download_file from ".$conf["db_namespace"]."download where download_id='" . $delete_id . "'");
    if ($result){
       $row = mysql_fetch_object($result);
       $filename = $row->download_file;
       echo "unlinking: " . $conf["downloads"] . $filename;
       if (unlink ($conf["downloads"] . $filename)){
-         $my_result = dbquery("delete from acme_download where download_id = '". $delete_id . "'");
+         $my_result = dbquery("delete from ".$conf["db_namespace"]."download where download_id = '". $delete_id . "'");
          if ($my_result) {echo $lang["downloads_delete_erfolgreich"];}
          else            {echo $lang["downloads_delete_fehlerhaft"];}
       }
@@ -168,7 +168,7 @@ function download_delete($delete_id){
 
 function download_typ_delete($delete_id){
    global $conf, $lang;
-   $my_result = dbquery("delete from acme_download_typs where download_typ_id = '". $delete_id . "'");
+   $my_result = dbquery("delete from ".$conf["db_namespace"]."download_typs where download_typ_id = '". $delete_id . "'");
    if ($my_result) {
    	acl_delete("downloads", $delete_id);
    	echo $lang["downloads_typ_delete_erfolgreich"];
@@ -269,7 +269,7 @@ function download_typ_new($new_download_typ_name, $new_download_typ_text, $new_d
 function download_edit($id){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_download where download_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download where download_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["downloads_bearbeiten"]."</h1>";
@@ -296,7 +296,7 @@ function download_edit($id){
 function download_typ_edit($id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_download_typs where download_typ_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["downloads_typ_bearbeiten"]."</h1>";
@@ -352,7 +352,7 @@ function download_typ_edit($id){
 function writedownloadtypchilds($parent, &$h_level){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_download_typs where download_typ_parent_id = '" . $parent . "' order by download_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = '" . $parent . "' order by download_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
          echo "<tr><td>";
@@ -381,7 +381,7 @@ function writedownloadtypchilds($parent, &$h_level){
          echo "</tr>\n";
 
          // eintraege
-         $entry_result = dbquery("select * from acme_download where download_typ like '%:" . $row->download_typ_id . ":%' order by download_name");
+         $entry_result = dbquery("select * from ".$conf["db_namespace"]."download where download_typ like '%:" . $row->download_typ_id . ":%' order by download_name");
          if ( mysql_num_rows($entry_result) > 0 ){
             while ($entry_row = mysql_fetch_object($entry_result)){
                echo "<tr><td>";
@@ -413,7 +413,7 @@ function checkdownloadtypchilds($parent_id){
    global $conf, $lang;
    
    $childs = 0;
-   $result = dbquery("select * from acme_download_typs where download_typ_parent_id  = '" . $parent_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id  = '" . $parent_id . "'");
    if (mysql_num_rows($result) > 0 ){
       $childs = 1;
       mysql_free_result($result);
@@ -425,7 +425,7 @@ function checkdownloadtypentrys($downloadtyp){
    global $conf, $lang;
    
    $childs = 0;
-   $result = dbquery("select * from acme_download where download_typ like '%:" . $downloadtyp . ":%'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download where download_typ like '%:" . $downloadtyp . ":%'");
    if (mysql_num_rows($result) > 0 ){
       $childs = 1;
       mysql_free_result($result);
@@ -449,7 +449,7 @@ function createsel_downloadtyps($select_name,$id){
 function getdownloadtyp4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_download_typs where download_typ_parent_id = '" . $parent . "' order by download_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = '" . $parent . "' order by download_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->download_typ_id;
@@ -485,7 +485,7 @@ function createsel_downloadparent($select_name,$id,$selfid="0"){
 function getdownloadparent4select($parent, &$h_level, $grouplist, $selfid){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_download_typs where download_typ_parent_id = " . $parent . " order by download_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = " . $parent . " order by download_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->download_typ_id;

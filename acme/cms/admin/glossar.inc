@@ -74,23 +74,23 @@ function glossar_edit($edit_glossar_id, $edit_glossar_titel, $edit_glossar_text,
 
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_glossar where glossar_id=$edit_glossar_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."glossar where glossar_id=$edit_glossar_id");
    if ($result)  {
-      $acme_glossar = mysql_fetch_object($result);
+      $glossar = mysql_fetch_object($result);
       echo "<h1>".$lang["glossar_bearbeiten"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=glossar&action=glossar_update&glossar_id=" . $acme_glossar->glossar_id . "\"  method=POST>".
+           "<form action=\"" . $conf["admp"] . "&section=glossar&action=glossar_update&glossar_id=" . $glossar->glossar_id . "\"  method=POST>".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["glossar_titel"]."</td></tr>".
-           "<tr><td><input name=edit_glossar_titel size=70 maxlength=128 value=\"" . htmlspecialchars($acme_glossar->glossar_titel) . "\"></td></tr>".
+           "<tr><td><input name=edit_glossar_titel size=70 maxlength=128 value=\"" . htmlspecialchars($glossar->glossar_titel) . "\"></td></tr>".
            "<tr><td>".$lang["glossar_text"]."</td></tr>".
-           "<tr><td><textarea name=\"edit_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($acme_glossar->glossar_text) . "</textarea></td>".
+           "<tr><td><textarea name=\"edit_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($glossar->glossar_text) . "</textarea></td>".
            "<tr><td>".$lang["glossar_bild"]."</td></tr>".
            "<tr><td>";          
-      createsel_img("edit_glossar_img", $acme_glossar->glossar_img);
+      createsel_img("edit_glossar_img", $glossar->glossar_img);
       echo "</td></tr>".
            "<tr><td>".$lang["glossar_tpl"]."</td></tr>".
            "<tr><td>";          
-      createsel_glossar_tpl("edit_glossar_tpl",  $acme_glossar->glossar_tpl);
+      createsel_glossar_tpl("edit_glossar_tpl",  $glossar->glossar_tpl);
       echo "</td></tr>".     
            "<tr><td><input type=submit name=add value=".$lang["glossar_speichern"]."></td></tr>".
            "</table>".
@@ -103,7 +103,7 @@ function glossar_edit($edit_glossar_id, $edit_glossar_titel, $edit_glossar_text,
 function glossar_update($glossar_id, $glossar_titel, $glossar_text, $glossar_img, $glossar_tpl){
    global $conf, $lang;
 
-   $Statement = "UPDATE acme_glossar SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."glossar SET ".
                 "glossar_titel = '". $glossar_titel . "',".
                 "glossar_img   = '". $glossar_img   . "',".                
                 "glossar_tpl   = '". $glossar_tpl   . "',".                
@@ -139,7 +139,7 @@ function glossar_new($new_glossar_titel, $new_glossar_text, $new_glossar_img, $n
 function glossar_insert($glossar_titel, $glossar_text, $glossar_img, $glossar_tpl){
    global $conf, $lang;
 
-   $Statement = "INSERT INTO acme_glossar SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."glossar SET ".
                 "glossar_titel = '". $glossar_titel . "', ".
                 "glossar_img = '". $glossar_img . "', ".                
                 "glossar_tpl = '". $glossar_tpl . "', ".                
@@ -151,7 +151,7 @@ function glossar_insert($glossar_titel, $glossar_text, $glossar_img, $glossar_tp
 
 function glossar_delete($glossar_id) {
    global $conf, $lang;
-   $delete_result = dbquery("delete from acme_glossar where glossar_id = '". $glossar_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."glossar where glossar_id = '". $glossar_id . "'");
    if($delete_result){echo $lang["glossar_delete_erfolgreich"];}
    else{echo $lang["glossar_delete_fehlgeschlagen"];};
 }
@@ -165,7 +165,7 @@ function glossar_browse() {
    }
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["glossar_titel"]."</td><td width=\"30\"> </td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_glossar order by glossar_titel");
+   $result = dbquery("select * from ".$conf["db_namespace"]."glossar order by glossar_titel");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";

@@ -91,20 +91,20 @@ switch($action){
 function blog_data_edit($edit_blog_data_id, $edit_blog_data_headline, $edit_blog_data_content, $edit_blog_cat_id){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_blog_data where blog_data_id=$edit_blog_data_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."blog_data where blog_data_id=$edit_blog_data_id");
        if ($result)  {
-          $acme_blog_data = mysql_fetch_object($result);
+          $blog_data = mysql_fetch_object($result);
           echo "<h1>".$lang["blog_eintrag_bearbeiten"]."</h1>";
-          echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_data_update&blog_data_id=" . $acme_blog_data->blog_data_id . "\"  method=POST>";
+          echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_data_update&blog_data_id=" . $blog_data->blog_data_id . "\"  method=POST>";
           echo "<table class=\"reda_td\">";          
           echo "<tr><td>".$lang["blog_eintrag_titel"]."</td></tr>";
-          echo "<tr><td><input name=edit_blog_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($acme_blog_data->blog_data_headline) . "\"></td></tr>";
+          echo "<tr><td><input name=edit_blog_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($blog_data->blog_data_headline) . "\"></td></tr>";
           echo "<tr><td>".$lang["blog_kategorie"]."</td></tr>";
           echo "<tr><td>";
-          createsel_blogcats("edit_blog_cat_id", $acme_blog_data->blog_cat_id, $acme_blog_data->blog_id);   
+          createsel_blogcats("edit_blog_cat_id", $blog_data->blog_cat_id, $blog_data->blog_id);   
           echo "</td></tr>";
           echo "<tr><td>".$lang["blog_eintrag_inhalt"]."</td></tr>";
-          echo "<tr><td><textarea name=\"edit_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($acme_blog_data->blog_data_content) . "</textarea></td>";
+          echo "<tr><td><textarea name=\"edit_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_data->blog_data_content) . "</textarea></td>";
           echo "<tr><td><input type=submit name=add value=".$lang["blog_eintrag_speichern"]."></td></tr>";
           echo "</table>";
           echo "</form>";
@@ -115,7 +115,7 @@ function blog_data_edit($edit_blog_data_id, $edit_blog_data_headline, $edit_blog
 function blog_data_update($blog_data_id, $blog_data_headline, $blog_data_content, $blog_cat_id){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_blog_data SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."blog_data SET ".
                      "blog_data_headline = '". $blog_data_headline . "',".
                      "blog_cat_id = '". $blog_cat_id . "',".
                      "blog_data_content = '". $blog_data_content . "'".
@@ -146,7 +146,7 @@ function blog_data_new($blog_id, $blog_data_headline, $blog_data_content) {
 function blog_data_insert($blog_id, $blog_data_headline, $blog_data_content, $blog_cat_id){
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_blog_data  (".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."blog_data  (".
                           " blog_id, ".
                           " blog_data_date, ".
                           " blog_data_headline, ".
@@ -166,7 +166,7 @@ function blog_data_insert($blog_id, $blog_data_headline, $blog_data_content, $bl
 
 function blog_data_delete($blog_data_id) {
    global $conf, $lang;
-   $delete_result = dbquery("delete from acme_blog_data where blog_data_id = '". $blog_data_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."blog_data where blog_data_id = '". $blog_data_id . "'");
    if($delete_result){echo $lang["blog_eintrag_delete_erfolgreich"];}
    else{echo $lang["blog_eintrag_delete_fehlerhaft"];};
 }
@@ -174,16 +174,16 @@ function blog_data_delete($blog_data_id) {
 function blog_cat_edit($edit_blog_cat_id, $edit_blog_cat_name, $edit_blog_cat_text){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_blog_cat where blog_cat_id=$edit_blog_cat_id");
+   $result = dbquery("select * from ".$conf["db_namespace"]."blog_cat where blog_cat_id=$edit_blog_cat_id");
    if ($result)  {
-      $acme_blog_cat = mysql_fetch_object($result);
+      $blog_cat = mysql_fetch_object($result);
       echo "<h1>".$lang["blog_kategorie_bearbeiten"]."</h1>";
-      echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_cat_update&blog_cat_id=" . $acme_blog_cat->blog_cat_id . "\"  method=POST>";
+      echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_cat_update&blog_cat_id=" . $blog_cat->blog_cat_id . "\"  method=POST>";
       echo "<table class=\"reda_td\">";          
       echo "<tr><td>".$lang["blog_kategorie_name"]."</td></tr>";
-      echo "<tr><td><input name=edit_blog_cat_name size=70 maxlength=128 value=\"" . htmlspecialchars($acme_blog_cat->blog_cat_name) . "\"></td></tr>";
+      echo "<tr><td><input name=edit_blog_cat_name size=70 maxlength=128 value=\"" . htmlspecialchars($blog_cat->blog_cat_name) . "\"></td></tr>";
       echo "<tr><td>".$lang["blog_kategorie_text"] . "</td></tr>";
-      echo "<tr><td><textarea name=\"edit_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($acme_blog_cat->blog_cat_text) . "</textarea></td>";
+      echo "<tr><td><textarea name=\"edit_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_cat->blog_cat_text) . "</textarea></td>";
       echo "<tr><td><input type=submit name=add value=".$lang["blog_kategorie_speichern"]."></td></tr>";
       echo "</table>";
       echo "</form>";
@@ -194,7 +194,7 @@ function blog_cat_edit($edit_blog_cat_id, $edit_blog_cat_name, $edit_blog_cat_te
 function blog_cat_update($blog_cat_id, $blog_cat_name, $blog_cat_text){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_blog_cat SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."blog_cat SET ".
                 "blog_cat_name = '". $blog_cat_name . "',".
                 "blog_cat_text = '". $blog_cat_text . "'".
                 " WHERE blog_cat_id = '". $blog_cat_id . "'";
@@ -220,7 +220,7 @@ function blog_cat_new($blog_id, $blog_cat_name, $blog_cat_text) {
 function blog_cat_insert($blog_id, $blog_cat_name, $blog_cat_text){
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_blog_cat  (".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."blog_cat  (".
                 " blog_cat_name, ".
                 " blog_cat_text, ".
                 " blog_cat_blog_id ".
@@ -236,8 +236,8 @@ function blog_cat_insert($blog_id, $blog_cat_name, $blog_cat_text){
 
 function blog_cat_delete($blog_cat_id) {
    global $conf, $lang;
-   $delete_result = dbquery("delete from acme_blog_cat where blog_cat_id = ". $blog_cat_id);
-   $sub_delete_result = dbquery("update acme_blog_data set blog_cat_id = 0 where blog_cat_id = ". $blog_cat_id);
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."blog_cat where blog_cat_id = ". $blog_cat_id);
+   $sub_delete_result = dbquery("update ".$conf["db_namespace"]."blog_data set blog_cat_id = 0 where blog_cat_id = ". $blog_cat_id);
    if($delete_result && $sub_delete_result){echo $lang["blog_kategorie_delete_erfolgreich"];}
    else{echo $lang["blog_kategorie_delete_fehlerhaft"];};
 }
@@ -251,7 +251,7 @@ function blog_browse() {
    }
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["blog_name"]."</td><td width=\"30\"> </td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
-   $result = dbquery("select * from acme_blog order by blog_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."blog order by blog_name");
    if ( mysql_num_rows($result) > 0 )           {
       while ($row = mysql_fetch_object($result))              {
          echo "<tr>";
@@ -294,87 +294,87 @@ function blog_browse() {
 function blog_edit($blog_id) {
    global $conf, $lang;
    
-   $blog_result = dbquery("select * from acme_blog where blog_id=$blog_id");
+   $blog_result = dbquery("select * from ".$conf["db_namespace"]."blog where blog_id=$blog_id");
    if ($blog_result) {
-      $acme_blog = mysql_fetch_object($blog_result);
+      $blog = mysql_fetch_object($blog_result);
       echo "<h1>".$lang["blog_bearbeiten"]."</h1>\n";
       if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-         echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_new&blog_id=" . $acme_blog->blog_id . "\">Neuer Eintrag</a>\n|";
+         echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_new&blog_id=" . $blog->blog_id . "\">Neuer Eintrag</a>\n|";
       }         
       if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-         echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_new&blog_id=" . $acme_blog->blog_id . "\">Neue Kategorie</a>\n";
+         echo "<a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_new&blog_id=" . $blog->blog_id . "\">Neue Kategorie</a>\n";
       }                
-      echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_update&edit_blog_id=" . $acme_blog->blog_id . "\" method=\"POST\">\n";
+      echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_update&edit_blog_id=" . $blog->blog_id . "\" method=\"POST\">\n";
       echo "<table class=\"reda_td\">\n";
       echo "<tr><td colspan = 4>".$lang["blog_name"]."</td></tr>\n";
-      echo "<tr><td colspan = 4><input name=\"edit_blog_name\" size=\"30\" maxlength=\"128\" value=\"" . htmlspecialchars($acme_blog->blog_name) . "\"></td></tr>";
+      echo "<tr><td colspan = 4><input name=\"edit_blog_name\" size=\"30\" maxlength=\"128\" value=\"" . htmlspecialchars($blog->blog_name) . "\"></td></tr>";
       echo "<tr><td>".$lang["blog_tpl"]."</td><td>".$lang["blog_logo_gross"]."</td><td>".$lang["blog_logo_klein"]."</td><td>".$lang["blog_logo_klein_inactive"]."</td></tr>";
       echo "<tr><td>";
-      createsel_tpl("edit_blog_tpl",  $acme_blog->blog_tpl);
+      createsel_tpl("edit_blog_tpl",  $blog->blog_tpl);
       echo "</td>";
       echo "<td>";
-      createsel_img("edit_blog_img_small",  $acme_blog->blog_img_small);
+      createsel_img("edit_blog_img_small",  $blog->blog_img_small);
       echo "</td>";
       echo "<td>";
-      createsel_img("edit_blog_img_small_inactive",  $acme_blog->blog_img_small_inactive);
+      createsel_img("edit_blog_img_small_inactive",  $blog->blog_img_small_inactive);
       echo "</td>";
       echo "<td>";
-      createsel_img("edit_blog_img_big",  $acme_blog->blog_img_big);
+      createsel_img("edit_blog_img_big",  $blog->blog_img_big);
       echo "</td>";
       echo "</tr>\n";
       echo "<tr><td>".$lang["blog_bar_left"]."</td><td>".$lang["blog_bar_right"]."</td><td>".$lang["blog_bar_top"]."</td><td>".$lang["blog_bar_bottom"]."</td></tr>";
       echo "<tr>";
       echo "<td>";
-      createsel_bar("edit_blog_left_bar", $acme_blog->blog_left_bar);
+      createsel_bar("edit_blog_left_bar", $blog->blog_left_bar);
       echo "</td>";
       echo "<td>";
-      createsel_bar("edit_blog_right_bar",  $acme_blog->blog_right_bar);
+      createsel_bar("edit_blog_right_bar",  $blog->blog_right_bar);
       echo "</td>";
       echo "<td>";
-      createsel_bar("edit_blog_top_bar",  $acme_blog->blog_top_bar);
+      createsel_bar("edit_blog_top_bar",  $blog->blog_top_bar);
       echo "</td>";
       echo "<td>";
-      createsel_bar("edit_blog_foo_bar",  $acme_blog->blog_foo_bar);
+      createsel_bar("edit_blog_foo_bar",  $blog->blog_foo_bar);
       echo "</td>";
       echo "</tr>\n";
       echo "<tr><td colspan = \"4\">".$lang["blog_name"]."</td></tr>\n";         
-      echo "<tr><td colspan = \"4\"><input name=\"edit_blog_titel\" size=\"30\" maxlength=\"200\" value=\"" . htmlspecialchars($acme_blog->blog_titel) . "\"></td>";
+      echo "<tr><td colspan = \"4\"><input name=\"edit_blog_titel\" size=\"30\" maxlength=\"200\" value=\"" . htmlspecialchars($blog->blog_titel) . "\"></td>";
       echo "<tr><td colspan = \"4\">".$lang["blog_inhalt"]."</td></tr>";
-      echo "<tr><td colspan = \"4\"><textarea name=\"edit_blog_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($acme_blog->blog_text) . "</textarea></td>";      
+      echo "<tr><td colspan = \"4\"><textarea name=\"edit_blog_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog->blog_text) . "</textarea></td>";      
       echo "</tr>\n";
       echo "<tr><td colspan=\"4\"><input type=submit name=add value=".$lang["blog_speichern"]."></td></tr>\n";
       echo "</form>\n";
       echo "<tr><td colspan = 4>".$lang["blog_kategorien"]."</td></tr>";      
-      $data_result = dbquery("select * from acme_blog_cat where blog_cat_blog_id='" . $acme_blog->blog_id . "' order by blog_cat_name");
+      $data_result = dbquery("select * from ".$conf["db_namespace"]."blog_cat where blog_cat_blog_id='" . $blog->blog_id . "' order by blog_cat_name");
       if ( mysql_num_rows($data_result) > 0 )  {
           echo "<tr><td>".$lang["blog_kategorie_name"]."</td><td>&nbsp;</td><td width=\"30\"></td><td width=\"30\"></td></tr>\n";
-          while ($acme_blog_cat = mysql_fetch_object($data_result))  {
+          while ($blog_cat = mysql_fetch_object($data_result))  {
              echo "<tr>";
-             echo "<td>" . $acme_blog_cat->blog_cat_name . "</td>";
+             echo "<td>" . $blog_cat->blog_cat_name . "</td>";
              echo "<td>&nbsp;</td>";
              if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_edit&blog_cat_id=" . $acme_blog_cat->blog_cat_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a></td>";
+                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_edit&blog_cat_id=" . $blog_cat->blog_cat_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a></td>";
              }else{echo "<td></td>";}
              if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_delete&blog_cat_id=" . $acme_blog_cat->blog_cat_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a></td>";
+                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_cat_delete&blog_cat_id=" . $blog_cat->blog_cat_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a></td>";
              }else{echo "<td></td>";}   
              echo "</tr>\n";
          }
          mysql_free_result($data_result);
       } 
       echo "<tr><td colspan = 4>".$lang["blog_eintraege"]."</td></tr>";
-      $data_result = dbquery("select * from acme_blog_data where blog_id='" . $blog_id . "' order by blog_data_date DESC");
+      $data_result = dbquery("select * from ".$conf["db_namespace"]."blog_data where blog_id='" . $blog_id . "' order by blog_data_date DESC");
       if ( mysql_num_rows($data_result) > 0 )  {
           echo "<tr><td>".$lang["blog_eintrag_titel"]."</td><td>".$lang["blog_eintrag_datum"]."</td><td width=\"30\"></td><td width=\"30\"></td></tr>\n";
-          while ($acme_blog_data = mysql_fetch_object($data_result))  {
+          while ($blog_data = mysql_fetch_object($data_result))  {
              echo "<tr>";
-             echo "<td>" . $acme_blog_data->blog_data_headline . "</td>";
-             echo "<td>" . mydate2datetime($acme_blog_data->blog_data_date) . "</td>";
+             echo "<td>" . $blog_data->blog_data_headline . "</td>";
+             echo "<td>" . mydate2datetime($blog_data->blog_data_date) . "</td>";
              if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_edit&blog_data_id=" . $acme_blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a></td>";
+                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_edit&blog_data_id=" . $blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt=\"bearbeiten\"></a></td>";
              }else{echo "<td></td>";}   
              if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "blog", $blog_id) == 1) {
-                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_delete&blog_data_id=" . $acme_blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a></td>";
+                echo "<td><a href=\"" . $conf["admp"] . "&section=blog&action=blog_data_delete&blog_data_id=" . $blog_data->blog_data_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\" alt=\"l&ouml;schen\"></a></td>";
              }else{echo "<td></td>";}   
              echo "</tr>\n";
          }
@@ -388,7 +388,7 @@ function blog_edit($blog_id) {
 function blog_update($blog_id, $blog_name, $blog_tpl, $blog_img_small,$blog_img_small_inactive,  $blog_img_big, $blog_top_bar, $blog_left_bar, $blog_right_bar, $blog_foo_bar, $blog_titel, $blog_text){
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_blog SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."blog SET ".
                            " blog_name = '" . $blog_name . "', ".
                            " blog_tpl = '" . $blog_tpl . "', ".
                            " blog_img_small = '" . $blog_img_small . "', ".
@@ -457,7 +457,7 @@ function blog_new() {
 function blog_insert($blog_name, $blog_tpl, $blog_img_small,$blog_img_small_inactive,  $blog_img_big, $blog_top_bar, $blog_left_bar, $blog_right_bar, $blog_foo_bar, $blog_titel, $blog_text){
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_blog  (".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."blog  (".
                            " blog_name , ".
                            " blog_tpl  , ".
                            " blog_img_small , ".
@@ -501,10 +501,10 @@ function blog_insert($blog_name, $blog_tpl, $blog_img_small,$blog_img_small_inac
 function blog_delete($delete_id){
    global $conf, $lang;
    
-   $delete_statement1 ="delete from acme_blog_data where blog_id = ". $delete_id;
+   $delete_statement1 ="delete from ".$conf["db_namespace"]."blog_data where blog_id = ". $delete_id;
    $delete_result1 = dbquery($delete_statement1);
    if ($delete_result1){
-      $delete_statement2 ="delete from acme_blog where blog_id = ". $delete_id;
+      $delete_statement2 ="delete from ".$conf["db_namespace"]."blog where blog_id = ". $delete_id;
       $delete_result2 = dbquery($delete_statement2);
    }
    if($delete_result1 && $delete_result2){
@@ -515,7 +515,7 @@ function blog_delete($delete_id){
 function createsel_blogcats($select_name,$grouplist, $blog_id)
 {
    global $conf, $lang;
-   $allgroups = dbquery("select * from acme_blog_cat where blog_cat_blog_id = '".$blog_id."' order by blog_cat_name");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."blog_cat where blog_cat_blog_id = '".$blog_id."' order by blog_cat_name");
    echo "<select size = \"1\" name=\"" . $select_name . "\">";
    if ( mysql_num_rows($allgroups) > 0 ) {
       while ( $g_row = mysql_fetch_object($allgroups) ) {

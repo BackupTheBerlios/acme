@@ -9,7 +9,7 @@ echo "</table></form>";
 
 function writepagechilds($parent, &$h_level){
    global $conf, $lang;
-   $result = dbquery("select * from acme_pages where  page_parent = '" . $parent . "' order by page_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where  page_parent = '" . $parent . "' order by page_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
          echo "<tr>";

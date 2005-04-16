@@ -93,7 +93,7 @@ switch ($action)  {
 function authordelete($delete_id){
    global $conf, $lang;
 
-   $delete_result = dbquery("delete from acme_author where author_id = '". $delete_id . "'");
+   $delete_result = dbquery("delete from ".$conf["db_namespace"]."author where author_id = '". $delete_id . "'");
   
    return $delete_result;
 }
@@ -101,7 +101,7 @@ function authordelete($delete_id){
 function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_author_active,$new_author_nachname,$new_author_vorname,$new_author_email,$new_author_url,$new_author_img,$new_author_text){ 
    global $conf, $lang;
    
-   $Statement = "INSERT INTO acme_author SET ".
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."author SET ".
                 " author_name   = '" . $new_author_name . "',". 
                 " author_groups = '" . joingrouparray($new_author_groups) ."',".
                 " author_passwd = '" . $new_author_passwd     ."',".
@@ -119,7 +119,7 @@ function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_a
  
 function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active){ 
    global $conf, $lang;
-   $Statement = "UPDATE acme_author SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."author SET ".
                 " author_name   = '" .  $edit_author_name . "' , ".
                 " author_groups = '" .  joingrouparray($edit_author_groups) . "' , ".
                 " author_active = '" .  $edit_author_active    ."',".
@@ -137,7 +137,7 @@ function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorna
 function authorupdatepw($edit_author_id, $edit_author_password){ 
    global $conf, $lang;
    
-   $Statement = "UPDATE acme_author SET ".
+   $Statement = "UPDATE ".$conf["db_namespace"]."author SET ".
                 " author_passwd = '". $edit_author_password ."' ".
                 " WHERE author_id = '" . $edit_author_id . "'";
    $update_result = dbquery($Statement);
@@ -159,7 +159,7 @@ function authorbrowse(){
    echo "<td width=\"30\">&nbsp;</td>";
    echo "<td width=\"30\">&nbsp;</td>";
    echo "</tr>\n";
-   $result = dbquery("select * from acme_author");
+   $result = dbquery("select * from ".$conf["db_namespace"]."author");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)) {
          echo "<tr>";	  
@@ -216,7 +216,7 @@ function authornew(){
 function authoredit($edit_id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_author where author_id='". $edit_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."author where author_id='". $edit_id . "'");
    if ($result){
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["autoren_bearbeiten"]."</h1>\n";
@@ -254,7 +254,7 @@ function authoredit($edit_id){
 function authorchpw($edit_id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_author where author_id='". $edit_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."author where author_id='". $edit_id . "'");
    if ($result){
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["autoren_chpasswd"]."</h1>\n";
@@ -272,7 +272,7 @@ function authorchpw($edit_id){
 function checkoldpw ($id, $pw) {
 	global $conf, $lang;
 	
-    $query = "SELECT author_id FROM acme_author WHERE author_passwd = '" . $pw . "' AND author_id = '" . $id . "';";
+    $query = "SELECT author_id FROM ".$conf["db_namespace"]."author WHERE author_passwd = '" . $pw . "' AND author_id = '" . $id . "';";
     $result = dbquery($query);   
     if ( mysql_num_rows($result) > 0 ) {return 1;}
     else {return 0;}
@@ -282,7 +282,7 @@ function checkoldpw ($id, $pw) {
 function createsel_groups($select_name,$grouplist){
    global $conf, $lang;
    
-   $allgroups = dbquery("select * from acme_groups order by group_name");
+   $allgroups = dbquery("select * from ".$conf["db_namespace"]."groups order by group_name");
    echo "<select multiple size = \"5\" name=\"" . $select_name . "[]\">";
    if ( mysql_num_rows($allgroups) > 0 )
       {

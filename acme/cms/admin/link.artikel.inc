@@ -15,7 +15,7 @@ echo "</form>\n";
 echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
 if ($page_id <> ""){
    echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>".$lang["artikel_link"] . "</td></tr>\n";
-   $Statement = "select * from acme_artikel where artikel_page like '%:" . $page_id . ":%'";
+   $Statement = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:" . $page_id . ":%'";
    if ($author_id <> ""){ $Statement .= " and artikel_author_id = '" . $author_id . "'";}
    $Statement .= " order by artikel_publish_date DESC";
    $result = dbquery($Statement);
@@ -42,7 +42,7 @@ echo "</table>\n";
 function createsel_pagenCAs($select_name,$grouplist){
    global $conf, $lang;
 
-   $allgroups = dbquery("select page_id, page_name from acme_pages Where page_childs = 'A' order by page_name");
+   $allgroups = dbquery("select page_id, page_name from ".$conf["db_namespace"]."pages Where page_childs = 'A' order by page_name");
    echo "<select name=" . $select_name . ">";
    if ( mysql_num_rows($allgroups) > 0 )      {
       while ( $g_row = mysql_fetch_object($allgroups) )         {

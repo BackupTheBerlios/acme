@@ -60,7 +60,7 @@ function img_browse($img_typ_id){
    }
    echo "<table class=\"reda_td \">";
    echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_realname"]."</td><td>".$lang["bilder_beschreibung"]."</td><td>".$lang["bilder_thumb"]."</td><td></td><td></td></tr>";
-   $result = dbquery("select * from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_typ_id = '" . $img_typ_id . "'");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)){
          echo "<td>".$row->img_name."</td>";
@@ -92,7 +92,7 @@ function img_typ_browse(){
    }
    echo "<table class=\"reda_td \">";
    echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></td><td></td></tr>";
-   $result = dbquery("select * from acme_bilder_typs");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs");
    if ( mysql_num_rows($result) > 0 ){	
       while ($row = mysql_fetch_object($result)){
          $img_count = count_img_from_typ($row->img_typ_id);
@@ -215,7 +215,7 @@ function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
 function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
    global $conf, $lang;
 
-  $Statement = "INSERT INTO acme_bilder_typs SET".
+  $Statement = "INSERT INTO ".$conf["db_namespace"]."bilder_typs SET".
                 " img_typ_name = '". $new_img_typ_name . "',".
                 " img_typ_text = '". $new_img_typ_text . "',".
                 " img_typ_tpl = '". $new_img_typ_tpl . "',".
@@ -248,7 +248,7 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
    
 function img_edit($img_id){
 	global $conf, $lang;
-   $result = dbquery("select * from acme_bilder where img_id='$img_id'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
 
    if ($result){
       $row = mysql_fetch_object($result);
@@ -276,7 +276,7 @@ function img_edit($img_id){
 function img_typ_edit($id){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_bilder_typs where img_typ_id='" . $id . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where img_typ_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["bilder_typ_bearbeiten"]."</h1>".
@@ -338,7 +338,7 @@ function img_typ_edit($id){
 function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows,$edit_img_typ_cols,$edit_img_typ_maxheight, $edit_img_typ_maxwidth){
    global $conf, $lang;
               
-   $Statement = "UPDATE acme_bilder_typs SET".
+   $Statement = "UPDATE ".$conf["db_namespace"]."bilder_typs SET".
                 " img_typ_name = '". $edit_img_typ_name . "',".
                 " img_typ_text = '". $edit_img_typ_text . "',".
                 " img_typ_tpl = '". $edit_img_typ_tpl . "',".
@@ -364,7 +364,7 @@ function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text
 function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_typ_id){
    global $conf, $lang;
 
-	$Statement = "UPDATE acme_bilder Set ".
+	$Statement = "UPDATE ".$conf["db_namespace"]."bilder Set ".
 	                          " img_name = '" . $img_name . "', ".
                               " img_description = '". $img_description . "', ".
                               " img_desc_long = '". $img_desc_long . "', ".
@@ -379,7 +379,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
 function img_delete($img_id){
    global $conf, $lang;
 
-   $result = dbquery("select img_real_name, img_typ_id from acme_bilder where img_id='$img_id'");
+   $result = dbquery("select img_real_name, img_typ_id from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
    if ($result){
       $row = mysql_fetch_object($result);
       $imagename = $row->img_real_name;
@@ -387,7 +387,7 @@ function img_delete($img_id){
       echo "<h2>".$lang["bilder_loesche_datei"] ." ". $bild. "</h2><P>";
       if (unlink ($conf["imagesdir"] . $imagename) && unlink ($conf["imagesdir"] ."thumb_". $imagename) && unlink ($conf["imagesdir"] ."small_". $imagename)){
          echo $lang["bilder_datei_geloescht"]."<br>";
-      	 $Statement = "DELETE FROM acme_bilder WHERE img_id = '" . $img_id . "'";
+      	 $Statement = "DELETE FROM ".$conf["db_namespace"]."bilder WHERE img_id = '" . $img_id . "'";
          $delete_result = dbquery($Statement);
          if ($delete_result){echo $lang["bilder_datei_entfernt"] . "<br>";}
          else {echo $lang["bilder_datei_nicht_entfernt"];}
@@ -401,7 +401,7 @@ function img_delete($img_id){
 function img_typ_delete($img_typ_id){
    global $conf, $lang;
 
-  	$Statement = "DELETE FROM acme_bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
+  	$Statement = "DELETE FROM ".$conf["db_namespace"]."bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
    $delete_result = dbquery($Statement);
    if ($delete_result){
    	acl_delete("bilder", $img_typ_id);
@@ -450,7 +450,7 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
          chmod ($conf["imagesdir"] . $realname, 0777);
          unlink ($tmpimagename);
 
-         $Statement = "INSERT INTO acme_bilder SET ".
+         $Statement = "INSERT INTO ".$conf["db_namespace"]."bilder SET ".
                               " img_name = '". $new_img_name . "', ".
                               " img_real_name = '". $realname ."', ".
                               " img_description = '". $new_img_description ."', ".
@@ -559,7 +559,7 @@ class thumbnail{
 function get_img_typ_name($img_typ_id){
    global $conf, $lang;
    
-   $query = dbquery("select * from acme_bilder_typs where img_typ_id = '" . $img_typ_id . "'");
+   $query = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where img_typ_id = '" . $img_typ_id . "'");
    if (mysql_num_rows($query) > 0 ) {
       $g_row = mysql_fetch_object($query);
       return $g_row->img_typ_name;
@@ -568,7 +568,7 @@ function get_img_typ_name($img_typ_id){
 function get_img_typ_maxheight($img_typ_id){
    global $conf, $lang;
    
-   $query = dbquery("select img_typ_maxheight from acme_bilder_typs where img_typ_id = '" . $img_typ_id . "'");
+   $query = dbquery("select img_typ_maxheight from ".$conf["db_namespace"]."bilder_typs where img_typ_id = '" . $img_typ_id . "'");
    if (mysql_num_rows($query) > 0 ) {
       $g_row = mysql_fetch_object($query);
       return $g_row->img_typ_maxheight;
@@ -577,7 +577,7 @@ function get_img_typ_maxheight($img_typ_id){
 function get_img_typ_maxwidth($img_typ_id){
    global $conf, $lang;
    
-   $query = dbquery("select img_typ_maxwidth from acme_bilder_typs where img_typ_id = '" . $img_typ_id . "'");
+   $query = dbquery("select img_typ_maxwidth from ".$conf["db_namespace"]."bilder_typs where img_typ_id = '" . $img_typ_id . "'");
    if (mysql_num_rows($query) > 0 ) {
       $g_row = mysql_fetch_object($query);
       return $g_row->img_typ_maxwidth;
@@ -586,7 +586,7 @@ function get_img_typ_maxwidth($img_typ_id){
 function count_img_from_typ($img_typ_id){
    global $conf, $lang;
    
-   $query = dbquery("select img_id from acme_bilder where img_typ_id = '" . $img_typ_id . "'");
+   $query = dbquery("select img_id from ".$conf["db_namespace"]."bilder where img_typ_id = '" . $img_typ_id . "'");
    return mysql_num_rows($query);
 }      
 
@@ -602,7 +602,7 @@ function createsel_img_typ($select_name,$id){
 function getimgtyp4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
-   $result = dbquery("select * from acme_img_typs where img_typ_parent_id = '" . $parent . "' order by img_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."img_typs where img_typ_parent_id = '" . $parent . "' order by img_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->img_typ_id;
@@ -639,7 +639,7 @@ function createsel_img_typ_parent($select_name,$id,$selfid="0"){
 function getimgparent4select($parent, &$h_level, $grouplist, $selfid){
    global $conf, $lang;
 
-   $result = dbquery("select * from acme_bilder_typs where img_typ_parent_id = " . $parent . " order by img_typ_name");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where img_typ_parent_id = " . $parent . " order by img_typ_name");
    echo mysql_errno() . ": " . mysql_error(). "\n";
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
