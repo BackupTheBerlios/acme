@@ -186,6 +186,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "<tr><td>".$lang["page_tpl"]."</td><td>".$lang["page_titelbild"]."</td><td>".$lang["page_logo_klein"]."</td><td>".$lang["page_logo_klein_inactive"]."</td><td>".$lang["page_logo_gross"]."</td></tr>";
    echo "<tr>";
    echo "<td>";
+   if ($new_page_tpl=="") {$new_page_tpl = $conf["home_tpl"];}
    createsel_tpl("new_page_tpl", $new_page_tpl);
    echo "</td>";
    echo "<td>";
