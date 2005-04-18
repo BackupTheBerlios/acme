@@ -6,7 +6,7 @@ switch ($action)  {
       authoredit($edit_author_id);
       break;
    case "new":
-      authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2,$new_author_active);
+      authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2,$new_author_active,$new_author_lang);
       break;
    case "add":
       $error = 0;
@@ -16,18 +16,19 @@ switch ($action)  {
       if ($new_author_name==""){$errors.=$lang["autoren_name_fehlt"]."<br>";$error=1;}
       if ($new_author_nachname==""){$errors.=$lang["autoren_nn_fehlt"]."<br>";$error=1;}
       if ($new_author_vorname==""){$errors.=$lang["autoren_vn_fehlt"]."<br>";$error=1;}
+      if ($new_author_lang==""){$errors.=$lang["autoren_lang_fehlt"]."<br>";$error=1;}
       if($error!=1) {	
-        $result = authoradd($new_author_name,$new_author_passwd1,$new_author_groups,$new_author_active,$new_author_nachname,$new_author_vorname,$new_author_email,$new_author_url,$new_author_img,$new_author_text);
+        $result = authoradd($new_author_name,$new_author_passwd1,$new_author_groups,$new_author_active,$new_author_nachname,$new_author_vorname,$new_author_email,$new_author_url,$new_author_img,$new_author_text,$new_author_lang);
         if ($result){
            echo $lang["autoren_insert_erfolgreich"];
            authorbrowse();
         }else{
            echo $lang["autoren_insert_fehlgeschlagen"];
-           authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active);
+           authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active,$new_author_lang);
         }
       } else {
         echo $errors;
-      	authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active);
+      	authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active,$new_author_lang);
       }
       break;
 	case "update":
@@ -37,8 +38,9 @@ switch ($action)  {
       if ($edit_author_name==""){$errors.=$lang["autoren_name_fehlt"]."<br>";$error=1;}
       if ($edit_author_nachname==""){$errors.=$lang["autoren_nn_fehlt"]."<br>";$error=1;}
       if ($edit_author_vorname==""){$errors.=$lang["autoren_vn_fehlt"]."<br>";$error=1;}
+      if ($edit_author_lang==""){$errors.=$lang["autoren_lang_fehlt"]."<br>";$error=1;}
       if($error!=1) {	
-         $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active);
+         $result = authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active,$edit_author_lang);
          if ($result){
          	echo $lang["autoren_update_erfolgreich"];
       	    authorbrowse();
@@ -98,7 +100,7 @@ function authordelete($delete_id){
    return $delete_result;
 }
    
-function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_author_active,$new_author_nachname,$new_author_vorname,$new_author_email,$new_author_url,$new_author_img,$new_author_text){ 
+function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_author_active,$new_author_nachname,$new_author_vorname,$new_author_email,$new_author_url,$new_author_img,$new_author_text,$new_author_lang){ 
    global $conf, $lang;
    
    $Statement = "INSERT INTO ".$conf["db_namespace"]."author SET ".
@@ -110,6 +112,7 @@ function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_a
                 " author_vorname = '"  . $new_author_vorname  ."',".
                 " author_img = '".       $new_author_img      ."',".
                 " author_url = '".       $new_author_url      ."',".
+                " author_lang = '".      $new_author_lang     ."',".
                 " author_email = '".     $new_author_email    ."',".
                 " author_text = '".      $new_author_text     ."'";
    $insert_result = dbquery($Statement);
@@ -117,7 +120,7 @@ function authoradd($new_author_name,$new_author_passwd,$new_author_groups,$new_a
    return $insert_result;
 }
  
-function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active){ 
+function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorname,$edit_author_img, $edit_author_url,$edit_author_email, $edit_author_text, $edit_author_name, $edit_author_groups, $edit_author_active,$edit_author_lang){ 
    global $conf, $lang;
    $Statement = "UPDATE ".$conf["db_namespace"]."author SET ".
                 " author_name   = '" .  $edit_author_name . "' , ".
@@ -126,6 +129,7 @@ function authorupdate($edit_author_id, $edit_author_nachname, $edit_author_vorna
                 " author_nachname = '". $edit_author_nachname  ."',".
                 " author_vorname = '" . $edit_author_vorname   ."',".
                 " author_img = '".      $edit_author_img       ."',".
+                " author_lang = '".     $edit_author_lang      ."',".
                 " author_url = '".      $edit_author_url       ."',".
                 " author_email = '".    $edit_author_email     ."',".
                 " author_text = '".     $edit_author_text      ."' ".
@@ -186,7 +190,7 @@ function authorbrowse(){
    echo "</table>";   
 } 
   
-function authornew(){
+function authornew($new_author_nachname, $new_author_vorname, $new_author_img, $author_url,$new_author_email, $new_author_text, $new_author_name, $new_author_groups, $new_author_passwd1, $new_author_passwd2, $new_author_active,$new_author_lang){
    global $conf, $lang;
    
    echo "<h1>".$lang["autoren_neu_anlegen"]."</h1>\n";
@@ -201,6 +205,12 @@ function authornew(){
       createsel_groups("new_author_groups","null");
       echo "</td></tr>\n";
    }
+   echo "<tr><td>".$lang["autoren_lang"]."</td><td>";
+   echo "<select name = new_author_lang>";
+   echo "<option value = de>de</option>";
+   echo "<option value = en>en</option>";
+   echo "</select>";
+   echo "</td></tr>\n";
    echo "<tr><td>".$lang["autoren_aktiv"]."</td><td><input type=radio name=new_author_active value=\"Y\" checked>Y</input><input type=radio name=new_author_active value=\"N\">N</input></td></tr>\n";
    echo "<tr><td>".$lang["autoren_nachname"]."</td><td><input name=new_author_nachname size=30 maxlength=128></td></tr>\n";
    echo "<tr><td>".$lang["autoren_vorname"]."</td><td><input name=new_author_vorname size=30 maxlength=128></td></tr>\n";
@@ -226,6 +236,12 @@ function authoredit($edit_id){
       echo "<tr><td>".$lang["autoren_name"]."</td><td><input name=edit_author_name value=\"" . $row->author_name . "\"></td></tr>\n";
       echo "<tr><td>".$lang["autoren_gruppe"]."</td><td>\n";
       createsel_groups("edit_author_groups",$row->author_groups);
+      echo "</td></tr>\n";
+      echo "<tr><td>".$lang["autoren_lang"]."</td><td>";
+      echo "<select name = edit_author_lang>";
+      if ($row->author_lang=="de"){echo "<option value = de selected>de</option>";}else{echo "<option value = de>de</option>";}
+      if ($row->author_lang=="en"){echo "<option value = en selected>en</option>";}else{echo "<option value = en>en</option>";}
+      echo "</select>";
       echo "</td></tr>\n";
       if ($row->author_name != $conf["author_name"]){
          echo "<tr><td>".$lang["autoren_aktiv"]."</td><td>";

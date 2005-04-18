@@ -40,14 +40,14 @@ if( !$included["config.inc"] )
          $conf["home_img"]      = $row->home_img_id;
          $conf["home_page"]     = $row->home_page;
          $conf["home_page_typ"] = $row->home_page_typ;  
-         $conf["home_tpl"]      = $row->home_tpl;  
          $conf["home_frame"]      = $row->home_frame;
          $conf["home_left_bar"]      = $row->home_left_bar;                  
          $conf["home_right_bar"]      = $row->home_right_bar;                  
          $conf["home_top_bar"]      = $row->home_top_bar;                  
          $conf["home_foo_bar"]      = $row->home_foo_bar;                  
          $conf["home_404"]      = $row->home_404;
-         $conf["home_style"]    = $row->style;
+         $conf["home_style"]    = $row->home_style;
+         $conf["home_tpl"]    = $row->home_tpl;
    	   }
 	   mysql_free_result($result);
 	   }

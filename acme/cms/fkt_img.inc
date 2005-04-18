@@ -1,6 +1,8 @@
 <?php
 
 function getimage($picid){
+   global $conf, $lang;
+   	
    if ( $picid ) {
       $getpic = "Select img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid."'";
       dbconnect();

@@ -66,7 +66,7 @@ if ($logged_in == 1) {
 </style>
 <script language="JavaScript" type="text/javascript" src="richtext.js"></script>
 </head>
-<body>
+<body onLoad = "self.name = 'AdminWindow';">
 <?php
 echo "<div id=\"menu\" style=\"position:absolute; left:0px; top:0px;\">";
 echo "<table>\n";
@@ -118,7 +118,7 @@ echo "<b>Date:</b><br>" . date("d.m.Y.") . "<br><br>";
 echo "<b>Time:</b><br>" . date("H:i") ."</td></tr>\n";
 echo "</table>\n</div>";
 echo "<div id=\"main\">\n";
-echo "<a href =\"".$conf["indexbase"]."/link.php\" target=\"new\">links</a>";
+echo "<a href =\"".$conf["cmsbase"]."/link.php\" target=\"new\">links</a>";
 // echo "<h1 class="error">Administrationsbereich tempor&auml;r nicht verf&uuml;gbar<br>Bitte keine &Auml;nderungen durchf&uuml;hren!!!</h1><br>infos unter: icq 142499232<br>email: innomine@gmx.net<br>";
 
 // menu actions

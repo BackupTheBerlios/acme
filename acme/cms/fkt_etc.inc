@@ -60,6 +60,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[page=&quot;","[page=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
   $contblock = eregi_replace("\[page=\"([^\"]+)\"]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // pagelink ohne ""
+  $contblock = eregi_replace("\[page=([0-9]+)\]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // artikellink
   $contblock = eregi_replace("\[artikel=&quot;","[artikel=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);

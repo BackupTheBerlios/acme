@@ -55,6 +55,7 @@ function messages_edit($status, $edit_messages_id, $edit_messages_topic, $edit_m
 
    $result = dbquery("select * from ".$conf["db_namespace"]."messages where id=$edit_messages_id");
    if ($result)  {
+   	  dbquery("update ".$conf["db_namespace"]."messages set new_m='N' where id=$edit_messages_id");
       $messages = mysql_fetch_object($result);
       echo "<h1>".$lang["messages_bearbeiten"]."</h1>".
            "<form action=\"" . $conf["admp"] . "&section=messages&status=".$status."&action=messages_update&messages_id=" . $messages->id . "\"  method=POST>".
@@ -195,7 +196,11 @@ function messages_browse($status) {
    if ($status == "N"){
    while ($row = mysql_fetch_object($nresult)) {
       echo "<tr>";
-      echo "<td>". $row->topic ."</td>";
+      if ($row->new_m == 'N') {
+         echo "<td>". $row->topic ."</td>";
+      } else {
+      	 echo "<td><b>". $row->topic ."</b></td>";
+      }   
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->fuser) ."</td>";
       echo "<td>";
@@ -234,7 +239,11 @@ function messages_browse($status) {
    if ($status == "S"){   	
    while ($row = mysql_fetch_object($sresult)) {
       echo "<tr>";
-      echo "<td>". $row->topic ."</td>";
+      if ($row->new_m == 'N') {
+         echo "<td>". $row->topic ."</td>";
+      } else {
+      	 echo "<td><b>". $row->topic ."</b></td>";
+      }  
       echo "<td>". mydate2datetime($row->created) ."</td>";
       echo "<td>". getauthorbyid($row->tuser) ."</td>";
       echo "<td>";

@@ -265,7 +265,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
 
    echo "<h1>" . $lang["artikel_neu"]. "</h1>\n";
    if ($error == 1){echo "<p>" . $errortext . "</p>\n";}
-   echo "<form action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
+   echo "<form name = artikel_new action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
         "<script language=\"JavaScript\" type=\"text/javascript\">\n".
         "<!--\n".
         "function submitForm() {\n".
@@ -300,6 +300,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "writeRichText('new_artikel_short_text', '" . $new_artikel_short_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_new&field=new_artikel_short_text');\">links</a>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_langtext"] . "</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
@@ -308,6 +309,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_new&field=new_artikel_long_text');\">links</a>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"add\" value=\"" . $lang["artikel_anlegen"] . "\"></td></tr>\n";
    echo "</table>\n";
@@ -345,7 +347,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    if ($error == 1){ 
    	  echo "<p>" . $errortext . "</p>\n";
    }
-   echo "<form action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
+   echo "<form name = artikel_edit action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
         "<script language=\"JavaScript\" type=\"text/javascript\">\n".
         "<!--\nfunction submitForm() {\n".
         "updateRTE('edit_artikel_short_text');\n".
@@ -392,6 +394,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "writeRichText('edit_artikel_short_text', '" . $edit_artikel_short_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=edit_artikel_short_text');\">links</a>\n";
    echo "</td></tr>";
    $seite=0;     
    foreach ($edit_artikel_long_text as $long_text)  {
@@ -403,6 +406,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "writeRichText('edit_artikel_long_text[]', '" . $long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=edit_artikel_long_text');\">links</a>\n";
    echo "</td></tr>\n";
    }
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
@@ -412,6 +416,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
    echo "//-->\n";
    echo "</script>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=new_artikel_long_text');\">links</a>\n";
    echo "</td></tr>\n".
         "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>\n".
         "</table>\n".

@@ -10,7 +10,7 @@ if ($section == "logout") {
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
 
-   $query = "SELECT author_id,author_active,author_name,author_groups FROM ".$conf["db_namespace"]."author WHERE author_passwd = '" . $_POST['password'] . "' AND author_name = '" . $_POST['username'] . "';";
+   $query = "SELECT * FROM ".$conf["db_namespace"]."author WHERE author_passwd = '" . $_POST['password'] . "' AND author_name = '" . $_POST['username'] . "';";
    $result = dbquery($query) or die("Couldn't query the database.". mysql_error());   
    if ( mysql_num_rows($result) > 0 ) {
       $row = mysql_fetch_array($result);
@@ -19,6 +19,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
       $conf["author_active"]   = $row["author_active"];      
       $conf["author_groups"]   = $row["author_groups"];
       $conf["author_login"]    = $row["author_login"];
+      $conf["lang"]            = $row["author_lang"];
       if ($conf["author_active"]=="Y"){
          $logged_in = 1;
          $_SESSION['username'] = $_POST['uname'];
@@ -31,7 +32,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
    else {displayLogin("nf");}
 }
 elseif (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-   $query = "SELECT author_id,author_active,author_name,author_groups FROM ".$conf["db_namespace"]."author WHERE author_passwd = '" . $_SESSION['password'] . "' AND author_name = '" . $_SESSION['username'] . "';";
+   $query = "SELECT * FROM ".$conf["db_namespace"]."author WHERE author_passwd = '" . $_SESSION['password'] . "' AND author_name = '" . $_SESSION['username'] . "';";
    $result = dbquery($query) or die("Couldn't query the database.". mysql_error());   
    if ( mysql_num_rows($result) > 0 ) {
       $row = mysql_fetch_array($result);
@@ -40,6 +41,7 @@ elseif (isset($_SESSION['username']) && isset($_SESSION['password'])) {
       $conf["author_active"]   = $row["author_active"];      
       $conf["author_groups"]   = $row["author_groups"];
       $conf["author_login"]    = $row["author_login"];
+      $conf["lang"]            = $row["author_lang"];
       if ($conf["author_active"]=="Y"){
          $logged_in = 1;
       } 

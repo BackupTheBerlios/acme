@@ -2,8 +2,8 @@
 
 include($conf["admbase"] . "/lang/page." . $conf["lang"] . ".inc");
 
-switch($action)
-{
+switch($action) {
+	
    case "edit":
       pagedit($id);
       break;
@@ -151,7 +151,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    if ($new_page_long_text_typ=="")$new_page_long_text_typ = "B";
 
    echo "<h1>".$lang["page_neu"]."</h1>";
-   echo "<form action=\"" . $conf["admp"] . "&section=page&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+   echo "<form name = \"page_new\" id = \"page_new\" action=\"" . $conf["admp"] . "&section=page&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
    echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
    echo "<tr><td colspan=3>".$lang["page_name"]."</td><td>".$lang["page_parent"]."</td><td>".$lang["page_childs"]."</td></tr>";
    echo "<tr>";
@@ -209,13 +209,17 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "</td>";
    echo "</tr>";
    echo "<tr><td colspan=5>".$lang["page_kurztext"]."</td></tr>";
-   echo "<tr><td colspan=5><textarea name=new_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars(stripslashes($new_page_short_text)) . "</textarea></td></tr>";
-   echo "<tr><td colspan=5>&nbsp;</td></tr>";
-   echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>";
-   echo "<tr><td colspan=5><textarea name=new_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea></td></tr>";
-   echo "<tr><td colspan=3>&nbsp;</td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>";
-   echo "</table>";
-   echo "</form>";
+   echo "<tr><td colspan=5><textarea name=new_page_short_text id=new_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars(stripslashes($new_page_short_text)) . "</textarea>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=page_new&field=new_page_short_text');\">links</a>\n";
+   echo "</td></tr>";
+   echo "<tr><td colspan=5>&nbsp;</td></tr>\n";
+   echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>\n";
+   echo "<tr><td colspan=5><textarea name=new_page_long_text id=new_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea>\n";
+   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=page_new&field=new_page_short_text');\">links</a>\n";
+   echo "</td></tr>\n";
+   echo "<tr><td colspan=3>&nbsp;</td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>\n";
+   echo "</table>\n";
+   echo "</form>\n";
 }
 function pagedit($id){
    global $conf, $lang;
@@ -223,7 +227,7 @@ function pagedit($id){
    if ($result) {
       $row = mysql_fetch_array($result);
       echo "<h1>".$lang["page_bearbeiten"]."</h1>";
-      echo "<form action=\"" . $conf["admp"] . "&section=page&action=update\" ENCTYPE=\"multipart/form-data\" method=POST>";
+      echo "<form name = \"page_edit\" id = \"page_edit\" action=\"" . $conf["admp"] . "&section=page&action=update\" ENCTYPE=\"multipart/form-data\" method=POST>";
       echo "<input type=hidden name=edit_page_id value=\"" . $row["page_id"] . "\">";
       echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
       echo "<tr><td colspan = 3>".$lang["page_name"]."</td><td>".$lang["page_parent"]."</td><td>".$lang["page_childs"]."</td></tr>";
@@ -279,11 +283,15 @@ function pagedit($id){
       echo "<tr><td colspan=4><input name=edit_page_headline size=70 maxlength=127 value = \"" . htmlspecialchars($row["page_headline"]) . "\"></td>\n";
       echo "<td colspan = 1>";
       createsel_ltt("edit_page_long_text_typ",$row["page_long_text_typ"]);
-      echo "</td></tr>";      
+      echo "</td></tr>\n";      
       echo "<tr><td colspan=5>".$lang["page_kurztext"]."</td></tr>\n";
-      echo "<tr><td colspan=5><textarea name=edit_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars($row["page_short_text"]) . "</textarea></td></tr>\n";
+      echo "<tr><td colspan=5><textarea name=edit_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars($row["page_short_text"]) . "</textarea>\n";
+      echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=page_edit&field=edit_page_short_text');\">links</a>\n";
+      echo "</td></tr>\n";
       echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>\n";
-      echo "<tr><td colspan=5><textarea name=edit_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row["page_long_text"]) . "</textarea></td></tr>\n";
+      echo "<tr><td colspan=5><textarea name=edit_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row["page_long_text"]) . "</textarea>\n";
+      echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=page_edit&field=edit_page_short_text');\">links</a>\n";
+      echo "</td></tr>\n";
       echo "<tr><td colspan=3 class=\"button_td_submit\"></td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>\n";
       echo "</table>\n";
       echo "</form>\n";

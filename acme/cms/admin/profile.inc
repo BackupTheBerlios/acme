@@ -15,12 +15,12 @@ switch($action)
       break;
 
    case "new":
-      profilenew($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar);
+      profilenew($new_home_name, $new_home_img_id, $new_home_page, $new_home_404,$new_home_tpl, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar);
 
       break;
 
    case "add":
-      $result = profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar);
+      $result = profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_tpl,$new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar);
       if ($result){
          echo $lang["profile_insert_erfolgreich"];
          profilebrowse();
@@ -32,7 +32,7 @@ switch($action)
       break;
 
 	case "update":
-      $result = profileupdate($edit_home_id, $edit_home_name, $edit_home_img_id, $edit_home_page, $edit_home_404, $edit_home_style, $edit_home_left_bar, $edit_home_right_bar, $edit_home_top_bar, $edit_home_foo_bar);
+      $result = profileupdate($edit_home_id, $edit_home_name, $edit_home_img_id, $edit_home_page, $edit_home_404, $edit_home_tpl,$edit_home_style, $edit_home_left_bar, $edit_home_right_bar, $edit_home_top_bar, $edit_home_foo_bar);
       if ($result){echo $lang["profile_update_erfolgreich"];}
       else{echo $lang["profile_update_fehlerhaft"];}
       profilebrowse();
@@ -69,7 +69,7 @@ function profiledelete($delete_id){
    return $delete_result;
 }
    
-function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar){ 
+function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_tpl, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar){ 
    global $conf, $lang;
 
    $type_and_id    = explode("|", $new_home_page);
@@ -81,6 +81,7 @@ function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_
                 " home_page_typ   = '" . $new_home_page_typ   ."' , ".
                 " home_page   = '" . $new_home_page   ."' , ".                
                 " home_404    = '" . $new_home_404    . "' , ".
+                " home_tpl    = '" . $new_home_tpl    . "' , ".
                 " home_style  = '" . $new_home_style  . "', ".
                 " home_left_bar  = '" . $new_home_left_bar ."' , ".
                 " home_right_bar = '" . $new_home_right_bar ."' , ".
@@ -91,7 +92,7 @@ function profileadd($new_home_name, $new_home_img_id, $new_home_page, $new_home_
    return $insert_result;
 }
  
-function profileupdate($edit_id, $edit_home_name,  $edit_home_img_id, $edit_home_page, $edit_home_404, $edit_home_style, $edit_home_left_bar, $edit_home_right_bar, $edit_home_top_bar, $edit_home_foo_bar){ 
+function profileupdate($edit_id, $edit_home_name,  $edit_home_img_id, $edit_home_page, $edit_home_404, $edit_home_tpl,$edit_home_style, $edit_home_left_bar, $edit_home_right_bar, $edit_home_top_bar, $edit_home_foo_bar){ 
    global $conf, $lang;
    
    $type_and_id    = explode("|", $edit_home_page);
@@ -103,7 +104,8 @@ function profileupdate($edit_id, $edit_home_name,  $edit_home_img_id, $edit_home
                 " home_page_typ     = '" . $edit_home_page_typ ."' , ".
                 " home_page     = '" . $edit_home_page ."' , ".                
                 " home_name     = '" . $edit_home_name ."' , ".                
-                " home_404      = '" . $edit_home_404 ."' , ".
+                " home_404      = '" . $edit_home_404 ."' , ".                
+                " home_tpl      = '" . $edit_home_tpl ."' , ".
                 " home_style    = '" . $edit_home_style ."' , ".
                 " home_left_bar  = '" . $edit_home_left_bar ."' , ".
                 " home_right_bar = '" . $edit_home_right_bar ."' , ".
@@ -161,7 +163,7 @@ function profilebrowse(){
    echo "</table>";   
 } 
   
-function profilenew(){
+function profilenew($new_home_name, $new_home_img_id, $new_home_page, $new_home_404, $new_home_tpl, $new_home_style, $new_home_left_bar, $new_home_right_bar, $new_home_top_bar, $new_home_foo_bar){
    global $conf, $lang;
    
    echo "<h1>".$lang["profile_neu"]."</h1>";
@@ -169,7 +171,7 @@ function profilenew(){
    echo "<table class=\"reda_td\">";
    echo "<tr><td colspan = \"4\">".$lang["profile_name"]."</td></tr>";
    echo "<tr><td colspan = \"4\"><input name=new_home_name size=20 maxlength=128></td></tr>";
-   echo "<tr><td>".$lang["profile_start"]."</td><td>404</td><td>Logo</td></tr>";
+   echo "<tr><td>".$lang["profile_start"]."</td><td>".$lang["profile_404"]."</td><td>".$lang["profile_bild"]."</td><td>".$lang["profile_tpl"]."</td><td>".$lang["profile_style"]."</td></tr>";
    echo "<tr>";
    echo "<td>";
    createsel_startpagewtyp("new_home_page", "null", "null");
@@ -180,9 +182,18 @@ function profilenew(){
    echo "<td>";
    createsel_img("new_home_img_id", "null");
    echo "</td>";
+   echo "<td>";
+   createsel_tpl("new_home_tpl", $new_home_tpl);
+   echo "</td>";
+   echo "<td>";
+   echo "&nbsp;"; // createsel_style("new_home_style", $new_home_style);
+   echo "</td>";   
    echo "</tr>";
-   echo "<tr><td>".$lang["profile_bar_left"]."</td><td>".$lang["profile_bar_right"]."</td><td>".$lang["profile_bar_top"]."</td><td>".$lang["profile_bar_bottom"]."</td></tr>";
+   echo "<tr><td>".$lang["profile_frame"]."</td><td>".$lang["profile_bar_left"]."</td><td>".$lang["profile_bar_right"]."</td><td>".$lang["profile_bar_top"]."</td><td>".$lang["profile_bar_bottom"]."</td></tr>";
    echo "<tr>";
+   echo "<td>";
+   echo "&nbsp;";  // createsel_frame("new_home_frame", $new_page_frame);
+   echo "</td>";
    echo "<td>";
    createsel_bar("new_home_left_bar", $new_home_left_bar);
    echo "</td>";
@@ -196,7 +207,7 @@ function profilenew(){
    createsel_bar("new_home_foo_bar",  $new_home_foo_bar);
    echo "</td>";
    echo "</tr>\n";
-   echo "<tr><td colspan = \"4\"><input type=submit name=add value=".$lang["profile_speichern"]."></td></tr>";
+   echo "<tr><td colspan = \"5\"><input type=submit name=add value=".$lang["profile_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";
    echo "</table";
@@ -213,7 +224,7 @@ function profileedit($edit_id){
       echo "<table class=\"reda_td\">\n";
       echo "<tr><td colspan = \"4\">".$lang["profile_name"]."</td></tr>";
       echo "<tr><td colspan = \"4\"><input name=edit_home_name size=20 maxlength=128 value = \"" . $row->home_name . "\"></td></tr>";
-      echo "<tr><td>".$lang["profile_start"]."</td><td>404</td><td>".$lang["profile_bild"]."</td></tr>";
+      echo "<tr><td>".$lang["profile_start"]."</td><td>".$lang["profile_404"]."</td><td>".$lang["profile_bild"]."</td><td>".$lang["profile_tpl"]."</td><td>".$lang["profile_style"]."</td></tr>";
       echo "<tr>";
       echo "<td>";
       createsel_startpagewtyp("edit_home_page",$row-> home_page_typ, $row->home_page);
@@ -224,9 +235,18 @@ function profileedit($edit_id){
       echo "<td>";  
       createsel_img("edit_home_img_id",$row->home_img_id);
       echo "</td>";
+      echo "<td>";
+      createsel_tpl("edit_home_tpl", $row->home_tpl);
+      echo "</td>";
+      echo "<td>";
+      echo "&nbsp;"; // createsel_style("edit_home_style", $row->home_style);
+      echo "</td>";  
       echo "</tr>";
-      echo "<tr><td>".$lang["profile_bar_left"]."</td><td>".$lang["profile_bar_right"]."</td><td>".$lang["profile_bar_top"]."</td><td>".$lang["profile_bar_bottom"]."</td></tr>";
+      echo "<tr><td>".$lang["profile_frame"]."</td><td>".$lang["profile_bar_left"]."</td><td>".$lang["profile_bar_right"]."</td><td>".$lang["profile_bar_top"]."</td><td>".$lang["profile_bar_bottom"]."</td></tr>";
       echo "<tr>";
+      echo "<td>";
+      echo "&nbsp;";  // createsel_frame("new_home_frame", $new_page_frame);
+      echo "</td>";      
       echo "<td>";
       createsel_bar("edit_home_left_bar", $row->home_left_bar);
       echo "</td>";
@@ -240,7 +260,7 @@ function profileedit($edit_id){
       createsel_bar("edit_home_foo_bar",  $row->home_foo_bar);
       echo "</td>";
       echo "</tr>\n";
-      echo "<tr><td colspan = \"4\"><input type=submit name=my_edit_profile value=".$lang["profile_speichern"]."></td></tr>\n";
+      echo "<tr><td colspan = \"5\"><input type=submit name=my_edit_profile value=".$lang["profile_speichern"]."></td></tr>\n";
       echo "</table>";
       echo "</form>";
       mysql_free_result($result);
