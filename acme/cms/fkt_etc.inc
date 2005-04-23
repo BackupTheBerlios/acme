@@ -24,22 +24,48 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[/h5\]","</h5>",$contblock);
   $contblock = eregi_replace("\[p\]","<p>",$contblock);
   $contblock = eregi_replace("\[/p\]","</p>",$contblock);
-  $contblock = eregi_replace("\[b\]","<b>",$contblock);
+  $contblock = eregi_replace("\[l\]","<span style = \"font-weight:lighter;\">",$contblock);
+  $contblock = eregi_replace("\[/l\]","</span>",$contblock);
+  $contblock = eregi_replace("\[b\]","<span style = \"font-weight:bold;\">",$contblock);
   $contblock = eregi_replace("\[/b\]","</b>",$contblock);
-  $contblock = eregi_replace("\[i\]","<i>",$contblock);
-  $contblock = eregi_replace("\[/i\]","</i>",$contblock);
-  $contblock = eregi_replace("\[u\]","<u>",$contblock);
-  $contblock = eregi_replace("\[/u\]","</u>",$contblock);
+  $contblock = eregi_replace("\[bb\]","<span style = \"font-weight:bolder;\">",$contblock);
+  $contblock = eregi_replace("\[/bb\]","</span>",$contblock);
+  $contblock = eregi_replace("\[i\]","<style = \"font-style:italic;\">",$contblock);
+  $contblock = eregi_replace("\[/i\]","</span>",$contblock);
+  $contblock = eregi_replace("\[ul\]","<span style = \"text-decoration:underline;\">",$contblock);
+  $contblock = eregi_replace("\[/ul\]","</span>",$contblock);
+  $contblock = eregi_replace("\[lt\]","<span style = \"text-decoration:line-through;\">",$contblock);
+  $contblock = eregi_replace("\[/lt\]","</span>",$contblock);
+  $contblock = eregi_replace("\[ol\]","<span style = \"text-decoration:overline;\">",$contblock);
+  $contblock = eregi_replace("\[/ol\]","</span>",$contblock);
+  $contblock = eregi_replace("\[red\]","<span style = \"color:red;\">",$contblock);
+  $contblock = eregi_replace("\[/red\]","</span>",$contblock);
+  $contblock = eregi_replace("\[green\]","<span style = \"color:green;\">",$contblock);
+  $contblock = eregi_replace("\[/green\]","</span>",$contblock);
+  $contblock = eregi_replace("\[blue\]","<span style = \"color:blue;\">",$contblock);
+  $contblock = eregi_replace("\[/blue\]","</span>",$contblock);
+  $contblock = eregi_replace("\[gray\]","<span style = \"color:gray;\">",$contblock);
+  $contblock = eregi_replace("\[/gray\]","</span>",$contblock);
+  $contblock = eregi_replace("\[yellow\]","<span style = \"color:yellow;\">",$contblock);
+  $contblock = eregi_replace("\[/yellow\]","</span>",$contblock);
+  $contblock = eregi_replace("\[maroon\]","<span style = \"color:maroon;\">",$contblock);
+  $contblock = eregi_replace("\[/maroon\]","</span>",$contblock);
+  $contblock = eregi_replace("\[lime\]","<span style = \"color:lime;\">",$contblock);
+  $contblock = eregi_replace("\[/lime\]","</span>",$contblock);
+ 
   // images
-  while (ereg("\[imgr\]([^\[]+)\[/imgr\]", $contblock, $match)) {
-      $contblock = str_replace("[imgr]".$match[1]."[/imgr]", getimagebyname($match[1], "r", $page_tpl), $contblock);
+  /*
+  while (ereg("\[imgright\]([^\[]+)\[/img\]", $contblock, $match)) {
+      $contblock = str_replace("[imgright]".$match[1]."[/img]", getimagebyname($match[1], "r", $page_tpl), $contblock);
   }
-  while (ereg("\[imgl\]([^\[]+)\[/imgl\]", $contblock, $match)) {
-      $contblock = str_replace("[imgl]".$match[1]."[/imgl]", getimagebyname($match[1], "l", $page_tpl), $contblock);
+  while (ereg("\[imgleft\]([^\[]+)\[/img\]", $contblock, $match)) {
+      $contblock = str_replace("[imgleft]".$match[1]."[/img]", getimagebyname($match[1], "l", $page_tpl), $contblock);
   }
   while (ereg("\[img\]([^\[]+)\[/img\]", $contblock, $match)) {
       $contblock = str_replace("[img]".$match[1]."[/img]", getimagebyname($match[1], "c", $page_tpl), $contblock);
   }
+  */
+  
   //$contblock = eregi_replace("\[img\]([^\[]+)\[/img\]", "<img src = \"cms/bilder/\\1\" alt = \"blank\">", $contblock);
   // mail's
   $contblock = eregi_replace("\[mail=&quot;","[mail=\"",$contblock);

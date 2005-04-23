@@ -76,7 +76,7 @@ function termin_data_edit($termin_data_id){
        if ($result)  {
           $termin_data = mysql_fetch_object($result);
           echo "<h1>".$lang["termin_eintrag_bearbeiten"]."</h1>".
-               "<form action=\"" . $conf["admp"] . "&section=termine&action=termin_data_update&edit_termin_data_id=" . $termin_data->termin_data_id . "\"  method=POST>".
+               "<form name = edit_termin_data action=\"" . $conf["admp"] . "&section=termine&action=termin_data_update&edit_termin_data_id=" . $termin_data->termin_data_id . "\"  method=POST>".
                "<table class=\"reda_td\">".          
                "<tr><td>".$lang["termin_eintrag_titel"]."</td></tr>".
                "<tr><td><input name=edit_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_headline) . "\"></td></tr>".
@@ -104,7 +104,9 @@ function termin_data_edit($termin_data_id){
                "<tr><td>".$lang["termin_eintrag_url"]."</td></tr>".
                "<tr><td><input name=edit_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_URL) . "\"></td></tr>".
                "<tr><td>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
-               "<tr><td><textarea name=\"edit_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($termin_data->termin_data_content) . "</textarea></td>".
+               "<tr><td>";
+           write_bbc("edit_termin_data", "edit_termin_data_content");
+           echo "<textarea name=\"edit_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($termin_data->termin_data_content) . "</textarea></td>".
                "<tr><td><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
                "</table>".
                "</form>";
@@ -136,7 +138,7 @@ function termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin
    global $conf, $lang;
 
    echo "<h1>".$lang["termin_eintrag_anlegen"]."</h1>".
-        "<form action=\"" .  $conf["admp"] . "&section=termine&action=termin_data_insert\"  method=POST>".
+        "<form name = new_termin_data action=\"" .  $conf["admp"] . "&section=termine&action=termin_data_insert\"  method=POST>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["termin_eintrag_titel"]."<input type=\"hidden\" name=\"termin_id\" value=\"" . $termin_id . "\"></td></tr>".
         "<tr><td><input name=new_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_headline)) . "\"></td></tr>".
@@ -164,7 +166,9 @@ function termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin
         "<tr><td>".$lang["termin_eintrag_url"]."</td></tr>".
         "<tr><td><input name=new_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_URL)) . "\"></td></tr>".
         "<tr><td>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
-        "<tr><td><textarea name=\"new_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_termin_data_content)) . "</textarea></td>".
+        "<tr><td>";
+   write_bbc("new_termin_data", "new_termin_data_content");     
+   echo "<textarea name=\"new_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_termin_data_content)) . "</textarea></td>".
         "<tr><td><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
         "</table>".
         "</form>";
@@ -217,7 +221,7 @@ function termin_edit($edit_id) {
    if ($termin_result) {
       $termin = mysql_fetch_object($termin_result);
       echo "<h1>".$lang["termin_bearbeiten"]."</h1>\n";
-      echo "<form action=\"" . $conf["admp"] . "&section=termine&action=termin_update&edit_termin_id=" . $termin->termin_id . "\" method=\"POST\">\n";
+      echo "<form naem = edit_termin action=\"" . $conf["admp"] . "&section=termine&action=termin_update&edit_termin_id=" . $termin->termin_id . "\" method=\"POST\">\n";
       echo "<table class=\"reda_td\">\n";
       echo "<tr colspan = \"4\"><td>".$lang["termin_name"]."</td></tr>";
       echo "<tr>";
@@ -258,7 +262,9 @@ function termin_edit($edit_id) {
       echo "<tr colspan = \"4\"><td>".$lang["termin_titel"]."</td></tr>\n";         
       echo "<tr><td colspan = \"4\"><input name=\"edit_termin_titel\" size=\"30\" maxlength=\"200\" value=\"" . htmlspecialchars($termin->termin_titel) . "\"></td>";
       echo "<tr><td colspan = \"4\">".$lang["termin_beschreibung"]."</td></tr>\n";               
-      echo "<tr><td colspan = \"2\"><textarea name=\"edit_termin_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($termin->termin_text) . "</textarea></td></tr>\n";
+      echo "<tr><td colspan = \"2\">";
+      write_bbc("edit_termin", "edit_termin_text");
+      echo "<textarea name=\"edit_termin_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($termin->termin_text) . "</textarea></td></tr>\n";
      echo "<tr><td colspan=\"4\"><input type=submit name=add value=".$lang["termin_speichern"]."></td></tr>\n";
      echo "</table>\n";
      echo "</form>\n";
@@ -294,7 +300,7 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    global $conf, $lang;
    
    echo "<h1>".$lang["termin_anlegen"]."</h1>";
-   echo "<form action=\"" . $conf["admp"] . "&section=termine&action=termin_insert\" method=\"POST\">";
+   echo "<form name = new_termin action=\"" . $conf["admp"] . "&section=termine&action=termin_insert\" method=\"POST\">";
    echo "<table class=\"reda_td\">";
    echo "<tr colspan = \"3\"><td>".$lang["termin_name"]."</td><td>".$lang["termin_parent"]."</td></tr>";
    echo "<tr>";
@@ -306,6 +312,7 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    echo "<tr><td>".$lang["termin_tpl"]."</td><td>".$lang["termin_logo_gross"]."</td><td>".$lang["termin_logo_klein"]."</td><td>".$lang["termin_logo_klein_inactive"]."</td></tr>";
    echo "<tr>";
    echo "<td>";
+   if ($new_termin_tpl=="") {$new_termin_tpl = $conf["home_tpl"];}
    createsel_tpl("new_termin_tpl",  $new_termin_tpl);
    echo "</td>";
    echo "<td colspan=1>";
@@ -336,7 +343,9 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    echo "<tr><td colspan = \"4\">".$lang["termin_titel"]."</td></tr>";   
    echo "<tr><td colspan = \"4\"><input name=\"new_termin_titel\" size=\"30\" maxlength=\"200\" value=\"" . htmlspecialchars(stripslashes($new_termin_titel)) . "\"></td></tr>";
    echo "<tr><td colspan = \"4\">".$lang["termin_beschreibung"]."</td></tr>";   
-   echo "<tr><td colspan = \"4\"><textarea name=\"new_termin_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_termin_text)) . "</textarea></td></tr>";      
+   echo "<tr><td colspan = \"4\">";
+   write_bbc("new_termin", "new_termin_text");
+   echo "<textarea name=\"new_termin_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_termin_text)) . "</textarea></td></tr>";      
    echo "<tr><td colspan = \"4\"><input type=submit name=add value=".$lang["termin_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";

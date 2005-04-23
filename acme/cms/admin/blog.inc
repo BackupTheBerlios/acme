@@ -95,7 +95,7 @@ function blog_data_edit($edit_blog_data_id, $edit_blog_data_headline, $edit_blog
        if ($result)  {
           $blog_data = mysql_fetch_object($result);
           echo "<h1>".$lang["blog_eintrag_bearbeiten"]."</h1>";
-          echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_data_update&blog_data_id=" . $blog_data->blog_data_id . "\"  method=POST>";
+          echo "<form name = blog_data_edit action=\"" . $conf["admp"] . "&section=blog&action=blog_data_update&blog_data_id=" . $blog_data->blog_data_id . "\"  method=POST>";
           echo "<table class=\"reda_td\">";          
           echo "<tr><td>".$lang["blog_eintrag_titel"]."</td></tr>";
           echo "<tr><td><input name=edit_blog_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($blog_data->blog_data_headline) . "\"></td></tr>";
@@ -104,7 +104,9 @@ function blog_data_edit($edit_blog_data_id, $edit_blog_data_headline, $edit_blog
           createsel_blogcats("edit_blog_cat_id", $blog_data->blog_cat_id, $blog_data->blog_id);   
           echo "</td></tr>";
           echo "<tr><td>".$lang["blog_eintrag_inhalt"]."</td></tr>";
-          echo "<tr><td><textarea name=\"edit_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_data->blog_data_content) . "</textarea></td>";
+          echo "<tr><td>";
+          write_bbc("blog_data_edit", "edit_blog_data_content");
+          echo "<textarea name=\"edit_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_data->blog_data_content) . "</textarea></td>";
           echo "<tr><td><input type=submit name=add value=".$lang["blog_eintrag_speichern"]."></td></tr>";
           echo "</table>";
           echo "</form>";
@@ -129,7 +131,7 @@ function blog_data_new($blog_id, $blog_data_headline, $blog_data_content) {
    global $conf, $lang;
 
    echo "<h1>".$lang["blog_eintrag_neu"]."</h1>";
-   echo "<form action=\"" .  $conf["admp"] . "&section=blog&action=blog_data_insert\"  method=POST>";
+   echo "<form name = blog_data_new action=\"" .  $conf["admp"] . "&section=blog&action=blog_data_insert\"  method=POST>";
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["blog_eintrag_titel"]."<input type=\"hidden\" name=\"blog_id\" value=\"" . $blog_id . "\"></td></tr>";
    echo "<tr><td><input name=new_blog_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($blog_data_headline)) . "\"></td></tr>";
@@ -138,7 +140,9 @@ function blog_data_new($blog_id, $blog_data_headline, $blog_data_content) {
    createsel_blogcats("new_blog_cat_id", $new_blog_cat_id, $blog_id);   
    echo "</td></tr>";
    echo "<tr><td>".$lang["blog_eintrag_inhalt"]."</td></tr>";
-   echo "<tr><td><textarea name=\"new_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($blog_data_content)) . "</textarea></td>";
+   echo "<tr><td>";
+   write_bbc("blog_data_new", "new_blog_data_content");
+   echo "<textarea name=\"new_blog_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($blog_data_content)) . "</textarea></td>";
    echo "<tr><td><input type=submit name=add value=".$lang["blog_eintrag_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";
@@ -178,12 +182,14 @@ function blog_cat_edit($edit_blog_cat_id, $edit_blog_cat_name, $edit_blog_cat_te
    if ($result)  {
       $blog_cat = mysql_fetch_object($result);
       echo "<h1>".$lang["blog_kategorie_bearbeiten"]."</h1>";
-      echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_cat_update&blog_cat_id=" . $blog_cat->blog_cat_id . "\"  method=POST>";
+      echo "<form name = edit_blog_cat action=\"" . $conf["admp"] . "&section=blog&action=blog_cat_update&blog_cat_id=" . $blog_cat->blog_cat_id . "\"  method=POST>";
       echo "<table class=\"reda_td\">";          
       echo "<tr><td>".$lang["blog_kategorie_name"]."</td></tr>";
       echo "<tr><td><input name=edit_blog_cat_name size=70 maxlength=128 value=\"" . htmlspecialchars($blog_cat->blog_cat_name) . "\"></td></tr>";
       echo "<tr><td>".$lang["blog_kategorie_text"] . "</td></tr>";
-      echo "<tr><td><textarea name=\"edit_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_cat->blog_cat_text) . "</textarea></td>";
+      echo "<tr><td>";
+      write_bbc("edit_blog_cat", "edit_blog_cat_text");
+      echo "<textarea name=\"edit_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($blog_cat->blog_cat_text) . "</textarea></td>";
       echo "<tr><td><input type=submit name=add value=".$lang["blog_kategorie_speichern"]."></td></tr>";
       echo "</table>";
       echo "</form>";
@@ -207,12 +213,14 @@ function blog_cat_new($blog_id, $blog_cat_name, $blog_cat_text) {
    global $conf, $lang;
 
    echo "<h1>".$lang["blog_kategorie_neu"]."</h1>";
-   echo "<form action=\"" .  $conf["admp"] . "&section=blog&action=blog_cat_insert\"  method=POST>";
+   echo "<form name = new_blog_cat action=\"" .  $conf["admp"] . "&section=blog&action=blog_cat_insert\"  method=POST>";
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["blog_kategorie_name"]."<input type=\"hidden\" name=\"blog_id\" value=\"" . $blog_id . "\"></td></tr>";
    echo "<tr><td><input name=new_blog_cat_name size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($blog_cat_name)) . "\"></td></tr>";
    echo "<tr><td>".$lang["blog_kategorie_text"]."</td></tr>";
-   echo "<tr><td><textarea name=\"new_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($blog_cat_text)) . "</textarea></td>";
+   echo "<tr><td>";
+   write_bbc("new_blog_cat", "new_blog_cat_text");
+   echo "<textarea name=\"new_blog_cat_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($blog_cat_text)) . "</textarea></td>";
    echo "<tr><td><input type=submit name=add value=".$lang["blog_kategorie_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";
@@ -411,12 +419,13 @@ function blog_new() {
    global $conf, $lang;
    
    echo "<h1>".$lang["blog_neu"]."</h1>";
-   echo "<form action=\"" . $conf["admp"] . "&section=blog&action=blog_insert\" method=\"POST\">";
+   echo "<form name = new_blog action=\"" . $conf["admp"] . "&section=blog&action=blog_insert\" method=\"POST\">";
    echo "<table class=\"reda_td\">";
    echo "<tr><td colspan = 4>".$lang["blog_name"]."</td></tr>";
    echo "<tr><td colspan = 4><input name=\"new_blog_name\" size=\"30\" maxlength=\"128\" value=\"" . $new_blog_name . "\"></td></tr>";
    echo "<tr><td>".$lang["blog_tpl"]."</td><td>".$lang["blog_logo_gross"]."</td><td>".$lang["blog_logo_klein"]."</td><td>".$lang["blog_logo_klein_inactive"]."</td></tr>";
    echo "<td>";
+   if ($new_blog_tpl=="") {$new_blog_tpl = $conf["home_tpl"];}
    createsel_tpl("new_blog_tpl",  $new_blog_tpl);
    echo "</td>";
    echo "<td colspan=1>";
@@ -447,7 +456,9 @@ function blog_new() {
    echo "<tr><td colspan = \"4\">".$lang["blog_name"]."</td></tr>";   
    echo "<tr><td colspan = \"4\"><input name=\"new_blog_titel\" size=\"30\" maxlength=\"200\" value=\"" . htmlspecialchars(stripslashes($new_blog_titel)) . "\"></td></tr>";
    echo "<tr><td colspan = \"4\">".$lang["blog_inhalt"]."</td></tr>";   
-   echo "<tr><td colspan = \"4\"><textarea name=\"new_blog_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_blog_text)) . "</textarea></td></tr>";      
+   echo "<tr><td colspan = \"4\">";
+   write_bbc("new_blog", "new_blog_text");
+   echo "<textarea name=\"new_blog_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_blog_text)) . "</textarea></td></tr>";      
    echo "<tr>";            
    echo "<tr><td colspan = \"4\"><input type=submit name=add value=".$lang["blog_speichern"]."></td></tr>";
    echo "</table>";

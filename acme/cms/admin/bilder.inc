@@ -165,6 +165,7 @@ function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
         "<tr><td>".$lang["bilder_typ_tpl"]."</td><td>".$lang["bilder_typ_logo_gross"]."</td><td>".$lang["bilder_typ_logo_klein"]."</td><td>".$lang["bilder_typ_logo_klein_inactive"]."</td><td>&nbsp;</td></tr>\n".
         "<tr>".
         "<td>";
+   if ($new_img_typ_tpl=="") {$new_img_typ_tpl = $conf["home_tpl"];}     
    createsel_tpl("new_img_typ_tpl",  $new_img_typ_tpl);
    echo "</td>".
         "<td>";

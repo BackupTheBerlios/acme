@@ -66,21 +66,20 @@ function download_add($new_download_name, $tmpname, $realname, $realsize, $new_d
 			copy ($tmpname, $conf["downloads"] . $realname);
 			echo $lang["downloads_upload_copy_end"]."<br>";
 			chmod ($conf["downloads"] . $realname, 0777);
-         unlink ($tmpname);
+            unlink ($tmpname);
             
-         $Statement = "INSERT INTO ".$conf["db_namespace"]."download SET".
+            $Statement = "INSERT INTO ".$conf["db_namespace"]."download SET".
                       " download_name = '". $new_download_name . "',".
                       " download_file  = '". $realname . "', ".
                       " download_text = '". $new_download_text . "',".
                       " download_typ  = '". joingrouparray($new_download_typ) . "'";
                       
-         $my_result = dbquery($Statement);
+            $my_result = dbquery($Statement);
 
-         if ($my_result) {echo $lang["downloads_insert_fehlerhaft"];}
-         else            {echo $lang["downloads_insert_erfolgreich"];}
+            if ($my_result) {echo $lang["downloads_insert_fehlerhaft"];}
+            else            {echo $lang["downloads_insert_erfolgreich"];}
 
-		}
-		else {
+		} else {
 			echo $lang["downloads_upload_copy_attack"] . $realname;
 		}
 	}
@@ -196,7 +195,7 @@ function download_new($new_download_name, $new_download_text, $new_download_typ)
    global $conf, $lang;
 
    echo "<h1>".$lang["downloads_neu"]."</h1>";
-   echo "<form action=\"" . $conf["admp"] . "&section=downloads&action=add_download\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+   echo "<form name = new_download action=\"" . $conf["admp"] . "&section=downloads&action=add_download\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
    echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
    echo "<tr><td colspan = \"4\">".$lang["downloads_name"]."</td></tr>";
    echo "<tr><td colspan = \"4\"><input name=new_download_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_download_name)) . "\"></td></tr>";
@@ -205,7 +204,9 @@ function download_new($new_download_name, $new_download_text, $new_download_typ)
    echo "<tr><td colspan = \"4\">&nbsp;</td></tr>";
    echo "<tr><td colspan = \"3\">".$lang["downloads_beschreibung"]."</td><td>".$lang["downloads_typen"]."</td></tr>";
    echo "<tr>";
-   echo "<td colspan=\"3\"><textarea name=new_download_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_download_text)) . "</textarea></td>";
+   echo "<td colspan=\"3\">";
+   write_bbc("new_download", "new_download_text");
+   echo "<textarea name=new_download_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_download_text)) . "</textarea></td>";
    echo "<td>";
    createsel_downloadtyps("new_download_typ", $new_download_typ);
    echo "</td>";   
@@ -219,7 +220,7 @@ function download_typ_new($new_download_typ_name, $new_download_typ_text, $new_d
    global $conf, $lang;
 
    echo "<h1>".$lang["downloads_neu"]."</h1>";
-   echo "<form action=\"" . $conf["admp"] . "&section=downloads&action=add_download_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+   echo "<form name = new_download_typ action=\"" . $conf["admp"] . "&section=downloads&action=add_download_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
    echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
    echo "<tr><td colspan = 3>".$lang["downloads_name"]."</td><td>".$lang["downloads_typ_parent"]."</td></tr>";
    echo "<tr><td colspan=\"3\"><input name=new_download_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_download_typ_name)) . "\"></td>";
@@ -229,7 +230,8 @@ function download_typ_new($new_download_typ_name, $new_download_typ_text, $new_d
    echo "</tr>";
    echo "<tr><td>".$lang["downloads_typ_tpl"]."</td><td>".$lang["downloads_typ_logo_gross"]."</td><td>".$lang["downloads_typ_logo_klein"]."</td><td>".$lang["downloads_typ_logo_klein_inactive"]."</td></tr>\n";   
    echo "<tr>";
-   echo "<td";
+   echo "<td>";
+   if ($new_download_typ_tpl=="") {$new_download_typ_tpl = $conf["home_tpl"];}
    createsel_tpl("new_download_typ_tpl",  $new_download_typ_tpl);
    echo "</td>";
    echo "<td>";
@@ -259,7 +261,9 @@ function download_typ_new($new_download_typ_name, $new_download_typ_text, $new_d
    echo "</tr>\n";
    echo "<tr><td colspan=\"4\">".$lang["downloads_beschreibung"]."</td></tr>";
    echo "<tr>";
-   echo "<td colspan=\"4\"><textarea name=new_download_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_download_typ_text)) . "</textarea></td>";
+   echo "<td colspan=\"4\">";
+   write_bbc("new_download_typ", "new_download_typ_text");
+   echo "<textarea name=new_download_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_download_typ_text)) . "</textarea></td>";
    echo "</tr>";
    echo "<tr><td colspan=\"4\"><input type=submit name=edit_page value=".$lang["downloads_typ_speichern"]."></td></tr>";
    echo "</table>";
@@ -273,7 +277,7 @@ function download_edit($id){
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["downloads_bearbeiten"]."</h1>";
-      echo "<form action=\"" . $conf["admp"] . "&section=downloads&action=update_download\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+      echo "<form name = edit_download action=\"" . $conf["admp"] . "&section=downloads&action=update_download\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_download_id value=\"" . $row->download_id . "\">";      
       echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
       echo "<tr><td colspan = 4>".$lang["downloads_name"]."</td></tr>";
@@ -282,7 +286,9 @@ function download_edit($id){
       echo "<tr><td colspan=\"4\">&nbsp;</td></tr>";
       echo "<tr><td colspan=\"3\">".$lang["downloads_beschreibung"]."</td><td>Typen</td></tr>";
       echo "<tr>";
-      echo "<td colspan=\"3\"><textarea name=edit_download_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->download_text) . "</textarea></td>";
+      echo "<td colspan=\"3\">";
+      write_bbc("edit_download", "edit_download_text");
+      echo "<textarea name=edit_download_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->download_text) . "</textarea></td>";
       echo "<td>";
       createsel_downloadtyps("edit_download_typ",$row->download_typ);
       echo "</td>";   
@@ -300,7 +306,7 @@ function download_typ_edit($id){
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["downloads_typ_bearbeiten"]."</h1>";
-      echo "<form action=\"" . $conf["admp"] . "&section=downloads&action=update_download_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+      echo "<form name = edit_download_typ action=\"" . $conf["admp"] . "&section=downloads&action=update_download_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_download_typ_id value=\"" . $row->download_typ_id . "\">";
       echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
       echo "<tr><td colspan=\"3\">".$lang["downloads_typ_name"]."</td><td>".$lang["downloads_typ_parent"]."</td></tr>";
@@ -339,7 +345,9 @@ function download_typ_edit($id){
       echo "</tr>\n";
       echo "<tr><td colspan=\"4\">".$lang["downloads_typ_text"]."</td></tr>";
       echo "<tr>";
-      echo "<td colspan=\"4\"><textarea name=edit_download_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->download_typ_text) . "</textarea></td>";
+      echo "<td colspan=\"4\">",
+      write_bbc("edit_download_typ", "edit_download_typ_text");
+      echo "<textarea name=edit_download_typ_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->download_typ_text) . "</textarea></td>";
       echo "</tr>";
       echo "<tr><td colspan=\"4\"><input type=submit name=edit_page value=".$lang["downloads_typ_speichern"]."></td></tr>";
       echo "</table>";

@@ -78,12 +78,14 @@ function glossar_edit($edit_glossar_id, $edit_glossar_titel, $edit_glossar_text,
    if ($result)  {
       $glossar = mysql_fetch_object($result);
       echo "<h1>".$lang["glossar_bearbeiten"]."</h1>".
-           "<form action=\"" . $conf["admp"] . "&section=glossar&action=glossar_update&glossar_id=" . $glossar->glossar_id . "\"  method=POST>".
+           "<form name = edit_glossar action=\"" . $conf["admp"] . "&section=glossar&action=glossar_update&glossar_id=" . $glossar->glossar_id . "\"  method=POST>".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["glossar_titel"]."</td></tr>".
            "<tr><td><input name=edit_glossar_titel size=70 maxlength=128 value=\"" . htmlspecialchars($glossar->glossar_titel) . "\"></td></tr>".
            "<tr><td>".$lang["glossar_text"]."</td></tr>".
-           "<tr><td><textarea name=\"edit_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($glossar->glossar_text) . "</textarea></td>".
+           "<tr><td>";
+      write_bbc("edit_glossar", "edit_glossar_text");
+      echo "<textarea name=\"edit_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($glossar->glossar_text) . "</textarea></td>".
            "<tr><td>".$lang["glossar_bild"]."</td></tr>".
            "<tr><td>";          
       createsel_img("edit_glossar_img", $glossar->glossar_img);
@@ -118,12 +120,14 @@ function glossar_new($new_glossar_titel, $new_glossar_text, $new_glossar_img, $n
    global $conf, $lang;
 
    echo "<h1>".$lang["glossar_neu"]."</h1>".
-        "<form action=\"" .  $conf["admp"] . "&section=glossar&action=glossar_insert\"  method=POST>".
+        "<form name = new_glossar action=\"" .  $conf["admp"] . "&section=glossar&action=glossar_insert\"  method=POST>".
         "<table class=\"reda_td\">".
         "<tr><td>".$lang["glossar_titel"]."</td></tr>".
         "<tr><td><input name=new_glossar_titel size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_glossar_titel)) . "\"></td></tr>".
         "<tr><td>".$lang["glossar_text"]."</td></tr>".
-        "<tr><td><textarea name=\"new_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_glossar_text)) . "</textarea></td>".
+        "<tr><td>";
+   write_bbc("new_glossar", "new_glossar_text");
+   echo "<textarea name=\"new_glossar_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_glossar_text)) . "</textarea></td>".
         "<tr><td>".$lang["glossar_bild"]."</td></tr>".
         "<tr><td>";          
    createsel_img("new_glossar_img",  $new_glossar_img);

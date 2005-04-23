@@ -26,7 +26,11 @@ if ( mysql_num_rows($result) > 0 ){
       echo "<tr>";
       echo "<td>".$row->url_name."</td>";
       echo "<td>";
-      echo "[iurl=\"".$row->url_id."\"]".$row->url_name."[/iurl]";
+      $linkname = "[iurl=".$row->url_id."]".$row->url_name."[/iurl]";
+      echo $linkname;
+      if (isset($name)&&isset($field)) {
+         echo "<input type=button value=\">\" onClick= writelink('".$linkname."');>";
+      }                  
       echo "</td>";
       echo "</tr>";
    }

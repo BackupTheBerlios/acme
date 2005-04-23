@@ -141,28 +141,18 @@ switch($action){
 function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text, $new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments)    {
    global $conf, $lang;
    
-   $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel (".
-                " artikel_page ,  ".
-                " artikel_publish_date , ".
-                " artikel_headline , ".
-                " artikel_sub_headline ,".
-                " artikel_short_text , ".
-                " artikel_create_date , ".
-                " artikel_modify_date , ".
-                " artikel_author_id , ".
-                " artikel_aktiv , ".
-                " artikel_comments ".
-                ") VALUES (  ".
-                " '". joingrouparray($new_artikel_page) ."' , ".
-                " '". $new_artikel_publish_date ."' , ".
-                " '". $new_artikel_headline ."' , ".
-                " '". $new_artikel_sub_headline . "' , ".
-                " '". $new_artikel_short_text ."' , ".
-                " NOW() , ".
-                " NOW() , ".
-                " '". $conf["author_id"] ."' , ".
-                " '". $new_artikel_aktiv ."' , ".
-                " '". $new_artikel_comments ."')";
+   $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel set ".
+                " artikel_page = '".         joingrouparray($new_artikel_page) ."' , ".
+                " artikel_publish_date = '". $new_artikel_publish_date ."' , ".
+                " artikel_headline = '".     $new_artikel_headline ."' , ".
+                " artikel_sub_headline = '".  $new_artikel_sub_headline . "' , ".
+                " artikel_short_text = '".   $new_artikel_short_text ."' , ".
+                " artikel_create_date =  NOW() , ".
+                " artikel_modify_date =  NOW() , ".
+                " artikel_author_id = '".    $conf["author_id"] ."' , ".
+                " artikel_aktiv = '" .       $new_artikel_aktiv ."' , ".
+                " artikel_comments = '" .    $new_artikel_comments ."'";
+ 
    $insert1_result = dbquery($Statement);
    if ($insert1_result) {
       $modulid = mysql_insert_id();
@@ -260,21 +250,9 @@ function artikel_daten_delete($delete_id){
 function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text,$new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments, $error, $errortext){
    global $conf, $lang;
   
-   $new_artikel_short_text = RTESafe($new_artikel_short_text);
-   $new_artikel_long_text = RTESafe($new_artikel_long_text);
-
    echo "<h1>" . $lang["artikel_neu"]. "</h1>\n";
    if ($error == 1){echo "<p>" . $errortext . "</p>\n";}
-   echo "<form name = artikel_new action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
-        "<script language=\"JavaScript\" type=\"text/javascript\">\n".
-        "<!--\n".
-        "function submitForm() {\n".
-        "updateRTE('new_artikel_short_text');\n".
-        "updateRTE('new_artikel_long_text');\n".
-        "return true;\n".
-        "}\n";
-   echo "initRTE(\"images/\", \"\", \"\");\n //-->\n";
-   echo "</script>\n";     
+   echo "<form name = artikel_new action=\"" . $conf["admp"] . "&action=add&section=artikel\" ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n";    
    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_ueberschrift1"]. "</td></tr>\n";
    echo "<tr><td colspan=\"3\"><input  name=\"new_artikel_headline\" size=\"45\" maxlength=\"128\" value = \"" . htmlspecialchars(stripslashes($new_artikel_headline)) ."\"></td></tr>";
@@ -295,21 +273,13 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo " <tr><td colspan=\"3\">&nbsp;</td></tr>\n";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"]."</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
-   echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-   echo "<!--\n";
-   echo "writeRichText('new_artikel_short_text', '" . $new_artikel_short_text . "', 520, 200, true, false);\n";
-   echo "//-->\n";
-   echo "</script>";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_new&field=new_artikel_short_text');\">links</a>\n";
+   write_bbc("artikel_new", "new_artikel_short_text");
+   echo "<textarea name=\"new_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_short_text) . "</textarea></td></tr>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_langtext"] . "</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
-   echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-   echo "<!--\n";
-   echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
-   echo "//-->\n";
-   echo "</script>\n";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_new&field=new_artikel_long_text');\">links</a>\n";
+   write_bbc("artikel_new", "new_artikel_long_text");
+   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_long_text) . "</textarea></td></tr>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"add\" value=\"" . $lang["artikel_anlegen"] . "\"></td></tr>\n";
    echo "</table>\n";
@@ -328,7 +298,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          $edit_artikel_publish_date = $row->artikel_publish_date;
          $edit_artikel_headline     = $row->artikel_headline;
          $edit_artikel_sub_headline = $row->artikel_sub_headline;
-         $edit_artikel_short_text   = RTESafe($row->artikel_short_text);
+         $edit_artikel_short_text   = $row->artikel_short_text;
          $edit_artikel_author_id    = $row->artikel_author_id;
          $edit_artikel_aktiv        = $row->artikel_aktiv;
          $edit_artikel_comments     = $row->artikel_comments;
@@ -337,7 +307,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          if ($dataresult)    {
             $edit_artikel_long_text      = array();         
             while ($datarow = mysql_fetch_object($dataresult))  {
-               array_push($edit_artikel_long_text, RTESafe($datarow->artikel_long_text));
+               array_push($edit_artikel_long_text, $datarow->artikel_long_text);
             }
             mysql_free_result($dataresult);
          }
@@ -347,17 +317,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    if ($error == 1){ 
    	  echo "<p>" . $errortext . "</p>\n";
    }
-   echo "<form name = artikel_edit action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n".
-        "<script language=\"JavaScript\" type=\"text/javascript\">\n".
-        "<!--\nfunction submitForm() {\n".
-        "updateRTE('edit_artikel_short_text');\n".
-        "updateRTE('edit_artikel_long_text[]');\n".
-        "updateRTE('new_artikel_long_text');\n".        
-        "return true;\n".
-        "}\n";
-   echo "initRTE(\"images/\", \"\", \"\");\n".
-        " //-->\n";
-   echo "</script>\n";     
+   echo "<form name = artikel_edit action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n";     
    echo "<input type=hidden name=edit_artikel_id value=" . $edit_artikel_id . ">".
         "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n".
         "<tr>".
@@ -389,34 +349,22 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
         "<tr><td colspan=\"3\">&nbsp;</td></tr>\n".
         "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
-   echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-   echo "<!--\n";
-   echo "writeRichText('edit_artikel_short_text', '" . $edit_artikel_short_text . "', 520, 200, true, false);\n";
-   echo "//-->\n";
-   echo "</script>\n";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=edit_artikel_short_text');\">links</a>\n";
+   write_bbc("artikel_edit", "edit_artikel_short_text");
+   echo "<textarea name=\"edit_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($edit_artikel_short_text) . "</textarea></td></tr>\n";
    echo "</td></tr>";
    $seite=0;     
    foreach ($edit_artikel_long_text as $long_text)  {
       $seite++;
       echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
            "<tr><td colspan=\"3\">\n";
-   echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-   echo "<!--\n";
-   echo "writeRichText('edit_artikel_long_text[]', '" . $long_text . "', 520, 200, true, false);\n";
-   echo "//-->\n";
-   echo "</script>\n";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=edit_artikel_long_text');\">links</a>\n";
-   echo "</td></tr>\n";
+      write_bbc("artikel_edit", "edit_artikel_long_text[]");
+      echo "<textarea name=\"edit_artikel_long_text[]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($long_text) . "</textarea></td></tr>\n";
+      echo "</td></tr>\n";
    }
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
-   echo "<script language=\"JavaScript\" type=\"text/javascript\">\n";
-   echo "<!--\n";
-   echo "writeRichText('new_artikel_long_text', '" . $new_artikel_long_text . "', 520, 200, true, false);\n";
-   echo "//-->\n";
-   echo "</script>\n";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=artikel_edit&field=new_artikel_long_text');\">links</a>\n";
+   write_bbc("artikel_edit", "new_artikel_long_text");
+   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_short_text) . "</textarea></td></tr>\n";
    echo "</td></tr>\n".
         "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>\n".
         "</table>\n".

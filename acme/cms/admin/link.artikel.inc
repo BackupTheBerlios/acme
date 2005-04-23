@@ -30,7 +30,13 @@ if ($page_id <> ""){
 		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
             echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";
             echo "<td>". $row->artikel_counter."</td>";
-            echo "<td>[artikel=\"". $row->artikel_id."\"]".$row->artikel_headline."[/artikel]</td>";
+            echo "<td>";
+            $linkname = "[artikel=". $row->artikel_id."]".$row->artikel_headline."[/artikel]";
+            echo $linkname;
+            if (isset($name)&&isset($field)) {
+               echo "<input type=button value=\">\" onClick= writelink('".$linkname."');>";
+            }   
+            echo "</td>";
             echo "</tr>\n";
       	 //}   
      }

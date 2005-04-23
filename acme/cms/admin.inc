@@ -25,6 +25,7 @@ include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
 if ($logged_in == 1) {
 
 ?>
+
 <html>
 <head>
 <title>
@@ -64,7 +65,7 @@ if ($logged_in == 1) {
               {color="red";}
               }
 </style>
-<script language="JavaScript" type="text/javascript" src="richtext.js"></script>
+<script language="JavaScript" type="text/javascript" src="admin_bbc.js"></script>
 </head>
 <body onLoad = "self.name = 'AdminWindow';">
 <?php
