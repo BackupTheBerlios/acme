@@ -28,6 +28,7 @@ if ($logged_in == 1) {
 
 <html>
 <head>
+<meta http-equiv="content-type" content="text/html; charset=utf8">
 <title>
 <?php $lang["admin_redaktionsbereich"] ?>
 </title>
@@ -119,7 +120,6 @@ echo "<b>Date:</b><br>" . date("d.m.Y.") . "<br><br>";
 echo "<b>Time:</b><br>" . date("H:i") ."</td></tr>\n";
 echo "</table>\n</div>";
 echo "<div id=\"main\">\n";
-echo "<a href =\"".$conf["cmsbase"]."/link.php\" target=\"new\">links</a>";
 // echo "<h1 class="error">Administrationsbereich tempor&auml;r nicht verf&uuml;gbar<br>Bitte keine &Auml;nderungen durchf&uuml;hren!!!</h1><br>infos unter: icq 142499232<br>email: innomine@gmx.net<br>";
 
 // menu actions

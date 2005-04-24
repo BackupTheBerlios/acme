@@ -133,18 +133,7 @@ function pagedelete($delete_id){
    else            {echo $lang["page_delete_fehlerhaft"];}
 }
 
-function pagebrowse(){
-   global $conf, $lang;
 
-   echo "<h1>".$lang["page_verwaltung"]."</h1>\n";
-   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", 0) == 1) {
-      echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
-   }
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
-   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
-   writepagechilds($parent,$h_level);
-   echo "</table>";
-}      
 function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_small,$new_page_img_small_inactive, $new_page_img_big, $new_page_titelbild, $new_page_left_bar, $new_page_right_bar, $new_page_top_bar, $new_page_foo_bar, $new_page_headline, $new_page_short_text, $new_page_long_text, $new_page_long_text_typ, $new_page_author_id,  $new_page_childs,$new_page_comments){
    global $conf, $lang;
 
@@ -305,7 +294,18 @@ function pagedit($id){
    }
 }   
 
+function pagebrowse(){
+   global $conf, $lang;
 
+   echo "<h1>".$lang["page_verwaltung"]."</h1>\n";
+   if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", 0) == 1) {
+      echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
+   }
+   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
+   writepagechilds($parent,$h_level);
+   echo "</table>";
+}      
 
 function writepagechilds($parent, &$h_level){
    global $conf, $lang;

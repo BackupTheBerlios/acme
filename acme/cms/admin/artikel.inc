@@ -5,6 +5,7 @@ include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
 switch($action){
 	case "edit":
 	   $error = 0;
+	   $_SESSION['artikel_edit_page_id'] = $page_id;
        artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id, $edit_artikel_aktiv,$edit_artikel_comments,$error, $errortext);
 		
       break;
@@ -357,8 +358,8 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
       $seite++;
       echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
            "<tr><td colspan=\"3\">\n";
-      write_bbc("artikel_edit", "edit_artikel_long_text[]");
-      echo "<textarea name=\"edit_artikel_long_text[]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($long_text) . "</textarea></td></tr>\n";
+      write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
+      echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($long_text) . "</textarea></td></tr>\n";
       echo "</td></tr>\n";
    }
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
@@ -373,6 +374,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
 function artikel_browse($page_id, $author_id){
 	global $conf,$lang;
 
+    if (isset($_SESSION['artikel_edit_page_id'])){$page_id= $_SESSION['artikel_edit_page_id'];}
     if ($author_id=="" || !isset($author_id)) {$author_id = $conf["author_id"];}
 
 	echo "\n<h1>" . $lang["artikel_verwaltung"] . "</h1>\n";
@@ -404,7 +406,7 @@ function artikel_browse($page_id, $author_id){
             echo "<td>". $row->artikel_counter."</td>";
 		    echo "<td>";
 		    if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
-		       echo "<a href=\"" . $conf["admp"] . "&action=edit&section=artikel&edit_artikel_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_bearbeiten_kurz"] . "\"></a>";
+		       echo "<a href=\"" . $conf["admp"] . "&action=edit&section=artikel&edit_artikel_id=" . $row->artikel_id . "&page_id=".$page_id."\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_bearbeiten_kurz"] . "\"></a>";
 		    } else {
 	           echo "&nbsp;";
 	        }

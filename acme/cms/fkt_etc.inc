@@ -54,7 +54,6 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[/lime\]","</span>",$contblock);
  
   // images
-  /*
   while (ereg("\[imgright\]([^\[]+)\[/img\]", $contblock, $match)) {
       $contblock = str_replace("[imgright]".$match[1]."[/img]", getimagebyname($match[1], "r", $page_tpl), $contblock);
   }
@@ -64,8 +63,7 @@ function parse_bbcode($contblock, $page_tpl){
   while (ereg("\[img\]([^\[]+)\[/img\]", $contblock, $match)) {
       $contblock = str_replace("[img]".$match[1]."[/img]", getimagebyname($match[1], "c", $page_tpl), $contblock);
   }
-  */
-  
+ 
   //$contblock = eregi_replace("\[img\]([^\[]+)\[/img\]", "<img src = \"cms/bilder/\\1\" alt = \"blank\">", $contblock);
   // mail's
   $contblock = eregi_replace("\[mail=&quot;","[mail=\"",$contblock);
@@ -79,6 +77,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[iurl=&quot;","[iurl=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
   $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // iurls ohne ""
+  $contblock = eregi_replace("\[iurl=([0-9]+)\]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // glossar
   $contblock = eregi_replace("\[glossar\]([^\[]+)\[/glossar\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   $contblock = eregi_replace("\[\[([^\[]+)\]\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
@@ -92,6 +92,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[artikel=&quot;","[artikel=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
   $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // artikellink ohne ""
+  $contblock = eregi_replace("\[artikel=([0-9]+)\]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
 
   return $contblock;
 

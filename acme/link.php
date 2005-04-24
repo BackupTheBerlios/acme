@@ -25,24 +25,36 @@ include($conf["admbase"] . "/auth.inc");
                padding:0px;
               }
 </style>
-<script language="JavaScript" type="text/javascript" src="richtext.js"></script>
+<?php
+$fieldname = "window.opener.document.forms['".$name."'].elements['".$field."']";
+echo "<script language=\"JavaScript\" type=\"text/javascript\">";
+echo "function writelink(link){";
+echo $fieldname .".value += link;";
+echo "self.close();";
+echo "}";
+echo "</script>";
+?>
 </head>
 <body>
 <?php
 if (isset($name)&&isset($field)) {
-   echo "<form action=\"".$conf["indexbase"]."/link.php?name=".$name."&field=".$field."\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
+   echo "<form action=\"".$conf["indexbase"]."/link.php?modul=".$modul."&name=".$name."&field=".$field."\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
 } else {
-   echo "<form action=\"".$conf["indexbase"]."/link.php\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
+   echo "<form action=\"".$conf["indexbase"]."/link.php?modul=".$modul."\" ENCTYPE=\"multipart/form-data\" method=\"post\">";
 }	
 echo "<table>\n";
 echo "<tr><td>Modul</td><td>\n";
 echo "<select size = \"1\" name=\"modul\">\n";
-$statement = "SELECT m.modul FROM acme_module m  where m.typ='C' order by m.modul";
+$statement = "SELECT m.modul FROM ".$conf["db_namespace"]."module m  where m.typ='C' order by m.modul";
 $result = dbquery($statement);
 if ( mysql_num_rows($result) > 0 ) {
    while ($row = mysql_fetch_object($result)) {
        if (checkgroupaccess($conf["author_groups"], $row->modul) == 1) {
-          echo "<option value=\"". $row->modul . "\" >" . $lang["admin_$row->modul"] . "</option>\n";
+          if ($modul==$row->modul) {
+          	echo "<option value=\"". $row->modul . "\" selected>" . $lang["admin_$row->modul"] . "</option>\n";
+          } else {
+          	echo "<option value=\"". $row->modul . "\">" . $lang["admin_$row->modul"] . "</option>\n";
+          }		
        }
    }
 }
