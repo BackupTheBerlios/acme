@@ -22,7 +22,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
       $conf["lang"]            = $row["author_lang"];
       if ($conf["author_active"]=="Y"){
          $logged_in = 1;
-         $_SESSION['username'] = $_POST['uname'];
+         $_SESSION['username'] = $_POST['username'];
          $_SESSION['password'] = $_POST['password'];
 
          $result = dbquery("update ".$conf["db_namespace"]."author set author_login = 'Y', author_last_login = NOW() WHERE author_name = '" . $USER . "'");
