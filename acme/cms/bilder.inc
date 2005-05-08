@@ -50,14 +50,24 @@ renderbilder($img_typ_id, $image_id, $img_typ_anfang);
 function renderbilder($img_typ_id, $img_id, $anfang){
    global $conf, $lang;
 
-   if ($img_typ_id==0 || !isset($img_typ_id)) {
+   if (($img_typ_id==0 || !isset($img_typ_id)) && ($img_id==0 || !isset($img_id))) {
       $query = "select * from ".$conf["db_namespace"]."bilder order by img_id LIMIT 1,1";
+      $my_result = dbquery($query);
+      if ( mysql_num_rows($my_result) > 0 ){
+         $row = mysql_fetch_object($my_result);
+         $img_typ_id = $row->img_typ_id;
+         $img_id = $row->img_id;
+      }
+   }
+   if (($img_typ_id==0 || !isset($img_typ_id)) && isset($img_id)) {
+      $query = "select * from ".$conf["db_namespace"]."bilder where img_id = " . $img_id;
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
          $row = mysql_fetch_object($my_result);
          $img_typ_id = $row->img_typ_id;
       }
    }
+
    $img_typ_result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where img_typ_id='".$img_typ_id."'");
    if (mysql_num_rows($img_typ_result) == 1) {
       $img_typ_row = mysql_fetch_object($img_typ_result);
@@ -100,6 +110,7 @@ function renderbilder($img_typ_id, $img_id, $anfang){
          $data->img_typ->parent->name = getimg_typnamebyid($img_typ_parent);
          $data->img_typ->parent->url  = $conf["indexname"]."bilder/".$img_typ_parent;
       }      
+      if ($anfang == "" or !isset($anfang))$anfang = 1;
       incimg_typcounter($img_typ_id, $img_typ_counter);
       getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
       getbigimage(&$data, $img_id, $img_typ_tpl);
@@ -136,7 +147,7 @@ function getimgsforpreview($data, $img_typ_id, $img_typ_tpl, $StartImg){
           $data->img_typ->img_row[$akt_row]->img_col[$akt_col]->name        = $row->img_name;
           $data->img_typ->img_row[$akt_row]->img_col[$akt_col]->desc_short  = parse_bbcode(nltobr($row->img_description), $img_typ_tpl);
           $data->img_typ->img_row[$akt_row]->img_col[$akt_col]->thumb_src   = $conf["images"]."thumb_" . $row->img_real_name;
-          $data->img_typ->img_row[$akt_row]->img_col[$akt_col]->url         = $conf["indexname"]."bilder/". $img_typ_id . "/". $anfang ."/". $row->img_id;
+          $data->img_typ->img_row[$akt_row]->img_col[$akt_col]->url         = $conf["indexname"]."bilder/". $img_typ_id . "/". $row->img_id;
       }
    }
    
@@ -198,6 +209,7 @@ function incimg_typcounter($img_typ_id,$img_typ_counter) {
 
 
 function img_anzahlbilder($img_typ_id){
+   global $conf, $lang;	
    $query = "select img_id from ".$conf["db_namespace"]."bilder where img_typ_id = '".$img_typ_id."'";
    $my_result = dbquery($query);
    return mysql_num_rows($my_result);
