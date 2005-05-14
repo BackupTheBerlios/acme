@@ -14,10 +14,10 @@ $lang["profile_bar_top"]="Seitenbereich oben";
 $lang["profile_bar_right"]="Seitenbereich rechts";
 $lang["profile_bar_left"]="Seitenbereich links";
 $lang["profile_bar_bottom"]="Seitenbereich unten";
-$lang["profile_insert_fehlerhaft"]="Fehler: Profil einf�gen fehlgeschlagen";
-$lang["profile_insert_erfolgreich"]="Profil einf�gen erfolgreich";
+$lang["profile_insert_fehlerhaft"]="Fehler: Profil einf&uuml;gen fehlgeschlagen";
+$lang["profile_insert_erfolgreich"]="Profil einf&uuml;gen erfolgreich";
 $lang["profile_update_fehlerhaft"]="Fehler: Profil bearbeiten fehlgeschlagen";
 $lang["profile_update_erfolgreich"]="Profil bearbeiten erfolgreich";
-$lang["profile_delete_fehlerhaft"]="Fehler: Profil l�schen fehlgeschlagen";
-$lang["profile_delete_erfolgreich"]="Profil l�schen erfolgreich";
+$lang["profile_delete_fehlerhaft"]="Fehler: Profil l&ouml;schen fehlgeschlagen";
+$lang["profile_delete_erfolgreich"]="Profil l&ouml;schen erfolgreich";
 ?>

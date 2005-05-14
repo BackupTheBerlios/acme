@@ -27,6 +27,8 @@ $lang["downloads_realname"]="interner Name";
 $lang["downloads_beschreibung"]="Beschreibung";
 $lang["downloads_beschreibung_lang"]="Beschreibung (lang)";
 $lang["downloads_loesche_datei"]="Datei l&ouml;schen";
+$lang["downloads_link"]="link";
+$lang["downloads_typ_link"]="link";
 $lang["downloads_datei_geloescht"]="Datei erfolgreich gel&ouml;scht";
 $lang["downloads_datei_nicht_geloescht"]="Fehler: Datei konnte nicht gel&ouml;scht werden";
 $lang["downloads_datei_entfernt"]="Datei erfolgreich gel&ouml;scht";
@@ -43,7 +45,6 @@ $lang["downloads_update_fehlerhaft"]="Fehler: Datei konnte nicht aktualisiert we
 $lang["downloads_update_erfolgreich"]="Datei erfolgreich aktualisiert";
 $lang["downloads_delete_fehlerhaft"]="Fehler: Datei konnte nicht gel&ouml;scht weden";
 $lang["downloads_delete_erfolgreich"]="Datei erfolgreich gel&ouml;scht";
-
 $lang["downloads_upload_filesizeerror"]="Fehler: Die Datei ist zu gross (&uuml;ber 180kB) und wird deshalb nicht hochgeladen. Bitte die Datei verkleinern!";
 $lang["downloads_upload_move_rename"]="Die Datei $tmpname wird nun in das Verzeichnis [Download] verschoben und in $realname umbenannt.";
 $lang["downloads_upload_copy"]="Kopieren l&auml;uft:";
