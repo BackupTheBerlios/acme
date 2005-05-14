@@ -27,10 +27,4 @@ function dbquery($sqlcommand)
    if (!$func_result){echo "<p>DBERROR: ". mysql_errno() . ": " . mysql_error(). "\n<br>".$sqlcommand ."</p>";}
    return $func_result;
 }
-
-     	   
-
-
-
-   
 ?>

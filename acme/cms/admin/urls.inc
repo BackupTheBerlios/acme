@@ -73,9 +73,9 @@ function url_typ_add($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_i
                 " url_typ_img_small = '". $new_url_typ_img_small . "',".
                 " url_typ_img_small_inactive = '". $new_url_typ_img_small_inactive . "',".
                 " url_typ_img_big = '". $new_url_typ_img_big . "',".
-                " url_typ_img_author_id = '". $conf["author_id"] . "',".
-                " url_typ_img_create_date = NOW(),".
-                " url_typ_img_modify_date = NOW(),".
+                " url_typ_author_id = '". $conf["author_id"] . "',".
+                " url_typ_create_date = NOW(),".
+                " url_typ_modify_date = NOW(),".
                 " url_typ_left_bar = '". $new_url_typ_left_bar . "',".
                 " url_typ_right_bar = '". $new_url_typ_right_bar . "',".
                 " url_typ_top_bar = '". $new_url_typ_top_bar . "',".

@@ -92,11 +92,20 @@ function img_typ_browse(){
    }
    echo "<table class=\"reda_td \">";
    echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></td><td></td></tr>";
-   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs");
-   if ( mysql_num_rows($result) > 0 ){	
+   writeimgtypchilds($parent,$h_level);
+   echo "</table>";
+   
+}
+function writeimgtypchilds($parent, &$h_level){
+   global $conf, $lang;
+   
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs where  img_typ_parent_id = '" . $parent . "' order by img_typ_name");
+   if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
          $img_count = count_img_from_typ($row->img_typ_id);
-         echo "<tr><td>". $row->img_typ_name. "</td><td>" . $img_count . "</td><td>\n";
+         echo "<tr><td>";
+         for ($count = 0;$count < $h_level; $count++){echo "-";}
+         echo $row->img_typ_name. "</td><td>" . $img_count . "</td><td>\n";
          if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1) {
             echo "<a href=\"" . $conf["admp"] . "&action=img_browse&section=bilder&img_typ_id=" . $row->img_typ_id . "\"><img src=\"" . $conf["images_admin"] . "icon_nbe.png\" width=\"25\" height=\"25\"></a>\n";
          }else{
@@ -109,8 +118,12 @@ function img_typ_browse(){
          	echo "&nbsp;";
          }	
          echo "</td><td>";
-         if ($img_count == 0 && acl_check("delete", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1){
-         	echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1){
+         	if ($img_count == 0 && checkimgtypchilds($row->img_typ_id) == 0){
+               echo "<a href=\"" . $conf["admp"] . "&action=img_typ_delete&section=bilder&img_typ_id=" . $row->img_typ_id ."\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
+         	} else {
+         	   echo "&nbsp;";
+            }	
          } else {
          	echo "&nbsp;";
          }	
@@ -122,12 +135,24 @@ function img_typ_browse(){
          }	
          echo "</td>";
          echo "</tr>";
+         echo "</tr>\n";
+         $h_level++;
+         writeimgtypchilds($row->img_typ_id, $h_level);
+         $h_level--;         
       }
-      echo "</table>";
+      
       mysql_free_result($result);
    }
 }
+function checkimgtypchilds($parent){
+   global $conf, $lang;
    
+   $childs = 0;
+   $result = dbquery("select * from ".$conf["db_namespace"]."img_typs   where img_typ_parent_id  = '" . $parent . "'");
+   if ( mysql_num_rows($result) > 0 ){$childs = 1;}
+   mysql_free_result($result);
+   return $childs;   
+}         
 function img_new($img_typ_id){
    global $conf, $lang;
    
