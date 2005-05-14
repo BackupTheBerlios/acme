@@ -1,5 +1,25 @@
 <?php
-include($conf["admbase"] . "/lang/downloadss." . $conf["lang"] . ".inc");
+include($conf["admbase"] . "/lang/downloads." . $conf["lang"] . ".inc");
+
+echo "<table class=\"reda_td \">";
+echo "<tr></td><td>".$lang["downloads_typ_name"]."</td><td>".$lang["downloads_typ_link"]."</td></tr>";
+$result = dbquery("select * from ".$conf["db_namespace"]."download_typs  order by download_typ_name");
+if ( mysql_num_rows($result) > 0 ){	
+   while ($row = mysql_fetch_object($result)){
+      echo "<tr>";
+      echo "<td>".$row->download_typ_name."</td>";
+      echo "<td>";
+      $linkname = "[downloadlist=".$row->download_typ_id."]".$row->download_typ_name."[/downloadlist]";
+      echo $linkname;
+      if (isset($name)&&isset($field)) {
+         echo "<input type=button value=\">\" onClick= writelink('".$linkname."');>";
+      }                  
+      echo "</td>";
+      echo "</tr>";
+   }
+   echo "</table>";
+   mysql_free_result($result);
+}
 
 echo "<form action=\"".$conf["indexbase"]."/link.php?modul=downloads&name=".$name."&field=".$field."\" method=\"post\">";
 echo "<table class=\"reda_td \">";
@@ -19,7 +39,7 @@ echo "</select>";
 echo "<input type=\"submit\" name = ok value=\"ok\"></td></tr></table></form>";
 
 echo "<table class=\"reda_td \">";
-echo "<tr></td><td>".$lang["url_name"]."</td><td>".$lang["url_link"]."</td></tr>";
+echo "<tr></td><td>".$lang["downloads_name"]."</td><td>".$lang["downloads_link"]."</td></tr>";
 $result = dbquery("select * from ".$conf["db_namespace"]."download where download_typ like '%:" . $download_typ_id . ":%'");
 if ( mysql_num_rows($result) > 0 ){	
    while ($row = mysql_fetch_object($result)){

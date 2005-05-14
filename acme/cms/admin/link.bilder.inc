@@ -1,6 +1,25 @@
 <?php
 include($conf["admbase"] . "/lang/bilder." . $conf["lang"] . ".inc");
 
+echo "<table class=\"reda_td \">";
+echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_link"]."</td><td>&nbsp;</td></tr>";
+$result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs order by img_typ_name");
+if ( mysql_num_rows($result) > 0 ){	
+   while ($row = mysql_fetch_object($result)){
+      echo "<tr>";
+      echo "<td >".$row->img_typ_name."</td>";
+      echo "<td>";
+      $linkname = "[imglist=".$row->img_typ_id."]".$row->img_typ_name."[/imglist]";
+      echo $linkname;
+      echo "</td><td>";
+      if (isset($name)&&isset($field)) {
+         echo "<input type=button value=\">\" onClick= writelink('".$linkname."');>";
+      }
+      echo "</td>";    
+   }
+   echo "</table>";
+   mysql_free_result($result);                
+}      
 echo "<form action=\"".$conf["indexbase"]."/link.php?modul=bilder&name=".$name."&field=".$field."\" method=\"post\">";
 echo "<table class=\"reda_td \">";
 echo "<tr></td><td>";

@@ -77,10 +77,16 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[iurl=&quot;","[iurl=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
   $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // iurllisten ohne ""
+  $contblock = eregi_replace("\[iurllist=([0-9]+)\]([^\[]+)\[/iurllist\]","<a href=\"".$conf["indexname"]."urls/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // iurls ohne ""
   $contblock = eregi_replace("\[iurl=([0-9]+)\]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // downloads ohne ""
   $contblock = eregi_replace("\[download=([0-9]+)\]([^\[]+)\[/download\]","<a href=\"".$conf["indexname"]."download/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // downloadlisten ohne ""
+  $contblock = eregi_replace("\[downloadlist=([0-9]+)\]([^\[]+)\[/downloadlist\]","<a href=\"".$conf["indexname"]."downloads/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // bilderlisten ohne ""
+  $contblock = eregi_replace("\[imglist=([0-9]+)\]([^\[]+)\[/imglist\]","<a href=\"".$conf["indexname"]."bilder/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // glossar
   $contblock = eregi_replace("\[glossar\]([^\[]+)\[/glossar\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   $contblock = eregi_replace("\[\[([^\[]+)\]\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
