@@ -190,8 +190,17 @@ function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publi
 }
 function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_artikel_part){
    global $conf, $lang;
+ 
    $Statement = "UPDATE ".$conf["db_namespace"]."artikel_daten SET ".
                 " artikel_long_text = '". $edit_artikel_long_text ."'".
+                " WHERE artikel_id = '". $edit_artikel_id."' ".
+                " AND artikel_part = '".$edit_artikel_part . "'";
+   $update_result = dbquery($Statement);
+   return $update_result;
+} 
+
+function artikel_daten_delete($edit_artikel_id, $edit_artikel_part){
+   $Statement = "delete  from ".$conf["db_namespace"]."artikel_daten ".
                 " WHERE artikel_id = '". $edit_artikel_id."' ".
                 " AND artikel_part = '".$edit_artikel_part . "'";
    $update_result = dbquery($Statement);

@@ -28,7 +28,7 @@ if ($logged_in == 1) {
 
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf8">
+
 <title>
 <?php $lang["admin_redaktionsbereich"] ?>
 </title>

@@ -43,6 +43,6 @@ function write_bbc_link($f, $ta){
 }
 function write_link($f, $ta){ 
 	global $conf;
-	echo "<input class=\"bbcode-button\" type=\"button\" name=\"int. link\" value=\"int. link\" title=\"interne links\" onclick=\"void window.open('".$conf["indexbase"]."/link.php?name=".$f."&field=".$ta."');\" />\n";
+	echo "<input class=\"bbcode-button\" type=\"button\" name=\"int. link\" value=\"int. link\" title=\"interne links\" onclick=\"void window.open('".$conf["indexbase"]."/link.php?name=".$f."&field=".$ta."', 'links', 'width=760,height=400,left=0,top=0,dependent=yes');\" />\n";
 }
 ?>
