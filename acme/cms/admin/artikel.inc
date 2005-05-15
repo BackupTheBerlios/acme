@@ -86,9 +86,14 @@ switch($action){
          $result = artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date, $edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_author_id,   $edit_artikel_aktiv,$edit_artikel_comments);
          $count = 0;
          if (isset($edit_artikel_long_text)){
-            foreach ($edit_artikel_long_text as $value) {
-               $count++;
-               $result  = artikel_daten_update( $edit_artikel_id, $value, $count);
+         	$fields = count($edit_artikel_long_text);
+            for ($i = 1; $i<=$fields; $i++) {
+               if ($edit_artikel_long_text[$i] == "") {
+               	  artikel_daten_delete($edit_artikel_id, $edit_artikel_long_text_id[$i]);
+               } else {		
+                  $count++;
+                  $result  = artikel_daten_update( $edit_artikel_id, $edit_artikel_long_text[$i], $count, $edit_artikel_long_text_id[$i]);
+               }   
             }
          }
          if ($new_artikel_long_text <> ""){
@@ -116,7 +121,7 @@ switch($action){
 	   if ($delete_it == $lang["artikel_ja"]) {
          $artikel_result = artikel_delete($delete_id);
          if ($artikel_result){ 
-         	$daten_result = artikel_daten_delete($delete_id);
+         	$daten_result = artikel_daten_delete_all($delete_id);
          }
          if ($artikel_result) {
          	echo $lang["artikel_delete_erfolgreich"]; 
@@ -188,21 +193,24 @@ function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publi
    $update_result = dbquery($Statement);
    return $update_result;
 }
-function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_artikel_part){
+function artikel_daten_update($edit_artikel_id, $edit_artikel_long_text, $edit_artikel_part, $edit_artikel_daten_id){
    global $conf, $lang;
  
    $Statement = "UPDATE ".$conf["db_namespace"]."artikel_daten SET ".
-                " artikel_long_text = '". $edit_artikel_long_text ."'".
+                " artikel_long_text = '". $edit_artikel_long_text ."', ".
+                " artikel_part = '". $edit_artikel_part ."'".
                 " WHERE artikel_id = '". $edit_artikel_id."' ".
-                " AND artikel_part = '".$edit_artikel_part . "'";
+                " AND artikel_daten_id= '".$edit_artikel_daten_id . "'";
    $update_result = dbquery($Statement);
    return $update_result;
 } 
 
-function artikel_daten_delete($edit_artikel_id, $edit_artikel_part){
+function artikel_daten_delete($edit_artikel_id, $edit_artikel_daten_id){
+   global $conf, $lang;
+   
    $Statement = "delete  from ".$conf["db_namespace"]."artikel_daten ".
                 " WHERE artikel_id = '". $edit_artikel_id."' ".
-                " AND artikel_part = '".$edit_artikel_part . "'";
+                " AND artikel_daten_id = '".$edit_artikel_daten_id . "'";
    $update_result = dbquery($Statement);
    return $update_result;
 }
@@ -249,7 +257,7 @@ function artikel_delete($delete_id){
    return $delete_result;
 }
 
-function artikel_daten_delete($delete_id){
+function artikel_daten_delete_all($delete_id){
    global $conf, $lang;
   
    $delete_result = dbquery("delete from ".$conf["db_namespace"]."artikel_daten where artikel_id = '". $delete_id . "'");
@@ -313,14 +321,6 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          $edit_artikel_aktiv        = $row->artikel_aktiv;
          $edit_artikel_comments     = $row->artikel_comments;
          mysql_free_result($result);
-         $dataresult = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
-         if ($dataresult)    {
-            $edit_artikel_long_text      = array();         
-            while ($datarow = mysql_fetch_object($dataresult))  {
-               array_push($edit_artikel_long_text, $datarow->artikel_long_text);
-            }
-            mysql_free_result($dataresult);
-         }
      } 
    }
    echo "<h1>" . $lang["artikel_bearbeiten"] . "</h1>\n";
@@ -363,13 +363,18 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "<textarea name=\"edit_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($edit_artikel_short_text) . "</textarea></td></tr>\n";
    echo "</td></tr>";
    $seite=0;     
-   foreach ($edit_artikel_long_text as $long_text)  {
-      $seite++;
-      echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
-           "<tr><td colspan=\"3\">\n";
-      write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
-      echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($long_text) . "</textarea></td></tr>\n";
-      echo "</td></tr>\n";
+   $dataresult = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
+   if ($dataresult)    {
+      while ($datarow = mysql_fetch_object($dataresult))  {
+         $seite++;
+         echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
+              "<tr><td colspan=\"3\">\n";
+         echo "<input type=\"hidden\" name=\"edit_artikel_long_text_id[".$seite."]\" value=\"" . $datarow->artikel_daten_id . "\">";     
+         write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
+         echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($datarow->artikel_long_text) . "</textarea></td></tr>\n";
+         echo "</td></tr>\n";
+      }
+      mysql_free_result($dataresult);
    }
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";

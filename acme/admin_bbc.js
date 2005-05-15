@@ -84,7 +84,7 @@ function insert_link(f, ta) {
       txtarea.focus();
       return;
    } else {
-      input(f, ta, '[link=Adress]Linktext[/link] ');
+      input(f, ta, '[link=Adresse]Linktext[/link] ');
    }   
  }
 
