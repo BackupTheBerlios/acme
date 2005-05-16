@@ -200,7 +200,7 @@ function getnamebymodulandid($modul, $id){
    if (mysql_num_rows($result) > 0)  { 
       $row = mysql_fetch_array($result);
       $Statement = "select *" . 
-                   " from  " . $row["tablename"] . 
+                   " from  ".$conf["db_namespace"]."" . $row["tablename"] . 
                    " where " . $row["id"] . " = " . $id;
       $modul_result = dbquery($Statement);
       if (mysql_num_rows($modul_result) > 0 )  {

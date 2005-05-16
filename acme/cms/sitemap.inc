@@ -94,7 +94,7 @@ function writesitemaptopics(&$data, &$akt, $type, $type_id, &$h_level){
          $parent= $row->parent;
          $name  = $row->name;
   
-         $query = "select ".$id.", ".$name." from ".$table." where ".$parent." = '" . $type_id . "' order by ".$name;
+         $query = "select ".$id.", ".$name." from ".$conf["db_namespace"]."".$table." where ".$parent." = '" . $type_id . "' order by ".$name;
          $result = dbquery($query);
          if ( mysql_num_rows($result) > 0 ){
             while ($row = mysql_fetch_object($result)){

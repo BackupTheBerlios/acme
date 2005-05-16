@@ -119,7 +119,7 @@ function getnavimg($modul, $id){
    $result = dbquery("select * from ".$conf["db_namespace"]."module where modul = '". $modul . "'");
    if ( mysql_num_rows($result) == 1 )  {
       $row = mysql_fetch_object($result);
-      $Statement = "select ".$row->navimg.", ".$row->navimg."_inactive"."  from " . $row->tablename . " where " . $row->id . " = '". $id . "'";
+      $Statement = "select ".$row->navimg.", ".$row->navimg."_inactive"."  from ".$conf["db_namespace"]."" . $row->tablename . " where " . $row->id . " = '". $id . "'";
       $modul_result = dbquery($Statement);
       if ( mysql_num_rows($modul_result) > 0 )  {
          $modulrow = mysql_fetch_array($modul_result);
