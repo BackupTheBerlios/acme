@@ -94,20 +94,34 @@ function writesitemaptopics(&$data, &$akt, $type, $type_id, &$h_level){
          $parent= $row->parent;
          $name  = $row->name;
   
-         $query = "select ".$id.", ".$name." from ".$conf["db_namespace"]."".$table." where ".$parent." = '" . $type_id . "' order by ".$name;
-         $result = dbquery($query);
-         if ( mysql_num_rows($result) > 0 ){
-            while ($row = mysql_fetch_object($result)){
-               $akt++;
-               $data->sitemap->map_element[$akt]->map_element_url  = $conf["indexname"] . $modul ."/" . $row->$id;
-               $data->sitemap->map_element[$akt]->map_element_text = $row->$name;
-               $data->sitemap->map_element[$akt]->map_element_h_level = $h_level;
-               $h_level++;
-               writesitemaptopics($data, $akt, $type, $row->$id, $h_level);
-               $h_level--;
+         if ($parent <> "") {
+            $query = "select ".$id.", ".$name." from ".$conf["db_namespace"]."".$table." where ".$parent." = '" . $type_id . "' order by ".$name;
+            $result = dbquery($query);
+            if ( mysql_num_rows($result) > 0 ){
+               while ($row = mysql_fetch_object($result)){
+                  $akt++;
+                  $data->sitemap->map_element[$akt]->map_element_url  = $conf["indexname"] . $modul ."/" . $row->$id;
+                  $data->sitemap->map_element[$akt]->map_element_text = $row->$name;
+                  $data->sitemap->map_element[$akt]->map_element_h_level = $h_level;
+                  $h_level++;
+                  writesitemaptopics($data, $akt, $type, $row->$id, $h_level);
+                  $h_level--;
+               }  
+               mysql_free_result($result);
             }  
-            mysql_free_result($result);
-         }  
+         } else {
+            $query = "select ".$id.", ".$name." from ".$conf["db_namespace"]."".$table." order by ".$name;
+            $result = dbquery($query);
+            if ( mysql_num_rows($result) > 0 ){
+               while ($row = mysql_fetch_object($result)){
+                  $akt++;
+                  $data->sitemap->map_element[$akt]->map_element_url  = $conf["indexname"] . $modul ."/" . $row->$id;
+                  $data->sitemap->map_element[$akt]->map_element_text = $row->$name;
+                  $data->sitemap->map_element[$akt]->map_element_h_level = $h_level;
+               }  
+               mysql_free_result($result);
+            }           	
+         }	
       }
    } 
 }
