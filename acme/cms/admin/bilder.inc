@@ -148,7 +148,7 @@ function checkimgtypchilds($parent){
    global $conf, $lang;
    
    $childs = 0;
-   $result = dbquery("select * from ".$conf["db_namespace"]."img_typs   where img_typ_parent_id  = '" . $parent . "'");
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder_typs   where img_typ_parent_id  = '" . $parent . "'");
    if ( mysql_num_rows($result) > 0 ){$childs = 1;}
    mysql_free_result($result);
    return $childs;   
@@ -265,7 +265,9 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
    
    if ($my_result) {
    	  echo $lang["bilder_typ_insert_erfolgreich"]."\n";
-      acl_user_set($conf["author_id"], "bilder", mysql_insert_id(), "Y", "Y", "Y", "Y");
+   	  $modulid = mysql_insert_id();
+      acl_user_set($conf["author_id"], "bilder", $modulid, "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "bilder", $modulid, "Y", "Y", "Y", "Y");
    }
    else            {echo $lang["bilder_typ_insert_fehlerhaft"]."\n<br>".$Statement;}
    img_typ_browse();

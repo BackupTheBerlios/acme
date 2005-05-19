@@ -372,7 +372,9 @@ function termin_insert($termin_parent_id, $termin_name, $termin_tpl, $termin_img
                            " termin_author_id = '" . $conf["author_id"] . "' ";
    $edit_result = dbquery($Statement);
    if ($edit_result){
-   	  acl_user_set($conf["author_id"], "termine", mysql_insert_id(), "Y", "Y", "Y", "Y");
+   	  $modulid = mysql_insert_id();
+   	  acl_user_set($conf["author_id"], "termine", $modulid, "Y", "Y", "Y", "Y");
+   	  acl_group_set($conf["author_groups"], "termine", $modulid, "Y", "Y", "Y", "Y");
       echo $lang["termin_insert_erfolgreich"];
    }
    else{echo $lang["termin_insert_fehlgeschlagen"];};

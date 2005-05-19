@@ -17,7 +17,7 @@ function rights_browse($modul_name, $modul_id) {
    global $conf, $lang;
 
    echo "<h1>".$lang["rights_verwaltung"]."</h1>\n";
-   echo "<h2>" .$lang["admin_$modul_name"] .  "-" .getnamebymodulandid($modul_name, $modul_id). "</h2>";
+   echo "<h2>" .$lang["admin_$modul_name"] .  "-" . getnamebymodulandid($modul_name, $modul_id). "</h2>";
    echo "<a href=\"". $conf["admp"] . "&section=".$modul_name. "\">".$lang["rights_zurueck"]."</a>\n";
    echo "<form action=\"" . $conf["admp"] . "&section=rights&modul_name=".$modul_name."&modul_id=".$modul_id. "&action=rights_update\" method=\"POST\">\n";
    echo "<table class=\"reda_td\">\n";
@@ -25,43 +25,43 @@ function rights_browse($modul_name, $modul_id) {
    if ( mysql_num_rows($rights_result) > 0 )  {
       echo "<tr><td>".$lang["rights_username"]."</td><td>".$lang["rights_groupname"]."</td><td>".$lang["rights_erstellen"]."</td><td>".$lang["rights_aendern"]."</td><td>".$lang["rights_loeschen"]."</td><td>".$lang["rights_rechte"]."</td><td>".$lang["rights_acl_delete"]."</td></tr>\n";
       $line = 0;
-      while ($".$conf["db_namespace"]."rights = mysql_fetch_object($rights_result))  {
+      while ($rights = mysql_fetch_object($rights_result))  {
          echo "<tr>";
-         echo "<td><input type=hidden name=edit_acl_id[" . $line . "] value=\"" . $".$conf["db_namespace"]."rights->acl_id . "\">" . getauthorbyid($".$conf["db_namespace"]."rights->author_id) . "</td>";
-         echo "<td>" . getgroupnamebyid($".$conf["db_namespace"]."rights->group_id) . "</td>";
+         echo "<td><input type=hidden name=edit_acl_id[" . $line . "] value=\"" . $rights->acl_id . "\">" . getauthorbyid($rights->author_id) . "</td>";
+         echo "<td>" . getgroupnamebyid($rights->group_id) . "</td>";
          echo "<td>";
          echo "<input type=radio name=edit_acl_insert[" . $line . "] value=\"Y\""; 
-         if ($".$conf["db_namespace"]."rights->acl_insert == "Y" ) echo " checked ";
+         if ($rights->acl_insert == "Y" ) echo " checked ";
          echo ">Y";
          echo "<input type=radio name=edit_acl_insert[" . $line . "] value=\"N\""; 
-         if ($".$conf["db_namespace"]."rights->acl_insert == "N" ) echo " checked ";
+         if ($rights->acl_insert == "N" ) echo " checked ";
          echo ">N";
          echo "</td><td>\n";
          echo "<input type=radio name=edit_acl_edit[" . $line . "] value=\"Y\""; 
-         if ($".$conf["db_namespace"]."rights->acl_edit == "Y" ) echo " checked ";
+         if ($rights->acl_edit == "Y" ) echo " checked ";
          echo ">Y";
          echo "<input type=radio name=edit_acl_edit[" . $line . "] value=\"N\""; 
-         if ($".$conf["db_namespace"]."rights->acl_edit == "N" ) echo " checked ";
+         if ($rights->acl_edit == "N" ) echo " checked ";
          echo ">N";
          echo "</td>\n";
          echo "<td>";
          echo "<input type=radio name=edit_acl_delete[" . $line . "] value=\"Y\""; 
-         if ($".$conf["db_namespace"]."rights->acl_delete == "Y" ) echo " checked ";
+         if ($rights->acl_delete == "Y" ) echo " checked ";
          echo ">Y";
          echo "<input type=radio name=edit_acl_delete[" . $line . "] value=\"N\""; 
-         if ($".$conf["db_namespace"]."rights->acl_delete == "N" ) echo " checked ";
+         if ($rights->acl_delete == "N" ) echo " checked ";
          echo ">N";
          echo "</td>\n";
          echo "<td>";
          echo "<input type=radio name=edit_acl_rights[" . $line . "] value=\"Y\""; 
-         if ($".$conf["db_namespace"]."rights->acl_rights == "Y" ) echo " checked ";
+         if ($rights->acl_rights == "Y" ) echo " checked ";
          echo ">Y";
          echo "<input type=radio name=edit_acl_rights[" . $line . "] value=\"N\""; 
-         if ($".$conf["db_namespace"]."rights->acl_rights == "N" ) echo " checked ";
+         if ($rights->acl_rights == "N" ) echo " checked ";
          echo ">N";
          echo "</td>\n";
          echo "<td>";
-         if ($".$conf["db_namespace"]."rights->author_id == $conf["author_id"]){
+         if ($rights->author_id == $conf["author_id"]){
          	echo "&nbsp;";
          } else {	
             echo "<input type=checkbox name=edit_acl_deleteit[" . $line . "] value = deleteit>";

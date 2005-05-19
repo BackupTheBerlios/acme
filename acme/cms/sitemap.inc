@@ -62,7 +62,7 @@ function rendersitemap($id){
       $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
       $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
 
-      $getnavtopics  = "Select * from ".$conf["db_namespace"]."nav_topics where nav_id = '" . $sitemap_nav_id . "' order by nav_topic_rank";
+      $getnavtopics  = "Select * from ".$conf["db_namespace"]."nav_topics where nav_topic_type <> 'sitemap' and nav_id = '" . $sitemap_nav_id . "' order by nav_topic_rank";
       $result  = dbquery($getnavtopics);
       if (mysql_num_rows($result) > 0) {
          while ( $row = mysql_fetch_object($result) ){

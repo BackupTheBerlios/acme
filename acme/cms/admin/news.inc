@@ -160,7 +160,9 @@ function news_topic_insert($new_news_topic_type_and_id, $new_news_topic_rows){
    $update_result = dbquery($Statement);
    
    if ($update_result){
-   	acl_user_set($conf["author_id"], "news", mysql_insert_id(), "Y", "Y", "Y", "Y");
+   	$modulid = mysql_insert_id();
+   	acl_user_set($conf["author_id"], "news", $modulid, "Y", "Y", "Y", "Y");
+   	acl_group_set($conf["author_groups"], "news", $modulid, "Y", "Y", "Y", "Y");
    	echo $lang["news_insert_erfolgreich"];}
    else{echo $lang["news_insert_fehlgeschlagen"];}
 }

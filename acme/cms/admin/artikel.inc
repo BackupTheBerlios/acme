@@ -163,6 +163,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
    if ($insert1_result) {
       $modulid = mysql_insert_id();
       acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "artikel", $modulid, "Y", "Y", "Y", "Y");
       $Statement = "INSERT INTO ".$conf["db_namespace"]."artikel_daten (".
                    " artikel_long_text ,  ".
                    " artikel_part, ".
@@ -394,7 +395,7 @@ function artikel_browse($page_id, $author_id){
 	echo "\n<h1>" . $lang["artikel_verwaltung"] . "</h1>\n";
 	if (checkgroupcreate($conf["author_groups"], "artikel") == 1){ echo "<a href=\"" . $conf["admp"] . "&action=new&section=artikel\">" . $lang["artikel_anlegen"] ."</a>\n";}
 	echo "<form action=\"" . $conf["admp"] . "&section=artikel\" method=\"post\">\n";
-    echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+    echo "<table class=\"reda_td\">\n";
     echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
     createsel_pagenCAs("page_id", $page_id); 
     echo "</td><td><input type=\"submit\" value=\"" . $lang["artikel_anzeigen"] . "\"></td></tr>\n";
@@ -403,7 +404,7 @@ function artikel_browse($page_id, $author_id){
 	echo "</td></tr>\n";
     echo "</table>\n";
     echo "</form>\n";
-    echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+    echo "<table  class=\"reda_td\">\n";
     if ($page_id <> ""){
 	  echo "<tr><td>".$lang["artikel_id"] . "</td><td>".$lang["artikel_ueberschrift1"] . "</td><td>".$lang["artikel_veroeffentlichungsdatum"] . "</td><td>".$lang["artikel_seite"] . "</td><td>".$lang["artikel_autor"] . "</td><td>".$lang["artikel_counter"] . "</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
 	  $Statement = "select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:" . $page_id . ":%'";
@@ -434,7 +435,7 @@ function artikel_browse($page_id, $author_id){
 		    echo "</td>";
 		    echo "<td>";
             if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
-		       echo "<a href=" . $conf["admp"] . "&section=rights&modul_name=artikel&modul_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
+		       echo "<a href=\"" . $conf["admp"] . "&section=rights&modul_name=artikel&modul_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
 		    }else{
 		       echo "&nbsp;";
 		    } 

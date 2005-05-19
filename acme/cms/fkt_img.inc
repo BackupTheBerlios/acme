@@ -11,11 +11,11 @@ function getimage($picid){
          $row = mysql_fetch_object($result);
          return "<img src = \"cms/bilder/" . $row->img_real_name."\" alt = \"" . $row->img_description . "\">";
       }else{
-         return "<img src = \"cms/bilder/pixel.gif\" alt = \"blank\">";
+         return "";
       }
       mysql_free_result($result);
    }else{
-      return "<img src = \"cms/bilder/pixel.gif\" alt = \"blank\">";
+      return "";
    }
 }
 

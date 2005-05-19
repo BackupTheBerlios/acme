@@ -37,7 +37,12 @@ function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
                 " sitemap_img_big = '". $new_sitemap_img_big . "',".
                 " sitemap_nav_id = '" . $new_sitemap_nav_id ."'";
    $my_result = dbquery($Statement);
-   if ($my_result) {echo $lang["sitemap_insert_erfolgreich"];}
+   if ($my_result) {
+   	echo $lang["sitemap_insert_erfolgreich"];
+   	$modulid = mysql_insert_id();
+   	acl_user_set($conf["author_id"], "sitemap", $modulid, "Y", "Y", "Y", "Y");
+   	acl_group_set($conf["author_groups"], "sitemap", $modulid, "Y", "Y", "Y", "Y");
+   	}
    else            {echo $lang["sitemap_insert_fehlerhaft"];}
 }
 function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id){
@@ -69,7 +74,7 @@ function sitemapbrowse(){
    if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) {
       echo "<a href=\"". $conf["admp"] . "&section=sitemap&action=new\">".$lang["sitemap_anlegen"]."</a>\n";
    }
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+   echo "<table class=\"reda_td\">\n";
    echo "<th><tr><td>".$lang["sitemap_name"]."</td><td>".$lang["sitemap_nav"]."</td></td><td> </td><td> </td></tr></th>\n";
    $result = dbquery("select * from ".$conf["db_namespace"]."sitemap order by sitemap_name");
    if ( mysql_num_rows($result) > 0 )           {
@@ -78,12 +83,12 @@ function sitemapbrowse(){
          echo "<td>".$row->sitemap_name."</td>";
          echo "<td>".$row->sitemap_nav_id."</td>";
          echo "<td>";
-         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) {
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "sitemap", $row->sitemap_id) == 1) {
             echo "<a href=\"" . $conf["admp"] . "&section=sitemap&action=edit&edit_sitemap_id=" . $row->sitemap_id . "\"><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
          echo "<td>";
-         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "sitemap", 0) == 1) { 
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "sitemap", $row->sitemap_id) == 1) { 
             echo "<a href=\"" . $conf["admp"] . "&section=sitemap&action=delete&delte_id=" . $row->sitemap_id . "\"><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";
          }
          echo "</td>";
@@ -98,7 +103,7 @@ function sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
 
    echo "<h1>".$lang["sitemap_anlegen"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&section=sitemap&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
-   echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+   echo "<table  class=\"reda_td\">";
    echo "<tr><td colspan=4>".$lang["sitemap_name"]."</td></tr>";
    echo "<tr>";
    echo "<td colspan=4><input name=new_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars(stripslashes($new_sitemap_name)) . "\"></td>";
@@ -132,7 +137,7 @@ function sitemapedit($id){
       echo "<h1>".$lang["sitemap_bearbeiten"]."</h1>";
       echo "<form action=\"" . $conf["admp"] . "&section=sitemap&action=update\" ENCTYPE=\"multipart/form-data\" method=POST>";
       echo "<input type=hidden name=edit_sitemap_id value=\"" . $row["sitemap_id"] . "\">";
-      echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+      echo "<table  class=\"reda_td\">";
       echo "<tr><td colspan = 4>".$lang["sitemap_name"]."</td></tr>";
       echo "<tr>";
       echo "<td colspan = 4><input name=edit_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars($row["sitemap_name"]) . "\"></td>";

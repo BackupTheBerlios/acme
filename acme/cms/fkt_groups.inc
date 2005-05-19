@@ -50,14 +50,23 @@ function acl_user_set($user, $modul, $modulid, $rights, $insert, $edit, $delete)
 function acl_group_set($group, $modul, $modulid, $rights, $insert, $edit, $delete){
    global $conf, $lang;
    
-   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "''");
+   if (!isNaN($group)) {
+   	  $group=explodegroup($group);
+   	  $group=$group[1];
+   } 
+   $result = dbquery("select author_id from ".$conf["db_namespace"]."acl where modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '" . $group  . "'");
    if ( mysql_num_rows($result) > 0 )  {
       $result = dbquery("update ".$conf["db_namespace"]."acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."' where  modul_name = '" .  $modul . "' and modul_id = '" . $modulid . "' and group_id = '".$group."'");
    } else {
-      $result = dbquery("insert into ".$conf["db_namespace"]."acl (acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', group_id = '".$group."')");
+      $result = dbquery("insert into ".$conf["db_namespace"]."acl set acl_rights = '".$rights."', acl_insert = '".$insert."', acl_edit = '".$edit."', acl_delete = '".$delete."', modul_name = '" .  $modul . "', modul_id = '" . $modulid . "', group_id = '".$group."'");
    }
    return $result; 
 }
+
+function isNaN( $var ) {
+     return ereg ("^[0-9\.]+$", $var);
+}
+
 function acl_delete($modul, $modulid){
    global $conf, $lang;
    
@@ -121,9 +130,9 @@ function checkgroupcreate($usergroups, $modul){   return 1;}
 function checkgroupmodify($usergroups, $modul){   return 1;}
 function checkgroupdelete($usergroups, $modul){   return 1;}
 
-function explodegroup($grouplist)
-{
+function explodegroup($grouplist){
    global $conf, $lang;
+   
    $grouparray = explode(":", $grouplist);
    return($grouparray);
 }

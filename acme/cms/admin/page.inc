@@ -86,12 +86,9 @@ function pageadd($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
                 " page_comments = '". $new_page_comments . "'";
    $my_result = dbquery($Statement);
    if ($my_result) {
-      $result = dbquery("select page_id from ".$conf["db_namespace"]."pages where page_id = LAST_INSERTED_ID()");
-      if ($result)  {
-         $row = mysql_fetch_object($result);
-         $modulid = $row->page_id;
-         acl_user_set($conf["author_id"], "page", $modulid, "Y", "Y", "Y", "Y");
-      }
+      $modulid = mysql_insert_id();
+      acl_user_set($conf["author_id"], "page", $modulid, "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "page", $modulid, "Y", "Y", "Y", "Y");
       echo $lang["page_insert_erfolgreich"];   
    }
    else {echo $lang["page_insert_fehlerhaft"];}
@@ -141,7 +138,7 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
 
    echo "<h1>".$lang["page_neu"]."</h1>";
    echo "<form name = \"page_new\" id = \"page_new\" action=\"" . $conf["admp"] . "&section=page&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
-   echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+   echo "<table  class=\"reda_td\">";
    echo "<tr><td colspan=3>".$lang["page_name"]."</td><td>".$lang["page_parent"]."</td><td>".$lang["page_childs"]."</td></tr>";
    echo "<tr>";
    echo "<td colspan=3><input name=new_page_name size=45 maxlength=59 value = \"" . htmlspecialchars(stripslashes($new_page_name)) . "\"></td>";
@@ -222,7 +219,7 @@ function pagedit($id){
       echo "<h1>".$lang["page_bearbeiten"]."</h1>";
       echo "<form name = \"page_edit\" id = \"page_edit\" action=\"" . $conf["admp"] . "&section=page&action=update\" ENCTYPE=\"multipart/form-data\" method=POST>";
       echo "<input type=hidden name=edit_page_id value=\"" . $row["page_id"] . "\">";
-      echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+      echo "<table  class=\"reda_td\">";
       echo "<tr><td colspan = 3>".$lang["page_name"]."</td><td>".$lang["page_parent"]."</td><td>".$lang["page_childs"]."</td></tr>";
       echo "<tr>";
       echo "<td colspan = 3><input name=edit_page_name size=45 maxlength=59 value = \"" . htmlspecialchars($row["page_name"]) . "\"></td>";
@@ -301,7 +298,7 @@ function pagebrowse(){
    if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", 0) == 1) {
       echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
    }
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+   echo "<table class=\"reda_td\">\n";
    echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
    writepagechilds($parent,$h_level);
    echo "</table>";

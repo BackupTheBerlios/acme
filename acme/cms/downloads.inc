@@ -106,7 +106,7 @@ function getdownload_typdata($data, $download_typ_id){
    if ($did = "0"){
       $stmt = "order by url_name ASC";
       $akt=0;
-      $query = "select * from ".$conf["db_namespace"]."url where download_typ like '%:".$download_typ_id.":%' " . $stmt;
+      $query = "select * from ".$conf["db_namespace"]."download where download_typ like '%:".$download_typ_id.":%' " . $stmt;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){
@@ -121,7 +121,7 @@ function getdownload_typdata($data, $download_typ_id){
     else { 
       $stmt = "order by url_name ASC";
       $akt=1;
-      $query = "select * from ".$conf["db_namespace"]."url where download_id =".$did;
+      $query = "select * from ".$conf["db_namespace"]."download where download_id =".$did;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          while ( $row = mysql_fetch_object($result) ){

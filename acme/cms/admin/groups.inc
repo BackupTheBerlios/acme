@@ -188,6 +188,7 @@ function groups_insert($new_group_name, $new_rights_modul, $new_rights_access, $
    }   
    if ($insert_result){
       acl_user_set($conf["author_id"], "groups", $group_id, "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "groups", $group_id, "Y", "Y", "Y", "Y");
       echo $lang["groups_insert_erfolgreich"];
    }
    else{echo $lang["groups_insert_fehlgeschlagen"];};

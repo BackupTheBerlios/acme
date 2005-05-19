@@ -502,6 +502,7 @@ function blog_insert($blog_name, $blog_tpl, $blog_img_small,$blog_img_small_inac
    $edit_result = dbquery($Statement);
    if ($edit_result){
       acl_user_set($conf["author_id"], "blog", mysql_insert_id(), "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "blog", $modulid, "Y", "Y", "Y", "Y");
       echo $lang["blog_update_erfolgreich"];
    }
    else{echo $lang["blog_update_fehlerhaft"];};

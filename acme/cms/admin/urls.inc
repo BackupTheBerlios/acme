@@ -85,7 +85,9 @@ function url_typ_add($new_url_typ_name, $new_url_typ_text, $new_url_typ_parent_i
   $my_result = dbquery($Statement);
    
    if ($my_result) {
-      acl_user_set($conf["author_id"], "urls", mysql_insert_id(), "Y", "Y", "Y", "Y");
+   	  $modulid = mysql_insert_id();
+      acl_user_set($conf["author_id"], "urls", $modulid, "Y", "Y", "Y", "Y");
+      acl_group_set($conf["author_groups"], "urls", $modulid, "Y", "Y", "Y", "Y");
       echo $lang["urls_insert_erfolgreich"];
    }
    else {echo $lang["urls_insert_fehlgeschlagen"];}
@@ -156,7 +158,7 @@ function url_browse() {
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url_typ\">".$lang["urls_anlegen"]."</a><br>\n";
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url\">".$lang["urls_eintrag_anlegen"]."</a>\n";
    }
-   echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
+   echo "<table class=\"reda_td\">\n";
    echo "<th><tr><td>".$lang["urls_titel"]."</td><td>".$lang["urls_counter"]."</td></tr><td> </td><td> </td>\n";
    writeurltypchilds($parent,$h_level);
    echo "</table>";
@@ -167,7 +169,7 @@ function url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ){
 
    echo "<h1>".$lang["urls_eintrag_anlegen"]."</h1>";
    echo "<form name = new_url action=\"" . $conf["admp"] . "&section=urls&action=add_url\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
-   echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+   echo "<table  class=\"reda_td\">";
    echo "<tr><td colspan = \"4\">".$lang["urls_eintrag_titel"]."</td></tr>";
    echo "<tr><td colspan = \"4\"><input name=new_url_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_url_name)) . "\"></td></tr>";
    echo "<tr><td colspan = \"4\">".$lang["urls_eintrag_url"]."</td></tr>";   
@@ -192,7 +194,7 @@ function url_typ_new(){
 
    echo "<h1>".$lang["urls_anlegen"]."</h1>";
    echo "<form name = new_url_typ action=\"" . $conf["admp"] . "&section=urls&action=add_url_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
-   echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+   echo "<table  class=\"reda_td\">";
    echo "<tr><td colspan = 3>".$lang["urls_name"]."</td><td>".$lang["urls_parent"]."</td></tr>";
    echo "<tr>";
    echo "<td colspan=\"3\"><input name=new_url_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_url_typ_name)) . "\"></td>";
@@ -251,7 +253,7 @@ function url_edit($id){
       echo "<h1>".$lang["urls_eintrag_bearbeiten"]."</h1>";
       echo "<form name = edit_url action=\"" . $conf["admp"] . "&section=urls&action=update_url\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_url_id value=\"" . $row->url_id . "\">";      
-      echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+      echo "<table  class=\"reda_td\">";
       echo "<tr><td colspan = 4>".$lang["urls_eintrag_titel"]."</td></tr>";
       echo "<tr><td colspan=4><input name=edit_url_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->url_name) . "\"></td></tr>";
       echo "<tr><td colspan = 4>".$lang["urls_eintrag_url"]."</td></tr>";
@@ -282,7 +284,7 @@ function url_typ_edit($id){
       echo "<h1>".$lang["urls_bearbeiten"]."</h1>";
       echo "<form naem = edit_url_typ action=\"" . $conf["admp"] . "&section=urls&action=update_url_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_url_typ_id value=\"" . $row->url_typ_id . "\">";
-      echo "<table  class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>";
+      echo "<table  class=\"reda_td\">";
       echo "<tr><td colspan=\"3\">".$lang["urls_titel"]."</td><td>".$lang["urls_parent"]."</td></tr>";
       echo "<tr><td colspan=\"3\"><input name=edit_url_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->url_typ_name) . "\"></td>";
       echo "<td>";
