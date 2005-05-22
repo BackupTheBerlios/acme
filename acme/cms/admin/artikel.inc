@@ -389,7 +389,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
 function artikel_browse($page_id, $author_id){
 	global $conf,$lang;
 
-    if (isset($_SESSION['artikel_edit_page_id'])){$page_id= $_SESSION['artikel_edit_page_id'];}
+    // if (isset($_SESSION['artikel_edit_page_id'])){$page_id= $_SESSION['artikel_edit_page_id'];}
     if ($author_id=="" || !isset($author_id)) {$author_id = $conf["author_id"];}
 
 	echo "\n<h1>" . $lang["artikel_verwaltung"] . "</h1>\n";
@@ -490,9 +490,9 @@ function createsel_pagenCAs($select_name,$grouplist){
    $allgroups = dbquery("select page_id, page_name from ".$conf["db_namespace"]."pages Where page_childs = 'A' order by page_name");
    echo "<select name=" . $select_name . ">\n";
    if ( mysql_num_rows($allgroups) > 0 )      {
-      while ( $g_row = mysql_fetch_object($allgroups) )         {
+      while ( $g_row = mysql_fetch_object($allgroups) ){
          echo "<option value=" . $g_row->page_id;
-         if ( eregi ( $g_row->page_id, $grouplist ) ){            echo " selected ";}
+         if ($g_row->page_id == $grouplist){echo " selected ";}
          echo ">" . $g_row->page_name . "</option>\n";
       }
       mysql_free_result($allgroups);

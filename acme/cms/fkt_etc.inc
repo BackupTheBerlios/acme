@@ -81,6 +81,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[iurllist=([0-9]+)\]([^\[]+)\[/iurllist\]","<a href=\"".$conf["indexname"]."urls/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // iurls ohne ""
   $contblock = eregi_replace("\[iurl=([0-9]+)\]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  // link ohne ""
+  $contblock = eregi_replace("\[link=([^\[]+)\]([^\[]+)\[/link\]","<a href=\"\\1\" target=\"_blank\">\\2</a>",$contblock);
   // downloads ohne ""
   $contblock = eregi_replace("\[download=([0-9]+)\]([^\[]+)\[/download\]","<a href=\"".$conf["indexname"]."download/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
   // downloadlisten ohne ""

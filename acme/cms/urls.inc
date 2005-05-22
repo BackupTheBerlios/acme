@@ -33,8 +33,17 @@ if ($page="urls"){
    renderurls($url_typ_id, $url_id);
    }
   
-function renderurls($id,$uid){
+function renderurls($id, $url_id){
    global $conf, $lang;
+
+   if (($id == "" || $id == "0") && isset($url_id)){
+   	  $query = "select * from ".$conf["db_namespace"]."url where url_id =".$url_id;
+      $result = dbquery($query);
+      if ( mysql_num_rows($result) > 0 ){
+         $row = mysql_fetch_object($result);
+         $id = getfirsturltypid($row->url_typ);
+      }   
+   } 
 
    $my_result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
@@ -49,7 +58,6 @@ function renderurls($id,$uid){
       $url_typ_right_bar = $row->url_typ_right_bar;
       $url_typ_top_bar   = $row->url_typ_top_bar;
       $url_typ_foo_bar   = $row->url_typ_foo_bar;
-      $url_typ_titel     = $row->url_typ_titel;
       $url_typ_text      = $row->url_typ_text;
       $url_typ_counter   = $row->url_typ_counter;
       mysql_free_result($my_result);
@@ -60,13 +68,16 @@ function renderurls($id,$uid){
          $data->urls->parent->name = geturl_typnamebyid($url_typ_parent);
          $data->urls->parent->url  = $conf["indexname"]."urls/".$url_typ_parent;
       }
-      geturl_typdata(&$data, $url_typ_id, $uid);
+      geturl_typ(&$data,  $url_typ_tpl, $url_typ_id);
+      geturl_data(&$data, $url_typ_tpl, $url_typ_id);
+      geturl_url(&$data,  $url_typ_tpl, $url_id);
       $data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left");
       $data->right_bar = parse_bar($url_typ_tpl, $url_typ_right_bar,"right");
       $data->top_bar   = parse_bar($url_typ_tpl, $url_typ_top_bar,  "top");
       $data->foo_bar   = parse_bar($url_typ_tpl, $url_typ_foo_bar,  "foo");
-      $data->urls->titel = $url_typ_titel;
-      $data->titel       = $url_typ_titel;      
+      $data->urls->name = $url_typ_name;
+      $data->urls->text = $url_typ_text;
+      $data->titel       = $url_typ_name;      
       $data->home_img    = gethomeimg();
       $data->home_url    = $conf["indexname"].$conf["home_page_typ"] . "/".$conf["home_page"];
       $page_output = sprintt($data, $conf["templates"].gettemplatebyid($url_typ_tpl).".tpl");
@@ -75,65 +86,75 @@ function renderurls($id,$uid){
    else {renderpage($conf["home_404"],0);}
 }
 
+function getfirsturltypid($list){
+   global $conf, $lang;
+   
+   $listarray = explode(":", $list);
+   while (list ($key, $value) = each ($listarray) ) {
+      if ($value <> "") {return $value;}
+   }
+}
+
 function geturl_typnamebyid($id){
    global $conf, $lang;
    
    $my_result = dbquery("select url_typ_name from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
-   if ( mysql_num_rows($my_result) == 1 )
-      {
+   if ( mysql_num_rows($my_result) == 1 )      {
       $row = mysql_fetch_object($my_result);
       $name = $row->url_typ_name;
       mysql_free_result($my_result);
       return $name;
-      }
+   } else {return "";}
 }      
-
-function geturl_typdata($data, $url_typ_id, $uid){
+function geturl_typ($data, $page_tpl, $url_typ_id){
    global $conf, $lang;
 
-   $stmt = "order by url_typ_name ASC";
-   $akt=0;
-   $query = "select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '".$url_typ_id."' " . $stmt;
+   $query = "select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '".$url_typ_id."' order by url_typ_name ASC";
    $result = dbquery($query);
-   if ( mysql_num_rows($result) > 0 ){
+   if (mysql_num_rows($result) > 0 ){
+   	  $akt=0;
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
          $data->urls->url_childs[$akt]->name   = $row->url_typ_name;
          $data->urls->url_childs[$akt]->url    = $conf["indexname"]."urls/".$row->url_typ_id;
-         }
+         $data->urls->url_childs[$akt]->text   = parse_bbcode(nltobr($row->url_typ_text), $page_tpl);
       }
- 	mysql_free_result($result);     
-
-   if($uid = "0") {
-      $stmt = "order by url_name ASC";
-      $akt=0;
-      $query = "select * from ".$conf["db_namespace"]."url where url_typ like '%:".$url_typ_id.":%' " . $stmt;
-      $result = dbquery($query);
-      if ( mysql_num_rows($result) > 0 ){
-         while ( $row = mysql_fetch_object($result) ){
-            $akt++;
-            $data->urls->url_data[$akt]->name   = $row->url_name;
-            $data->urls->url_data[$akt]->url    = $row->url_url;
-            $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
-         }
-         mysql_free_result($result);     
-      }
-   } 
-   else {
-      $stmt = "order by url_name ASC";
-      $akt=1;
-      $query = "select * from ".$conf["db_namespace"]."url where url_id=".$uid;
-      $result = dbquery($query);
-      if ( mysql_num_rows($result) > 0 ){
-         while ( $row = mysql_fetch_object($result) ){
-            $data->urls->url_data[$akt]->name   = $row->url_name;
-            $data->urls->url_data[$akt]->url    = $row->url_url;
-            $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
-         }
-         mysql_free_result($result);     
-      }
+      mysql_free_result($result);
    }
 
+}        
+function geturl_data($data, $page_tpl, $url_typ_id){
+   global $conf, $lang;
 
+   $stmt = "order by url_name ASC";
+   $query = "select * from ".$conf["db_namespace"]."url where url_typ like '%:".$url_typ_id.":%' order by url_name ASC";
+   $result = dbquery($query);
+   if (mysql_num_rows($result) > 0 ){
+      $akt=0;
+      while ( $row = mysql_fetch_object($result) ){
+         $akt++;
+         $data->urls->url_data[$akt]->name   = $row->url_name;
+         $data->urls->url_data[$akt]->url    = $row->url_url;
+         $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
+      }
+      mysql_free_result($result);     
+   }
+} 
+function geturl_url($data, $page_tpl, $url_id){
+   global $conf, $lang;
+
+   if (isset($url_id)|| $url_id<>""|| $url_id<>0){
+      $query = "select * from ".$conf["db_namespace"]."url where url_id=".$url_id;
+      $result = dbquery($query);
+      if (mysql_num_rows($result) > 0 ){
+         $akt=1;
+         while ( $row = mysql_fetch_object($result) ){
+            $data->urls->url_data[$akt]->name   = $row->url_name;
+            $data->urls->url_data[$akt]->url    = $row->url_url;
+            $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
+         }
+         mysql_free_result($result);     
+      }
+   }   
 }      
 ?>            

@@ -32,11 +32,11 @@ if ($page="download"){
    renderdownloads($download_typ_id, $download_id);
    }
   
-function renderdownloads($id, $did){
+function renderdownloads($id, $download_id){
    global $conf, $lang;
    
    if (($id == "" || $id == "0") && isset($did)){
-   	  $query = "select * from ".$conf["db_namespace"]."download where download_id =".$did;
+   	  $query = "select * from ".$conf["db_namespace"]."download where download_id =".$download_id;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          $row = mysql_fetch_object($result);
@@ -44,7 +44,6 @@ function renderdownloads($id, $did){
       }   
    	  
    } 
-   if (!isset($did)) $did=0;
 
    $my_result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
@@ -70,7 +69,9 @@ function renderdownloads($id, $did){
          $data->downloads->parent->name = getdownload_typnamebyid($download_typ_parent);
          $data->downloads->parent->url  = $conf["indexname"]."downloads/".$download_typ_parent;
       }
-      getdownload_typdata(&$data, $download_typ_id, $did);
+      getdownload_typ(&$data, $download_typ_tpl, $download_typ_id, $download_id);
+      getdownload_data(&$data, $download_typ_tpl, $download_typ_id, $download_id);
+      getdownload_download(&$data, $download_typ_tpl, $download_typ_id, $download_id);
       $data->left_bar  = parse_bar($download_typ_tpl, $download_typ_left_bar, "left");
       $data->right_bar = parse_bar($download_typ_tpl, $download_typ_right_bar,"right");
       $data->top_bar   = parse_bar($download_typ_tpl, $download_typ_top_bar,  "top");
@@ -107,7 +108,7 @@ function getdownload_typnamebyid($id){
       }
 }      
 
-function getdownload_typdata($data, $download_typ_id, $download_id){
+function getdownload_typ($data, $tpl, $download_typ_id, $download_id){
    global $conf, $lang;
 
    $query = "select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = '".$download_typ_id."' order by download_typ_name ASC";
@@ -118,37 +119,43 @@ function getdownload_typdata($data, $download_typ_id, $download_id){
          $akt++;
          $data->downloads->download_childs[$akt]->name   = $row->download_typ_name;
          $data->downloads->download_childs[$akt]->url    = $conf["indexname"]."downloads/".$row->download_typ_id;
-         }
+         $data->downloads->download_childs[$akt]->text   = parse_bbcode(nltobr($row->download_typ_text), $tpl);
+      }
+      mysql_free_result($result);
    }
-   mysql_free_result($result);     
+}     
+function getdownload_data($data, $tpl, $download_typ_id, $download_id){
+   global $conf, $lang;
 
-   if ($download_id == "0"){
-      $query = "select * from ".$conf["db_namespace"]."download where download_typ like '%:".$download_typ_id.":%' order by download_name ASC";
-      $result = dbquery($query);
-      if (mysql_num_rows($result) > 0 ){
-         $akt=0;
-         while ( $row = mysql_fetch_object($result) ){
-            $akt++;
-            $data->downloads->download_data[$akt]->name   = $row->download_name;
-            $data->downloads->download_data[$akt]->file   = $conf["downloads"].$row->download_file;
-            $data->downloads->download_data[$akt]->text   = parse_bbcode(nltobr($row->download_text), $page_tpl);                           
-         }
-         mysql_free_result($result);     
-      }
-    } 
-    else { 
-      $query = "select * from ".$conf["db_namespace"]."download where download_id =".$download_id;
-      $result = dbquery($query);
-      if ( mysql_num_rows($result) > 0 ){
-      	 $akt=1;
-         while ( $row = mysql_fetch_object($result) ){
-            $data->downloads->download_data[$akt]->name   = $row->download_name;
-            $data->downloads->download_data[$akt]->file   = $conf["downloads"].$row->download_file;
-            $data->downloads->download_data[$akt]->text   = parse_bbcode(nltobr($row->download_text), $page_tpl);                           
-         }
-      	mysql_free_result($result);     
-      }
-    }   
+   $query = "select * from ".$conf["db_namespace"]."download where download_typ like '%:".$download_typ_id.":%' order by download_name ASC";
+   $result = dbquery($query);
+   if (mysql_num_rows($result) > 0 ){
+      $akt=0;
 
-}      
+      while ( $row = mysql_fetch_object($result) ){
+         $akt++;
+         $data->downloads->download_data[$akt]->name   = $row->download_name;
+         $data->downloads->download_data[$akt]->file   = $conf["downloads"].$row->download_file;
+         $data->downloads->download_data[$akt]->text   = parse_bbcode(nltobr($row->download_text), $tpl);                           
+      }
+      mysql_free_result($result);     
+   }
+}
+function getdownload_download($data, $tpl, $download_typ_id, $download_id){
+   global $conf, $lang;
+
+   if (isset($download_id)|| $download_id<>""|| $download_id<>0){
+   $query = "select * from ".$conf["db_namespace"]."download where download_id =".$download_id;
+   $result = dbquery($query);
+   if ( mysql_num_rows($result) > 0 ){
+      $akt=1;
+      while ( $row = mysql_fetch_object($result) ){
+         $data->downloads->download_data[$akt]->name   = $row->download_name;
+         $data->downloads->download_data[$akt]->file   = $conf["downloads"].$row->download_file;
+         $data->downloads->download_data[$akt]->text   = parse_bbcode(nltobr($row->download_text), $tpl);                           
+      }
+      mysql_free_result($result);     
+   }
+   }
+}   
 ?>                     

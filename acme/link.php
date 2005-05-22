@@ -7,6 +7,7 @@ include($conf["cmsbase"] . "/fkt_groups.inc");
 include($conf["cmsbase"] . "/fkt_db.inc");
 include($conf["cmsbase"] . "/fkt_etc.inc");
 include($conf["cmsbase"] . "/fkt_rte.inc");
+include($conf["cmsbase"] . "/fkt_page.inc"); 
 include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
 dbconnect();
 include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
@@ -27,12 +28,12 @@ include($conf["admbase"] . "/auth.inc");
 </style>
 <?php
 $fieldname = "window.opener.document.forms['".$name."'].elements['".$field."']";
-echo "<script language=\"JavaScript\" type=\"text/javascript\">";
-echo "function writelink(link){";
-echo $fieldname .".value += link;";
-echo "self.close();";
-echo "}";
-echo "</script>";
+echo "\n<script language=\"JavaScript\" type=\"text/javascript\">\n";
+echo "function writelink(link){\n";
+echo $fieldname .".value += link;\n";
+echo "self.close();\n";
+echo "}\n";
+echo "</script>\n";
 ?>
 </head>
 <body>
