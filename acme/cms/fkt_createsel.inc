@@ -102,8 +102,7 @@ function createsel_img($select_name, $grouplist){
                while ( $imgentryrow = mysql_fetch_object($imgentrys) ) {
                   echo "<option value=" . $imgentryrow->img_id;
                   echo " label=" . $imgentryrow->img_name. " ";
-                  if ( eregi ( $imgentryrow->img_id, $grouplist ) )
-                  echo " selected ";
+                  if ($imgentryrow->img_id == $grouplist ){ echo " selected ";}
                   echo ">" . $imgentryrow->img_name. "</option>\n";
                }
             }

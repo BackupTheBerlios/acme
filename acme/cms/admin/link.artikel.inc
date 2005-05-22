@@ -1,7 +1,7 @@
 <?php
 include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
 
-echo "<form action=\"".$conf["indexbase"]."/link.php?modul=artikel\" method=\"post\">";
+echo "<form action=\"".$conf["indexbase"]."/link.php?modul=artikel&name=".$name."&field=".$field."\" method=\"post\">";
 echo "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n";
 echo "<tr><td>" . $lang["artikel_der_seite"] ."</td><td>";
 createsel_pagenCAs("page_id", $page_id); 
@@ -34,7 +34,7 @@ if ($page_id <> ""){
             $linkname = "[artikel=". $row->artikel_id."]".$row->artikel_headline."[/artikel]";
             echo $linkname;
             if (isset($name)&&isset($field)) {
-               echo "<input type=button value=\">\" onClick= writelink('".$linkname."');>";
+               echo "<input type=button value=\">\" onClick= writelink(\"".$linkname."\");>";
             }   
             echo "</td>";
             echo "</tr>\n";

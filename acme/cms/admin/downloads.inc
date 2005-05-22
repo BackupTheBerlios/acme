@@ -457,7 +457,6 @@ function createsel_downloadtyps($select_name,$grouplist){
    global $conf, $lang;
 
    echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
-   echo "<option value= \"\"></option>";
    getdownloadtyp4select($parent, &$h_level, $grouplist);
    echo "</select>";
    return;

@@ -11,11 +11,11 @@ function getimage($picid){
          $row = mysql_fetch_object($result);
          return "<img src = \"cms/bilder/" . $row->img_real_name."\" alt = \"" . $row->img_description . "\">";
       }else{
-         return "";
+         return "0";
       }
       mysql_free_result($result);
    }else{
-      return "";
+      return "0";
    }
 }
 
@@ -106,10 +106,13 @@ function getimagebyid($id, $style,$page_tpl){
       $data->img_big_url      = $conf["images"] . $row->img_real_name;
       $data->img_name   = $row->img_name;
       $data->img_desc   = $row->img_description;
-   }
-   if ($style==""){$style="c";}
-   $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
-   return " " . sprintt($data, $tplfile) . " ";
+   
+      if ($style==""){$style="c";}
+      $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".imgtbl.". $style .".tpl";
+      return " " . sprintt($data, $tplfile) . " ";
+
+   } else { return "0";}
+
 
    mysql_free_result($result);
 }

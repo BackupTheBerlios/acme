@@ -180,10 +180,22 @@ function parse_block($page_tpl, $block_id, $side){
    $result  = dbquery($getblock);
    if (mysql_num_rows($result) > 0) {
       $row = mysql_fetch_object($result);
-      $data->block_name    = $row->block_name;
-      if ($row->block_type == "H"){$data->block_content = $row->block_content;}
-      if ($row->block_type == "P"){$data->block_content = OutputPhpDocument($row->block_content);}
-      mysql_free_result($result);
+      $data->block->name    = $row->block_name;
+      $data->block->typ     = $row->block_type;
+      if ($row->block_type == "H"){$data->block->content = $row->block_content;}
+      if ($row->block_type == "P"){$data->block->content = OutputPhpDocument($row->block_content);}
+      if ($row->block_type == "B"){$data->block->content = parse_bbcode($row->block_content, $page_tpl);}
+      if ($row->block_type == "I"){
+         $getpic = "Select img_name, img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$row->block_image."'";
+         $result = dbquery($getpic);
+         if (mysql_affected_rows() > 0)         {
+            $row = mysql_fetch_object($result);
+            $data->block->image->name  =  $row->img_name;
+            $data->block->image->src   =  $conf["images"] . $row->img_real_name;
+            $data->block->image->desc  =  $row->img_description;
+         }
+         mysql_free_result($result);
+      }   
    }
    $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".block.". $side .".tpl";
    return " " . sprintt($data, $tplfile) . " ";

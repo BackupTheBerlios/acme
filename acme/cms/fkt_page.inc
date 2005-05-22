@@ -1,7 +1,7 @@
 <?php
-function getpageheadlinebyid($id)
-{
+function getpageheadlinebyid($id){
    global $conf, $lang;
+   
    $my_result = dbquery("select page_headline from ".$conf["db_namespace"]."pages where page_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
@@ -11,9 +11,9 @@ function getpageheadlinebyid($id)
       return $headline;
       }
 }
-function getpagenamebyid($id)
-{
+function getpagenamebyid($id){
    global $conf, $lang;
+   
    $my_result = dbquery("select page_name from ".$conf["db_namespace"]."pages where page_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )
       {
@@ -25,6 +25,7 @@ function getpagenamebyid($id)
 }
       
 function getpagenamebyidarray($ids){
+	
    global $conf, $lang;
    
    $names = "";

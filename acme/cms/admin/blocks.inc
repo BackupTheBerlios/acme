@@ -19,6 +19,11 @@ switch($action){
          createsel_btyp("edit_block_type", $row->block_type); 
          echo "</td>".
               "</tr>".
+              "<tr>".
+              "<tr><td colspan=\"3\">".$lang["blocks_image"]."</td></tr>".
+              "<tr><td colspan=\"3\">";
+         createsel_img("edit_block_image", $row->block_image);
+         echo "</td></tr>".
               "<tr><td colspan=\"3\">".$lang["blocks_inhalt"]."</td></tr>".
               "<tr><td colspan=\"3\"><textarea name=edit_block_content wrap=virtual rows=4 cols=60>" . htmlspecialchars($row->block_content) . "</textarea></td></tr>".
               "<tr><td colspan=\"3\" align=\"right\"><input type=submit name=edit value=".$lang["blocks_speichern"]."></td></tr>".
@@ -40,6 +45,11 @@ switch($action){
       createsel_btyp("new_block_type",$new_block_type);
       echo "</td>".
            "</tr>".
+              "<tr>".
+              "<tr><td colspan=\"3\">".$lang["blocks_image"]."</td></tr>".
+              "<tr><td colspan=\"3\">";
+      createsel_img("new_block_image", $new_block_image);
+      echo "</td></tr>".           
            "<tr><td>&nbsp;</td></tr>".
            "<tr><td>".$lang["blocks_inhalt"]."</td></tr>".
            "<tr><td><textarea name=new_block_content wrap=virtual rows=4 cols=60>" . htmlspecialchars(stripslashes($new_block_content)) . "</textarea></td></tr>".
@@ -52,10 +62,12 @@ switch($action){
    case "add":
            $Statement = "INSERT INTO ".$conf["db_namespace"]."blocks (".
                            " block_name ,".
+                           " block_image ,".
                            " block_type ,".
                            " block_content ".
                            ") VALUES (".
                            " '". $new_block_name ."' ,".
+                           " '". $new_block_image ."' ,".
                            " '". $new_block_type ."' ,".
                            " '". $new_block_content ."' )";
             $my_result = dbquery($Statement);
@@ -73,6 +85,7 @@ switch($action){
     case "update":
          $Statement = "UPDATE ".$conf["db_namespace"]."blocks SET".
                       " block_name = '". $edit_block_name . "',".
+                      " block_image = '". $edit_block_image . "',".
                       " block_type = '". $edit_block_type . "',".
                       " block_content = '". $edit_block_content . "'".
                       " WHERE block_id = '". $edit_block_id . "'";
@@ -123,7 +136,9 @@ function block_browse(){
          echo "<tr>";
          echo "<td>".$row->block_name."</td>";
          if ($row->block_type == "H"){echo "<td>HTML</td>";}
-         if ($row->block_type == "P"){echo "<td>PHP</td>";}
+         if ($row->block_type == "P"){echo "<td>PHP</td>";}         
+         if ($row->block_type == "B"){echo "<td>BBC</td>";}
+         if ($row->block_type == "I"){echo "<td>Image</td>";}
          echo "<td>";
          if ( checkgroupmodify($conf["author_groups"], "blocks") == 1){
             echo "<a href=" . $conf["admp"] . "&section=blocks&action=edit&edit_id=" . $row->block_id . "><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";
@@ -150,6 +165,12 @@ function createsel_btyp($select_name,$grouplist)
    echo "<option";
    if ($grouplist == "H" || $grouplist == ""){echo " selected";};
    echo " value=\"H\">HTML</option>";
+   echo "<option";
+   if ($grouplist == "B" || $grouplist == ""){echo " selected";};
+   echo " value=\"B\">BBCode</option>";
+   echo "<option";
+   if ($grouplist == "I" || $grouplist == ""){echo " selected";};
+   echo " value=\"I\">Image</option>";
    echo "</select>";
    return;
 }

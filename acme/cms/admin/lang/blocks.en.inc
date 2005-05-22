@@ -7,6 +7,7 @@ $lang["blocks_id"]="ID";
 $lang["blocks_name"]="block name";
 $lang["blocks_typ"]="block type";
 $lang["blocks_inhalt"]="content";
+$lang["blocks_image"]="image";
 $lang["blocks_speichern"]="save";
 $lang["blocks_insert_fehlerhaft"]="error: block could not be created";
 $lang["blocks_insert_erfolgreich"]="block created successfully";
