@@ -1,0 +1,327 @@
+/* medinet styles */
+
+/* allgemeine Richtlinien:
+
+- Quadate: h19 w22
+- font: verdana (arial narrow zumindest im logo)
+- medinetgruen: #00A88E
+- medinetblau: #2B74B7
+
+*/
+/* ALLGEMEINES */
+html {
+      padding: 0;
+      margin: 0;
+      }
+body {
+        padding: 0;
+        margin: 0;
+        background: white;
+        color: black;
+        font-family: verdana;
+        font-size: small;
+        top: 0;
+        left: 0;
+        }
+a img {
+        border-style:none;
+		border-width:0px;
+        }
+img   {
+        border-style:none;
+		border-width:0px;
+        }
+form {
+        margin: 0;
+        display: inline;
+}
+label, input {
+        color: black;
+}
+/* FONTS */
+/* headlines */
+/* definiert bis h5, verwendet soweit nur bis h3; der rest dient als backup */
+h1, h2, h3, h4, h5, h6 {
+   margin: 1em 0 0.2em 0;
+   clear: both;
+   font-family: verdana;
+   color: #00A88E;
+}
+h1 {font-size: 130%;font-weight: bold;}
+h2 {font-size: 120%;font-weight:bold;}
+h3 {font-size: 110%;}
+h4 {font-size: 100%;}
+h5 {font-size: 100%;}
+p  {}
+
+
+/* LINKS */
+
+a:link {
+  color:#00A88E;
+  text-decoration:underline;
+  }
+a:visited {
+  color:#2e2e2e;
+  text-decoration:underline;
+  }
+a:hover {
+  color:#00A88E;
+  text-decoration:underline;
+  }
+
+.parent{
+	font-size:small;
+	text-align:right;
+	position:relative;
+	right:0px;
+	}
+
+/* ARTIKEL */
+h1.artikel {}
+h2.artikel {}
+h3.artikel {}
+h4.artikel {}
+h5.artikel {}
+.artikel_img_titel{
+   font-size:x-small;
+   }
+.artikel_author	{
+   margin-top:0.3em;
+   font-size:small;
+   }
+p.artikel_short_text{
+   margin-top:1em;
+   font-weight:bold;
+   }
+p.artikel_long_text	{
+   margin-top:1em;
+   }
+.artikel_modify_date{
+	font-size:small;
+	text-align:right;
+	position:relative;
+	right:0px;
+	}
+.artikel_page{
+	font-size:small;
+	text-align:left;
+	}
+/* *********************************** */
+/* PAGES */
+h1.page {}
+h2.page {}
+h3.page {}
+h4.page {}
+h5.page {}
+.page_img_titel	{
+   font-size:x-small;
+   }
+.page_img_big	{
+   border-style:none;
+   border-width:0px;
+}
+p.page_short_text{
+   margin-top:1em;
+   }
+p.page_long_text{
+   margin-top:1em;
+   }
+.page_modify_date		{
+   font-size:x-small;
+   text-align:right;
+   position:relative;
+   right:0px;
+}
+.page_artikel_headline {
+   margin-top: 1em;
+   font-size: 110%;
+   color:black;
+   font-weight: bold;
+   }
+.page_artikel_sub_headline  {
+   color:black;
+   }
+p.page_artikel_short_text {
+   margin-top:0.3em;
+   }
+.page_artikel_autor {
+   margin-top:0.3em;
+   font-size:x-small;
+   }
+.page_artikel_publish_date{
+   font-size:x-small;
+   }
+.page_artikel_url{
+   font-size:small;
+}
+/* *********************************** */
+/* SITEMAP */
+
+.map_element_img
+		{
+		border-style:none;
+		border-width:0px;
+		}
+		
+.map_element_text
+		{
+		font-size:small;
+		}
+		
+.map_element_url
+		{
+		font-size:small;
+		}
+/* *********************************** */
+
+/* SEARCH */
+
+.search_ul
+		{
+		margin-bottom:15px;
+		list-style-type:square;
+		font-size:small;
+		}
+		
+.search_description
+		{
+		font-size:x-small;
+		}
+		
+
+
+/* *********************************** */
+
+/* BILDER */
+.name{font-size:x-small;}
+.text{font-size:x-small;}
+.desc_short{font-size:x-small;}
+/* *********************************** */
+/* RAHMENTABELLE */
+/* unterteilt in 3 felder: l, m, r */
+.rahmentable{
+   empty-cells:show;
+   border-style:none;
+   border-width:0px;
+   border-spacing:5px;
+   }
+/* rahmentabelle linkes feld (nav) */
+.rahmentable_l{
+   width:200px;
+   text-align:left; 
+   vertical-align:top;
+}
+/* rahmentabelle mittleres feld (content) */
+.rahmentable_m {
+   width:600px;
+   text-align:left;
+   vertical-align:top;
+   padding-left:15px;
+   padding-right:15px;
+   padding-bottom:15px;
+}
+/* rahmentabelle rechtes feld (rechter rand) */
+.rahmentable_r{
+   width:200px;
+   text-align:left;
+   vertical-align:top;
+   background-color:#00A88E;
+}
+	
+/* FOOTER */
+/* die gr�ne Fusszeile */
+/* aufgerufen in home.tpl */
+.footer_td{
+   border-top-style:solid;
+   border-top-width:1px;
+   border-top-color:#00A88E;
+   }
+/* die schrift in der fusszeile (nav.foo) */		
+/* aufgerufen in home.nav.foo.tpl */
+.footer{
+   text-align:center;
+   font-size:x-small;
+   color:#00A88E;
+   text-decoration:none;
+}
+/* *********************************** */
+/* KEY VISUALS */
+/* Bild in der rechten Spalte (in rahmentable_r) */
+.img_key_visual		{
+   vertical-align:top;
+   width:200px;
+   border-style:none;
+   border-width:0px;
+   margin:0px;
+} 
+/* CONTENT-BEGRENZUNGS-MARKER */
+/* oben links */
+.img_cont_begr_ol			{
+   margin-top:10px;
+   margin-right:10px;
+   margin-bottom:-30px;
+   margin-left:0px;
+   float:none;
+   vertical-align:top;
+   position:relative;
+   top:0px;
+   left:-10px;
+   width:16px;
+   height:8px;
+   }		
+/* unten rechts */
+.img_cont_begr_ur{
+   margin-top:10px;
+   margin-right:0px;
+   margin-bottom:10px;
+   margin-left:25px;
+   float:right;
+   vertical-align:bottom;
+   text-align:right;
+   position:relative;
+   bottom:0px;
+   right:0px;
+   width:16px;
+   height:8px;
+   }		
+/* NAVIGATION */
+.nav_l_farbbox_0{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;}
+.nav_l_farbbox_1{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:5px;}
+.nav_l_farbbox_2{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:10px;}
+.nav_l_farbbox_3{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:15px;}
+.nav_l_farbbox_4{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:20px;}
+.nav_l_farbbox_5{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:25px;}
+.nav_l_farbbox_6{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:30px;}
+.nav_l_farbbox_7{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:35px;}
+.nav_l_farbbox_8{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:45px;}
+.nav_l_farbbox_9{width:200px;position:relative;left:3px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;padding-left:45px;}
+
+.nav_l_link a:link {
+  color: black;
+  }
+.nav_l_link a:visited {
+  color: black;
+  }
+.nav_l_link a:hover {
+  color: black;
+  text-decoration:underline;
+  }
+/*sitemap*/
+.sitemap_h_0{padding-left:0px;}
+.sitemap_h_1{padding-left:10px;}
+.sitemap_h_2{padding-left:20px;}
+.sitemap_h_3{padding-left:30px;}
+.sitemap_h_4{padding-left:40px;}
+.sitemap_h_5{padding-left:50px;}
+.sitemap_h_6{padding-left:60px;}
+.sitemap_h_7{padding-left:70px;}
+.sitemap_h_8{padding-left:80px;}
+.sitemap_h_9{padding-left:90px;}
+
+.home_img {
+   width:200px;height:130px;
+   border-width:0px;
+   padding:3px;
+   border-style:none;
+   }

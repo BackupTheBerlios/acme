@@ -120,7 +120,7 @@ hr
 	color:#DDDDDD;
 	}
 
-/* die Subheadlines über den Tabellen */
+/* die Subheadlines ï¿½ber den Tabellen */
 .subhead
 	{font-weight: bold;}
 
@@ -296,7 +296,7 @@ a:active.navbuttonlink
 
 
 
-/* die allgemeine Tabelle für alles. Breite: ausgelegt für 800x800, safe */
+/* die allgemeine Tabelle fï¿½r alles. Breite: ausgelegt fï¿½r 800x800, safe */
 
 .reda_td
 
@@ -321,7 +321,7 @@ a:active.navbuttonlink
                    }
 
 
-/* Tabelle fürs Neu-Anlegen von Modulen, Serien etc */
+/* Tabelle fï¿½rs Neu-Anlegen von Modulen, Serien etc */
 
 .reda_new_table
 
@@ -724,7 +724,7 @@ a:active
 
 
 
-/* die allgemeine Tabelle für alles. Breite: ausgelegt für 800x800, safe */
+/* die allgemeine Tabelle fï¿½r alles. Breite: ausgelegt fï¿½r 800x800, safe */
 
 .reda_td
 
@@ -749,7 +749,7 @@ a:active
                    }
 
 
-/* Tabelle fürs Neu-Anlegen von Modulen, Serien etc */
+/* Tabelle fï¿½rs Neu-Anlegen von Modulen, Serien etc */
 
 .reda_new_table
 
@@ -980,7 +980,7 @@ a:active.navlink
               padding-bottom:5px;
               margin-left:1px;
               margin-right:1px;
-              border-color:#dddddd;;
+              border-color:#dddddd;
               border-width:1px;
               border-style:solid;
               text-align:center;
