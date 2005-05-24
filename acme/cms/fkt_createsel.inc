@@ -29,17 +29,14 @@ function createsel_bar($select_name,$grouplist){
    echo "<select name=" . $select_name . ">";
    if ($grouplist == "") echo "<option value = '' selected>";
    else echo "<option value = ''>";
-   if ( mysql_num_rows($allgroups) > 0 )
-      {
-      while ( $g_row = mysql_fetch_object($allgroups) )
-         {
+   if ( mysql_num_rows($allgroups) > 0 ){
+      while ( $g_row = mysql_fetch_object($allgroups) ) {
          echo "<option value=" . $g_row->bar_id;
-         if ( eregi ( $g_row->bar_id, $grouplist ) )
-            echo " selected ";
+         if ($g_row->bar_id== $grouplist){echo " selected ";}
          echo ">" . $g_row->bar_name. "</option>";
-         }
-      mysql_free_result($allgroups);
       }
+      mysql_free_result($allgroups);
+   }
    echo "</select>";
    return;
 }

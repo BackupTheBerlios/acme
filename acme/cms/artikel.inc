@@ -134,10 +134,13 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
          }
          $data->artikel->print_url  = $conf["indexname"]."artikel/" . $page_id . "/".$artikel_id."/print";
          $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
-         $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
-         $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
-         $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
-         $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");
+         
+         $bc = get_breadcrumbs("page", $page_id);
+         
+         $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left", $bc);
+         $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right", $bc);
+         $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top", $bc);
+         $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo", $bc);
          $data->titel                 = $artikel_headline;
          $data->home_img              = gethomeimg();
          $data->home_url              = $conf["indexname"].$conf["home_page_typ"] . "/".$conf["home_page"];

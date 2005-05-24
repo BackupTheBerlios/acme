@@ -34,7 +34,7 @@ if ($page="download"){
   
 function renderdownloads($id, $download_id){
    global $conf, $lang;
-   
+        
    if (($id == "" || $id == "0") && isset($did)){
    	  $query = "select * from ".$conf["db_namespace"]."download where download_id =".$download_id;
       $result = dbquery($query);

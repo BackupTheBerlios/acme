@@ -199,13 +199,12 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "<tr><td colspan=5>";
    write_bbc("page_new", "new_page_short_text");
    echo "<textarea name=new_page_short_text id=new_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars(stripslashes($new_page_short_text)) . "</textarea>\n";
-   echo "<a href =\"javascript: void window.open('".$conf["indexbase"]."/link.php?name=page_new&field=new_page_short_text');\">links</a>\n";
    echo "</td></tr>";
    echo "<tr><td colspan=5>&nbsp;</td></tr>\n";
    echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>\n";
    echo "<tr><td colspan=5>";
    write_bbc("page_new", "new_page_long_text");
-   echo "><textarea name=new_page_long_text id=new_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea>\n";
+   echo "<textarea name=new_page_long_text id=new_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=3>&nbsp;</td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>\n";
    echo "</table>\n";

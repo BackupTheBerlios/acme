@@ -76,34 +76,34 @@ function parse_bbcode($contblock, $page_tpl){
   // iurl's
   $contblock = eregi_replace("\[iurl=&quot;","[iurl=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
-  $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url//" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[iurl=\"([^\"]+)\"]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url//" . "\\1\">\\2</a>",$contblock);
   // iurllisten ohne ""
-  $contblock = eregi_replace("\[iurllist=([0-9]+)\]([^\[]+)\[/iurllist\]","<a href=\"".$conf["indexname"]."urls/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[iurllist=([0-9]+)\]([^\[]+)\[/iurllist\]","<a href=\"".$conf["indexname"]."urls/" . "\\1\">\\2</a>",$contblock);
   // iurls ohne ""
-  $contblock = eregi_replace("\[iurl=([0-9]+)\]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[iurl=([0-9]+)\]([^\[]+)\[/iurl\]","<a href=\"".$conf["indexname"]."url/" . "\\1\">\\2</a>",$contblock);
   // link ohne ""
-  $contblock = eregi_replace("\[link=([^\[]+)\]([^\[]+)\[/link\]","<a href=\"\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[link=([^\[]+)\]([^\[]+)\[/link\]","<a href=\"\\1\">\\2</a>",$contblock);
   // downloads ohne ""
-  $contblock = eregi_replace("\[download=([0-9]+)\]([^\[]+)\[/download\]","<a href=\"".$conf["indexname"]."download/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[download=([0-9]+)\]([^\[]+)\[/download\]","<a href=\"".$conf["indexname"]."download/" . "\\1\">\\2</a>",$contblock);
   // downloadlisten ohne ""
-  $contblock = eregi_replace("\[downloadlist=([0-9]+)\]([^\[]+)\[/downloadlist\]","<a href=\"".$conf["indexname"]."downloads/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[downloadlist=([0-9]+)\]([^\[]+)\[/downloadlist\]","<a href=\"".$conf["indexname"]."downloads/" . "\\1\">\\2</a>",$contblock);
   // bilderlisten ohne ""
-  $contblock = eregi_replace("\[imglist=([0-9]+)\]([^\[]+)\[/imglist\]","<a href=\"".$conf["indexname"]."bilder/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[imglist=([0-9]+)\]([^\[]+)\[/imglist\]","<a href=\"".$conf["indexname"]."bilder/" . "\\1\">\\2</a>",$contblock);
   // glossar
   $contblock = eregi_replace("\[glossar\]([^\[]+)\[/glossar\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   $contblock = eregi_replace("\[\[([^\[]+)\]\]","<a href=\"".$conf["indexname"]."glossar/" . "\\1\" target=\"_blank\">\\1</a>",$contblock);
   // pagelink
   $contblock = eregi_replace("\[page=&quot;","[page=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
-  $contblock = eregi_replace("\[page=\"([^\"]+)\"]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[page=\"([^\"]+)\"]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\">\\2</a>",$contblock);
   // pagelink ohne ""
-  $contblock = eregi_replace("\[page=([0-9]+)\]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[page=([0-9]+)\]([^\[]+)\[/page\]","<a href=\"".$conf["indexname"]."page/" . "\\1\">\\2</a>",$contblock);
   // artikellink
   $contblock = eregi_replace("\[artikel=&quot;","[artikel=\"",$contblock);
   $contblock = eregi_replace("&quot;\]","\"]",$contblock);
-  $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\">\\2</a>",$contblock);
   // artikellink ohne ""
-  $contblock = eregi_replace("\[artikel=([0-9]+)\]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\" target=\"_blank\">\\2</a>",$contblock);
+  $contblock = eregi_replace("\[artikel=([0-9]+)\]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\">\\2</a>",$contblock);
 
   return $contblock;
 
@@ -111,24 +111,94 @@ function parse_bbcode($contblock, $page_tpl){
 
 
 
-function parse_bar($page_tpl, $bar_id, $side){
-global $conf, $lang;
+function parse_bar($page_tpl, $bar_id, $side, $bc){
+   global $conf, $lang;
 
-if ($bar_id<>""){
-   $getbar  = "Select * from ".$conf["db_namespace"]."bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
-   $result  = dbquery($getbar);
-   if (mysql_num_rows($result) > 0) {
-      while ( $row = mysql_fetch_object($result) ){
-         if ($row->bar_topic_type == "navigation"){$bar .= parse_navigation($page_tpl,  $row->bar_topic_type_id, $side);}
-         if ($row->bar_topic_type == "blocks")     {$bar .= parse_block($page_tpl,  $row->bar_topic_type_id, $side);}
+   if ($bar_id<>""){
+      $getbar  = "Select * from ".$conf["db_namespace"]."bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
+      $result  = dbquery($getbar);
+      if (mysql_num_rows($result) > 0) {
+         while ( $row = mysql_fetch_object($result) ){
+            if ($row->bar_topic_type == "navigation"){$bar .= parse_navigation($page_tpl,  $row->bar_topic_type_id, $side, $bc);}
+            if ($row->bar_topic_type == "blocks")     {$bar .= parse_block($page_tpl,  $row->bar_topic_type_id, $side);}
+         }
+         mysql_free_result($result);
       }
-      mysql_free_result($result);
+      return $bar;
+   } else {
+   	  return "<!-- leer -->";
    }
-   return $bar;
-}else {return "<!-- leer -->";}
 }
 
-function parse_navigation($page_tpl, $nav_id, $side){
+function get_parent_id($modul, $id){
+   global $conf, $lang;
+   
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) == 1)  { 
+      $row = mysql_fetch_array($result);
+      if ($row["parent"] <> ""){
+         $Statement = "select ".$row["parent"]." from  ".$conf["db_namespace"].$row["tablename"]." where " . $row["id"] . " = '" . $id ."'";
+         $modul_result = dbquery($Statement);
+         if (mysql_num_rows($modul_result) == 1)  {
+            $modulrow = mysql_fetch_array($modul_result);
+            $parent = $modulrow[$row["parent"]];
+            mysql_free_result($modul_result);
+            return $parent;
+         }   
+      }
+   } 
+}
+
+function get_modultable($modul){
+   global $conf, $lang;
+   
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) == 1)  { 
+      $row = mysql_fetch_array($result);
+      $table = $row["tablename"];
+      return $table;
+   }
+}
+function get_modulid($modul){
+   global $conf, $lang;
+   
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) == 1)  { 
+      $row = mysql_fetch_array($result);
+      $id = $row["id"];
+      return $id;
+   }
+}
+function get_modulparent($modul){
+   global $conf, $lang;
+   
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) == 1)  { 
+      $row = mysql_fetch_array($result);
+      $parent = $row["parent"];
+      return $parent;
+   }
+    
+}
+function get_breadcrumbs($modul, $id) {
+   global $conf, $lang;
+
+   $queue = array($id);
+   $parent = $id;
+   do {
+     $parent = get_parent_id($modul, $parent);
+     if($parent <> "" && $parent <> "0") {array_unshift($queue, $parent);}
+   } while ($parent <> "");
+   array_unshift($queue, $modul);
+   return $queue;
+}
+
+
+function parse_navigation($page_tpl, $nav_id, $side, $bc){
    global $conf, $lang;
 
    $getnav  = "Select * from ".$conf["db_namespace"]."nav where nav_id = '" . $nav_id . "'";
@@ -145,28 +215,51 @@ function parse_navigation($page_tpl, $nav_id, $side){
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
          $data->nav_elem[$akt]->nav_elem_img  = getnavimg($row->nav_topic_type, $row->nav_topic_type_id);
-         if ($row->nav_topic_type == "Inaktiv"){
-            $data->nav_elem[$akt]->nav_elem_url  = "";
-         } else {   
-            $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;
-         }   
+         if ($row->nav_topic_type == "Inaktiv"){$data->nav_elem[$akt]->nav_elem_url  = "";} 
+         else {$data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;}   
          $data->nav_elem[$akt]->nav_elem_text = $row->nav_topic_text;
+         $data->nav_elem[$akt]->nav_elem_h = 0;
          // sub nav's
-         if ($row->nav_topic_type == "page" && $conf["page"] == "page" && ($conf["page_id"] == $row->nav_topic_type_id || $conf["page_parent_id"] == $row->nav_topic_type_id)){
-            $getsubnavtopics  = "Select * from ".$conf["db_namespace"]."pages where page_parent = '" . $row->nav_topic_type_id . "' order by page_name";
-            $subresult  = dbquery($getsubnavtopics);
-            if (mysql_num_rows($subresult) > 0) {
-               while ($subrow = mysql_fetch_object($subresult) ){
-                  $subakt++;
-                  $data->nav_elem[$akt]->nav_sub_elem[$subakt]->nav_sub_elem_img  = getnavimg($subrow->nav_topic_type, $subrow->nav_topic_type_id);
-                  $data->nav_elem[$akt]->nav_sub_elem[$subakt]->nav_sub_elem_url  = $conf["indexname"]."page/".$subrow->page_id;
-                  $data->nav_elem[$akt]->nav_sub_elem[$subakt]->nav_sub_elem_text = $subrow->page_name;
+         $test = 0;
+         $modul = $bc[0];
+         if ($row->nav_topic_type == $modul){
+         	$pos=0; 
+         	$found=0;
+         	$modultable  = get_modultable($modul);
+         	$modulid     = get_modulid($modul);
+         	$modulparent = get_modulparent($modul);
+         	// suchen und position bestimmen
+         	foreach($bc as $element) {if ($element == $row->nav_topic_type_id) {$found = $pos;}$pos++;}
+            // was gefunden dann von dort aus die nav weiter aufklappen
+         	if ($found <> 0){
+        	   $h_level=0;
+         	   // bis zum vorletzten das ist dann unser parent für den letzten block	 
+         	   for ($walk = ($found+1); $walk < (count($bc)-1); $walk++) {
+            		$walkId = $bc[$walk];
+            		$h_level++;
+                    $akt++;
+                    $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $walkId);
+                    $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$walkId;
+                    $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $walkId);
+                    $data->nav_elem[$akt]->nav_elem_h = $h_level;
                }
-               mysql_free_result($subresult);
-            }
-           
-         }
-         // end sub nav's
+               $walkId = $bc[count($bc)-1];  // der letzte im crumbs
+               $lastparent = get_parent_id($modul, $walkId); // den parent dazu holen
+               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $lastparent . "' and ". $modulparent ." <> '0'";
+               $lastresult  = dbquery($lastnav);
+               if (mysql_num_rows($result) > 0) {
+               	  $h_level++;
+               	  while ($lastrow = mysql_fetch_array($lastresult)){
+                     $akt++;
+                     $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $lastrow[$modulid]);
+                     $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$lastrow[$modulid];
+                     $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $lastrow[$modulid]);
+                     $data->nav_elem[$akt]->nav_elem_h = $h_level;
+               	  }   
+         	}	
+         	}         	
+        }
+      // end sub nav's
       }
       mysql_free_result($result);
    }

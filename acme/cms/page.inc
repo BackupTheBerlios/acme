@@ -149,18 +149,23 @@ function renderpage($pageid, $pagestart){
       incpagecounter($page_id, $page_counter);
       $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
       
-      $bc = get_breadcrumbs("page", $page_id);
+      $bcs = get_breadcrumbs("page", $page_id);
       
-      $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left", $bc);
-      $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right", $bc);
-      $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top", $bc);
-      $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo", $bc);
+      $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left",  $bcs);
+      $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right", $bcs);
+      $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top",   $bcs);
+      $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo",   $bcs);
+      
       getpagechildsforpreview(&$data, $page_id, $page_childs, $pagestart, $page_tpl);
+      
       $page_output = sprintt($data, $tplfile);
+      
       if ($page_long_text_typ == "H"){echo $page_output;}
       if ($page_long_text_typ == "B"){echo $page_output;}
       if ($page_long_text_typ == "P"){echo OutputPhpDocument($page_output);}
-   } else {renderpage($conf["home_404"], 0);}
+      
+   } 
+   else {renderpage($conf["home_404"], 0);}
 }
 
 function incpagecounter($page_id,$page_counter) {

@@ -5,17 +5,17 @@ include($conf["admbase"] . "/lang/sitemap." . $conf["lang"] . ".inc");
 switch($action)
 {
    case "edit":
-      sitemapedit($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id);
+      sitemapedit($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id, $edit_sitemap_left_bar, $edit_sitemap_right_bar, $edit_sitemap_top_bar, $edit_sitemap_foo_bar);
       break;
    case "new":
-       sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id);
+       sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id, $new_sitemap_left_bar, $new_sitemap_right_bar, $new_sitemap_top_bar, $new_sitemap_foo_bar);
        break;
    case "add":
-       sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id);
+       sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id, $new_sitemap_left_bar, $new_sitemap_right_bar, $new_sitemap_top_bar, $new_sitemap_foo_bar);
        sitemapbrowse();
        break;
    case "update":
-       sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id);
+       sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id, $edit_sitemap_left_bar, $edit_sitemap_right_bar, $edit_sitemap_top_bar, $edit_sitemap_foo_bar);
        sitemapbrowse();
        break;
    case "delete":
@@ -27,7 +27,7 @@ switch($action)
        break;
 }
 
-function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id){
+function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id, $new_sitemap_left_bar, $new_sitemap_right_bar, $new_sitemap_top_bar, $new_sitemap_foo_bar){
    global $conf, $lang;
 
    $Statement = "INSERT INTO ".$conf["db_namespace"]."sitemap SET".
@@ -35,6 +35,10 @@ function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
                 " sitemap_img_small = '". $new_sitemap_img_small . "',".
                 " sitemap_img_small_inactive = '". $new_sitemap_img_small_inactive . "',".                
                 " sitemap_img_big = '". $new_sitemap_img_big . "',".
+                " sitemap_top_bar = '". $new_sitemap_top_bar . "',".
+                " sitemap_foo_bar = '". $new_sitemap_foo_bar . "',".
+                " sitemap_right_bar = '". $new_sitemap_right_bar . "',".
+                " sitemap_left_bar = '". $new_sitemap_left_bar . "',".
                 " sitemap_nav_id = '" . $new_sitemap_nav_id ."'";
    $my_result = dbquery($Statement);
    if ($my_result) {
@@ -45,7 +49,7 @@ function sitemapadd($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
    	}
    else            {echo $lang["sitemap_insert_fehlerhaft"];}
 }
-function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id){
+function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_small, $edit_sitemap_img_small_inactive, $edit_sitemap_img_big, $edit_sitemap_nav_id, $edit_sitemap_left_bar, $edit_sitemap_right_bar, $edit_sitemap_top_bar, $edit_sitemap_foo_bar){
    global $conf, $lang;
               
    $Statement = "UPDATE ".$conf["db_namespace"]."sitemap SET".
@@ -53,6 +57,10 @@ function sitemapupdate($edit_sitemap_id, $edit_sitemap_name, $edit_sitemap_img_s
                 " sitemap_nav_id = '". $edit_sitemap_nav_id . "',".
                 " sitemap_img_small = '". $edit_sitemap_img_small . "',".
                 " sitemap_img_small_inactive = '". $edit_sitemap_img_small_inactive . "',".                
+                " sitemap_top_bar = '". $edit_sitemap_top_bar . "',".
+                " sitemap_foo_bar = '". $edit_sitemap_foo_bar . "',".
+                " sitemap_right_bar = '". $edit_sitemap_right_bar . "',".
+                " sitemap_left_bar = '". $edit_sitemap_left_bar . "',".
                 " sitemap_img_big = '". $edit_sitemap_img_big . "' ".
                 " WHERE sitemap_id = '". $edit_sitemap_id . "'";
    $my_result = dbquery($Statement);
@@ -98,19 +106,19 @@ function sitemapbrowse(){
    }
    echo "</table>";
 }      
-function sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id){
+function sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_small_inactive, $new_sitemap_img_big, $new_sitemap_nav_id, $new_sitemap_left_bar, $new_sitemap_right_bar, $new_sitemap_top_bar, $new_sitemap_foo_bar){
    global $conf, $lang;
 
    echo "<h1>".$lang["sitemap_anlegen"]."</h1>";
    echo "<form action=\"" . $conf["admp"] . "&section=sitemap&action=add\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
    echo "<table  class=\"reda_td\">";
-   echo "<tr><td colspan=4>".$lang["sitemap_name"]."</td></tr>";
+   echo "<tr><td colspan=5>".$lang["sitemap_name"]."</td></tr>";
    echo "<tr>";
-   echo "<td colspan=4><input name=new_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars(stripslashes($new_sitemap_name)) . "\"></td>";
+   echo "<td colspan=5><input name=new_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars(stripslashes($new_sitemap_name)) . "\"></td>";
    echo "</tr>";
-   echo "<tr><td>".$lang["sitemap_nav"]."</td><td>".$lang["sitemap_logo_klein"]."</td><td>".$lang["sitemap_logo_klein_inactive"]."</td><td>".$lang["sitemap_logo_gross"]."</td></tr>";
+   echo "<tr><td colspan=2>".$lang["sitemap_nav"]."</td><td>".$lang["sitemap_logo_klein"]."</td><td>".$lang["sitemap_logo_klein_inactive"]."</td><td>".$lang["sitemap_logo_gross"]."</td></tr>";
    echo "<tr>";
-   echo "<td colspan=1>";
+   echo "<td colspan=2>";
    createsel_navid("new_sitemap_nav_id", $new_sitemap_nav_id);
    echo "</td>";
    echo "<td colspan=1>";
@@ -123,7 +131,26 @@ function sitemapnew($new_sitemap_name, $new_sitemap_img_small, $new_sitemap_img_
    createsel_img("new_sitemap_img_big",  $new_sitemap_img_big);
    echo "</td>";
    echo "</tr>";
-   echo "<tr><td colspan=4><input type=submit name=edit_sitemap value=".$lang["sitemap_speichern"]."></td></tr>";
+   echo "<tr><td colspan=5>&nbsp;</td></tr>\n";   
+   echo "<tr><td>".$lang["sitemap_frame"]."</td><td>".$lang["sitemap_bar_left"]."</td><td>".$lang["sitemap_bar_right"]."</td><td>".$lang["sitemap_bar_top"]."</td><td>".$lang["sitemap_bar_bottom"]."</td></tr>";
+   echo "<tr>";
+   echo "<td>";
+   echo "&nbsp;";  // createsel_frame("new_page_frame", $new_page_frame);
+   echo "</td>";
+   echo "<td>";
+   createsel_bar("new_sitemap_left_bar", $new_sitemap_left_bar);
+   echo "</td>";
+   echo "<td>";
+   createsel_bar("new_sitemap_right_bar", $new_sitemap_right_bar);
+   echo "</td>";
+   echo "<td>";
+   createsel_bar("new_sitemap_top_bar", $new_sitemap_top_bar);
+   echo "</td>";
+   echo "<td>";
+   createsel_bar("new_sitemap_foo_bar", $new_sitemap_foo_bar);
+   echo "</td>";
+   echo "</tr>";
+   echo "<tr><td colspan=5><input type=submit name=edit_sitemap value=".$lang["sitemap_speichern"]."></td></tr>";
    echo "</table>";
    echo "</form>";
 }
@@ -138,13 +165,13 @@ function sitemapedit($id){
       echo "<form action=\"" . $conf["admp"] . "&section=sitemap&action=update\" ENCTYPE=\"multipart/form-data\" method=POST>";
       echo "<input type=hidden name=edit_sitemap_id value=\"" . $row["sitemap_id"] . "\">";
       echo "<table  class=\"reda_td\">";
-      echo "<tr><td colspan = 4>".$lang["sitemap_name"]."</td></tr>";
+      echo "<tr><td colspan = 5>".$lang["sitemap_name"]."</td></tr>";
       echo "<tr>";
-      echo "<td colspan = 4><input name=edit_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars($row["sitemap_name"]) . "\"></td>";
+      echo "<td colspan = 5><input name=edit_sitemap_name size=45 maxlength=59 value = \"" . htmlspecialchars($row["sitemap_name"]) . "\"></td>";
       echo "</tr>";
-      echo "<tr><td>".$lang["sitemap_nav"]."</td><td>".$lang["sitemap_logo_klein"]."</td><td>".$lang["sitemap_logo_klein_inactive"]."</td><td>".$lang["sitemap_logo_gross"]."</td></tr>";
+      echo "<tr><td colspan=2>".$lang["sitemap_nav"]."</td><td>".$lang["sitemap_logo_klein"]."</td><td>".$lang["sitemap_logo_klein_inactive"]."</td><td>".$lang["sitemap_logo_gross"]."</td></tr>";
       echo "<tr>";
-      echo "<td colspan=1>";
+      echo "<td colspan=2>";
       createsel_navid("edit_sitemap_nav_id", $row["sitemap_nav_id"]);
       echo "</td>";
       echo "<td>";
@@ -157,7 +184,26 @@ function sitemapedit($id){
       createsel_img("edit_sitemap_img_big",  $row["sitemap_img_big"]);
       echo "</td>";
       echo "</tr>\n";
-      echo "<tr><td colspan=4 class=\"button_td_submit\"><input type=submit name=edit_sitemap value=".$lang["sitemap_speichern"]."></td></tr>\n";
+      echo "<tr><td colspan=5>&nbsp;</td></tr>\n";   
+      echo "<tr><td>".$lang["sitemap_frame"]."</td><td>".$lang["sitemap_bar_left"]."</td><td>".$lang["sitemap_bar_right"]."</td><td>".$lang["sitemap_bar_top"]."</td><td>".$lang["sitemap_bar_bottom"]."</td></tr>";
+      echo "<tr>";
+      echo "<td>";
+      echo "&nbsp;";  // createsel_frame("new_page_frame", $new_page_frame);
+      echo "</td>";
+      echo "<td>";
+      createsel_bar("edit_sitemap_left_bar", $row["sitemap_left_bar"]);
+      echo "</td>";
+      echo "<td>";
+      createsel_bar("edit_sitemap_right_bar", $row["sitemap_right_bar"]);
+      echo "</td>";
+      echo "<td>";
+      createsel_bar("edit_sitemap_top_bar", $row["sitemap_top_bar"]);
+      echo "</td>";
+      echo "<td>";
+      createsel_bar("edit_sitemap_foo_bar", $row["sitemap_foo_bar"]);
+      echo "</td>";
+      echo "</tr>";
+      echo "<tr><td colspan=5 class=\"button_td_submit\"><input type=submit name=edit_sitemap value=".$lang["sitemap_speichern"]."></td></tr>\n";
       echo "</table>\n";
       echo "</form>\n";
       mysql_free_result($result);

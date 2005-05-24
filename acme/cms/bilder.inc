@@ -90,10 +90,13 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       mysql_free_result($img_typ_result);
 
       $tplfile = $conf["templates"] . gettemplatebyid($img_typ_tpl) . ".tpl";
-      $data->left_bar  = parse_bar($img_typ_tpl, $img_typ_left_bar,  "left");
-      $data->right_bar = parse_bar($img_typ_tpl, $img_typ_right_bar, "right");
-      $data->top_bar   = parse_bar($img_typ_tpl, $img_typ_top_bar,   "top");
-      $data->foo_bar   = parse_bar($img_typ_tpl, $img_typ_foo_bar,   "foo");
+      
+      $bc = get_breadcrumbs("bilder", $img_typ_id);
+      
+      $data->left_bar  = parse_bar($img_typ_tpl, $img_typ_left_bar,  "left", $bc);
+      $data->right_bar = parse_bar($img_typ_tpl, $img_typ_right_bar, "right", $bc);
+      $data->top_bar   = parse_bar($img_typ_tpl, $img_typ_top_bar,   "top", $bc);
+      $data->foo_bar   = parse_bar($img_typ_tpl, $img_typ_foo_bar,   "foo", $bc);
       $data->titel                 = $img_typ_name;
       $data->home_img              = gethomeimg();
       $data->home_url              = $conf["indexname"]. $conf["home_page_typ"] . "/".$conf["home_page"];
