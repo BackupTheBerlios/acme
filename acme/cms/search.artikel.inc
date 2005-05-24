@@ -1,5 +1,7 @@
 <?php
 function search_artikel($search, $data) {
+   global $conf, $lang;
+   
    $result1 = dbquery("SELECT artikel_id, artikel_headline, artikel_sub_headline from ".$conf["db_namespace"]."artikel where (artikel_headline like '%".$search."%' or  artikel_sub_headline like '%".$search."%' or artikel_short_text like '%".$search."%') and artikel_publish_date <= now() or artikel_publish_date is null;");
    if ( mysql_num_rows($result1) > 0)  {
       while ($row = mysql_fetch_object($result1)){

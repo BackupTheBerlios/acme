@@ -114,8 +114,6 @@ function renderpage($pageid, $pagestart){
       $page_last_update = $row->page_last_update;
       mysql_free_result($my_result);
       
-      $conf["page_parent_id"] = $page_parent;
-
       $data->page->img_small      = getimage($page_img_small);
       $data->page->img_big        = getimage($page_img_big);
       $data->page->img_titel      = getimagebyid($page_img_titel, "r", $page_tpl);
@@ -147,13 +145,16 @@ function renderpage($pageid, $pagestart){
       $data->page->self_url  = $conf["indexname"]."page/".$page_id;
       $data->titel     = $page_headline;
       $data->home_img = gethomeimg();
-      $data->home_url = "index/".$conf["home_page_typ"] ."/". $conf["home_page"];
+      $data->home_url = $conf["indexname"].$conf["home_page_typ"] ."/". $conf["home_page"];
       incpagecounter($page_id, $page_counter);
       $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
-      $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left");
-      $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right");
-      $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top");
-      $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo");
+      
+      $bc = get_breadcrumbs("page", $page_id);
+      
+      $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left", $bc);
+      $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right", $bc);
+      $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top", $bc);
+      $data->foo_bar   = parse_bar($page_tpl, $page_foo_bar,   "foo", $bc);
       getpagechildsforpreview(&$data, $page_id, $page_childs, $pagestart, $page_tpl);
       $page_output = sprintt($data, $tplfile);
       if ($page_long_text_typ == "H"){echo $page_output;}

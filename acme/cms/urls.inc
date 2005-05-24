@@ -71,10 +71,13 @@ function renderurls($id, $url_id){
       geturl_typ(&$data,  $url_typ_tpl, $url_typ_id);
       geturl_data(&$data, $url_typ_tpl, $url_typ_id);
       geturl_url(&$data,  $url_typ_tpl, $url_id);
-      $data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left");
-      $data->right_bar = parse_bar($url_typ_tpl, $url_typ_right_bar,"right");
-      $data->top_bar   = parse_bar($url_typ_tpl, $url_typ_top_bar,  "top");
-      $data->foo_bar   = parse_bar($url_typ_tpl, $url_typ_foo_bar,  "foo");
+      
+      $bc = get_breadcrumbs("urls", $url_typ_id);
+      
+      $data->left_bar  = parse_bar($url_typ_tpl, $url_typ_left_bar, "left", $bc);
+      $data->right_bar = parse_bar($url_typ_tpl, $url_typ_right_bar,"right", $bc);
+      $data->top_bar   = parse_bar($url_typ_tpl, $url_typ_top_bar,  "top", $bc);
+      $data->foo_bar   = parse_bar($url_typ_tpl, $url_typ_foo_bar,  "foo", $bc);
       $data->urls->name = $url_typ_name;
       $data->urls->text = $url_typ_text;
       $data->titel       = $url_typ_name;      

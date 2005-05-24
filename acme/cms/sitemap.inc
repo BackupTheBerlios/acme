@@ -42,12 +42,20 @@ function rendersitemap($id){
    $sitemap_result = dbquery("select * from ".$conf["db_namespace"]."sitemap where sitemap_id='".$id."'");
    if (mysql_num_rows($sitemap_result) == 1) {
       $sitemap_row = mysql_fetch_object($sitemap_result);
-      $sitemap_id = $sitemap_row->sitemap_id;
-      $sitemap_name = $sitemap_row->sitemap_name;
+      $sitemap_id        = $sitemap_row->sitemap_id;
+      $sitemap_name      = $sitemap_row->sitemap_name;
       $sitemap_img_small = $sitemap_row->sitemap_img_small;
-      $sitemap_img_big = $sitemap_row->sitemap_img_big;
-      $sitemap_nav_id = $sitemap_row->sitemap_nav_id;
-
+      $sitemap_img_big   = $sitemap_row->sitemap_img_big;
+      $sitemap_nav_id    = $sitemap_row->sitemap_nav_id;
+      $sitemap_left_bar  = $sitemap_row->sitemap_left_bar;
+      $sitemap_right_bar = $sitemap_row->sitemap_right_bar;
+      $sitemap_top_bar   = $sitemap_row->sitemap_top_bar;
+      $sitemap_foo_bar   = $sitemap_row->sitemap_foo_bar;
+      
+      $data->left_bar  = parse_bar($conf["home_tpl"], $sitemap_left_bar,  "left");
+      $data->right_bar = parse_bar($conf["home_tpl"], $sitemap_right_bar, "right");
+      $data->top_bar   = parse_bar($conf["home_tpl"], $sitemap_top_bar,   "top");
+      $data->foo_bar   = parse_bar($conf["home_tpl"], $sitemap_foo_bar,   "foo");
 
       $data->titel     = $sitemap_name;
       $data->home_img  = gethomeimg();
@@ -57,16 +65,14 @@ function rendersitemap($id){
       $data->sitemap->img_big      = getimage($sitemap_img_big);
 
       $tplfile = $conf["templates"] . gettemplatebyid($conf["home_tpl"]) . ".tpl";
-      $data->left_bar  = parse_bar($conf["home_tpl"], $conf["home_left_bar"],  "left");
-      $data->right_bar = parse_bar($conf["home_tpl"], $conf["home_right_bar"], "right");
-      $data->top_bar   = parse_bar($conf["home_tpl"], $conf["home_top_bar"],   "top");
-      $data->foo_bar   = parse_bar($conf["home_tpl"], $conf["home_foo_bar"],   "foo");
+
 
       $getnavtopics  = "Select * from ".$conf["db_namespace"]."nav_topics where nav_topic_type <> 'sitemap' and nav_id = '" . $sitemap_nav_id . "' order by nav_topic_rank";
       $result  = dbquery($getnavtopics);
       if (mysql_num_rows($result) > 0) {
          while ( $row = mysql_fetch_object($result) ){
             $akt++;
+            $aktuelles = $akt;
             $data->sitemap->map_element[$akt]->map_element_url  = $conf["indexname"] . $row->nav_topic_type . "/". $row->nav_topic_type_id;
             $data->sitemap->map_element[$akt]->map_element_text = $row->nav_topic_text;
             $data->sitemap->map_element[$akt]->map_element_h_level = "0";
@@ -100,13 +106,14 @@ function writesitemaptopics(&$data, &$akt, $type, $type_id, &$h_level){
             if ( mysql_num_rows($result) > 0 ){
                while ($row = mysql_fetch_object($result)){
                   $akt++;
+                  $aktuelles = $akt;
                   $data->sitemap->map_element[$akt]->map_element_url  = $conf["indexname"] . $modul ."/" . $row->$id;
                   $data->sitemap->map_element[$akt]->map_element_text = $row->$name;
                   $data->sitemap->map_element[$akt]->map_element_h_level = $h_level;
                   $h_level++;
                   writesitemaptopics($data, $akt, $type, $row->$id, $h_level);
                   $h_level--;
-               }  
+                }  
                mysql_free_result($result);
             }  
          } else {

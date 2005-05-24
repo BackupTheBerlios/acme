@@ -1,5 +1,7 @@
 <?php
 function search_page($search, $data) {
+   global $conf, $lang;
+   
    $query = "SELECT page_id, page_name from ".$conf["db_namespace"]."pages where (page_headline like '%".$search."%' Or page_short_text like '%".$search."%' or page_long_text like '%".$search."%') and page_long_text_typ <> 'P'";
    $result = dbquery($query);
    if ( mysql_num_rows($result) >0)  {
