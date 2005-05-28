@@ -234,7 +234,7 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
          	if ($found <> 0){
         	   $h_level=0;
          	   // bis zum vorletzten das ist dann unser parent für den letzten block	 
-         	   for ($walk = ($found+1); $walk < (count($bc)-1); $walk++) {
+         	   for ($walk = ($found+1); $walk < (count($bc)); $walk++) {
             		$walkId = $bc[$walk];
             		$h_level++;
                     $akt++;
@@ -244,8 +244,8 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
                     $data->nav_elem[$akt]->nav_elem_h = $h_level;
                }
                $walkId = $bc[count($bc)-1];  // der letzte im crumbs
-               $lastparent = get_parent_id($modul, $walkId); // den parent dazu holen
-               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $lastparent . "' and ". $modulparent ." <> '0'";
+               // $lastparent = get_parent_id($modul, $walkId); // den parent dazu holen
+               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0'";
                $lastresult  = dbquery($lastnav);
                if (mysql_num_rows($result) > 0) {
                	  $h_level++;
