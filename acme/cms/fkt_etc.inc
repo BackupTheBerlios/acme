@@ -111,17 +111,17 @@ function parse_bbcode($contblock, $page_tpl){
 
 }
 
-
-
-function parse_bar($page_tpl, $bar_id, $side, $bc){
+function parse_bar($page_tpl, $bar_id, $side, $bc=""){
    global $conf, $lang;
 
-   if ($bar_id<>""){
+   $bar = "";
+
+   if ($bar_id <> ""){
       $getbar  = "Select * from ".$conf["db_namespace"]."bar_topics where bar_id = '" . $bar_id . "' order by bar_topic_rank";
       $result  = dbquery($getbar);
       if (mysql_num_rows($result) > 0) {
          while ( $row = mysql_fetch_object($result) ){
-            if ($row->bar_topic_type == "navigation"){$bar .= parse_navigation($page_tpl,  $row->bar_topic_type_id, $side, $bc);}
+            if ($row->bar_topic_type == "navigation") {$bar .= parse_navigation($page_tpl,  $row->bar_topic_type_id, $side, $bc);}
             if ($row->bar_topic_type == "blocks")     {$bar .= parse_block($page_tpl,  $row->bar_topic_type_id, $side);}
          }
          mysql_free_result($result);
@@ -202,6 +202,8 @@ function get_breadcrumbs($modul, $id) {
 
 function parse_navigation($page_tpl, $nav_id, $side, $bc){
    global $conf, $lang;
+
+   $akt=0;
 
    $getnav  = "Select * from ".$conf["db_namespace"]."nav where nav_id = '" . $nav_id . "'";
    $result  = dbquery($getnav);

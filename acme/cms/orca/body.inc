@@ -226,10 +226,9 @@ if ($fData['start'] > $lData['toprows']) $fData['start'] = 0;
         </tr>
       <?php } ?>
     </table>
-  <?php } ?>
-
-
-  <?php if ($_POST['command'] != "Preview" && $fData['msgtotal']) { ?>
+  <?php } 
+  
+   if ($_POST['command'] != "Preview" && $fData['msgtotal']) { ?>
     <div id="of_messages">
       <script type="text/javascript"><!--
         function vis_tog(id, swt) {

@@ -119,6 +119,16 @@ function getimagebyid($id, $style,$page_tpl){
 function getnavimg($modul, $id){
    global $conf, $lang;
 
+   $act_pic->name  =  "";
+   $act_pic->src   =  "";
+   $act_pic->desc  =  "";
+   $pas_pic->name  =  "";
+   $pas_pic->src   =  "";
+   $pas_pic->desc  =  "";
+   $picid_a = 0;
+   $picid_p = 0;
+   $active = 0;
+
    $result = dbquery("select * from ".$conf["db_namespace"]."module where modul = '". $modul . "'");
    if ( mysql_num_rows($result) == 1 )  {
       $row = mysql_fetch_object($result);
@@ -130,14 +140,13 @@ function getnavimg($modul, $id){
          $picid_p = $modulrow[$row->navimg."_inactive"] ;
          if ($conf["page_id"] == $id) {
             $active = 1;
-         } else {
-         	$active = 0;
-         }	   
-      }
+         } 
+      }	
+      
       mysql_free_result($modul_result);
    }
 
-   if ( $picid_a ){
+   if ($picid_a <> 0){
       $getpic = "Select img_name, img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid_a."'";
       dbconnect();
       $result = dbquery($getpic);
@@ -146,14 +155,10 @@ function getnavimg($modul, $id){
          $act_pic->name  =  $row->img_name;
          $act_pic->src   =  $conf["images"] . $row->img_real_name;
          $act_pic->desc  =  $row->img_description;
-      } else {
-         $act_pic->name  =  "";
-         $act_pic->src   =  "";
-         $act_pic->desc  =  "";
       }      
       mysql_free_result($result);
    }
-   if ( $picid_p ){
+   if ( $picid_p <> 0){
       $getpic = "Select img_name, img_real_name, img_description from ".$conf["db_namespace"]."bilder where img_id='".$picid_p."'";
       dbconnect();
       $result = dbquery($getpic);
@@ -162,10 +167,6 @@ function getnavimg($modul, $id){
          $pas_pic->name  =  $row->img_name;
          $pas_pic->src   =  $conf["images"] . $row->img_real_name;
          $pas_pic->desc  =  $row->img_description;
-      } else {
-         $pas_pic->name  =  "";
-         $pas_pic->src   =  "";
-         $pas_pic->desc  =  "";
       }
       mysql_free_result($result);
    }

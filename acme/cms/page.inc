@@ -254,13 +254,13 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
      }
   }
 }
-function OutputPhpDocument($phpDocument)
-{
+function OutputPhpDocument($phpDocument){
+	
    reset ($GLOBALS);
-   while (list ($key, $val) = each ($GLOBALS))
-      {
+   while (list ($key, $val) = each ($GLOBALS)) {
       eval("\$" . "\$key = \"$val\";");
-      }
+   }
+   
    $questMark = "?";
    $phpOpenTag = "<${questMark}php";
    $phpCloseTag = "${questMark}>";
