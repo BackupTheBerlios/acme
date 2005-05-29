@@ -104,6 +104,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[artikel=\"([^\"]+)\"]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\">\\2</a>",$contblock);
   // artikellink ohne ""
   $contblock = eregi_replace("\[artikel=([0-9]+)\]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1\">\\2</a>",$contblock);
+  // artikellink ohne ""
+  $contblock = eregi_replace("\[artikel=([0-9]+)-([0-9]+)-([0-9]+)\]([^\[]+)\[/artikel\]","<a href=\"".$conf["indexname"]."artikel/" . "\\1/\\2/\\3\">\\4</a>",$contblock);
 
   return $contblock;
 

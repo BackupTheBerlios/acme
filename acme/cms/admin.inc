@@ -131,9 +131,6 @@ echo "<div id=\"main\">\n";
   }
 
 echo "</div>";
-
-if ($conf["author_name"] == "developer"){echo "<div id=debug>";show_vars();echo "</div>";}
-
 ?>
 </body>
 </html>

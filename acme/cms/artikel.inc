@@ -82,7 +82,7 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
       $artikel_active = $row->artikel_active;
       $artikel_counter = $row->artikel_counter;
       mysql_free_result($my_result);
-      if ($page_id == "" || $page_id == "0"){
+      if ($page_id == "" || $page_id == "0" || !isset($page_id)){
       	 $page_id = getfirstpageid($artikel_page);
       }
       $conf["page_id"] = $page_id;
@@ -130,7 +130,14 @@ function renderartikel($page_id, $artikel_id, $artikel_part){
                $data->artikel->last->nr = $lastpart;
                $data->artikel->last->url = $conf["indexname"]."artikel/".$page_id."/" . $artikel_id . "/".$lastpart;
             }
-            
+            $aktpart = 1;
+            do {            
+               $data->artikel->part[$aktpart]->nr = $aktpart;
+               if ($aktpart <> $artikel_part){
+                  $data->artikel->part[$aktpart]->url = $conf["indexname"]."artikel/".$page_id."/" . $artikel_id . "/".$aktpart;
+               }   
+               $aktpart++; 
+            } while ($aktpart <= $lastpart);
          }
          $data->artikel->print_url  = $conf["indexname"]."artikel/" . $page_id . "/".$artikel_id."/print";
          $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";

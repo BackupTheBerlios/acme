@@ -29,13 +29,13 @@
 
 */ 
 if ($page="download"){
-   renderdownloads($download_typ_id, $download_id);
+   renderdownloads($typ, $download_typ_id, $download_id);
    }
   
-function renderdownloads($id, $download_id){
+function renderdownloads($typ, $id, $download_id){
    global $conf, $lang;
         
-   if (($id == "" || $id == "0") && isset($did)){
+   if (($id == "" || $id == "0") && isset($download_id)){
    	  $query = "select * from ".$conf["db_namespace"]."download where download_id =".$download_id;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
@@ -69,9 +69,14 @@ function renderdownloads($id, $download_id){
          $data->downloads->parent->name = getdownload_typnamebyid($download_typ_parent);
          $data->downloads->parent->url  = $conf["indexname"]."downloads/".$download_typ_parent;
       }
+            
       getdownload_typ(&$data, $download_typ_tpl, $download_typ_id, $download_id);
-      getdownload_data(&$data, $download_typ_tpl, $download_typ_id, $download_id);
-      getdownload_download(&$data, $download_typ_tpl, $download_typ_id, $download_id);
+      if ($typ == "single"){
+         getdownload_download(&$data, $download_typ_tpl, $download_typ_id, $download_id);
+      }   
+      if ($typ == ""){   
+         getdownload_data(&$data, $download_typ_tpl, $download_typ_id, $download_id);
+      }      
       $data->left_bar  = parse_bar($download_typ_tpl, $download_typ_left_bar, "left");
       $data->right_bar = parse_bar($download_typ_tpl, $download_typ_right_bar,"right");
       $data->top_bar   = parse_bar($download_typ_tpl, $download_typ_top_bar,  "top");

@@ -44,10 +44,10 @@
          src
 */
 
-renderbilder($img_typ_id, $image_id, $img_typ_anfang);
+renderbilder($typ, $img_typ_id, $image_id, $img_typ_anfang);
    
 
-function renderbilder($img_typ_id, $img_id, $anfang){
+function renderbilder($typ, $img_typ_id, $img_id, $anfang){
    global $conf, $lang;
 
    if (($img_typ_id==0 || !isset($img_typ_id)) && ($img_id==0 || !isset($img_id))) {
@@ -115,7 +115,9 @@ function renderbilder($img_typ_id, $img_id, $anfang){
       }      
       if ($anfang == "" or !isset($anfang))$anfang = 1;
       incimg_typcounter($img_typ_id, $img_typ_counter);
-      getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
+      if ($typ == "") {
+         getimgsforpreview(&$data, $img_typ_id, $img_typ_tpl, $anfang);
+      }
       getbigimage(&$data, $img_id, $img_typ_tpl);
       $page_output = sprintt($data, $tplfile);
       echo $page_output;

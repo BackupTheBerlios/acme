@@ -39,7 +39,7 @@ function getimagebyname($name, $style,$page_tpl){
    $result = dbquery($getpic);
    if(mysql_affected_rows() == 1)         {
       $row = mysql_fetch_object($result);
-      if (file_exists($conf["images"] . $row->img_real_name)){
+      if (file_exists($conf["imagesdir"] . $row->img_real_name)){
          // vorsichtshalber wegen altdaten
          if (file_exists($conf["images"] . "small_".$row->img_real_name)){
             list($width, $height, $type, $attr) = getimagesize($conf["images"] . "small_".$row->img_real_name);
@@ -69,7 +69,7 @@ function getimagebyname($name, $style,$page_tpl){
          return " " . sprintt($data, $tplfile) . " ";
       }
       else {
-      	 return " ";
+      	 return "<!-- image not found -->";
       }	
    }   
 

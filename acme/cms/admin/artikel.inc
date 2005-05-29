@@ -414,7 +414,7 @@ function artikel_browse($page_id, $author_id){
 	  if ( mysql_num_rows($result) > 0 ){
          while ($row = mysql_fetch_object($result)){
       	    echo "<td>". $row->artikel_id . "</td>";
-            echo "<td><a href=\"" . $conf["indexname"] . "artikel/".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."</a></td>";
+            echo "<td><a href=\"" . $conf["indexname"] . "artikel/".$row->artikel_id."\" target=\"new_window\">".$row->artikel_headline."<br>".$row->artikel_sub_headline."</a></td>";
  		    echo "<td>". mydate2datetime($row->artikel_publish_date) ."</td>";
 		    echo "<td>". getpagenamebyidarray($row->artikel_page)."</td>";
             echo "<td>". getauthorbyid($row->artikel_author_id) ."</td>";

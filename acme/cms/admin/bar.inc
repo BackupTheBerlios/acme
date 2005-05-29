@@ -12,14 +12,17 @@ switch($action){
       
 	case "bar_add":
       bar_add($new_bar_name);
+      bar_browse();
       break;
       
 	case "bar_update":
       bar_update($edit_bar_id, $edit_bar_name);
+      bar_browse();
       break;
       
 	case "bar_delete":
-	   bar_delete($delete_id);   
+	   bar_delete($delete_id); 
+	   bar_browse();  
 	   break;
 	   
 	case "topic_move":
@@ -29,11 +32,12 @@ switch($action){
       break;
       
 	case "topic_edit":
-      bar_topic_edit($edit_id);
+      bar_topic_edit($edit_id, $bar_id);
       break;
       
 	case "topic_update":
       bar_topic_update($edit_bar_topic_id, $edit_bar_topic_text, $edit_bar_topic_type_and_id);
+      bar_edit($bar_id);
       break;
       
 	case "topic_add":
@@ -46,7 +50,7 @@ switch($action){
       break;
       
 	case "topic_delete":
-      bar_topic_delete($delete_id);
+      bar_topic_delete($delete_id, $bar_id);
       bar_edit($bar_id);
       break;
       
@@ -186,14 +190,14 @@ function bar_topic_new($bar_id){
         "</table>".
         "</form>";
 }
-function bar_topic_edit($edit_id){
+function bar_topic_edit($edit_id, $bar_id){
    global $conf, $lang;
    
    $result = dbquery("select * from ".$conf["db_namespace"]."bar_topics where bar_topic_id=$edit_id");
    if ($result) {
       $bar_topics = mysql_fetch_object($result);
       echo "<h1>".$lang["bar_eintrag_bearbeiten"]."</h1>".
-           "<form action=\"" .$conf["admp"] . "&section=bar&action=topic_update&edit_bar_topic_id=" . $bar_topics->bar_topic_id ."\"  method=\"POST\">".
+           "<form action=\"" .$conf["admp"] . "&section=bar&action=topic_update&bar_id=".$bar_id."&edit_bar_topic_id=" . $bar_topics->bar_topic_id ."\"  method=\"POST\">".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["bar_eintrag_name"]."</td></tr>".
            "<tr>".

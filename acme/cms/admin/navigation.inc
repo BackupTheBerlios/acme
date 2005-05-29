@@ -17,10 +17,12 @@ switch($action){
       
 	case "nav_update":
       nav_update($edit_nav_id, $edit_nav_name);
+      nav_edit($edit_nav_id);
       break;
       
 	case "nav_delete":
 	   nav_delete($delete_id);   
+	   nav_edit($nav_id);
 	   break;
 	   
 	case "topic_move":
@@ -30,11 +32,12 @@ switch($action){
       break;
       
 	case "topic_edit":
-      nav_topic_edit($edit_id);
+      nav_topic_edit($edit_id, $nav_id);
       break;
       
 	case "topic_update":
       nav_topic_update($edit_nav_topic_id, $edit_nav_topic_text, $edit_nav_topic_type_and_id);
+      nav_edit($nav_id);
       break;
       
 	case "topic_add":
@@ -187,14 +190,14 @@ function nav_topic_new($nav_id){
         "</table>".
         "</form>";
 }
-function nav_topic_edit($edit_id){
+function nav_topic_edit($edit_id, $nav_id){
    global $conf, $lang;
    
    $result = dbquery("select * from ".$conf["db_namespace"]."nav_topics where nav_topic_id=$edit_id");
    if ($result) {
       $nav_topics = mysql_fetch_object($result);
       echo "<h1>".$lang["navigation_bearbeiten"]."</h1>".
-           "<form action=\"" .$conf["admp"] . "&section=navigation&action=topic_update&edit_nav_topic_id=" . $nav_topics->nav_topic_id ."\"  method=\"POST\">".
+           "<form action=\"" .$conf["admp"] . "&section=navigation&action=topic_update&nav_id=".$nav_id."&edit_nav_topic_id=" . $nav_topics->nav_topic_id ."\"  method=\"POST\">".
            "<table class=\"reda_td\">".
            "<tr><td>".$lang["navigation_name"]."</td></tr>".
            "<tr>".

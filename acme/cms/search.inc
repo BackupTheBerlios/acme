@@ -33,6 +33,7 @@
 include($conf["cmsbase"] . "/lang/search." . $conf["lang"] . ".inc");
 
 if ($page == "search"){
+	
    $searchstring = search_strip_badchars($search);
    $modul_result = dbquery("select * from ".$conf["db_namespace"]."module where search ='Y'");
    if ( mysql_num_rows($modul_result) >0)  {
@@ -50,7 +51,7 @@ if ($page == "search"){
 function rendersearch($searchstring){
    global $conf, $lang;
    
-   $akt=0;
+   $akt=1;
 
    $data->titel     = "";
    $data->home_img  = gethomeimg();
@@ -88,7 +89,7 @@ function searchIt(&$data, $akt, $search){
           $modul = $row->modul;
           $fktname = 'search_'.$modul;
           if (function_exists($fktname)){
-             $found = $found + call_user_func($fktname, $search, &$data);
+             $found = $found + call_user_func($fktname, $search, &$data, &$akt);
           }              
       }
       mysql_free_result($modul_result);
@@ -129,8 +130,6 @@ function search_strip_badchars($line) {
  $line = str_replace("&copy;", " ", $line);
  $line = str_replace("&nbsp;", " ", $line);
  $line = str_replace("&quot;", " ", $line);
- $line = str_replace("&uuml;", "ü", $line);
- $line = str_replace("&Uuml;", "Ü", $line);
  $line = str_replace("&", " ", $line);
  $line = str_replace(";", " ", $line);
  $line = str_replace("\n", " ", $line);
