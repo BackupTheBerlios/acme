@@ -163,6 +163,17 @@ function get_modultable($modul){
       return $table;
    }
 }
+function get_modulname($modul){
+   global $conf, $lang;
+   
+   $Statement = "select * from ".$conf["db_namespace"]."module where modul = '" . $modul . "'";
+   $result = dbquery($Statement);
+   if (mysql_num_rows($result) == 1)  { 
+      $row = mysql_fetch_array($result);
+      $table = $row["name"];
+      return $table;
+   }
+}
 function get_modulid($modul){
    global $conf, $lang;
    
@@ -232,6 +243,7 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
          	$modultable  = get_modultable($modul);
          	$modulid     = get_modulid($modul);
          	$modulparent = get_modulparent($modul);
+         	$modulname   = get_modulname($modul);
          	// suchen und position bestimmen
          	foreach($bc as $element) {if ($element == $row->nav_topic_type_id) {$found = $pos;}$pos++;}
             // was gefunden dann von dort aus die nav weiter aufklappen
@@ -249,10 +261,10 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
                }
                $walkId = $bc[count($bc)-1];  // der letzte im crumbs
                // $lastparent = get_parent_id($modul, $walkId); // den parent dazu holen
-               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0'";
+               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0' order by " . $modulname . "";
                $lastresult  = dbquery($lastnav);
-               if (mysql_num_rows($result) > 0) {
-               	  $h_level++;
+               if (mysql_num_rows($lastresult) > 0) {
+              	  $h_level++;
                	  while ($lastrow = mysql_fetch_array($lastresult)){
                      $akt++;
                      $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $lastrow[$modulid]);
@@ -271,6 +283,33 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
    $tplfile= $conf["templates"].gettemplatebyid($page_tpl).".nav.". $side .".tpl";
    return " " . sprintt($data, $tplfile) . " ";
 }
+
+function parse_breadcrumbs($data, $bcs){
+   global $conf, $lang;
+   
+   $modul = array_shift($bcs);
+
+   $akt = 0;
+   
+   if (count($bcs) > 1 || ($bcs[0] <> $conf["home_page"] && $modul == $conf["home_page_typ"])){    
+      $data->$modul->bread[$akt]->name = getnamebymodulandid($conf["home_page_typ"], $conf["home_page"]);
+      $data->$modul->bread[$akt]->url  = $conf["indexname"].$conf["home_page_typ"] ."/". $conf["home_page"];;
+   }
+   //if (count($bcs) > 1) {
+      while (count($bcs) > 0){
+      	  $akt++;
+     	  $crumb = array_shift($bcs);
+   
+   	     if (count($bcs) == 0){
+   	  	    $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
+   	  	    $data->$modul->bread[$akt]->url  = "";
+   	     } else {
+     	  	 $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
+    	  	 $data->$modul->bread[$akt]->url  = $conf["indexname"].$modul."/".$crumb;
+    	 }		
+      }
+   //}
+}   
 
 function parse_block($page_tpl, $block_id, $side){
    global $conf, $lang;

@@ -76,6 +76,13 @@ p  {}
 	position:relative;
 	right:0px;
 	}
+.bread{
+	font-size:small;
+	text-align:left;
+	position:relative;
+	right:0px;
+    top:15px;
+	}
 
 /* ARTIKEL */
 h1.artikel {}

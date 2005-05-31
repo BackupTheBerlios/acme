@@ -117,7 +117,11 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
                 " page_comments = '". $edit_page_comments . "'".
                 " WHERE page_id = '". $edit_page_id . "'";
    $my_result = dbquery($Statement);
-   if ($my_result) {echo $lang["page_update_erfolgreich"];}
+   if ($my_result) {
+   	  echo $lang["page_update_erfolgreich"];
+   	  if ($page_childs == "P")check4exartikel($edit_page_id);
+   	  if ($page_childs == "A")check4expages($edit_page_id);
+   }
   else            {echo $lang["page_update_fehlerhaft"];}
 }
 function pagedelete($delete_id){
@@ -356,6 +360,25 @@ function checkpagechilds($parent, $typ){
    }
    return $childs;   
 }      
+function check4exartikel($page_id){
+	global $conf, $lang;
+	
+    $result = dbquery("select * from ".$conf["db_namespace"]."artikel where artikel_page like '%:" . $page_id . ":%'");	
+    if ( mysql_num_rows($result) > 0 ){
+    	
+    }
+    mysql_free_result($result);
+}	
+function check4expages($page_id){
+	global $conf, $lang;
+	
+	$result = dbquery("select * from ".$conf["db_namespace"]."pages   where page_parent  = '" . $parent . "'");
+	if ( mysql_num_rows($result) > 0 ){
+		
+	}
+    mysql_free_result($result);	
+}	
+
 function createsel_childs($select_name,$grouplist) {
    global $conf, $lang;
 
