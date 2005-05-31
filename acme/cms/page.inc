@@ -150,7 +150,9 @@ function renderpage($pageid, $pagestart){
       $tplfile = $conf["templates"] . gettemplatebyid($page_tpl) . ".tpl";
       
       $bcs = get_breadcrumbs("page", $page_id);
-      
+
+      parse_breadcrumbs(&$data, $bcs);
+
       $data->left_bar  = parse_bar($page_tpl, $page_left_bar,  "left",  $bcs);
       $data->right_bar = parse_bar($page_tpl, $page_right_bar, "right", $bcs);
       $data->top_bar   = parse_bar($page_tpl, $page_top_bar,   "top",   $bcs);
@@ -185,20 +187,20 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
    $Zeilen_pro_Seite = 10;
    $akt=0;
    if ($page_childs == "P"){
-      $query = "select * from ".$conf["db_namespace"]."pages where page_parent = '".$page_id."' order by page_create_date DESC";
+      $query = "select * from ".$conf["db_namespace"]."pages where page_parent = '".$page_id."' order by page_name DESC";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
          while ( $row = mysql_fetch_object($my_result) ){
             $akt++;
-            $data->page->preview[$akt]->url         = $conf["indexname"]."page/".$row->page_id;
-            $data->page->preview[$akt]->headline    = $row->page_headline;
-            if ($row->page_long_text_typ == "B"){$data->page->preview[$akt]->short_text  = parse_bbcode(nltobr($row->page_short_text), $page_tpl);}
-            else                                {$data->page->preview[$akt]->short_text  = $row->$page_short_text;}            
-            $data->page->preview[$akt]->create_date = mydate2date($row->page_create_date);
-            $data->page->preview[$akt]->create_time = mydate2time($row->page_create_date);
-            $data->page->preview[$akt]->modify_date = mydate2date($row->page_modify_date);
-            $data->page->preview[$akt]->modify_time = mydate2time($row->page_modify_date);
-            $data->page->preview[$akt]->author      = getauthorbyid($row->page_author_id);             
+            $data->page->page_preview[$akt]->url         = $conf["indexname"]."page/".$row->page_id;
+            $data->page->page_preview[$akt]->headline    = $row->page_headline;
+            if ($row->page_long_text_typ == "B"){$data->page->page_preview[$akt]->short_text  = parse_bbcode(nltobr($row->page_short_text), $page_tpl);}
+            else                                {$data->page->page_preview[$akt]->short_text  = $row->$page_short_text;}            
+            $data->page->page_preview[$akt]->create_date = mydate2date($row->page_create_date);
+            $data->page->page_preview[$akt]->create_time = mydate2time($row->page_create_date);
+            $data->page->page_preview[$akt]->modify_date = mydate2date($row->page_modify_date);
+            $data->page->page_preview[$akt]->modify_time = mydate2time($row->page_modify_date);
+            $data->page->page_preview[$akt]->author      = getauthorbyid($row->page_author_id);             
          }
       }
   }
@@ -213,16 +215,16 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
      if ( mysql_num_rows($my_result) > 0 ){
         while ( $row = mysql_fetch_object($my_result) ){
            $akt++;
-           $data->page->preview[$akt]->url          = $conf["indexname"]."artikel/". $page_id ."/". $row->artikel_id ."/1";
-           $data->page->preview[$akt]->headline     = $row->artikel_headline;
-           $data->page->preview[$akt]->sub_headline = $row->artikel_sub_headline;           
-           $data->page->preview[$akt]->short_text   = parse_bbcode(nltobr($row->artikel_short_text), $page_tpl);
-           $data->page->preview[$akt]->publish_date = mydate2date($row->artikel_publish_date);
-           $data->page->preview[$akt]->create_date  = mydate2date($row->artikel_create_date);
-           $data->page->preview[$akt]->create_time  = mydate2time($row->artikel_create_date);
-           $data->page->preview[$akt]->modify_date  = mydate2date($row->artikel_modify_date);
-           $data->page->preview[$akt]->modify_time  = mydate2time($row->artikel_modify_date);           
-           $data->page->preview[$akt]->author       = getauthorbyid($row->artikel_author_id); 
+           $data->page->artikel_preview[$akt]->url          = $conf["indexname"]."artikel/". $page_id ."/". $row->artikel_id ."/1";
+           $data->page->artikel_preview[$akt]->headline     = $row->artikel_headline;
+           $data->page->artikel_preview[$akt]->sub_headline = $row->artikel_sub_headline;           
+           $data->page->artikel_preview[$akt]->short_text   = parse_bbcode(nltobr($row->artikel_short_text), $page_tpl);
+           $data->page->artikel_preview[$akt]->publish_date = mydate2date($row->artikel_publish_date);
+           $data->page->artikel_preview[$akt]->create_date  = mydate2date($row->artikel_create_date);
+           $data->page->artikel_preview[$akt]->create_time  = mydate2time($row->artikel_create_date);
+           $data->page->artikel_preview[$akt]->modify_date  = mydate2date($row->artikel_modify_date);
+           $data->page->artikel_preview[$akt]->modify_time  = mydate2time($row->artikel_modify_date);           
+           $data->page->artikel_preview[$akt]->author       = getauthorbyid($row->artikel_author_id); 
         }
         mysql_free_result($my_result);
      }
