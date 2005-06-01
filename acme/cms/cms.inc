@@ -16,7 +16,7 @@
       $pageid   = $conf["home_page"];
    }
    include($conf["cmsbase"] . "/page.inc");
-   if (checkmodul($page) || $page == "forum") {
+   if (checkmodul($page)) {
       if ($page <> "page"){
          include($conf["cmsbase"] . "/" . $page . ".inc");
       }

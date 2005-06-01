@@ -137,12 +137,12 @@ function rendergaestebuch($gb_id, $gb_page=1){
 function writegbentrys($data, $gb_id, $gb_page){
   global $conf, $lang;
   
-   $gb_ppp = "10";
+   $gb_ppp = "2";
    if(empty($gb_page)) {$gb_page=1;}
    $limitfrom = ($gb_page*$gb_ppp)-$gb_ppp;
    $limitto = $gb_ppp;
-   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys ORDER BY entry_id DESC LIMIT $limitfrom, $limitto");
-   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys ORDER BY entry_id DESC"));
+   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where entry_blocked = 'N' ORDER BY entry_id DESC LIMIT $limitfrom, $limitto");
+   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where entry_blocked = 'N' ORDER BY entry_id DESC"));
 
    if ($num>$limitto)   {
       $seiten=intval($num/$limitto);
@@ -154,6 +154,8 @@ function writegbentrys($data, $gb_id, $gb_page){
   // $data->gaestebuch->eintraege = $num;
 
    if($gb_page>1)              {$data->gaestebuch->prevpage = $conf["indexname"]."gaestebuch/".$gb_id."/".($gb_page-1);}
+   $data->gaestebuch->page  = $gb_page;
+   $data->gaestebuch->pages = $seiten;
    if($num/$gb_ppp > $gb_page) {$data->gaestebuch->nextpage = $conf["indexname"]."gaestebuch/".$gb_id."/".($gb_page+1);}
 
    $akt = 0;
