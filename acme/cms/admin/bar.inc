@@ -172,6 +172,10 @@ function bar_delete($delete_id){
 
 function bar_topic_new($bar_id){
    global $conf, $lang;
+
+   $new_bar_topic_type = "";
+   $new_bar_topic_type_id = 0;
+   $new_bar_topic_text = "";
    
    echo "<h1>".$lang["bar_eintrag_neu"]."</h1>".
         "<form action=\"" . $conf["admp"] . "&section=bar&action=topic_add\"  method=\"POST\">".
