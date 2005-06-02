@@ -187,7 +187,7 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
    $Zeilen_pro_Seite = 10;
    $akt=0;
    if ($page_childs == "P"){
-      $query = "select * from ".$conf["db_namespace"]."pages where page_parent = '".$page_id."' order by page_name DESC";
+      $query = "select * from ".$conf["db_namespace"]."pages where page_parent = '".$page_id."' order by page_name ASC";
       $my_result = dbquery($query);
       if ( mysql_num_rows($my_result) > 0 ){
          while ( $row = mysql_fetch_object($my_result) ){
@@ -195,7 +195,7 @@ function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_t
             $data->page->page_preview[$akt]->url         = $conf["indexname"]."page/".$row->page_id;
             $data->page->page_preview[$akt]->headline    = $row->page_headline;
             if ($row->page_long_text_typ == "B"){$data->page->page_preview[$akt]->short_text  = parse_bbcode(nltobr($row->page_short_text), $page_tpl);}
-            else                                {$data->page->page_preview[$akt]->short_text  = $row->$page_short_text;}            
+            else                                {$data->page->page_preview[$akt]->short_text  = $row->page_short_text;}            
             $data->page->page_preview[$akt]->create_date = mydate2date($row->page_create_date);
             $data->page->page_preview[$akt]->create_time = mydate2time($row->page_create_date);
             $data->page->page_preview[$akt]->modify_date = mydate2date($row->page_modify_date);
