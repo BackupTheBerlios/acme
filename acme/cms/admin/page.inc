@@ -41,7 +41,7 @@ switch($action) {
        pagebrowse();       
        break;
    default:
-       pagebrowse();       
+       pagebrowse($openpage_id);       
        break;
 }
 
@@ -119,8 +119,8 @@ function pageupdate($edit_page_id, $edit_page_name, $edit_page_tpl, $edit_page_p
    $my_result = dbquery($Statement);
    if ($my_result) {
    	  echo $lang["page_update_erfolgreich"];
-   	  if ($page_childs == "P")check4exartikel($edit_page_id);
-   	  if ($page_childs == "A")check4expages($edit_page_id);
+   	  if ($edit_page_childs == "P")check4exartikel($edit_page_id);
+   	  if ($edit_page_childs == "A")check4expages($edit_page_id);
    }
   else            {echo $lang["page_update_fehlerhaft"];}
 }
@@ -202,13 +202,13 @@ function pagenew($new_page_name, $new_page_tpl, $new_page_parent, $new_page_img_
    echo "<tr><td colspan=5>".$lang["page_kurztext"]."</td></tr>";
    echo "<tr><td colspan=5>";
    write_bbc("page_new", "new_page_short_text");
-   echo "<textarea name=new_page_short_text id=new_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars(stripslashes($new_page_short_text)) . "</textarea>\n";
+   echo "<textarea name=new_page_short_text id=new_page_short_text wrap=virtual rows=15 cols=120>" . htmlspecialchars(stripslashes($new_page_short_text)) . "</textarea>\n";
    echo "</td></tr>";
    echo "<tr><td colspan=5>&nbsp;</td></tr>\n";
    echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>\n";
    echo "<tr><td colspan=5>";
    write_bbc("page_new", "new_page_long_text");
-   echo "<textarea name=new_page_long_text id=new_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea>\n";
+   echo "<textarea name=new_page_long_text id=new_page_long_text wrap=virtual rows=45 cols=120>" . htmlspecialchars(stripslashes($new_page_long_text)) . "</textarea>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=3>&nbsp;</td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>\n";
    echo "</table>\n";
@@ -280,12 +280,12 @@ function pagedit($id){
       echo "<tr><td colspan=5>".$lang["page_kurztext"]."</td></tr>\n";
       echo "<tr><td colspan=5>";
       write_bbc("page_edit", "edit_page_short_text");
-      echo "<textarea name=edit_page_short_text wrap=virtual rows=5 cols=75>" . htmlspecialchars($row["page_short_text"]) . "</textarea>\n";
+      echo "<textarea name=edit_page_short_text wrap=virtual rows=15 cols=120>" . htmlspecialchars($row["page_short_text"]) . "</textarea>\n";
       echo "</td></tr>\n";
       echo "<tr><td colspan=5>".$lang["page_langtext"]."</td></tr>\n";
       echo "<tr><td colspan=5>";
       write_bbc("page_edit", "edit_page_long_text");
-      echo "<textarea name=edit_page_long_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row["page_long_text"]) . "</textarea>\n";
+      echo "<textarea name=edit_page_long_text wrap=virtual rows=35 cols=120>" . htmlspecialchars($row["page_long_text"]) . "</textarea>\n";
       echo "</td></tr>\n";
       echo "<tr><td colspan=3 class=\"button_td_submit\"></td><td><input type=submit name=edit_page value=".$lang["page_speichern"]."></td><td><input type=reset name=edit_page value=".$lang["page_verwerfen"]."></td></tr>\n";
       echo "</table>\n";
@@ -294,7 +294,7 @@ function pagedit($id){
    }
 }   
 
-function pagebrowse(){
+function pagebrowse($openpage_id){
    global $conf, $lang;
 
    echo "<h1>".$lang["page_verwaltung"]."</h1>\n";
@@ -302,8 +302,55 @@ function pagebrowse(){
       echo "<a href=\"". $conf["admp"] . "&section=page&action=new\">".$lang["page_neu"]."</a>\n";
    }
    echo "<table class=\"reda_td\">\n";
-   echo "<th><tr><td>".$lang["page_id"]."</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
-   writepagechilds($parent,$h_level);
+   echo "<th><tr><td>&nbsp;</td><td>".$lang["page_name"]."</td><td>".$lang["page_ueberschrift"]."</td><td>".$lang["page_erstellt"]."</td><td>".$lang["page_geaendert"]."</td><td>".$lang["page_autor"]."</td><td>".$lang["page_counter"]."</td><td>".$lang["page_childs"]."</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></th>\n";
+   $parent = "";
+   $h_level = 0;
+   $result = dbquery("select * from ".$conf["db_namespace"]."pages where  page_parent = '" . $parent . "' order by page_name");
+   if ( mysql_num_rows($result) > 0 ){
+      while ($row = mysql_fetch_object($result)){
+         echo "<tr><td>";
+         if (checkpagechilds($row->page_id , "P")>0){
+              echo "<a href=" . $conf["admp"] . "&section=page&openpage_id=".$row->page_id.">&gt;</a>";
+         }
+         else {
+            echo "&nbsp;";
+         }
+         echo "</td>";
+         echo "<td>";
+         for ($count = 0;$count < $h_level; $count++){echo "-";}
+         echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         echo "<td>". $row->page_headline."</td>";
+         echo "<td>". mydate2date($row->page_create_date) ."</td>";         
+         echo "<td>". mydate2date($row->page_modify_date) ."</td>";
+         echo "<td>". getauthorbyid($row->page_author_id) ."</td>";
+         echo "<td>". $row->page_counter."</td>";
+         echo "<td>". $row->page_childs."</td>";         
+         echo "<td>";
+         if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
+            echo "<a href=" . $conf["admp"] . "&action=edit&section=page&id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
+         }
+         echo "</td>";
+         echo "<td>";
+         if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
+            if (checkpagechilds($row->page_id, $row->page_childs) == 0){
+               echo "<a href=" . $conf["admp"] . "&section=page&action=delete&delete_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";             
+            } else {echo "&nbsp;";}
+         } else {echo "&nbsp;";}
+         echo "</td>";
+         echo "<td>";
+         if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
+            echo "<a href=" . $conf["admp"] . "&section=rights&modul_name=page&modul_id=".$row->page_id."><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";             
+         } else {echo "&nbsp;";}
+         echo "</td>";
+         echo "</tr>\n";
+         if ($openpage_id == $row->page_id) {
+            $h_level++;
+            writepagechilds($row->page_id, $h_level);
+            $h_level--;
+         }
+      }
+      mysql_free_result($result);
+   }
    echo "</table>";
 }      
 
@@ -313,7 +360,7 @@ function writepagechilds($parent, &$h_level){
    $result = dbquery("select * from ".$conf["db_namespace"]."pages where  page_parent = '" . $parent . "' order by page_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
-         echo "<tr><td>" . $row->page_id . "</td>";
+         echo "<tr><td>&nbsp;</td>";
          echo "<td>";
          for ($count = 0;$count < $h_level; $count++){echo "-";}
          echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
@@ -372,7 +419,7 @@ function check4exartikel($page_id){
 function check4expages($page_id){
 	global $conf, $lang;
 	
-	$result = dbquery("select * from ".$conf["db_namespace"]."pages   where page_parent  = '" . $parent . "'");
+	$result = dbquery("select * from ".$conf["db_namespace"]."pages   where page_parent  = '" . $page_id . "'");
 	if ( mysql_num_rows($result) > 0 ){
 		
 	}
@@ -413,6 +460,9 @@ function createsel_ltt($select_name,$grouplist)
 function createsel_pagenCPs($select_name,$grouplist){
    global $conf, $lang;
 
+   $parent = "";
+   $h_level = 0;
+
    echo "<select name=" . $select_name . ">";
    echo "<option value= \"\"></option>";
    getpages4select($parent, &$h_level, $grouplist);
@@ -426,7 +476,7 @@ function getpages4select($parent, &$h_level, $grouplist){
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->page_id;
-         if ( eregi ( $row->page_id, $grouplist ) ){echo " selected ";}
+         if ($row->page_id == $grouplist){echo " selected ";}
          if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "page", $row->page_id) == 1) {
             echo ">";
          } else {

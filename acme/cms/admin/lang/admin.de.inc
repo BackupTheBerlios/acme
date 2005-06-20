@@ -20,6 +20,7 @@ $lang["admin_downloads"]="Downloads";
 $lang["admin_bar"]="Seitenbereiche";
 $lang["admin_news"]="News";
 $lang["admin_sitemap"]="Sitemap";
+$lang["admin_gaestebuch"]="G&auml;steb&uuml;cher";
 $lang["admin_hilfe"]="Hilfe-Wiki";
 $lang["admin_content"]="Inhalt";
 $lang["admin_layout"]="Struktur";

@@ -238,21 +238,21 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
          $test = 0;
          $modul = $bc[0];
          if ($row->nav_topic_type == $modul){
-         	$pos=0; 
-         	$found=0;
-         	$modultable  = get_modultable($modul);
-         	$modulid     = get_modulid($modul);
-         	$modulparent = get_modulparent($modul);
-         	$modulname   = get_modulname($modul);
-         	// suchen und position bestimmen
-         	foreach($bc as $element) {if ($element == $row->nav_topic_type_id) {$found = $pos;}$pos++;}
+            $pos=0; 
+            $found=0;
+            $modultable  = get_modultable($modul);
+            $modulid     = get_modulid($modul);
+            $modulparent = get_modulparent($modul);
+            $modulname   = get_modulname($modul);
+            // suchen und position bestimmen
+            foreach($bc as $element) {if ($element == $row->nav_topic_type_id) {$found = $pos;}$pos++;}
             // was gefunden dann von dort aus die nav weiter aufklappen
-         	if ($found <> 0){
-        	   $h_level=0;
-         	   // bis zum vorletzten das ist dann unser parent für den letzten block	 
-         	   for ($walk = ($found+1); $walk < (count($bc)); $walk++) {
-            		$walkId = $bc[$walk];
-            		$h_level++;
+            if ($found <> 0){
+            $h_level=0;
+               // bis zum vorletzten das ist dann unser parent für den letzten block    
+               for ($walk = ($found+1); $walk < (count($bc)); $walk++) {
+                  $walkId = $bc[$walk];
+                  $h_level++;
                     $akt++;
                     $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $walkId);
                     $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$walkId;
@@ -264,16 +264,16 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
                $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0' order by " . $modulname . "";
                $lastresult  = dbquery($lastnav);
                if (mysql_num_rows($lastresult) > 0) {
-              	  $h_level++;
-               	  while ($lastrow = mysql_fetch_array($lastresult)){
+                 $h_level++;
+                    while ($lastrow = mysql_fetch_array($lastresult)){
                      $akt++;
                      $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $lastrow[$modulid]);
                      $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$lastrow[$modulid];
                      $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $lastrow[$modulid]);
                      $data->nav_elem[$akt]->nav_elem_h = $h_level;
-               	  }   
-         	}	
-         	}         	
+                    }   
+            }  
+            }           
         }
       // end sub nav's
       }
@@ -295,20 +295,17 @@ function parse_breadcrumbs($data, $bcs){
       $data->$modul->bread[$akt]->name = getnamebymodulandid($conf["home_page_typ"], $conf["home_page"]);
       $data->$modul->bread[$akt]->url  = $conf["indexname"].$conf["home_page_typ"] ."/". $conf["home_page"];;
    }
-   //if (count($bcs) > 1) {
-      while (count($bcs) > 0){
-      	  $akt++;
-     	  $crumb = array_shift($bcs);
-   
-   	     if (count($bcs) == 0){
-   	  	    $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
-   	  	    $data->$modul->bread[$akt]->url  = "";
-   	     } else {
-     	  	 $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
-    	  	 $data->$modul->bread[$akt]->url  = $conf["indexname"].$modul."/".$crumb;
-    	 }		
-      }
-   //}
+   while (count($bcs) > 0){
+   	  $akt++;
+  	     $crumb = array_shift($bcs);
+ 	     if (count($bcs) == 0){
+  	  	     $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
+  	  	     $data->$modul->bread[$akt]->url  = "";
+  	     } else {
+  	  	     $data->$modul->bread[$akt]->name = getnamebymodulandid($modul, $crumb);
+           $data->$modul->bread[$akt]->url  = $conf["indexname"].$modul."/".$crumb;
+    	  }		
+   }
 }   
 
 function parse_block($page_tpl, $block_id, $side){

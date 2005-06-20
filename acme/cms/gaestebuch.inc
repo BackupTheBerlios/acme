@@ -84,7 +84,7 @@ function rendergaestebuch($gb_id, $gb_page=1){
          $poster_name = ereg_replace("<", "&lt;", $poster_name);
          $poster_name = ereg_replace(">", "&gt;", $poster_name);
          $hostname = gethostbyaddr("$REMOTE_ADDR");
-         dbquery("insert into ".$conf["db_namespace"]."gb_entrys (gb_id, entry_content, entry_comment, entry_date, entry_time, entry_poster, poster_email, poster_url, poster_ip, poster_hostname) values('$id','$entry_content', '--', '$datum', '$zeit', '$poster_name', '$poster_email', '$poster_url', '$REMOTE_ADDR', '$hostname')");
+         dbquery("insert into ".$conf["db_namespace"]."gb_entrys (gb_id, entry_content, entry_comment, entry_date, entry_time, entry_poster, poster_email, poster_url, poster_ip, poster_hostname) values('$gb_id','$entry_content', '--', '$datum', '$zeit', '$poster_name', '$poster_email', '$poster_url', '$REMOTE_ADDR', '$hostname')");
          $data->gaestebuch->post_name    = "";
          $data->gaestebuch->post_email   = "";
          $data->gaestebuch->post_url     = "";
@@ -137,12 +137,12 @@ function rendergaestebuch($gb_id, $gb_page=1){
 function writegbentrys($data, $gb_id, $gb_page){
   global $conf, $lang;
   
-   $gb_ppp = "2";
+   $gb_ppp = "10";
    if(empty($gb_page)) {$gb_page=1;}
    $limitfrom = ($gb_page*$gb_ppp)-$gb_ppp;
    $limitto = $gb_ppp;
-   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where entry_blocked = 'N' ORDER BY entry_id DESC LIMIT $limitfrom, $limitto");
-   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where entry_blocked = 'N' ORDER BY entry_id DESC"));
+   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where gb_id= ". $gb_id ." and entry_blocked = 'N' ORDER BY entry_id DESC LIMIT $limitfrom, $limitto");
+   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where gb_id= ". $gb_id ." and entry_blocked = 'N' ORDER BY entry_id DESC"));
 
    if ($num>$limitto)   {
       $seiten=intval($num/$limitto);

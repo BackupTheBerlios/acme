@@ -30,6 +30,7 @@ $lang["downloads_loesche_datei"]="delete file";
 $lang["downloads_link"]="link";
 $lang["downloads_typ_link"]="link";
 $lang["downloads_datei_geloescht"]="file successfully deleted";
+$lang["downloads_datei_ersetzen"]="replace file with";
 $lang["downloads_datei_nicht_geloescht"]="error: file could not be deleted";
 $lang["downloads_datei_entfernt"]="file deleted successfully";
 $lang["downloads_datei_nicht_entfernt"]="error: file could not be removed from the database";

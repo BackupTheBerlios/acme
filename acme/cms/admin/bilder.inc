@@ -9,7 +9,11 @@ switch ($action) {
      img_typ_edit($img_typ_id);
   break;   
   case "img_update" :
-     img_update($img_id, $edit_img_name, $edit_img_description,$edit_img_desc_long,$img_typ_id);
+     if (!file_exists($HTTP_POST_FILES['datei']['tmp_name'])) {
+        img_update($img_id, $edit_img_name, $edit_img_description, $edit_img_desc_long, $img_typ_id);
+     } else {
+        img_update_newimg($HTTP_POST_FILES['datei']['tmp_name'],$HTTP_POST_FILES['datei']['name'],$HTTP_POST_FILES['datei']['size'], $img_id, $edit_img_name, $edit_img_description, $edit_img_desc_long, $img_typ_id);
+     }
   break;
   case "img_typ_update" :
      img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,$edit_img_typ_img_small_inactive,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows, $edit_img_typ_cols, $edit_img_typ_maxheight, $edit_img_typ_maxwidth);
@@ -26,7 +30,7 @@ switch ($action) {
      if ($error <> ""){
         unlink ($HTTP_POST_FILES['datei']['tmp_name']);
         echo $error;
-        img_new($img_typ_id);
+        img_new($img_typ_id, $new_img_description, $new_img_desc_long);
      }
      else {
         img_add($HTTP_POST_FILES['datei']['tmp_name'],$HTTP_POST_FILES['datei']['name'],$HTTP_POST_FILES['datei']['size'], $new_img_name, $new_img_description, $new_img_desc_long, $img_typ_id);
@@ -92,7 +96,9 @@ function img_typ_browse(){
    }
    echo "<table class=\"reda_td \">";
    echo "<tr></td><td>".$lang["bilder_typ_name"]."</td><td>".$lang["bilder_anzahl"]."</td><td></td><td></td><td></td></tr>";
-   writeimgtypchilds($parent,$h_level);
+   $h_level = 0;
+   $parent = 0;
+   writeimgtypchilds($parent, $h_level);
    echo "</table>";
    
 }
@@ -153,27 +159,6 @@ function checkimgtypchilds($parent){
    mysql_free_result($result);
    return $childs;   
 }         
-function img_new($img_typ_id){
-   global $conf, $lang;
-   
-   echo "<h1>".$lang["bilder_neu"]."<h1>\n".
-        "<form action=\"" . $conf["admp"] ."&action=img_add&section=bilder&img_typ_id=" . $img_typ_id . "\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n".
-        "<table class=\"reda_td\">\n".
-        "<tr><td>".$lang["bilder_name"]."</td><td></td></tr>\n".
-        "<tr>\n".
-        "<td><input name=\"new_img_name\" size=\"25\" maxlength=\"25\"></td>\n".
-        "<td><INPUT type=\"file\" name=\"datei\" size=\"15\"></td>\n".
-        "</tr>".
-        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung"]."</td></tr>".
-        "<tr><td colspan = \"2\"><input name=\"new_img_description\" size=\"50\" maxlength=\"250\" value = \"\"></td></tr>\n".
-        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
-        "<tr><td colspan = \"2\"><textarea name=\"new_img_desc_long\" wrap=virtual rows=15 cols=75></textarea></td></tr>\n".
-        "<tr><td colspan = \"2\"><input type=\"submit\" name=\"add\" value=\"add\"></td></tr>\n".
-        "</table>\n".
-        "</form>\n";
-  
-}
-
 
 function img_typ_new($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_id, $new_img_typ_tpl, $new_img_typ_img_small, $new_img_typ_img_small_inactive, $new_img_typ_img_big, $new_img_typ_top_bar, $new_img_typ_left_bar, $new_img_typ_right_bar, $new_img_typ_foo_bar, $new_img_typ_rows,$new_img_typ_cols,$new_img_typ_maxheight,$new_img_typ_maxwidth){
    global $conf, $lang;
@@ -272,34 +257,6 @@ function img_typ_add($new_img_typ_name, $new_img_typ_text, $new_img_typ_parent_i
    else            {echo $lang["bilder_typ_insert_fehlerhaft"]."\n<br>".$Statement;}
    img_typ_browse();
 }    
-   
-   
-function img_edit($img_id){
-	global $conf, $lang;
-   $result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
-
-   if ($result){
-      $row = mysql_fetch_object($result);
-      echo "<h1>".$lang["bilder_bearbeiten"]."<h1>\n".
-           "<form action=\"" . $conf["admp"] . "&action=img_update&section=bilder&img_id=" . $img_id . "&img_typ_id=" . $row->img_typ_id . "\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n".
-           "<table class=\"reda_td\">\n".
-           "<tr><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_realname"]."</td></tr>\n".
-           "<tr><td><input name=\"edit_img_name\" size=\"25\" maxlength=\"25\" value = \"" . $row->img_name . "\"></td>\n".
-           "<td>" . $row->img_real_name . "</td></tr>\n".
-           "<tr><td colspan = \"1\">".$lang["bilder_beschreibung"]."</td>".
-           "<td rowspan = \"4\"><img src=\"cms/bilder/thumb_".$row->img_real_name."\"></td>".
-           "</tr>".
-           "<tr><td colspan = \"1\"><input name=\"edit_img_description\" size=\"50\" maxlength=\"250\" value = \"" . $row->img_description . "\"></td></tr>\n".
-           "<tr><td colspan = \"1\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
-           "<tr><td colspan = \"1\"><textarea name=\"edit_img_desc_long\" wrap=virtual rows=15 cols=75>" . $row->img_desc_long . "</textarea></td></tr>\n".
-           "<tr><td colspan = \"2\"><input type=\"submit\" name=\"update\" value=\"update\"></td></tr>\n".
-           "</table>\n".
-           "</form>\n";
-      mysql_free_result($result);
-   }  
-
-} 
-
 
 function img_typ_edit($id){
    global $conf, $lang;
@@ -362,7 +319,6 @@ function img_typ_edit($id){
       mysql_free_result($result);
    }
 }   
-
 function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows,$edit_img_typ_cols,$edit_img_typ_maxheight, $edit_img_typ_maxwidth){
    global $conf, $lang;
               
@@ -388,61 +344,31 @@ function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text
   else             {echo  $lang["bilder_typ_update_fehlerhaft"]."\n";}
      img_typ_browse();
 }
-    
-function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_typ_id){
+function img_new($img_typ_id, $new_img_description, $new_img_desc_long){
    global $conf, $lang;
-
-	$Statement = "UPDATE ".$conf["db_namespace"]."bilder Set ".
-	                          " img_name = '" . $img_name . "', ".
-                              " img_description = '". $img_description . "', ".
-                              " img_desc_long = '". $img_desc_long . "', ".
-                              " img_author_id = '". $conf["author_id"] . "' ".
-                              " WHERE img_id = '" . $img_id . "'";
-   $result = dbquery($Statement);
-   if ($result){echo $lang["bilder_update_erfolgreich"]."<br>";}
-   else {echo $lang["bilder_update_fehlerhaft"]."<br>\n";}
-   img_browse($img_typ_id);
-}
-
-function img_delete($img_id){
-   global $conf, $lang;
-
-   $result = dbquery("select img_real_name, img_typ_id from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
-   if ($result){
-      $row = mysql_fetch_object($result);
-      $imagename = $row->img_real_name;
-      $img_typ_id = $row->img_typ_id;      
-      echo "<h2>".$lang["bilder_loesche_datei"] ." ". $bild. "</h2><P>";
-      if (unlink ($conf["imagesdir"] . $imagename) && unlink ($conf["imagesdir"] ."thumb_". $imagename) && unlink ($conf["imagesdir"] ."small_". $imagename)){
-         echo $lang["bilder_datei_geloescht"]."<br>";
-      	 $Statement = "DELETE FROM ".$conf["db_namespace"]."bilder WHERE img_id = '" . $img_id . "'";
-         $delete_result = dbquery($Statement);
-         if ($delete_result){echo $lang["bilder_datei_entfernt"] . "<br>";}
-         else {echo $lang["bilder_datei_nicht_entfernt"];}
-         } 
-      else {echo $lang["bilder_datei_nicht_geloescht"];}
-      mysql_free_result($result);
-   }
-   img_browse($img_typ_id);
-}
-
-function img_typ_delete($img_typ_id){
-   global $conf, $lang;
-
-  	$Statement = "DELETE FROM ".$conf["db_namespace"]."bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
-   $delete_result = dbquery($Statement);
-   if ($delete_result){
-   	acl_delete("bilder", $img_typ_id);
-   	echo $lang["bilder_typ_delete_erfolgreich"];}
-   else {echo $lang["bilder_typ_delete_fehlerhaft"];}
-   img_typ_browse();
-}
-
+   
+   echo "<h1>".$lang["bilder_neu"]."<h1>\n".
+        "<form action=\"" . $conf["admp"] ."&action=img_add&section=bilder&img_typ_id=" . $img_typ_id . "\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n".
+        "<table class=\"reda_td\">\n".
+        "<tr><td>".$lang["bilder_name"]."</td><td></td></tr>\n".
+        "<tr>\n".
+        "<td><input name=\"new_img_name\" size=\"25\" maxlength=\"25\"></td>\n".
+        "<td><INPUT type=\"file\" name=\"datei\" size=\"15\"></td>\n".
+        "</tr>".
+        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung"]."</td></tr>".
+        "<tr><td colspan = \"2\"><input name=\"new_img_description\" size=\"50\" maxlength=\"250\" value = \"". $new_img_description ."\"></td></tr>\n".
+        "<tr><td colspan = \"2\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
+        "<tr><td colspan = \"2\"><textarea name=\"new_img_desc_long\" wrap=virtual rows=15 cols=75>". $new_img_desc_long ."</textarea></td></tr>\n".
+        "<tr><td colspan = \"2\"><input type=\"submit\" name=\"add\" value=\"add\"></td></tr>\n".
+        "</table>\n".
+        "</form>\n";
+  
+}   
 function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_description, $new_img_desc_long, $new_img_typ_id){
    global $conf, $lang;
 
    if ($realsize >= 180000) {
-   	  echo $lang["bilder_upload_filesizeerror"];
+        echo $lang["bilder_upload_filesizeerror"];
    } else {
       if (is_uploaded_file($tmpname)) {
          echo "<br><br>";
@@ -479,25 +405,176 @@ function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_descrip
          unlink ($tmpimagename);
 
          $Statement = "INSERT INTO ".$conf["db_namespace"]."bilder SET ".
-                              " img_name = '". $new_img_name . "', ".
-                              " img_real_name = '". $realname ."', ".
+                              " img_name = '".        $new_img_name . "', ".
+                              " img_real_name = '".   $realname ."', ".
                               " img_description = '". $new_img_description ."', ".
-                              " img_desc_long  = '". $new_img_desc_long ."', ".
-                              " img_typ_id  =  '". $new_img_typ_id ."', ".
-                              " img_author_id =  '". $conf["author_id"]."'";
+                              " img_desc_long  = '".  $new_img_desc_long ."', ".
+                              " img_typ_id  =  '".    $new_img_typ_id ."', ".
+                              " img_author_id =  '".  $conf["author_id"]."'";
          $insert_result = dbquery($Statement);
          if ($insert_result){
-         	echo $lang["bilder_upload_copy_finished"];
+            echo $lang["bilder_upload_copy_finished"];
          } else {
-         	echo $lang["bilder_upload_copy_break"];
+            echo $lang["bilder_upload_copy_break"];
                unlink ($conf["imagesdir"].$realname);
          }
       } else {
          echo $lang["bilder_upload_copy_attack"] . $realname;
-	  }
+     }
    }
    img_browse($new_img_typ_id);
+}   
+function img_edit($img_id){
+	global $conf, $lang;
+   $result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
+
+   if ($result){
+      $row = mysql_fetch_object($result);
+      echo "<h1>".$lang["bilder_bearbeiten"]."<h1>\n".
+           "<form action=\"" . $conf["admp"] . "&action=img_update&section=bilder&img_id=" . $img_id . "&img_typ_id=" . $row->img_typ_id . "\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n".
+           "<table class=\"reda_td\">\n".
+           "<tr><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_realname"]."</td></tr>\n".
+           "<tr><td><input name=\"edit_img_name\" size=\"25\" maxlength=\"25\" value = \"" . $row->img_name . "\"></td>\n".
+           "<td>" . $row->img_real_name . "</td></tr>\n".
+           "<tr><td>&nbsp;</td><td>".$lang["bilder_bild_ersetzen"]."</td></tr>".
+           "<tr><td>&nbsp;</td><td><INPUT type=\"file\" name=\"datei\" size=\"15\"></td></tr>".
+           "<tr><td colspan = \"1\">".$lang["bilder_beschreibung"]."</td>".
+           "<td rowspan = \"4\"><img src=\"cms/bilder/thumb_".$row->img_real_name."\"></td>".
+           "</tr>".
+           "<tr><td colspan = \"1\"><input name=\"edit_img_description\" size=\"50\" maxlength=\"250\" value = \"" . $row->img_description . "\"></td></tr>\n".
+           "<tr><td colspan = \"1\">".$lang["bilder_beschreibung_lang"]."</td></tr>".
+           "<tr><td colspan = \"1\"><textarea name=\"edit_img_desc_long\" wrap=virtual rows=15 cols=75>" . $row->img_desc_long . "</textarea></td></tr>\n".
+           "<tr><td colspan = \"2\"><input type=\"submit\" name=\"update\" value=\"update\"></td></tr>\n".
+           "</table>\n".
+           "</form>\n";
+      mysql_free_result($result);
+   }  
+
+} 
+
+
+    
+function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_typ_id){
+   global $conf, $lang;
+   
+   $Statement = "UPDATE ".$conf["db_namespace"]."bilder Set ".
+                        " img_name = '" . $img_name . "', ".
+                        " img_description = '". $img_description . "', ".
+                        " img_desc_long = '". $img_desc_long . "', ".
+                        " img_author_id = '". $conf["author_id"] . "' ".
+                        " WHERE img_id = '" . $img_id . "'";
+   $result = dbquery($Statement);
+   if ($result){echo $lang["bilder_update_erfolgreich"]."<br>";}
+   else {echo $lang["bilder_update_fehlerhaft"]."<br>\n";}
+   img_browse($img_typ_id);
 }
+
+function img_update_newimg($tmpname, $realname, $realsize, $img_id, $img_name, $img_description, $img_desc_long, $img_typ_id){
+   global $conf, $lang;
+
+   if ($realsize >= 180000) {
+        echo $lang["bilder_upload_filesizeerror"];
+   } else {
+      if (is_uploaded_file($tmpname)) {
+         $Statement = "select img_real_name from ".$conf["db_namespace"]."bilder WHERE img_id = '" . $img_id . "'";
+         $result = dbquery($Statement);
+         $row = mysql_fetch_object($result);
+         unlink ($conf["imagesdir"] . $row->img_real_name);
+         unlink ($conf["imagesdir"] . "thumb_" . $row->img_real_name);
+         unlink ($conf["imagesdir"] . "small_".  $row->img_real_name);
+         
+         echo "<br><br>";
+         echo $lang["bilder_upload_move_rename"];
+         echo "<br>";
+         echo $lang["bilder_upload_copy"];
+         
+         $tmpimagename = $conf["imagesdir"] . "tmp_".$realname;
+         copy ($tmpname, $tmpimagename);
+         unlink ($tmpname);
+         
+         $image = new thumbnail($tmpimagename);
+         $mix = get_img_typ_maxwidth($img_typ_id);
+         $miy = get_img_typ_maxheight($img_typ_id);
+         if ($mix > 0){$image->size_width($mix);}
+         if ($miy > 0){$image->size_height($miy);}
+         $imagename = $conf["imagesdir"] . $realname;
+         if ($mix > 0 && $miy > 0){
+            $image->save($imagename);
+         } else {
+           copy ($tmpimagename, $conf["imagesdir"] . $realname);
+         }   
+         
+         $thumb = new thumbnail($tmpimagename);
+         $thumb->size_width(60);
+         $thumb->save($conf["imagesdir"] . "thumb_" . $realname);
+         
+         $small = new thumbnail($tmpimagename);
+         $small->size_width(200);
+         $small->save($conf["imagesdir"] . "small_". $realname);
+         
+         echo $lang["bilder_upload_copy_end"]."<br>";
+         chmod ($conf["imagesdir"] . $realname, 0777);
+         unlink ($tmpimagename);
+
+        $Statement = "UPDATE ".$conf["db_namespace"]."bilder Set ".
+                        " img_name = '" . $img_name . "', ".
+                        " img_real_name = '".   $realname ."', ".
+                        " img_description = '". $img_description . "', ".
+                        " img_desc_long = '". $img_desc_long . "', ".
+                        " img_author_id = '". $conf["author_id"] . "' ".
+                        " WHERE img_id = '" . $img_id . "'";
+         $insert_result = dbquery($Statement);
+         if ($insert_result){
+            echo $lang["bilder_upload_copy_finished"];
+         } else {
+            echo $lang["bilder_upload_copy_break"];
+            unlink ($conf["imagesdir"].$realname);
+         }
+      } 
+      else {
+         echo $lang["bilder_upload_copy_attack"] . $realname;
+     }
+   }
+   img_browse($img_typ_id);
+}
+function img_delete($img_id){
+   global $conf, $lang;
+
+   $result = dbquery("select img_real_name, img_typ_id from ".$conf["db_namespace"]."bilder where img_id='$img_id'");
+   
+   if ($result){
+      $row = mysql_fetch_object($result);
+      $imagename = $row->img_real_name;
+      $img_typ_id = $row->img_typ_id;      
+      echo "<h2>".$lang["bilder_loesche_datei"] ." ". $imagename ."</h2>";
+      if (unlink ($conf["imagesdir"] . $imagename) && unlink ($conf["imagesdir"] ."thumb_". $imagename) && unlink ($conf["imagesdir"] ."small_". $imagename)){
+         echo $lang["bilder_datei_geloescht"]."<br>";
+         $Statement = "DELETE FROM ".$conf["db_namespace"]."bilder WHERE img_id = '" . $img_id . "'";
+         $delete_result = dbquery($Statement);
+         if ($delete_result){echo $lang["bilder_datei_entfernt"] . "<br>";}
+         else {echo $lang["bilder_datei_nicht_entfernt"];}
+      } 
+      else {
+         echo $lang["bilder_datei_nicht_geloescht"];
+      }
+      mysql_free_result($result);
+   }
+   img_browse($img_typ_id);
+}
+
+function img_typ_delete($img_typ_id){
+   global $conf, $lang;
+
+  	$Statement = "DELETE FROM ".$conf["db_namespace"]."bilder_typs WHERE img_typ_id = '" . $img_typ_id . "'";
+   $delete_result = dbquery($Statement);
+   if ($delete_result){
+   	acl_delete("bilder", $img_typ_id);
+   	echo $lang["bilder_typ_delete_erfolgreich"];}
+   else {echo $lang["bilder_typ_delete_fehlerhaft"];}
+   img_typ_browse();
+}
+
+
 
 class thumbnail{
 	var $img;
@@ -618,44 +695,7 @@ function count_img_from_typ($img_typ_id){
    return mysql_num_rows($query);
 }      
 
-function createsel_img_typ($select_name,$id){
-   global $conf, $lang;
-
-   echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
-   echo "<option value= \"\"></option>";
-   getimgtyp4select($parent, &$h_level, $id);
-   echo "</select>";
-   return;
-}
-function getimgtyp4select($parent, &$h_level, $grouplist){
-   global $conf, $lang;
-   
-   $result = dbquery("select * from ".$conf["db_namespace"]."img_typs where img_typ_parent_id = '" . $parent . "' order by img_typ_name");
-   if ( mysql_num_rows($result) > 0 ){
-      while ($row = mysql_fetch_object($result)){
-      	 echo "<option value=" . $row->img_typ_id;
-      	 if (is_array($grouplist)){
-            foreach ($grouplist as $value){
-              if ( eregi ( $row->img_typ_id, $value ) ){echo " selected ";}
-            }
-         }
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "bilder", $row->img_typ_id) == 1 && $row->img_typ_id <> $selfid) {
-            echo ">";
-         } else {
-         	echo " disabled style = \"color:gray;font-style:italic;\">";
-         }	
-         for ($count = 0;$count < $h_level; $count++){echo "-";} 
-         echo $row->img_typ_name . "</option>";
-         $h_level++;
-         getimgtyp4select($row->img_typ_id, $h_level, $grouplist, $selfid);
-         $h_level--;
-      }
-      mysql_free_result($result);
-   }
-}   
-
-
-function createsel_img_typ_parent($select_name,$id,$selfid="0"){
+function createsel_img_typ_parent($select_name, $id, $selfid="0"){
    global $conf, $lang;
 
    echo "\n<select name=" . $select_name . ">\n";

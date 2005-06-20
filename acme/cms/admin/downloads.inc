@@ -35,8 +35,13 @@ switch($action)
        download_browse();
        break;
    case "update_download":
-       if (count($edit_download_typ) > 0 && $edit_download_typ[0]<> ""){
-          download_update($edit_download_id, $edit_download_name, $edit_download_download, $edit_download_text, $edit_download_typ );
+       if (count($edit_download_typ) > 0){
+          if (!file_exists($HTTP_POST_FILES['datei']['tmp_name'])) {
+             download_update($edit_download_id, $edit_download_name, $edit_download_download, $edit_download_text, $edit_download_typ );
+          }
+          else {
+             download_update_newfile($edit_download_id, $edit_download_name, $edit_download_download, $edit_download_text, $edit_download_typ, $HTTP_POST_FILES['datei']['tmp_name'],$HTTP_POST_FILES['datei']['name'],$HTTP_POST_FILES['datei']['size']);
+          }   
           download_browse();
        }else{
        	  echo "Typ fehlt";
@@ -72,7 +77,7 @@ function download_add($new_download_name, $tmpname, $realname, $realsize, $new_d
 			copy ($tmpname, $conf["downloadsdir"] . $realname);
 			echo $lang["downloads_upload_copy_end"]."<br>";
 			chmod ($conf["downloads"] . $realname, 0777);
-            unlink ($tmpname);
+         unlink ($tmpname);
             
             $Statement = "INSERT INTO ".$conf["db_namespace"]."download SET".
                       " download_name = '". $new_download_name . "',".
@@ -121,9 +126,10 @@ function download_typ_add($new_download_typ_name, $new_download_typ_text, $new_d
    else             {echo $lang["downloads_typ_insert_fehlerhaft"];}
 }    
 
-function download_update($edit_download_id, $edit_download_name, $edit_download_text, $edit_download_typ ){
+function download_update($edit_download_id, $edit_download_name, $edit_download_download, $edit_download_text, $edit_download_typ){
    global $conf, $lang;
               
+            
    $Statement = "UPDATE ".$conf["db_namespace"]."download SET".
                 " download_name = '". $edit_download_name . "',".
                 " download_text = '". $edit_download_text . "',".
@@ -131,7 +137,42 @@ function download_update($edit_download_id, $edit_download_name, $edit_download_
                 " WHERE download_id = '". $edit_download_id . "'";
    $my_result = dbquery($Statement);
    if ($my_result) {echo $lang["downloads_update_erfolgreich"];}
-  else            {echo $lang["downloads_update_fehlerhaft"];}
+  else             {echo $lang["downloads_update_fehlerhaft"];}
+}
+
+function download_update_newfile($edit_download_id, $edit_download_name, $edit_download_download, $edit_download_text, $edit_download_typ, $tmpname, $realname, $realsize){
+   global $conf, $lang;
+
+   if ($realsize >= 500000) {echo $lang["downloads_upload_filesizeerror"];}
+   else {
+      if (is_uploaded_file($tmpname)) {
+         $Statement = "select download_file from ".$conf["db_namespace"]."download WHERE  download_id = '" . $edit_download_id . "'";
+         $result = dbquery($Statement);
+         $row = mysql_fetch_object($result);
+         unlink ($conf["downloadsdir"] . $row->download_file);
+         
+         echo $lang["downloads_upload_move_rename"]."<br>";
+         echo $lang["downloads_upload_copy"]."<br>";
+         copy ($tmpname, $conf["downloadsdir"] . $realname);
+         echo $lang["downloads_upload_copy_end"]."<br>";
+         chmod ($conf["downloadsdir"] . $realname, 0777);
+         unlink ($tmpname);              
+         
+         $Statement = "UPDATE ".$conf["db_namespace"]."download SET".
+                " download_name = '". $edit_download_name . "',".
+                " download_text = '". $edit_download_text . "',".
+                " download_file  = '". $realname . "', ".
+                " download_typ = '". joingrouparray($edit_download_typ) . "'".
+                " WHERE download_id = '". $edit_download_id . "'";
+         $my_result = dbquery($Statement);
+
+         if ($my_result) {echo $lang["downloads_update_erfolgreich"];}
+         else             {echo $lang["downloads_update_fehlerhaft"];}
+  
+      } else {
+         echo $lang["downloads_upload_copy_attack"] . $realname;
+      }
+   }
 }
 
 function download_typ_update($edit_download_typ_id, $edit_download_typ_name, $edit_download_typ_text, $edit_download_typ_parent_id, $edit_download_typ_tpl, $edit_download_typ_img_small,$edit_download_typ_img_small_inactive,  $edit_download_typ_img_big, $edit_download_typ_top_bar, $edit_download_typ_left_bar, $edit_download_typ_right_bar, $edit_download_typ_foo_bar){
@@ -195,6 +236,8 @@ function download_browse(){
    }
    echo "<table class=\"reda_td\">\n";
    echo "<th><tr><td>".$lang["downloads_name"]."</td><td>".$lang["downloads_counter"]."</td></tr><td></td><td></td>\n";
+   $parent = 0;
+   $h_level = 0;
    writedownloadtypchilds($parent,$h_level);
    echo "</table>";
 }      
@@ -233,7 +276,7 @@ function download_typ_new($new_download_typ_name, $new_download_typ_text, $new_d
    echo "<tr><td colspan = 3>".$lang["downloads_name"]."</td><td>".$lang["downloads_typ_parent"]."</td></tr>";
    echo "<tr><td colspan=\"3\"><input name=new_download_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars(stripslashes($new_download_typ_name)) . "\"></td>";
    echo "<td>";
-   createsel_downloadparent("new_download_typ_parent_id",$new_download_typ_parent_id);
+   createsel_downloadparent("new_download_typ_parent_id",$new_download_typ_parent_id, 0);
    echo "</td>";   
    echo "</tr>";
    echo "<tr><td>".$lang["downloads_typ_tpl"]."</td><td>".$lang["downloads_typ_logo_gross"]."</td><td>".$lang["downloads_typ_logo_klein"]."</td><td>".$lang["downloads_typ_logo_klein_inactive"]."</td></tr>\n";   
@@ -288,20 +331,24 @@ function download_edit($id){
       echo "<form name = edit_download action=\"" . $conf["admp"] . "&section=downloads&action=update_download\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_download_id value=\"" . $row->download_id . "\">";      
       echo "<table  class=\"reda_td\">";
-      echo "<tr><td colspan = 4>".$lang["downloads_name"]."</td></tr>";
-      echo "<tr><td colspan=4><input name=edit_download_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->download_name) . "\"></td></tr>";
+      echo "<tr><td colspan=2>".$lang["downloads_name"]."</td></tr>";
+      echo "<tr><td colspan=2><input name=edit_download_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->download_name) . "\"></td></tr>";
       echo "</tr>";
-      echo "<tr><td colspan=\"4\">&nbsp;</td></tr>";
-      echo "<tr><td colspan=\"3\">".$lang["downloads_beschreibung"]."</td><td>Typen</td></tr>";
+      echo "<tr><td></td><td>".$lang["downloads_realname"]."</td></tr>";
+      echo "<tr><td></td><td>".$row->download_file."</td></tr>";
+      echo "<tr><td></td><td colspan=\"1\">".$lang["downloads_datei_ersetzen"]."</td></tr>";
+      echo "<tr><td></td><td colspan=\"1\"><input type = \"file\" name=\"datei\" size=45 maxlength=128 value = \"\"></td></tr>";
+      echo "<tr><td colspan=\"2\">&nbsp;</td></tr>";
+      echo "<tr><td colspan=\"1\">".$lang["downloads_beschreibung"]."</td><td>Typen</td></tr>";
       echo "<tr>";
-      echo "<td colspan=\"3\">";
+      echo "<td>";
       write_bbc("edit_download", "edit_download_text");
       echo "<textarea name=edit_download_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->download_text) . "</textarea></td>";
       echo "<td>";
-      createsel_downloadtyps("edit_download_typ",$row->download_typ);
+      createsel_downloadtyps("edit_download_typ", explodegroup($row->download_typ));
       echo "</td>";   
       echo "</tr>";
-      echo "<tr><td colspan=\"4\"><input type=submit name=edit_page value=".$lang["downloads_speichern"]."></td></tr>";
+      echo "<tr><td colspan=\"2\"><input type=submit name=edit_page value=".$lang["downloads_speichern"]."></td></tr>";
       echo "</table>";
       echo "</form>";
    }
@@ -320,7 +367,7 @@ function download_typ_edit($id){
       echo "<tr><td colspan=\"3\">".$lang["downloads_typ_name"]."</td><td>".$lang["downloads_typ_parent"]."</td></tr>";
       echo "<tr><td colspan=\"3\"><input name=edit_download_typ_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->download_typ_name) . "\"></td>";
       echo "<td>";
-      createsel_downloadparent("edit_download_typ_parent_id",$row->download_typ_parent_id);
+      createsel_downloadparent("edit_download_typ_parent_id", $row->download_typ_parent_id, $row->download_typ_id);
       echo "</td></tr>";   
       echo "<tr><td>".$lang["downloads_typ_tpl"]."</td><td>".$lang["downloads_typ_logo_gross"]."</td><td>".$lang["downloads_typ_logo_klein"]."</td><td>".$lang["downloads_typ_logo_klein_inactive"]."</td></tr>\n";   
       echo "<td>";
@@ -457,6 +504,7 @@ function createsel_downloadtyps($select_name,$grouplist){
    global $conf, $lang;
 
    echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
+   $parent = 0;
    getdownloadtyp4select($parent, &$h_level, $grouplist);
    echo "</select>";
    return;
@@ -467,12 +515,12 @@ function getdownloadtyp4select($parent, &$h_level, $grouplist){
    $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = '" . $parent . "' order by download_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
-      	 echo "<option value=" . $row->download_typ_id;
-      	 if (!is_array($grouplist)){$grouplist = explodegroup($grouplist);}
+      	echo "<option value=" . $row->download_typ_id;
+      	if (!is_array($grouplist)){$grouplist = explodegroup($grouplist);}
          foreach ($grouplist as $value){
-           if ( eregi ( $row->download_typ_id, $value ) ){echo " selected ";}
+           if ($row->download_typ_id == $value){echo " selected ";}
          }
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "downloads", $row->download_typ_id) == 1 && $row->download_typ_id <> $selfid) {
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "downloads", $row->download_typ_id) == 1) {
             echo ">";
          } else {
          	echo " disabled style = \"color:gray;font-style:italic;\">";
@@ -487,24 +535,24 @@ function getdownloadtyp4select($parent, &$h_level, $grouplist){
    }
 }   
 
-function createsel_downloadparent($select_name,$id,$selfid="0"){
+function createsel_downloadparent($select_name,$id, $self){
    global $conf, $lang;
 
    echo "\n<select name=" . $select_name . ">\n";
    echo "<option value= \"\"></option>\n";
-   getdownloadparent4select(0, &$h_level, $id, $selfid);
+   getdownloadparent4select(0, &$h_level, $id, $self);
    echo "</select>\n";
    return;
 }
-function getdownloadparent4select($parent, &$h_level, $grouplist, $selfid){
+function getdownloadparent4select($parent, &$h_level, $id, $self){
    global $conf, $lang;
 
    $result = dbquery("select * from ".$conf["db_namespace"]."download_typs where download_typ_parent_id = " . $parent . " order by download_typ_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->download_typ_id;
-         if ( eregi ( $row->download_typ_id, $grouplist ) ){echo " selected ";}
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "downloads", $row->download_typ_id) == 1 && $row->download_typ_id <> $selfid) {
+         if ($row->download_typ_id == $id){echo " selected ";}
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "downloads", $row->download_typ_id) == 1 && $row->download_typ_id <> $self) {
             echo ">";
          } else {
          	echo " disabled style = \"color:gray;font-style:italic;\">";
@@ -512,7 +560,7 @@ function getdownloadparent4select($parent, &$h_level, $grouplist, $selfid){
          for ($count = 0;$count < $h_level; $count++){echo "-";} 
          echo $row->download_typ_name . "</option>\n";
          $h_level++;
-         getdownloadparent4select($row->download_typ_id, $h_level, $grouplist, $selfid);
+         getdownloadparent4select($row->download_typ_id, $h_level, $id, $self);
          $h_level--;
       }
       mysql_free_result($result);

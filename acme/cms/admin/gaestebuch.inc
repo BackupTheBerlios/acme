@@ -40,6 +40,10 @@ switch($action)
       gaestebuchentryunblock($gb_id, $entry_id);
       gaestebuchentrys($gb_id, $gb_page);      
       break;      
+   case "entrydelete":
+      gaestebuchentrydelete($gb_id, $entry_id);
+      gaestebuchentrys($gb_id, $gb_page);      
+      break;      
    default:
       gaestebuchbrowse();       
       break;
@@ -54,7 +58,7 @@ function gaestebuchentrycomment($gb_id, $gb_page, $entry_id){
    echo "<form name = gb_comment_new action=\"" .  $conf["admp"] . "&section=gaestebuch&action=entrywritecomment&gb_id=".$gb_id . "&gb_page=".$gb_page."&entry_id=".$entry_id."\"  method=POST>";
    echo "<table class=\"reda_td\">";
    echo "<textarea name=\"entry_comment\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($fetch[entry_comment])) . "</textarea></td>";
-   echo "<tr><td><input type=submit name=add value=".$lang["gaestebuch_kommentar_speichern"]."></td></tr>";
+   echo "<tr><td><input type=submit name=add value=speichern></td></tr>";
    echo "</table>";
    echo "</form>";
 }
@@ -76,16 +80,28 @@ function gaestebuchentryunblock($gb_id, $entry_id){
    
    $query = dbquery("update ".$conf["db_namespace"]."gb_entrys set entry_blocked = 'N' where entry_id = ". $entry_id);
 }      
-
-function gaestebuchentrys($gb_id, $gb_page){
+function gaestebuchentrydelete($gb_id, $entry_id){
    global $conf, $lang;
    
-   $gb_ppp = 2;
+   $query = dbquery("delete from ".$conf["db_namespace"]."gb_entrys where entry_id = ". $entry_id);
+} 
+function gaestebuchentrys($gb_id, $gb_page){
+   global $conf, $lang;
+
+   $headresult = dbquery("select * from ".$conf["db_namespace"]."gb where gb_id = ".$gb_id."");
+   if ( mysql_num_rows($headresult) > 0 )           {
+      while ($row = mysql_fetch_object($headresult))              {
+         echo "<h1>".$row->gb_name."</h1>";
+      }
+   }      
+
+   
+   $gb_ppp = 10;
    if(empty($gb_page)) {$gb_page = 1;}
    $limitfrom = ($gb_page * $gb_ppp) - $gb_ppp;
    $limitto   = $gb_ppp;
 
-   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys ORDER BY entry_id DESC"));
+   $num   = mysql_num_rows(dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where gb_id= ". $gb_id ." ORDER BY entry_id DESC"));
 
    if ($num > $limitto)   {
       $seiten = intval($num / $limitto);
@@ -99,7 +115,7 @@ function gaestebuchentrys($gb_id, $gb_page){
    echo "Seite: ".$gb_page;
    if (isset($next)){echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrys&gb_id=" . $gb_id . "&gb_page=" . $next . "\">weiter</a>";}
 
-   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys ORDER BY entry_id DESC  LIMIT $limitfrom, $limitto");
+   $query = dbquery("SELECT * FROM ".$conf["db_namespace"]."gb_entrys where gb_id= ". $gb_id ." ORDER BY entry_id DESC  LIMIT $limitfrom, $limitto");
    echo "<table class=\"reda_td\">\n";
    echo "<tr><td colspan = 7>".$lang["gaestebuch_eintraege"]."</td></tr>";
    while($fetch = mysql_fetch_array($query)) {
@@ -150,8 +166,9 @@ function gaestebuchentrys($gb_id, $gb_page){
       echo "</tr>";
       echo "<tr>";
       echo "<td colspan = 4>";
-      if ($fetch["entry_blocked"] == "N") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryblock&gb_id=" .   $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">block entry</a> ";}
-      if ($fetch["entry_blocked"] == "Y") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryunblock&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">unblock entry</a> ";}
+      if ($fetch["entry_blocked"] == "N") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryblock&gb_id=" .   $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_block_entry"]. "</a> ";}
+      if ($fetch["entry_blocked"] == "Y") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryunblock&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_unblock_entry"]."</a> ";}
+      echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrydelete&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_delete_entry"]."</a> ";
       echo "</td>";
       echo "<td colspan = 3>";
       echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrycomment&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">comment entry</a> ";

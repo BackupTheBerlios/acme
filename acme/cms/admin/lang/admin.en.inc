@@ -20,9 +20,11 @@ $lang["admin_downloads"]="downloads";
 $lang["admin_bar"]="page bars";
 $lang["admin_news"]="news";
 $lang["admin_sitemap"]="sitemap";
+$lang["admin_gaestebuch"]="guestbooks";
 $lang["admin_hilfe"]="help-wiki";
 $lang["admin_content"]="content";
 $lang["admin_layout"]="structure";
 $lang["admin_admin"]="options";
+
 $lang["admin_logout"]="logout";
 ?>

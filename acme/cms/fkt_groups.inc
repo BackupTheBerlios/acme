@@ -110,9 +110,9 @@ function joingrouparray($grouparray){
    
    global $conf, $lang;
    
-    while ( list ($key, $value) = each ($grouparray) )      {
-         $returnstring .= ":$value";
-         }
+   while ( list ($key, $value) = each ($grouparray) )      {
+       $returnstring .= ":$value";
+   }
    $returnstring .= ":";
    return $returnstring;
 }
