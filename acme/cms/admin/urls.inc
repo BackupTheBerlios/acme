@@ -17,7 +17,7 @@ switch($action){
    case "add_url":
        if (count($new_url_typ) == 0){
           echo $lang["urls_eintrag_urlerror"];
-       	  url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
+          url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
        }
        else {
        	url_add($new_url_name, $new_url_url, $new_url_text, $new_url_typ);
@@ -29,7 +29,13 @@ switch($action){
        url_browse();
        break;
    case "update_url":
-       url_update($edit_url_id, $edit_url_name, $edit_url_url, $edit_url_text, $edit_url_typ );
+       if (count($edit_url_typ) == 0){
+          echo $lang["urls_eintrag_urlerror"];
+          url_edit($edit_url_id);
+       }   
+       else {   
+          url_update($edit_url_id, $edit_url_name, $edit_url_url, $edit_url_text, $edit_url_typ );
+       }   
        url_browse();
        break;
    case "update_url_typ":
@@ -117,7 +123,7 @@ function url_typ_update($edit_url_typ_id, $edit_url_typ_name, $edit_url_typ_text
                 " url_typ_img_small = '". $edit_url_typ_img_small . "',".
                 " url_typ_img_small_inactive = '". $edit_url_typ_img_small_inactive . "',".
                 " url_typ_img_big = '". $edit_url_typ_img_big . "',".
-                " url_typ_img_modify_date = NOW,".
+                " url_typ_modify_date = NOW,".
                 " url_typ_left_bar = '". $edit_url_typ_left_bar . "',".
                 " url_typ_right_bar = '". $edit_url_typ_right_bar . "',".
                 " url_typ_top_bar = '". $edit_url_typ_top_bar . "',".
@@ -152,7 +158,9 @@ function url_typ_delete($delete_id){
    
 function url_browse() {
    global $conf, $lang;
-
+   
+   $parent = 0;
+   $h_level = 0;
    echo "<h1>".$lang["urls_verwaltung"]."</h1>\n";
    if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "urls", 0) == 1) {
       echo "<a href=\"". $conf["admp"] . "&section=urls&action=new_url_typ\">".$lang["urls_anlegen"]."</a><br>\n";
@@ -189,7 +197,7 @@ function url_new($new_url_name, $new_url_url, $new_url_text, $new_url_typ){
    echo "</form>";
 }
 
-function url_typ_new(){
+function url_typ_new($new_url_typ_name, $new_url_typ_parent_id, $new_url_typ_tpl, $new_url_typ_img_big, $new_url_typ_img_small, $new_url_typ_img_small_inactive, $new_url_typ_left_bar, $new_url_typ_right_bar, $new_url_typ_top_bar, $new_url_typ_foo_bar, $new_url_typ_text){
    global $conf, $lang;
 
    echo "<h1>".$lang["urls_anlegen"]."</h1>";
@@ -266,7 +274,7 @@ function url_edit($id){
       write_bbc("edit_url", "edit_url_text");
       echo "<textarea name=edit_url_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->url_text) . "</textarea></td>";
       echo "<td>";
-      createsel_urltyps("edit_url_typ",$row->url_typ);
+      createsel_urltyps("edit_url_typ", explodegroup($row->url_typ));
       echo "</td>";   
       echo "</tr>";
       echo "<tr><td colspan=\"4\"><input type=submit name=edit_page value=".$lang["urls_eintrag_speichern"]."></td></tr>";
@@ -418,12 +426,12 @@ function checkurltypentrys($urltyp){
    return $childs;   
 }      
 
-function createsel_urltyps($select_name,$id){
+function createsel_urltyps($select_name, $id = 0){
    global $conf, $lang;
 
    echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
-   echo "<option value= \"\"></option>";
-   geturltyp4select($parent, &$h_level, $id);
+   $h_level = 0;
+   geturltyp4select(0, $h_level, $id);
    echo "</select>";
    return;
 }
@@ -431,15 +439,12 @@ function geturltyp4select($parent, &$h_level, $grouplist){
    global $conf, $lang;
    
    $result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '" . $parent . "' order by url_typ_name");
-   if ( mysql_num_rows($result) > 0 ){
+   if (mysql_num_rows($result) > 0){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->url_typ_id;
-      	 if (is_array($grouplist)){
-            foreach ($grouplist as $value){
-              if ( eregi ( $row->url_typ_id, $value ) ){echo " selected ";}
-            }
+      	 if (is_array($grouplist)){foreach ($grouplist as $value){if ($row->url_typ_id == $value){echo " selected ";}}
          }
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "urls", $row->url_typ_id) == 1 && $row->url_typ_id <> $selfid) {
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "urls", $row->url_typ_id) == 1) {
             echo ">";
          } else {
          	echo " disabled style = \"color:gray;font-style:italic;\">";
@@ -447,7 +452,7 @@ function geturltyp4select($parent, &$h_level, $grouplist){
          for ($count = 0;$count < $h_level; $count++){echo "-";} 
          echo $row->url_typ_name . "</option>";
          $h_level++;
-         geturltyp4select($row->url_typ_id, $h_level, $grouplist, $selfid);
+         geturltyp4select($row->url_typ_id, $h_level, $grouplist);
          $h_level--;
       }
       mysql_free_result($result);

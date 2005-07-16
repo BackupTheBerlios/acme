@@ -149,7 +149,7 @@ function download_update_newfile($edit_download_id, $edit_download_name, $edit_d
          $Statement = "select download_file from ".$conf["db_namespace"]."download WHERE  download_id = '" . $edit_download_id . "'";
          $result = dbquery($Statement);
          $row = mysql_fetch_object($result);
-         unlink ($conf["downloadsdir"] . $row->download_file);
+         if (unlink ($conf["downloadsdir"] . $row->download_file)) {echo $lang["downloads_upload_remove_old"]."<br>";}
          
          echo $lang["downloads_upload_move_rename"]."<br>";
          echo $lang["downloads_upload_copy"]."<br>";
