@@ -17,7 +17,7 @@ function search_artikel($search, $data, $akt) {
            $data->search->searchresults->result[$akt]->search_text = $row->artikel_sub_headline;
         }
      } 
-     $result2 = dbquery("SELECT artikel_id, artikel_part from ".$conf["db_namespace"]."artikel_daten  where (".preg_replace("/\sAND\s$/i", "", $artikelstmt).")");
+     $result2 = dbquery("SELECT artikel_id, artikel_part from ".$conf["db_namespace"]."artikel_daten  where (".preg_replace("/\sAND\s$/i", "", $artikeldatastmt).")");
      if ( mysql_num_rows($result2) >0)  {
         while ($row = mysql_fetch_object($result2)){
            $parentresult = dbquery("SELECT artikel_id, artikel_sub_headline from ".$conf["db_namespace"]."artikel where artikel_id = ".$row->artikel_id." and  artikel_publish_date >= now() or artikel_publish_date is null;");

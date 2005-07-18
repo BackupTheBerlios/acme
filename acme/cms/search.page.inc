@@ -7,7 +7,7 @@ function search_page($search, $data, $akt) {
      $buildq = "";
      foreach($searchList as $term) $pagestmt     .= "(`page_headline` LIKE '%".addslashes($term)."%' OR `page_short_text` LIKE '%".addslashes($term)."%' OR `page_short_text` LIKE '%".addslashes($term)."%') AND ";
    
-     $query = "SELECT page_id, page_name from ".$conf["db_namespace"]."pages where (".$pagestmt.") and page_long_text_typ <> 'P'";
+     $query = "SELECT page_id, page_name from ".$conf["db_namespace"]."pages where ".$pagestmt." page_long_text_typ <> 'P'";
      $result = dbquery($query);
      if ( mysql_num_rows($result) >0)  {
    	    $akt=0;
