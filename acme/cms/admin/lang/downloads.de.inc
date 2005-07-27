@@ -31,6 +31,7 @@ $lang["downloads_link"]="link";
 $lang["downloads_typ_link"]="link";
 $lang["downloads_datei_geloescht"]="Datei erfolgreich gel&ouml;scht";
 $lang["downloads_datei_ersetzen"]="Datei ersetzen durch";
+$lang["downloads_upload_remove_old"]="Alte Datei wurde gel&ouml;scht";
 $lang["downloads_datei_nicht_geloescht"]="Fehler: Datei konnte nicht gel&ouml;scht werden";
 $lang["downloads_datei_entfernt"]="Datei erfolgreich gel&ouml;scht";
 $lang["downloads_datei_nicht_entfernt"]="Fehler: Datei konnte nicht aus der Datenbank entfernt werden";

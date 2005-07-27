@@ -53,6 +53,8 @@ function parse_bbcode($contblock, $page_tpl){
   $contblock = eregi_replace("\[lime\]","<span style = \"color:lime;\">",$contblock);
   $contblock = eregi_replace("\[/lime\]","</span>",$contblock);
  
+  $match = "";
+ 
   // images
   while (ereg("\[imgright\]([^\[]+)\[/img\]", $contblock, $match)) {
       $contblock = str_replace("[imgright]".$match[1]."[/img]", getimagebyname($match[1], "r", $page_tpl), $contblock);
@@ -230,8 +232,12 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
       while ( $row = mysql_fetch_object($result) ){
          $akt++;
          $data->nav_elem[$akt]->nav_elem_img  = getnavimg($row->nav_topic_type, $row->nav_topic_type_id);
-         if ($row->nav_topic_type == "Inaktiv"){$data->nav_elem[$akt]->nav_elem_url  = "";} 
-         else {$data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;}   
+         if ($row->nav_topic_type == "Inaktiv"){
+            $data->nav_elem[$akt]->nav_elem_url  = "";
+            } 
+         else {
+            $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"] . $row->nav_topic_type ."/". $row->nav_topic_type_id;
+            }   
          $data->nav_elem[$akt]->nav_elem_text = $row->nav_topic_text;
          $data->nav_elem[$akt]->nav_elem_h = 0;
          // sub nav's
@@ -245,34 +251,16 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
             $modulparent = get_modulparent($modul);
             $modulname   = get_modulname($modul);
             // suchen und position bestimmen
-            foreach($bc as $element) {if ($element == $row->nav_topic_type_id) {$found = $pos;}$pos++;}
+            foreach($bc as $element) {
+               if ($element == $row->nav_topic_type_id) {
+                  $found = $pos;
+               }
+               $pos++;
+            }
             // was gefunden dann von dort aus die nav weiter aufklappen
             if ($found <> 0){
-            $h_level=0;
-               // bis zum vorletzten das ist dann unser parent für den letzten block    
-               for ($walk = ($found+1); $walk < (count($bc)); $walk++) {
-                  $walkId = $bc[$walk];
-                  $h_level++;
-                    $akt++;
-                    $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $walkId);
-                    $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$walkId;
-                    $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $walkId);
-                    $data->nav_elem[$akt]->nav_elem_h = $h_level;
-               }
-               $walkId = $bc[count($bc)-1];  // der letzte im crumbs
-               // $lastparent = get_parent_id($modul, $walkId); // den parent dazu holen
-               $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0' order by " . $modulname . "";
-               $lastresult  = dbquery($lastnav);
-               if (mysql_num_rows($lastresult) > 0) {
-                 $h_level++;
-                    while ($lastrow = mysql_fetch_array($lastresult)){
-                     $akt++;
-                     $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $lastrow[$modulid]);
-                     $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$lastrow[$modulid];
-                     $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $lastrow[$modulid]);
-                     $data->nav_elem[$akt]->nav_elem_h = $h_level;
-                    }   
-            }  
+               $h_level=1;
+               parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, $akt, $found, $h_level);
             }           
         }
       // end sub nav's
@@ -284,6 +272,26 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
    return " " . sprintt($data, $tplfile) . " ";
 }
 
+function parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$walk, &$h_level) {
+   
+   $walkId = $bc[$walk];
+   $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0' order by " . $modulname . "";
+   $lastresult  = dbquery($lastnav);
+   if (mysql_num_rows($lastresult) > 0) {
+      $h_level++;
+      while ($lastrow = mysql_fetch_array($lastresult)){
+         $akt++;
+         $data->nav_elem[$akt]->nav_elem_img  = getnavimg($modul, $lastrow[$modulid]);
+         $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$lastrow[$modulid];
+         $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $lastrow[$modulid]);
+         $data->nav_elem[$akt]->nav_elem_h = $h_level;
+         if ($walk < (count($bc))) {
+            $walk++;
+            parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, $akt, $walk, $h_level);
+         }
+      }   
+   } 
+}
 function parse_breadcrumbs($data, $bcs){
    global $conf, $lang;
    

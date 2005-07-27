@@ -64,7 +64,7 @@ function renderdownloads($typ, $id, $download_id){
       $data->downloads->name = $download_typ_name;
       $data->downloads->img_small    = getimage($download_typ_img_small);
       $data->downloads->img_big      = getimage($download_typ_img_big);
-      $data->downloads->text         = parse_bbcode(nltobr($download_typ_text), $page_tpl);
+      $data->downloads->text         = parse_bbcode(nltobr($download_typ_text), $download_typ_tpl);
       if ($download_typ_parent <> 0){
          $data->downloads->parent->name = getdownload_typnamebyid($download_typ_parent);
          $data->downloads->parent->url  = $conf["indexname"]."downloads/".$download_typ_parent;
