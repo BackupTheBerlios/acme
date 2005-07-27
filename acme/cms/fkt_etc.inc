@@ -260,7 +260,8 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
             // was gefunden dann von dort aus die nav weiter aufklappen
             if ($found <> 0){
                $h_level=1;
-               parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, $akt, $found, $h_level);
+               echo "<br>";
+               parsenavtree(&$data, $modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$found, &$h_level);
             }           
         }
       // end sub nav's
@@ -272,8 +273,9 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
    return " " . sprintt($data, $tplfile) . " ";
 }
 
-function parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$walk, &$h_level) {
-   
+function parsenavtree(&$data, $modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$walk, &$h_level) {
+   global $conf, $lang;
+
    $walkId = $bc[$walk];
    $lastnav  = "Select ". $modulid . " from ".$conf["db_namespace"].$modultable." where ". $modulparent ." = '" . $walkId . "' and ". $modulparent ." <> '0' order by " . $modulname . "";
    $lastresult  = dbquery($lastnav);
@@ -285,11 +287,14 @@ function parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $
          $data->nav_elem[$akt]->nav_elem_url  = $conf["indexname"].$modul."/".$lastrow[$modulid];
          $data->nav_elem[$akt]->nav_elem_text = getnamebymodulandid($modul, $lastrow[$modulid]);
          $data->nav_elem[$akt]->nav_elem_h = $h_level;
-         if ($walk < (count($bc))) {
+         if ($walk < (count($bc)-1)) {
             $walk++;
-            parsenavtree($modul, $modultable, $modulparent, $modulid, $modulname, $bc, $akt, $walk, $h_level);
+            if ($bc[$walk] == $lastrow[$modulid]){
+               parsenavtree(&$data, $modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$walk, &$h_level);
+            } else {$walk--;}
          }
-      }   
+      }
+      $h_level--;   
    } 
 }
 function parse_breadcrumbs($data, $bcs){
