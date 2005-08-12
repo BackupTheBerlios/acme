@@ -1,5 +1,4 @@
-{mask:main}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+{mask:main}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="/acme-spessart-klinik/medinet.css" title="default" media="screen">
@@ -291,27 +290,32 @@
           {/mask}
         </td>
         
-        <td class="art_middle_right">
-         {mask:parent}
-            <a href="{url}">{name}</a>
-         {/mask}
-         <!--
+        <td class="calender">
          {mask:Kalender}
           <table>
-          {prev_url}
-          {next_url}
+          <tr>
+          <td colspan = 2 class = "calender_prev"><a href = "{prev_url}">&lt;</a></td>
+          <td colspan = 4 class = "calender_month">{akt_monat}</td>
+          <td colspan = 2 class = "calender_next"><a href = "{next_url}">&gt;</a></td>
+          </tr>
           {mask:week}
             <tr>
+            {mask:weeknum}
+             {choose:akt}
+               {when:0}<td class = "calender_week"><a href = "{url}">{kw}</a></td>{/when}
+               {when:1}<td class = "calender_week_akt"><a href = "{url}">{kw}</a></td>{/when}
+             {/choose}  
+            {/mask}
             {mask:day}
-            <td>
-              {url}
-            </td>
+              {choose:akt}
+                {when:0}<td class = "calender_day"><a href = "{url}">{day}</a></td>{/when}
+                {when:1}<td class = "calender_day_akt"><a href = "{url}">{day}</a></td>{/when}
+              {/choose}   
             {/mask}
             </tr>
           {/mask}
           </table>
          {/mask}
-         -->
       </td>
     </tr>
 </table>

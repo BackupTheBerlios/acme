@@ -23,18 +23,14 @@ function check_valid_date($date){
 }
 
 function beginning_date_of_week($year, $week) {
-    $first_day = strtotime($year."-01-01");
-    $is_monday = date("w", $first_day) == 1;
-    $is_weekone = strftime("%V", $first_day) == 1;
-    if($is_weekone)
-    {
-        $week_one_start = $is_monday ? strtotime("last monday", $first_day) : $first_day;
-    }
-    else    {
-        $week_one_start = strtotime("next monday", $first_day);
-    }
-    $date = date('Y-m-d', $week_one_start+(3600*24*7*($week-2)));
-    return $date;
+   $searchdate = mktime(0,0,0,12,20,$year-1);
+   $searchdate = strtotime("+".($week-1)." week",$searchdate);
+   $found=false;
+   while ($found==false){
+      if (date("W",$searchdate) == $week) {$found = true;}
+      else {$searchdate = strtotime("+1 day",$searchdate);}
+   }
+   return date('Y-m-d 00:00:00', $searchdate);
 } 
 
 function ending_date_of_week($year, $week) {

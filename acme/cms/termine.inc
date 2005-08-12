@@ -47,12 +47,13 @@ jahr
               url
               text
 */ 
-    if ($p == "byweek"){
-      $date = beginning_date_of_week($y, $w) . " 00:00:00";
-      $m = date("n", $date);
-      $y = (!$y) ? date("Y") : "$y";
-    }
 
+    if ($p == "byweek"){
+       $y = (!$y) ? date("Y") : "$y";
+       $date = beginning_date_of_week($y, $w);
+       $dateParts = split('-', $date); 
+       $m = $dateParts[1];
+    }
     if (!$p){
        $p = "byweek";
        $d = (!$d) ? date("j") : "$d";
@@ -60,7 +61,7 @@ jahr
        $y = (!$y) ? date("Y") : "$y";
        $w =  week_number($y, $m, $d);
     }
-  
+  // echo "p:".$p ." d:". $d ." m:". $m ." y:". $y ." w:". $w . " date:".$date."<br>";
 
 rendertermin($id, $p, $d, $m, $y, $w);
   
@@ -144,6 +145,8 @@ function getterminchildsdata($data, $termin_id, $termin_tpl, $p, $week, $day, $m
    if ($p == "byweek") {getStartEndByWeek($week, $year, &$Start, &$End);}
    if ($p == "bydate") {getStartEndByDate($day, $month, $year, &$Start, &$End);}
    
+ //  echo "start:" . $Start . " End:".$End;
+   
    $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and (termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "') order by termin_data_date_von ASC";
    $dataresult = dbquery($dataquery);
    if ( mysql_num_rows($dataresult) > 0 ){
@@ -193,8 +196,8 @@ function getterminnamebyid($id){
 
 function drawCalendar($data, $p, $w, $d, $m, $y, $termin_id) {
    global $conf, $lang;
-      
-   $ldm = last_day_of_the_month((($m-1)<1) ? 12 : $m-1,(($m-1)<1) ? $y-1 : $y);   
+            
+   $ldm = last_day_of_the_month($m,$y);   
       
       
    if ($p == "bydate") {  // termine/$id/tag/$tag/$monat/$jahr
@@ -213,24 +216,29 @@ function drawCalendar($data, $p, $w, $d, $m, $y, $termin_id) {
       $nj = (($w+1) > week_number($y, 12,31)) ? $y+1 : $y;
       $data->termine->Kalender->prev_url =  $conf["indexname"]."termine/".$termin_id ."/woche/" . $pw . "/". $pj;
       $data->termine->Kalender->next_url =  $conf["indexname"]."termine/".$termin_id ."/woche/" . $nw . "/". $nj;
-   }
 
+   }
+   $data->termine->Kalender->akt_monat = month_name($m);
    $bwm = beginning_weekday_of_the_month($y, $m);
    $ewm = ending_weekday_of_the_month($y, $m);
    
-   $data->termine->Kalender->week[0]->day[0]->url = "Mo"; 
-   $data->termine->Kalender->week[0]->day[1]->url = "Di";
-   $data->termine->Kalender->week[0]->day[2]->url = "Mi";
-   $data->termine->Kalender->week[0]->day[3]->url = "Do";
-   $data->termine->Kalender->week[0]->day[4]->url = "Fr";
-   $data->termine->Kalender->week[0]->day[5]->url = "Sa";
-   $data->termine->Kalender->week[0]->day[6]->url = "So";
+   $data->termine->Kalender->week[0]->day[0]->url = weekday_short_name(1); 
+   $data->termine->Kalender->week[0]->day[1]->url = weekday_short_name(2);
+   $data->termine->Kalender->week[0]->day[2]->url = weekday_short_name(3);
+   $data->termine->Kalender->week[0]->day[3]->url = weekday_short_name(4);
+   $data->termine->Kalender->week[0]->day[4]->url = weekday_short_name(5);
+   $data->termine->Kalender->week[0]->day[5]->url = weekday_short_name(6);
+   $data->termine->Kalender->week[0]->day[6]->url = weekday_short_name(0);
 
    $aktday = 0;
    $aktweek = 1;
    $day = 0;
    
-   //$data->termine->Kalender->week[0]->weeknum->url = ;
+   $kw = week_number($y, $m, 1);
+   $data->termine->Kalender->week[1]->weeknum->url = $conf["indexname"]."termine/".$termin_id ."/woche/" . $kw . "/". $y;
+   $data->termine->Kalender->week[1]->weeknum->kw =  $kw;
+   if ($kw==$w) {$data->termine->Kalender->week[1]->weeknum->akt =  "1";}
+   else {$data->termine->Kalender->week[1]->weeknum->akt =  "0";}
    
    for ($i=1; $i<$bwm; $i++){ 
        $aktday++;
@@ -240,10 +248,20 @@ function drawCalendar($data, $p, $w, $d, $m, $y, $termin_id) {
    while ($day < $ldm) {
       $day++;
       $aktday++;
-      $data->termine->Kalender->week[$aktweek]->day[$aktday]->url = $day;
+      $data->termine->Kalender->week[$aktweek]->day[$aktday]->url = $conf["indexname"]."termine/".$termin_id ."/tag/".$day."/".$m."/".$y;
+      $data->termine->Kalender->week[$aktweek]->day[$aktday]->day = $day;
+      if ($day==$d) {$data->termine->Kalender->week[$aktweek]->day[$aktday]->akt =  "1";}
+      else {$data->termine->Kalender->week[$aktweek]->day[$aktday]->akt =  "0";}
+
       if ($aktday>6) { 
          $aktweek++;
          $aktday=0;
+         $kw++;
+         if($kw>53)$kw=1;
+         $data->termine->Kalender->week[$aktweek]->weeknum->url = $conf["indexname"]."termine/".$termin_id ."/woche/" . $kw . "/". $y;
+         $data->termine->Kalender->week[$aktweek]->weeknum->kw =  $kw;
+         if ($kw==$w) {$data->termine->Kalender->week[$aktweek]->weeknum->akt =  "1";}
+         else {$data->termine->Kalender->week[$aktweek]->weeknum->akt =  "0";}
       }
 
    }
