@@ -123,7 +123,7 @@ function url_typ_update($edit_url_typ_id, $edit_url_typ_name, $edit_url_typ_text
                 " url_typ_img_small = '". $edit_url_typ_img_small . "',".
                 " url_typ_img_small_inactive = '". $edit_url_typ_img_small_inactive . "',".
                 " url_typ_img_big = '". $edit_url_typ_img_big . "',".
-                " url_typ_modify_date = NOW,".
+                " url_typ_modify_date = NOW(),".
                 " url_typ_left_bar = '". $edit_url_typ_left_bar . "',".
                 " url_typ_right_bar = '". $edit_url_typ_right_bar . "',".
                 " url_typ_top_bar = '". $edit_url_typ_top_bar . "',".
@@ -258,10 +258,10 @@ function url_edit($id){
    $result = dbquery("select * from ".$conf["db_namespace"]."url where url_id='" . $id . "'");
    if ($result) {
       $row = mysql_fetch_object($result);
-      echo "<h1>".$lang["urls_eintrag_bearbeiten"]."</h1>";
-      echo "<form name = edit_url action=\"" . $conf["admp"] . "&section=urls&action=update_url\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
-      echo "<input type=hidden name=edit_url_id value=\"" . $row->url_id . "\">";      
-      echo "<table  class=\"reda_td\">";
+      echo "<h1>".$lang["urls_eintrag_bearbeiten"]."</h1>\n";
+      echo "<form name = \"edit_url\" action=\"" . $conf["admp"] . "&section=urls&action=update_url\" ENCTYPE=\"multipart/form-data\" method=\"POST\">\n";
+      echo "<input type=hidden name=edit_url_id value=\"" . $row->url_id . "\">\n";      
+      echo "<table  class=\"reda_td\">\n";
       echo "<tr><td colspan = 4>".$lang["urls_eintrag_titel"]."</td></tr>";
       echo "<tr><td colspan=4><input name=edit_url_name size=45 maxlength=128 value = \"" . htmlspecialchars($row->url_name) . "\"></td></tr>";
       echo "<tr><td colspan = 4>".$lang["urls_eintrag_url"]."</td></tr>";
@@ -272,7 +272,7 @@ function url_edit($id){
       echo "<tr>";
       echo "<td colspan=\"3\">";
       write_bbc("edit_url", "edit_url_text");
-      echo "<textarea name=edit_url_text wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->url_text) . "</textarea></td>";
+      echo "<textarea name=\"edit_url_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($row->url_text) . "</textarea></td>";
       echo "<td>";
       createsel_urltyps("edit_url_typ", explodegroup($row->url_typ));
       echo "</td>";   
@@ -290,7 +290,7 @@ function url_typ_edit($id){
    if ($result) {
       $row = mysql_fetch_object($result);
       echo "<h1>".$lang["urls_bearbeiten"]."</h1>";
-      echo "<form naem = edit_url_typ action=\"" . $conf["admp"] . "&section=urls&action=update_url_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
+      echo "<form name = edit_url_typ action=\"" . $conf["admp"] . "&section=urls&action=update_url_typ\" ENCTYPE=\"multipart/form-data\" method=\"POST\">";
       echo "<input type=hidden name=edit_url_typ_id value=\"" . $row->url_typ_id . "\">";
       echo "<table  class=\"reda_td\">";
       echo "<tr><td colspan=\"3\">".$lang["urls_titel"]."</td><td>".$lang["urls_parent"]."</td></tr>";

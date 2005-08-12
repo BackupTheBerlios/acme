@@ -35,9 +35,9 @@ function getimagenamebyid($picid){
 function getimagebyname($name, $style,$page_tpl){
    global $conf, $lang;
 
-   $getpic = "Select img_real_name, img_name, img_description from ".$conf["db_namespace"]."bilder where img_name  like'%" . $name . "%' ";
+   $getpic = "Select img_real_name, img_name, img_description from ".$conf["db_namespace"]."bilder where img_name like '" . $name . "' ";
    $result = dbquery($getpic);
-   if(mysql_affected_rows() == 1)         {
+   if(mysql_affected_rows() == 1) {
       $row = mysql_fetch_object($result);
       if (file_exists($conf["imagesdir"] . $row->img_real_name)){
          // vorsichtshalber wegen altdaten
@@ -71,7 +71,7 @@ function getimagebyname($name, $style,$page_tpl){
       else {
       	 return "<!-- image not found -->";
       }	
-   }   
+   } 
 
    mysql_free_result($result);
 }

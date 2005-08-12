@@ -182,7 +182,7 @@ function incpagecounter($page_id,$page_counter) {
 function getpagechildsforpreview($data, $page_id, $page_childs, $anfang, $page_tpl){
    global $conf, $lang;
    
-   if (!isset($anfang)||$anfang==0){$anfang=1;}
+   if (!isset($anfang)){$anfang=0;}
    
    $Zeilen_pro_Seite = 10;
    $akt=0;

@@ -12,6 +12,9 @@ function nltobr($str){
 function parse_bbcode($contblock, $page_tpl){
   global $conf;
 
+  $contblock = eregi_replace("\[list\]","<ul>",$contblock);
+  $contblock = eregi_replace("\[/list\]","</ul>",$contblock);
+  $contblock = eregi_replace("\[l\]","<li>",$contblock);
   $contblock = eregi_replace("\[h1\]","<h1>",$contblock);
   $contblock = eregi_replace("\[/h1\]","</h1>",$contblock);
   $contblock = eregi_replace("\[h2\]","<h2>",$contblock);

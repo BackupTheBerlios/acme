@@ -140,7 +140,7 @@ function termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin
    echo "<h1>".$lang["termin_eintrag_anlegen"]."</h1>".
         "<form name = new_termin_data action=\"" .  $conf["admp"] . "&section=termine&action=termin_data_insert\"  method=POST>".
         "<table class=\"reda_td\">".
-        "<tr><td>".$lang["termin_eintrag_titel"]."<input type=\"hidden\" name=\"termin_id\" value=\"" . $termin_id . "\"></td></tr>".
+        "<tr><td>".$lang["termin_eintrag_titel"]."</td></tr>".
         "<tr><td><input name=new_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_headline)) . "\"></td></tr>".
         "<tr><td>".$lang["termin_eintrag_von"].
         "<input  name=\"new_termin_data_date_von_day\" size=\"2\" maxlength=\"2\"  value=\"" .  substr (date("Ymd"), 6,2) . "\">.".
@@ -210,6 +210,8 @@ function termin_browse() {
    }
    echo "<table class=\"reda_td\">";
    echo "<tr><td>".$lang["termin_termine"]."</td><td width=\"30\"> </td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
+   $parent = 0;
+   $h_level = 0;
    writeterminchilds($parent,$h_level);
    echo "</table>";
 }
@@ -302,7 +304,7 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    echo "<h1>".$lang["termin_anlegen"]."</h1>";
    echo "<form name = new_termin action=\"" . $conf["admp"] . "&section=termine&action=termin_insert\" method=\"POST\">";
    echo "<table class=\"reda_td\">";
-   echo "<tr colspan = \"3\"><td>".$lang["termin_name"]."</td><td>".$lang["termin_parent"]."</td></tr>";
+   echo "<tr><td colspan = \"3\">".$lang["termin_name"]."</td><td>".$lang["termin_parent"]."</td></tr>";
    echo "<tr>";
    echo "<td colspan = \"3\"><input name=\"new_termin_name\" size=\"30\" maxlength=\"128\" value=\"" . htmlspecialchars(stripslashes($new_termin_name)) . "\"></td>";
    echo "<td>";
@@ -316,13 +318,13 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    createsel_tpl("new_termin_tpl",  $new_termin_tpl);
    echo "</td>";
    echo "<td colspan=1>";
-   createsel_img("new_termin_img_big",  $new_img_big);
+   createsel_img("new_termin_img_big",  $new_termin_img_big);
    echo "</td>";
    echo "<td colspan=1>";
-   createsel_img("new_termin_img_small",  $new_img_small);
+   createsel_img("new_termin_img_small",  $new_termin_img_small);
    echo "</td>";
    echo "<td colspan=1>";
-   createsel_img("new_termin_img_small_inactive",  $new_img_small_inactive);
+   createsel_img("new_termin_img_small_inactive",  $new_termin_img_small_inactive);
    echo "</td>";
    echo "</tr>";
    echo "<tr><td>".$lang["termin_bar_left"]."</td><td>".$lang["termin_bar_right"]."</td><td>".$lang["termin_bar_top"]."</td><td>".$lang["termin_bar_bottom"]."</td></tr>";
@@ -332,7 +334,7 @@ function termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $n
    echo "</td>";
    echo "<td>";
    createsel_bar("new_termin_right_bar",  $new_termin_right_bar);
-   echo "<td>";
+   echo "</td>";
    echo "<td>";
    createsel_bar("new_termin_top_bar",  $new_termin_top_bar);
    echo "</td>";
@@ -386,8 +388,11 @@ function termin_delete($delete_id){
    global $conf, $lang;
    
    $delete_statement ="delete from ".$conf["db_namespace"]."termin where termin_id = ". $delete_id;
-   $delete_result = dbquery($delete_statement2);
-   if($delete_result){echo $lang["termin_delete_erfolgreich"];}
+   $delete_result = dbquery($delete_statement);
+   if($delete_result){
+      acl_delete("termine", $delete_id);
+      echo $lang["termin_delete_erfolgreich"];
+      }
    else{echo $lang["termin_delete_fehlgeschlagen"];};
 }
 
@@ -416,6 +421,13 @@ function writeterminchilds($parent, &$h_level){
             } else {echo "&nbsp;";}
          } else {echo "&nbsp;";}
          echo "</td>";
+         echo "<td>";
+         if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "artikel", $row->termin_id) == 1) {
+             echo "<a href=\"" . $conf["admp"] . "&section=rights&modul_name=termin&modul_id=" . $row->termin_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\" ></a>";
+          }else{
+             echo "&nbsp;";
+          } 
+          echo "</td>";
          echo "</tr>\n";
 
          // eintraege
@@ -472,12 +484,14 @@ function checkterminentrys($termin){
    return $childs;   
 }      
 
-function createsel_termin($select_name,$id){
+function createsel_termin($select_name, $grouplist){
    global $conf, $lang;
 
+   if (!is_array($grouplist)){$grouplist = explodegroup($grouplist);}
+   
    echo "<select multiple size = \"5\"  name=\"" . $select_name . "[]\">";
-   echo "<option value= \"\"></option>";
-   gettermin4select($parent, &$h_level, $id);
+   $parent = 0;
+   gettermin4select($parent, &$h_level, $grouplist);
    echo "</select>";
    return;
 }
@@ -490,10 +504,10 @@ function gettermin4select($parent, &$h_level, $grouplist){
       	 echo "<option value=" . $row->termin_id;
       	 if (is_array($grouplist)){
             foreach ($grouplist as $value){
-              if ( eregi ( $row->termin_id, $value ) ){echo " selected ";}
+              if ($row->termin_id == $value){echo " selected ";}
             }
          }
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1 && $row->url_typ_id <> $selfid) {
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
             echo ">";
          } else {
          	echo " disabled style = \"color:gray;font-style:italic;\">";
@@ -501,7 +515,7 @@ function gettermin4select($parent, &$h_level, $grouplist){
          for ($count = 0;$count < $h_level; $count++){echo "-";} 
          echo $row->termin_name . "</option>";
          $h_level++;
-         gettermin4select($row->termin_id, $h_level, $grouplist, $selfid);
+         gettermin4select($row->termin_id, $h_level, $grouplist);
          $h_level--;
       }
       mysql_free_result($result);
@@ -520,12 +534,13 @@ function createsel_terminparent($select_name,$id,$selfid="0"){
 function getterminparent4select($parent, &$h_level, $grouplist, $selfid){
    global $conf, $lang;
 
+   
    $result = dbquery("select * from ".$conf["db_namespace"]."termin where termin_parent_id = " . $parent . " order by termin_name");
    if ( mysql_num_rows($result) > 0 ){
       while ($row = mysql_fetch_object($result)){
       	 echo "<option value=" . $row->termin_id;
-         if ( eregi ( $row->termin_id, $grouplist ) ){echo " selected ";}
-         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1 && $row->url_typ_id <> $selfid) {
+         if ($row->termin_id == $grouplist){echo " selected ";}
+         if (acl_check("insert", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1 && $row->termin_id <> $selfid) {
             echo ">";
          } else {
          	echo " disabled style = \"color:gray;font-style:italic;\">";

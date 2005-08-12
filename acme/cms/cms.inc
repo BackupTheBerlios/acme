@@ -7,6 +7,7 @@
    include($conf["cmsbase"] . "/fkt_etc.inc");
    include($conf["cmsbase"] . "/fkt_img.inc");
    include($conf["cmsbase"] . "/fkt_page.inc"); 
+   include($conf["cmsbase"] . "/fkt_date.inc");
    include($conf["cmsbase"] . "/fkt_date." . $conf["lang"] . ".inc");
      
    dbconnect();

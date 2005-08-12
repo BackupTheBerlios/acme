@@ -1,18 +1,26 @@
 <?php
   if ($typ=="stdkontakt") {
-  	 $mailadr= "innomine@gmx.net";
+    $mailadr= "info@spessartklinik.de";
      $subject= "Kontaktformular";
   }
+  if ($typ=="kiklikontakt") {
+    $mailadr= "info@spessartklinik.de";
+     $subject= "Kontaktformular Kinderklinik";
+  }
+  if ($typ=="hgzkontakt") {
+    $mailadr= "info@spessartklinik.de"; // hpz@spessart-klinik.de
+     $subject= "Kontaktformular HGZ";
+  }
   if ($typ=="kochbuchbestellung") {
-     $mailadr= "innomine@gmx.net";
+     $mailadr= "info@spessartklinik.de";
      $subject= "Kochbuchbestellung";
   }   
   if ($typ=="pressekontakt") {
-     $mailadr= "innomine@gmx.net";
+     $mailadr= "info@spessartklinik.de";
      $subject= "Pressekontaktformular";
   }   
   if ($typ=="geschaeftsleitungkontakt") {
-     $mailadr= "innomine@gmx.net";
+     $mailadr= "info@spessartklinik.de";
      $subject= "Pressekontaktformular";
   }   
   $message= 'Nachrichten an '.$admin.' von '.$e-mail.":\n\n";

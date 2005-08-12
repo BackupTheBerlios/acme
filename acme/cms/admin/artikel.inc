@@ -6,14 +6,14 @@ switch($action){
 	case "edit":
 	   $error = 0;
 	   $_SESSION['artikel_edit_page_id'] = $page_id;
-       artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id, $edit_artikel_aktiv,$edit_artikel_comments,$error, $errortext);
+       artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id, $edit_artikel_aktiv,$edit_artikel_comments,$error, $errortext);
 		
       break;
       
 	case "new":
-		artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments, $error, $errortext);
+		   artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_publish_date_hour,$new_artikel_publish_date_minute,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments, $error, $errortext);
 		
-      break;
+      break;	
       
    case "add":
       $error = 0;
@@ -39,7 +39,7 @@ switch($action){
       	$error = 1;
       }
       if ($error == 0){
-         $new_artikel_publish_date = $new_artikel_publish_date_year . "-" . $new_artikel_publish_date_month . "-" . $new_artikel_publish_date_day . "- ".$new_artikel_publish_date_hour. ":".$new_artikel_publish_date_minute.":00";
+         $new_artikel_publish_date = $new_artikel_publish_date_year . "-" . $new_artikel_publish_date_month . "-" . $new_artikel_publish_date_day . " ".$new_artikel_publish_date_hour. ":".$new_artikel_publish_date_minute.":00";
          $result = artikel_insert($new_artikel_page, $new_artikel_publish_date,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text, $new_artikel_long_text, $new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments);
          if ($result) {
             echo $lang["artikel_insert_erfolgreich"];
@@ -50,7 +50,7 @@ switch($action){
          }
       }
       else{
-      	 artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text,$new_artikel_author_id, $new_artikel_aktiv,$new_artikel_comments, $error, $errortext);
+      	 artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_publish_date_hour,$new_artikel_publish_date_minute,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text,$new_artikel_author_id, $new_artikel_aktiv,$new_artikel_comments, $error, $errortext);
       }
 		
       break;
@@ -80,7 +80,7 @@ switch($action){
          $error = 1;
       }
       else {
-      	 $edit_artikel_publish_date = $edit_artikel_publish_date_year . "-" . $edit_artikel_publish_date_month . "-" . $edit_artikel_publish_date_day . "- ".$new_artikel_publish_date_hour. ":".$new_artikel_publish_date_minute.":00";
+      	 $edit_artikel_publish_date = $edit_artikel_publish_date_year . "-" . $edit_artikel_publish_date_month . "-" . $edit_artikel_publish_date_day . " ".$new_artikel_publish_date_hour. ":".$new_artikel_publish_date_minute.":00";
       }
       if ($error == 0){
          $result = artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date, $edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_author_id,   $edit_artikel_aktiv,$edit_artikel_comments);
@@ -108,7 +108,7 @@ switch($action){
          }
          artikel_browse($page_id, $author_id);
       }
-      else{artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_long_text, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext);}
+      else{artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_long_text, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext);}
 		
       break;
       
@@ -159,7 +159,7 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
                 " artikel_aktiv = '" .       $new_artikel_aktiv ."' , ".
                 " artikel_comments = '" .    $new_artikel_comments ."'";
  
-   $insert1_result = dbquery($Statement);
+	$insert1_result = dbquery($Statement);
    if ($insert1_result) {
       $modulid = mysql_insert_id();
       acl_user_set($conf["author_id"], "artikel", $modulid, "Y", "Y", "Y", "Y");
@@ -175,8 +175,8 @@ function artikel_insert($new_artikel_page,$new_artikel_publish_date,$new_artikel
       $insert2_result = dbquery($Statement);
    }
 
-   return $insert1_result && $insert2_result;
-}
+   return $insert1_result && $insert2_result;	
+}	
 
 function artikel_update($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_author_id,	$edit_artikel_aktiv,$edit_artikel_comments){
    global $conf, $lang;
@@ -266,8 +266,12 @@ function artikel_daten_delete_all($delete_id){
    return $delete_result;
 }
 
-function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text,$new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments, $error, $errortext){
+function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artikel_publish_date_month,$new_artikel_publish_date_year,$new_artikel_publish_date_hour,$new_artikel_publish_date_minute,$new_artikel_headline,$new_artikel_sub_headline,$new_artikel_short_text,$new_artikel_long_text,$new_artikel_author_id,$new_artikel_aktiv,$new_artikel_comments, $error, $errortext){
    global $conf, $lang;
+  
+   if (error == 1) {
+      $new_artikel_publish_date = $new_artikel_publish_date_year . "-" . $new_artikel_publish_date_month . "-" . $new_artikel_publish_date_day . " ".$new_artikel_publish_date_hour. ":".$new_artikel_publish_date_minute.":00";
+   }     
   
    echo "<h1>" . $lang["artikel_neu"]. "</h1>\n";
    if ($error == 1){echo "<p>" . $errortext . "</p>\n";}
@@ -305,7 +309,7 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "</form>\n";
 }
 
-function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext){
+function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext){
    global $conf, $lang;
    
    if ($error == "0"){
@@ -323,11 +327,14 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          $edit_artikel_comments     = $row->artikel_comments;
          mysql_free_result($result);
      } 
+   } else {
+         $edit_artikel_publish_date = $edit_artikel_publish_date_year . "-" . $edit_artikel_publish_date_month . "-" . $edit_artikel_publish_date_day . " ".$edit_artikel_publish_date_hour. ":".$edit_artikel_publish_date_minute.":00";  
    }
    echo "<h1>" . $lang["artikel_bearbeiten"] . "</h1>\n";
    if ($error == 1){ 
    	  echo "<p>" . $errortext . "</p>\n";
    }
+   
    echo "<form name = artikel_edit action=\"" . $conf["admp"] . "&section=artikel&action=update\"  ENCTYPE=\"multipart/form-data\" method=\"POST\" onsubmit=\"return submitForm();\">\n";     
    echo "<input type=hidden name=edit_artikel_id value=" . $edit_artikel_id . ">".
         "<table class=\"reda_td\" border = 1 cellpadding = 0 cellspacing = 0>\n".
@@ -380,7 +387,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
    write_bbc("artikel_edit", "new_artikel_long_text");
-   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_short_text) . "</textarea></td></tr>\n";
+   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_long_text) . "</textarea></td></tr>\n";
    echo "</td></tr>\n".
         "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"todo\" value=\"" . $lang["artikel_speichern"] . "\"></td></tr>\n".
         "</table>\n".
@@ -435,7 +442,7 @@ function artikel_browse($page_id, $author_id){
 		    echo "</td>";
 		    echo "<td>";
             if (acl_check("rights", $conf["author_groups"], $conf["author_id"], "artikel", $row->artikel_id) == 1) {
-		       echo "<a href=\"" . $conf["admp"] . "&section=rights&modul_name=artikel&modul_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\" alt = \"".$lang["artikel_loeschen_kurz"] . "\"></a>";
+		       echo "<a href=\"" . $conf["admp"] . "&section=rights&modul_name=artikel&modul_id=" . $row->artikel_id . "\"><img src=\"" . $conf["images_admin"] . "icon_rights.png\" width=\"25\" height=\"25\"></a>";
 		    }else{
 		       echo "&nbsp;";
 		    } 
@@ -461,9 +468,9 @@ function createsel_aktiv($select_name,$grouplist)
    echo "</select>\n";
    return;
 }
-function createsel_pagenCAm($select_name,$grouplist)
-{
+function createsel_pagenCAm($select_name,$grouplist){
    global $conf, $lang;
+   
    $allgroups = dbquery("select page_id, page_name from ".$conf["db_namespace"]."pages Where page_childs = 'A' order by page_name");
    echo "<select multiple size = \"8\" name=\"" . $select_name . "[]\">\n";
    if ( mysql_num_rows($allgroups) > 0 ){

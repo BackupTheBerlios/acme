@@ -18,7 +18,7 @@ body {
         margin: 0;
         background: white;
         color: black;
-        font-family: verdana;
+        font-family:Arial,sans-serif;
         font-size: small;
         top: 0;
         left: 0;
@@ -44,7 +44,6 @@ label, input {
 h1, h2, h3, h4, h5, h6 {
    margin: 1em 0 0.2em 0;
    clear: both;
-   font-family: verdana;
    color: #00A88E;
 }
 h1 {font-size: 130%;font-weight: bold;}
@@ -66,7 +65,7 @@ p  {}
   text-decoration:underline;
   }
  a:hover {
-  color:##2e2e2e;
+  color:#2e2e2e;
   text-decoration:underline;
   }
 
@@ -346,3 +345,24 @@ a.nav_foo_link  {
    background-color:#00A88E;
    margin-bottom:2px;
    }
+
+/* gaestebuch */
+.gb_box {
+  border-color:#00A88E;
+  color:#000000;
+  border:1px solid #000000;
+}
+.gb_messagebox {
+  border-color:#00A88E;
+  color:#000000;
+  width:400px;
+  border:1px dashed #000000;
+}
+.gb_commentbox {
+  position:relative;
+  left:5px;
+  width:395px;
+  border-color:#00A88E;
+  color:#000000;
+  border:1px dotted #000000;
+}

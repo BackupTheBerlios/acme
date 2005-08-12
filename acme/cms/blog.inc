@@ -64,12 +64,12 @@ function renderblog($bid, $bj, $bm, $cat = 0){
       mysql_free_result($my_result);
       $data->blog->img_small    = getimage($blog_img_small);
       $data->blog->img_big      = getimage($blog_img_big);
-      $data->blog->text         = parse_bbcode(nltobr($blog_text), $page_tpl);
+      $data->blog->text         = parse_bbcode(nltobr($blog_text), $blog_tpl);
       $data->blog->counter      = $blog_counter;
       if (!isset($perma)) {
          getblogdata(&$data, $blog_id, $bj, $bm, $blog_tpl, $cat);
       } else {
-      	 getblogperma(&$data, $blog_id, $oerma, $blog_tpl);
+      	 getblogperma(&$data, $blog_id, $perma, $blog_tpl);
       }   
       getblogcats(&$data, $blog_id);
       getblogarchiv(&$data, $blog_id);      

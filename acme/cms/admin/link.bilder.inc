@@ -42,6 +42,7 @@ echo "<table class=\"reda_td \">";
 echo "<tr></td><td>".$lang["bilder_name"]."</td><td>".$lang["bilder_thumb"]."</td><td>".$lang["bilder_link"]."</td><td>&nbsp;</td></tr>";
 $result = dbquery("select * from ".$conf["db_namespace"]."bilder where img_typ_id = '" . $img_typ_id . "'");
 if ( mysql_num_rows($result) > 0 ){	
+   echo "<tr><td colspan=4>[img]bild zentriert anzeigen [imgleft] linksb&uuml;ndig anzeigen [imgright] rechtsb&uuml;ndig anzeigen</td></tr>";
    while ($row = mysql_fetch_object($result)){
       echo "<tr>";
       echo "<td rowspan = 3>".$row->img_name."</td>";
