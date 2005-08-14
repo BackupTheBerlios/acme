@@ -1,7 +1,7 @@
 {mask:main}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/acme-spessart-klinik/medinet.css" title="default" media="screen">
+<link rel="stylesheet" type="text/css" href="/medinet.css" title="default" media="screen">
 <!-- metas -->
 <title>medinet AG - Spessart-Klinik</title>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
@@ -16,23 +16,22 @@
 <body>
 <!-- rahmentabelle: trennt navigation vom inhalt -->
 <table class="rahmentable" >
- <tr>
-  <!-- LINKE NAV -->
-  <td class="rahmentable_l">
-    <div class="home_img"><a href="{home_url}">{home_img}</a></div>
-    <div id="left_bar">{left_bar}</div>
-  </td>  
-  <!-- /LINKE NAV -->
-
-  <!-- INHALT (ALLE FELDER) -->
-  <td class="rahmentable_m" rowspan="2">
-   <div id="mainContent">
+   <tr>
+     <!-- LINKE NAV -->
+     <td class="rahmentable_l">
+        <div class="home_img"><a href="{home_url}">{home_img}</a></div>
+        <div id="left_bar">{left_bar}</div>
+     </td>  
+     <!-- /LINKE NAV -->
+     <!-- INHALT (ALLE FELDER) -->
+     <td class="rahmentable_m" rowspan="2">
+        <div id="mainContent">
 
    {mask:downloads} 
    <!-- DOWNLOADS -->
       {mis:img_big:0}<div class="page_img_big">{img_big}</div>{/mis}
       <!-- CONTENT-BEGRENZUNGSMARKER OBEN LINKS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
       {mask:parent}<div class="parent"><a href="{url}">{name}</a></div>{/mask}
       <h1>{name}</h1>
       <div class="long_text">{text}</div>
@@ -45,7 +44,7 @@
         <div class="long_text">{text}<a href="{file}"><span class="url">{name}</span></a></div>
       {/mask} 
       <!-- CONTENT-BEGRENZUNGSMARKER UNTEN RECHTS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
    <!-- /DOWNLOADS -->
    {/mask}
 
@@ -53,7 +52,7 @@
    <!-- PAGE -->
       {mis:img_big:0}<div class="page_img_big">{img_big}</div>{/mis}
       <!-- CONTENT-BEGRENZUNGSMARKER OBEN LINKS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
       {mask:parent}<div class="parent"><a href="{url}">{name}</a></div>{/mask}
 <!--      {set:bread}<div class="bread">{/set}
       {mask:bread}
@@ -77,7 +76,7 @@
       {/mask} 
       <div class="page_modify_date">letzte &Auml;nderung: {modify_date}</div>
       <!-- CONTENT-BEGRENZUNGSMARKER UNTEN RECHTS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
    <!-- /PAGE -->
    {/mask} 
 
@@ -85,7 +84,7 @@
    <!-- ARTIKEL -->
       {mis:img_big:0}<div class="artikel_img_big">{img_big}</div>{/mis}
       <!-- CONTENT-BEGRENZUNGSMARKER OBEN LINKS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_ul.gif" class="img_cont_begr_ol" alt="grafisches element: inhaltsbegrenzung">
       <div class="parent"><a href="{page_url}">{page}</a></div>
       <h1 class="artikel">{headline}</h1>
       <h2 class="artikel">{sub_headline}</h2>
@@ -97,7 +96,7 @@
       {mask:part} {set:url}<a href="{url}">{/set}{nr}{set:url}</a>{/set}{/mask} 
       {mask:next} <a href="{url}">>></a>{/mask}
       <!-- CONTENT-BEGRENZUNGSMARKER UNTEN RECHTS -->
-      <img src="/acme-spessart-klinik/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
+      <img src="/cms/bilder/cont_border_lr.gif" class="img_cont_begr_ur" alt="grafisches element: inhaltsbegrenzung">
    <!--- ENDE ARTIKEL -->
    {/mask}
 
@@ -165,8 +164,8 @@
 		    <tr>
 		     <td width='50%' valign='top' align='left'>
 		       <b>{name}</b>&nbsp;
-		       {set:email}<a href='mailto:{email}'><img src='/acme-spessart-klinik/cms/bilder/gb_email.gif' border='0' alt='Schreiben Sie {name} ein E-Mail&raquo;&nbsp;{email}'></a>&nbsp;{/set}
-		       {set:url}<a href='{url}' target='_blank'><img src='/acme-spessart-klinik/cms/bilder/gb_homepage.gif' border='0' alt='Besuchen Sie {name} Homepage&raquo;&nbsp;{url}'></a>{/set}
+		       {set:email}<a href='mailto:{email}'><img src='/cms/bilder/gb_email.gif' border='0' alt='Schreiben Sie {name} ein E-Mail&raquo;&nbsp;{email}'></a>&nbsp;{/set}
+		       {set:url}<a href='{url}' target='_blank'><img src='/cms/bilder/gb_homepage.gif' border='0' alt='Besuchen Sie {name} Homepage&raquo;&nbsp;{url}'></a>{/set}
 		     </td>
 		      <td width='50%' valign='top' align='right'><small><b>{date} &raquo; {time}</b></small></td>
 		   </tr>
@@ -261,83 +260,88 @@
 <!-- /URL-LISTE -->
 {/mask} 
 
-
-
-
-
 {mask:termine}
 <!-- KALENDER -->
-   <table class="art_cont_table" cellspacing="0" >	
-      <tr> 
-         <td class="art_top_left"><p>&nbsp;</p></td>
-         <td class="art_top_centerright" colspan="2"><font class="parent">{titel}&nbsp;</font></td>
-      </tr>
-      <tr> 
-         <td class="art_middle_left">{mis:img_big:0}<div class="page_img_big">{img_big}</div>{/mis}</td>
-         <td class="art_middle_center"> 
-          <p>{text}</p>
-         {mask:termin_data}
-           <h4>{name}</h4>
-	       <strong>Veranstalter</strong>: {veranstalter}<br>
-	       <strong>Ort:</strong> {ort}<br>
-	       <strong>Datum:</strong> {von_date} -  {bis_date}<br>
-           <strong>Zeit:</strong> {von_time} bis {bis_time}<br>
-	       <strong>Website:<a href = "{url}">{name}</a></strong>
-	       <p>{text}</p>	  
-          {/mask}
-          {mask:termin_childs} 
-    	    <a href = "{url}"><h3>{name}</h3></a>
-          {/mask}
-        </td>
-        
-        <td class="calender">
+<table>	
+   <tr> 
+      <td><p>&nbsp;</p></td>
+      <td><h1>{titel}&nbsp;</h1></td>
+      <td rowspan = 2>
          {mask:Kalender}
-          <table>
-          <tr>
-          <td colspan = 2 class = "calender_prev"><a href = "{prev_url}">&lt;</a></td>
-          <td colspan = 4 class = "calender_month">{akt_monat}</td>
-          <td colspan = 2 class = "calender_next"><a href = "{next_url}">&gt;</a></td>
-          </tr>
-          {mask:week}
-            <tr>
-            {mask:weeknum}
-             {choose:akt}
-               {when:0}<td class = "calender_week"><a href = "{url}">{kw}</a></td>{/when}
-               {when:1}<td class = "calender_week_akt"><a href = "{url}">{kw}</a></td>{/when}
-             {/choose}  
-            {/mask}
-            {mask:day}
-              {choose:akt}
+          <table  class="calender" border = 0 cellspacing="0" >
+             <tr>
+                <td colspan = 1 class = "calender_prev">KW</td>
+                <td colspan = 1 class = "calender_prev"><a href = "{prev_url}">&lt;</a></td>
+                <td colspan = 4 class = "calender_month">{akt_monat}</td>
+                <td colspan = 2 class = "calender_next"><a href = "{next_url}">&gt;</a></td>
+             </tr>
+            {mask:week}
+             <tr>
+              {mask:weeknum}
+               {choose:akt}
+                {when:0}<td class = "calender_week"><a href = "{url}">{kw}</a></td>{/when}
+                {when:1}<td class = "calender_week_akt"><a href = "{url}">{kw}</a></td>{/when}
+               {/choose}  
+              {/mask}
+              {mask:day}
+               {choose:akt}
                 {when:0}<td class = "calender_day"><a href = "{url}">{day}</a></td>{/when}
                 {when:1}<td class = "calender_day_akt"><a href = "{url}">{day}</a></td>{/when}
-              {/choose}   
+               {/choose}   
+              {/mask}
+             </tr>
             {/mask}
-            </tr>
-          {/mask}
           </table>
          {/mask}
       </td>
-    </tr>
-</table>
+   </tr>
+   <tr> 
+      <td>{mis:img_big:0}<div class="page_img_big">{img_big}</div>{/mis}</td>
+      <td> 
+         <p>{text}</p>
+      </td> 
+   </tr>
+   <tr> 
+      <td></td>
+      <td> 
+       {mask:termin_childs} 
+         <a href = "{url}"><h4>{name}</h4></a>
+       {/mask}
+      </td> 
+   </tr>
+</table>        
+<table cellspacing="0" >	
+   <tr> 
+      <td>
+         {mask:termin_data}
+          <h2>{name}</h2>
+	      <strong>Veranstalter</strong>: {veranstalter}<br>
+	      <strong>Ort:</strong> {ort}<br>
+	      <strong>Datum:</strong> {von_date} -  {bis_date}<br>
+          <strong>Zeit:</strong> {von_time} bis {bis_time}<br>
+	      {set:url}<strong>Website:<a href = "{url}">{name}</a></strong>{/set}
+	      <p>{text}</p>	  
+         {/mask}
+      </td>
+   </tr>
+</table>      
 <!-- /KALENDER -->
 
 {/mask} 
-   </div>
-  </td>
-  <!-- /INHALT -->
-  
-  <!-- RECHTER SEITENBEREICH -->
-  <td class="rahmentable_r">
-   <div class ="home_img_counterweight" >&nbsp;</div>
-   <div class ="greenback" id="right_bar">{right_bar}</div>
-  </td> 
-  <!-- /RECHTER SEITENBEREICH --> 
-    
- </tr>
- <!-- FARBBOX LINKS -->
- <tr><td class="nav_l_farbbox"></td></tr>
- <!-- FOOTER -->
- <tr><td class="footer_td" colspan="3">{foo_bar}</td></tr>
+        </div>
+     </td>
+<!-- /INHALT -->
+     <!-- RECHTER SEITENBEREICH -->
+     <td class="rahmentable_r">
+        <div class ="home_img_counterweight" >&nbsp;</div>
+        <div class ="greenback" id="right_bar">{right_bar}</div>
+     </td> 
+     <!-- /RECHTER SEITENBEREICH --> 
+   </tr>
+   <!-- FARBBOX LINKS -->
+   <tr><td class="nav_l_farbbox"></td></tr>
+   <!-- FOOTER -->
+   <tr><td class="footer_td" colspan="3">{foo_bar}</td></tr>
 </table>
 <!-- /RAHMENTABLE -->
 </body>

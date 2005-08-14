@@ -39,9 +39,9 @@ $lang["page_update_fehlerhaft"]="error: page could not be updated";
 $lang["page_update_erfolgreich"]="page updated successfully";
 $lang["page_delete_fehlerhaft"]="error: page could not be deleted";
 $lang["page_delete_erfolgreich"]="page deleted successfully";
-$lang["page_delete_quest"]="sind sie sicher?";
-$lang["page_loeschen"]="Seite l�schen";
-$lang["page_cancel"]="Abbrechen";
-$lang["page_name_fehlt"]="name fehlt";
-$lang["page_tpl_fehlt"]="template fehlt";
+$lang["page_delete_quest"]="are you sure?";
+$lang["page_loeschen"]="delete page";
+$lang["page_cancel"]="cancel";
+$lang["page_name_fehlt"]="name is missing";
+$lang["page_tpl_fehlt"]="template is missing";
 ?>

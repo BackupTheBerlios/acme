@@ -47,7 +47,6 @@ $lang["downloads_update_fehlerhaft"]="error: file could not be updated";
 $lang["downloads_update_erfolgreich"]="file updated successfully";
 $lang["downloads_delete_fehlerhaft"]="error: file could not be deleted";
 $lang["downloads_delete_erfolgreich"]="file deleted successfully";
-
 $lang["downloads_upload_filesizeerror"]="error: file exceeds maximum size (180kB) and will not be uploaded. Please reduce file size!";
 $lang["downloads_upload_move_rename"]="File $tmpname is being moved to the folder [Downloads] and renamed to $realname ...";
 $lang["downloads_upload_copy"]="Copying in progress:";
