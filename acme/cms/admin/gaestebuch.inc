@@ -166,12 +166,12 @@ function gaestebuchentrys($gb_id, $gb_page){
       echo "</tr>";
       echo "<tr>";
       echo "<td colspan = 4>";
-      if ($fetch["entry_blocked"] == "N") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryblock&gb_id=" .   $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_block_entry"]. "</a> ";}
-      if ($fetch["entry_blocked"] == "Y") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryunblock&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_unblock_entry"]."</a> ";}
-      echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrydelete&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_delete_entry"]."</a> ";
+      if ($fetch["entry_blocked"] == "N") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryblock&gb_id=" .   $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_entry_block"]. "</a> ";}
+      if ($fetch["entry_blocked"] == "Y") {echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entryunblock&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_entry_unblock"]."</a> ";}
+      echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrydelete&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_entry_delete"]."</a> ";
       echo "</td>";
       echo "<td colspan = 3>";
-      echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrycomment&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">comment entry</a> ";
+      echo "<a href=\"" . $conf["admp"] . "&section=gaestebuch&action=entrycomment&gb_id=" . $gb_id . "&entry_id=" . $fetch["entry_id"] . "&gb_page=" . $gb_page . "\">". $lang["gaestebuch_entry_comment"]."</a> ";
       echo "</td>";
       echo "</tr>";
    }   

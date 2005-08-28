@@ -83,8 +83,8 @@ function rendergaestebuch($gb_id, $gb_page=1){
          $entry_content = addslashes($entry_content);
          $poster_name = ereg_replace("<", "&lt;", $poster_name);
          $poster_name = ereg_replace(">", "&gt;", $poster_name);
-         $hostname = gethostbyaddr("$REMOTE_ADDR");
-         dbquery("insert into ".$conf["db_namespace"]."gb_entrys (gb_id, entry_content, entry_comment, entry_date, entry_time, entry_poster, poster_email, poster_url, poster_ip, poster_hostname) values('$gb_id','$entry_content', '--', '$datum', '$zeit', '$poster_name', '$poster_email', '$poster_url', '$REMOTE_ADDR', '$hostname')");
+         $hostname = getisp();
+         dbquery("insert into ".$conf["db_namespace"]."gb_entrys (gb_id, entry_content, entry_comment, entry_date, entry_time, entry_poster, poster_email, poster_url, poster_ip, poster_hostname) values('$gb_id','$entry_content', '--', '$datum', '$zeit', '$poster_name', '$poster_email', '$poster_url', '". $_SERVER['REMOTE_ADDR'] ."', '".$hostname. "')");
          $data->gaestebuch->post_name    = "";
          $data->gaestebuch->post_email   = "";
          $data->gaestebuch->post_url     = "";
@@ -160,11 +160,11 @@ function writegbentrys($data, $gb_id, $gb_page){
 
    $akt = 0;
    while($fetch=mysql_fetch_array($query)) {
-   	  $akt++;
-      if($fetch[poster_url] != "--") {$fetched_url=$fetch[poster_url];}
-      else{$fetched_url="";}
-      if($fetch[poster_email] != "--"){$fetched_mail=$fetch[poster_email];}
-      else{$fetched_mail="";}
+   	$akt++;
+      if($fetch[poster_url] != "--") {$fetched_url = $fetch[poster_url];}
+      else{$fetched_url = "";}
+      if($fetch[poster_email] != "--"){$fetched_mail = $fetch[poster_email];}
+      else{$fetched_mail = "";}
       if($fetch[entry_comment] == "--"){$fetched_comment = "";}
       else{$fetched_comment = $fetch[entry_comment];}
       $data->gaestebuch->eintrag[$akt]->name    = $fetch[entry_poster];
@@ -177,5 +177,22 @@ function writegbentrys($data, $gb_id, $gb_page){
       $data->gaestebuch->eintrag[$akt]->ip      = $fetch[poster_ip];
       $data->gaestebuch->eintrag[$akt]->host    = $fetch[poster_hostname];
    }
+}
+
+function getisp($ip='') {
+   if ($ip=='') $ip = $_SERVER['REMOTE_ADDR'];
+   $longisp = @gethostbyaddr($ip);
+   $isp = explode('.', $longisp);
+   $isp = array_reverse($isp);
+   $tmp = $isp[1];
+   if (preg_match("/\<(org?|com?|net)\>/i", $tmp)) {
+       $myisp = $isp[2].'.'.$isp[1].'.'.$isp[0];
+   } else {
+       $myisp = $isp[1].'.'.$isp[0];
+   }
+   $isp_err = "ISP lookup failed.";
+   preg_match("/[0-9]{1,3}\.[0-9]{1,3}/", $myisp) ? $isp = $isp_err : $isp = $myisp;
+   
+   return $isp;
 }
 ?>

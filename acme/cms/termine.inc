@@ -61,7 +61,6 @@ jahr
        $y = (!$y) ? date("Y") : "$y";
        $w =  week_number($y, $m, $d);
     }
-  // echo "p:".$p ." d:". $d ." m:". $m ." y:". $y ." w:". $w . " date:".$date."<br>";
 
 rendertermin($id, $p, $d, $m, $y, $w);
   

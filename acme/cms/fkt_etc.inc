@@ -263,7 +263,6 @@ function parse_navigation($page_tpl, $nav_id, $side, $bc){
             // was gefunden dann von dort aus die nav weiter aufklappen
             if ($found <> 0){
                $h_level=1;
-               echo "<br>";
                parsenavtree(&$data, $modul, $modultable, $modulparent, $modulid, $modulname, $bc, &$akt, &$found, &$h_level);
             }           
         }
