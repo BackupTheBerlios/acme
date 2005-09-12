@@ -25,7 +25,9 @@ function write_bbc_textformat($f, $ta){
        "<input class=\"bbcode-button\" style = \"font-style:italic;\"            type=\"button\" name=\"i\" value=\"i\" title=\"kursiv\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'i');\" />\n". 
        "<input class=\"bbcode-button\" style = \"text-decoration:underline;\"    type=\"button\" name=\"ul\" value=\"ul\" title=\"unterstrichen\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'ul');\" />\n".
        "<input class=\"bbcode-button\" style = \"text-decoration:overline;\"     type=\"button\" name=\"ol\" value=\"ol\" title=\"überstrichen\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'ol');\" />\n".
-       "<input class=\"bbcode-button\" style = \"text-decoration:line-through;\" type=\"button\" name=\"lt\" value=\"lt\" title=\"durchgestrichen\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'lt');\" />\n";
+       "<input class=\"bbcode-button\" style = \"text-decoration:line-through;\" type=\"button\" name=\"lt\" value=\"lt\" title=\"durchgestrichen\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'lt');\" />\n".
+       "<input class=\"bbcode-button\" style = \"\" type=\"button\" name=\"list\" value=\"<ul>\" title=\"Liste\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'list');\" />\n".
+       "<input class=\"bbcode-button\" style = \"\" type=\"button\" name=\"listeintrag\" value=\"<li>\" title=\"Listeneintrag\" onclick=\"bbcode('" . $f. "', '" . $ta . "', 'l');\" />\n";
 }     
 function write_bbc_color($f, $ta){
   echo "<input class=\"bbcode-button\" style = \"background-color:red;\"    type=\"button\" name=\"color:red\"    value=\"\"    title=\"color:red\"    onclick=\"bbcode('" . $f. "', '" . $ta . "', 'red');\" />\n".

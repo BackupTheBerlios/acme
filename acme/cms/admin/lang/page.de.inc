@@ -33,6 +33,7 @@ $lang["page_kurztext"]="Kurztext (Teaser)";
 $lang["page_langtext"]="Langtext";
 $lang["page_speichern"]="speichern";
 $lang["page_link"]="Link";
+$lang["page_startseite"]="(*)";
 $lang["page_insert_fehlerhaft"]="Fehler: Seite einf&uuml;gen fehlgeschlagen";
 $lang["page_insert_erfolgreich"]="Seite einf&uuml;gen erfolgreich";
 $lang["page_update_fehlerhaft"]="Fehler: Seite bearbeiten fehlgeschlagen";

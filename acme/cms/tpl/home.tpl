@@ -172,7 +172,7 @@
 		    <tr>
 		     <td colspan='2' valign='top'><div class='gb_messagebox'>{message}</div></td>
 		    </tr> 
-		    {set:commment}
+		    {set:comment}
 		    <tr>
 		     <td colspan='2' valign='top'><div class='gb_commentbox'>{comment}</div></td>
 		    </tr>

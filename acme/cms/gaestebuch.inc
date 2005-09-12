@@ -1,4 +1,4 @@
-<?
+mSkBoGmbH!<?
 /*
 
   platzhalter f�r die Seite:
@@ -170,8 +170,8 @@ function writegbentrys($data, $gb_id, $gb_page){
       $data->gaestebuch->eintrag[$akt]->name    = $fetch[entry_poster];
       $data->gaestebuch->eintrag[$akt]->email   = eregi_replace("@"," at ",$fetched_mail);
       $data->gaestebuch->eintrag[$akt]->url     = $fetched_url;
-      $data->gaestebuch->eintrag[$akt]->message = nl2br($fetch[entry_content]);
-      $data->gaestebuch->eintrag[$akt]->comment = $fetched_comment;
+      $data->gaestebuch->eintrag[$akt]->message = htmlspecialchars(stripslashes(nl2br($fetch[entry_content])));
+      $data->gaestebuch->eintrag[$akt]->comment = htmlspecialchars(stripslashes($fetched_comment));
       $data->gaestebuch->eintrag[$akt]->date    = $fetch[entry_date];
       $data->gaestebuch->eintrag[$akt]->time    = $fetch[entry_time];
       $data->gaestebuch->eintrag[$akt]->ip      = $fetch[poster_ip];

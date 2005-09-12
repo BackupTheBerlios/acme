@@ -6,7 +6,7 @@ switch($action){
 	case "edit":
 	   $error = 0;
 	   $_SESSION['artikel_edit_page_id'] = $page_id;
-       artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id, $edit_artikel_aktiv,$edit_artikel_comments,$error, $errortext);
+       artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$edit_artikel_long_text_id, $new_artikel_long_text, $edit_artikel_author_id, $edit_artikel_aktiv,$edit_artikel_comments,$error, $errortext);
 		
       break;
       
@@ -26,10 +26,6 @@ switch($action){
       	 $errortext .= $lang["artikel_ueberschrift1_fehlt"]."<br>";
       	 $error = 1;
       }
-      if ($new_artikel_sub_headline == ""){
-      	$errortext .= $lang["artikel_ueberschrift2_fehlt"]."<br>";
-      	$error = 1;
-      }            
       if ($new_artikel_short_text == ""){
       	$errortext .= $lang["artikel_kurztext_fehlt"]."<br>";
       	$error = 1;
@@ -57,7 +53,7 @@ switch($action){
       
 	case "update":
       $error = 0;
-      $count =0;
+      $count = 0;
       $errortext = "";
       if (!(isset($edit_artikel_page))){
       	 $errortext .= $lang["artikel_seite_fehlt"]."<br>";
@@ -71,10 +67,6 @@ switch($action){
       	 $errortext .= $lang["artikel_ueberschrift1_fehlt"]."<br>";
       	 $error = 1;
       }
-      if ($edit_artikel_sub_headline == ""){
-      	 $errortext .= $lang["artikel_ueberschrift2_fehlt"]."<br>";
-      	 $error = 1;
-      }            
       if ($edit_artikel_publish_date_day == "" || $edit_artikel_publish_date_month == "" || $edit_artikel_publish_date_year == "" || $edit_artikel_publish_date_hour == "" || $edit_artikel_publish_date_minute == ""){
          $errortext .= $lang["artikel_veroeffentlichungsdatum_fehlt"]."<br>";
          $error = 1;
@@ -108,7 +100,7 @@ switch($action){
          }
          artikel_browse($page_id, $author_id);
       }
-      else{artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_long_text, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext);}
+      else{artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text, $edit_artikel_long_text, $edit_artikel_long_text_id, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext);}
 		
       break;
       
@@ -309,10 +301,10 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "</form>\n";
 }
 
-function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext){
+function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish_date_day,$edit_artikel_publish_date_month,$edit_artikel_publish_date_year,$edit_artikel_publish_date_hour,$edit_artikel_publish_date_minute,$edit_artikel_headline,$edit_artikel_sub_headline,$edit_artikel_short_text,$edit_artikel_long_text,$edit_artikel_long_text_id, $new_artikel_long_text, $edit_artikel_author_id,$edit_artikel_aktiv,$edit_artikel_comments, $error, $errortext){
    global $conf, $lang;
    
-   if ($error == "0"){
+   if ($error == 0){
       $result = dbquery("select * from ".$conf["db_namespace"]."artikel where artikel_id = '" . $edit_artikel_id . "'");
       if ($result)  {
          $row = mysql_fetch_object($result);
@@ -327,6 +319,7 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
          $edit_artikel_comments     = $row->artikel_comments;
          mysql_free_result($result);
      } 
+     echo "loading data";
    } else {
          $edit_artikel_publish_date = $edit_artikel_publish_date_year . "-" . $edit_artikel_publish_date_month . "-" . $edit_artikel_publish_date_day . " ".$edit_artikel_publish_date_hour. ":".$edit_artikel_publish_date_minute.":00";  
    }
@@ -370,20 +363,34 @@ function artikel_edit($edit_artikel_id, $edit_artikel_page,$edit_artikel_publish
    write_bbc("artikel_edit", "edit_artikel_short_text");
    echo "<textarea name=\"edit_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($edit_artikel_short_text) . "</textarea></td></tr>\n";
    echo "</td></tr>";
-   $seite=0;     
-   $dataresult = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
-   if ($dataresult)    {
-      while ($datarow = mysql_fetch_object($dataresult))  {
-         $seite++;
-         echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
-              "<tr><td colspan=\"3\">\n";
-         echo "<input type=\"hidden\" name=\"edit_artikel_long_text_id[".$seite."]\" value=\"" . $datarow->artikel_daten_id . "\">";     
-         write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
-         echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($datarow->artikel_long_text) . "</textarea></td></tr>\n";
-         echo "</td></tr>\n";
+   $seite=0;  
+   if ($error == 0){   
+      $dataresult = dbquery("select * from ".$conf["db_namespace"]."artikel_daten where artikel_id='". $edit_artikel_id . "' order by artikel_part");
+      if ($dataresult)    {
+         while ($datarow = mysql_fetch_object($dataresult))  {
+            $seite++;
+            echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
+                 "<tr><td colspan=\"3\">\n";
+            echo "<input type=\"hidden\" name=\"edit_artikel_long_text_id[".$seite."]\" value=\"" . $datarow->artikel_daten_id . "\">";     
+            write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
+            echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($datarow->artikel_long_text) . "</textarea></td></tr>\n";
+            echo "</td></tr>\n";
+         }
+         mysql_free_result($dataresult);
       }
-      mysql_free_result($dataresult);
-   }
+   } else {
+     $arrc = 1; 
+     while ($arrc <= count($edit_artikel_long_text)) {
+        $seite++;
+        echo "<tr><td colspan=\"3\">" . $lang["artikel_seite"] . " " . $seite . "</td></tr>\n".
+             "<tr><td colspan=\"3\">\n";
+        echo "<input type=\"hidden\" name=\"edit_artikel_long_text_id[".$seite."]\" value=\"" . $edit_artikel_long_text_id[$arrc] . "\">";     
+        write_bbc("artikel_edit", "edit_artikel_long_text[".$seite."]");
+        echo "<textarea name=\"edit_artikel_long_text[".$seite."]\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($edit_artikel_long_text[$arrc]) . "</textarea></td></tr>\n";
+        echo "</td></tr>\n";
+        $arrc++;
+      }
+   }      
    echo "<tr><td colspan=\"3\">" . $lang["artikel_neue_seite"] . "</td></tr>\n".
         "<tr><td colspan=\"3\">\n";
    write_bbc("artikel_edit", "new_artikel_long_text");

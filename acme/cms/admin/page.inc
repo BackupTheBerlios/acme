@@ -318,7 +318,11 @@ function pagebrowse($openpage_id){
          echo "</td>";
          echo "<td>";
          for ($count = 0;$count < $h_level; $count++){echo "-";}
-         echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         if ($row->page_id == $conf["home_page"] && $conf["home_page_typ"] == "page"){
+            echo $lang["page_startseite"] . "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         }else{
+            echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         }
          echo "<td>". $row->page_headline."</td>";
          echo "<td>". mydate2date($row->page_create_date) ."</td>";         
          echo "<td>". mydate2date($row->page_modify_date) ."</td>";
@@ -363,7 +367,11 @@ function writepagechilds($parent, &$h_level){
          echo "<tr><td>&nbsp;</td>";
          echo "<td>";
          for ($count = 0;$count < $h_level; $count++){echo "-";}
-         echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         if ($row->page_id == $conf["home_page"] && $conf["home_page_typ"] == "page"){
+            echo $lang["page_startseite"] . "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         }else{
+            echo "<a href=\"" . $conf["indexname"] . "page/".$row->page_id."\" target=\"new_window\">".$row->page_name."</a></td>";
+         }
          echo "<td>". $row->page_headline."</td>";
          echo "<td>". mydate2date($row->page_create_date) ."</td>";         
          echo "<td>". mydate2date($row->page_modify_date) ."</td>";
