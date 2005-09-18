@@ -141,12 +141,18 @@ function getStartEndByWeek($week, $year, $Start, $End) {
 function getterminchildsdata($data, $termin_id, $termin_tpl, $p, $week, $day, $month, $year){
    global $conf, $lang;
    
-   if ($p == "byweek") {getStartEndByWeek($week, $year, &$Start, &$End);}
-   if ($p == "bydate") {getStartEndByDate($day, $month, $year, &$Start, &$End);}
+   if ($p == "byweek") {
+      getStartEndByWeek($week, $year, &$Start, &$End);
+      $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and ((termin_data_typ = 'P') OR (termin_data_typ = 'T' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "')) order by termin_data_date_von ASC";
+   }
+      
+   if ($p == "bydate") {
+      getStartEndByDate($day, $month, $year, &$Start, &$End);
+      $weekday = weekday_by_date($Start);
+      $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and ((termin_data_typ = 'P' and termin_data_typ_day = ". $weekday . ") OR (termin_data_typ = 'T' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "')) order by termin_data_date_von ASC";      
+   }
    
- //  echo "start:" . $Start . " End:".$End;
-   
-   $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and (termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "') order by termin_data_date_von ASC";
+   //  echo "start:" . $Start . " End:".$End;
    $dataresult = dbquery($dataquery);
    if ( mysql_num_rows($dataresult) > 0 ){
       $akt = 0;
@@ -239,7 +245,7 @@ function drawCalendar($data, $p, $w, $d, $m, $y, $termin_id) {
    if ($kw==$w) {$data->termine->Kalender->week[1]->weeknum->akt =  "1";}
    else {$data->termine->Kalender->week[1]->weeknum->akt =  "0";}
    
-   for ($i=1; $i<$bwm; $i++){ 
+   for ($i=1; $i < $bwm; $i++){ 
        $aktday++;
        $data->termine->Kalender->week[$aktweek]->day[$aktday]->url = "&nbsp;";
    }

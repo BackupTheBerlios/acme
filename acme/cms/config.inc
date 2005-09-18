@@ -2,17 +2,17 @@
 if( !$included["config.inc"] )
    {
    $conf["lang"]    = "de"; /* oder en */	
-   $conf["dbhost"] 	= "db402.1und1.de";
-   $conf["dbuser"] 	= "dbo117112156";
-   $conf["dbpass"] 	= "gzNuBHvC";
-   $conf["dbname"] 	= "db117112156";
+   $conf["dbhost"] 	= "";
+   $conf["dbuser"] 	= "";
+   $conf["dbpass"] 	= "";
+   $conf["dbname"] 	= "";
    $conf["dbauth"] 	= "mysql";
-   $conf["dbadmuser"] 	= "dbo117112156";
-   $conf["dbadmpass"] 	= "gzNuBHvC";
+   $conf["dbadmuser"] 	= "";
+   $conf["dbadmpass"] 	= "";
    
-   $conf["htdocs"]		= "/homepages/15/d113883177/htdocs";
-   $conf["domain"]    	= "http://www.omikron-webservice.de";
-   $conf["subdir"] 	    = "/medinet";
+   $conf["htdocs"]		= "";
+   $conf["domain"]    	= "";
+   $conf["subdir"] 	    = "";
    $conf["db_namespace"]= "acme_";
    $conf["indexbase"]   = $conf["domain"] . $conf["subdir"];
    $conf["cmsbase"]  	= $conf["htdocs"] . $conf["subdir"] . "/cms";

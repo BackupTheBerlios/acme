@@ -73,7 +73,7 @@ function month_name($month){
    case 11: return "November";
    case 12: return "Dezember";
   }
-  return "($m)";
+  return "unbekannter monat($m)";
 }
 
 function month_short_name($month){
@@ -92,7 +92,7 @@ function month_short_name($month){
    case 11: return "Nov";
    case 12: return "Dez";
   }
-  return "unknown-month($m)";
+  return "unbekannter monat($m)";
 }
 
 
@@ -106,7 +106,7 @@ function weekday_name($weekday_value) {
    case 5: return "Freitag";
    case 6: return "Samstag";
   }
-  return "unknown-weekday($w)";
+  return "unbekannter wochentag($w)";
 }
 
 function weekday_short_name($weekday_value) {
@@ -119,7 +119,7 @@ function weekday_short_name($weekday_value) {
    case 5: return "Fr";
    case 6: return "Sa";
   }
-  return "unknown-weekday($w)";
+  return "bekannter wochentag($w)";
 }
 
 ?>

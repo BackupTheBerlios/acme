@@ -92,7 +92,7 @@ function month_short_name($month){
    case 11: return "Nov";
    case 12: return "Dec";
   }
-  return "($m)";
+  return "unknown-month($m)";
 }
 
 

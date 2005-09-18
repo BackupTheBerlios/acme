@@ -1,4 +1,4 @@
-mSkBoGmbH!<?
+<?
 /*
 
   platzhalter f�r die Seite:
@@ -65,10 +65,10 @@ function rendergaestebuch($gb_id, $gb_page=1){
          $errortext .= "Name fehlt<br />";
       }
       if ($error) {
-         $data->gaestebuch->post_name      = htmlspecialchars(stripslashes($poster_name));
-         $data->gaestebuch->post_email     = htmlspecialchars(stripslashes($poster_email));
-         $data->gaestebuch->post_url       = htmlspecialchars(stripslashes($poster_url));
-         $data->gaestebuch->post_content   = htmlspecialchars(stripslashes($entry_content));
+         $data->gaestebuch->post_name      = stripslashes($poster_name);
+         $data->gaestebuch->post_email     = stripslashes($poster_email);
+         $data->gaestebuch->post_url       = stripslashes($poster_url);
+         $data->gaestebuch->post_content   = stripslashes($entry_content);
          $data->gaestebuch->post_errortext = "Fehler<br />".$errortext;
       }
       else {
@@ -170,8 +170,8 @@ function writegbentrys($data, $gb_id, $gb_page){
       $data->gaestebuch->eintrag[$akt]->name    = $fetch[entry_poster];
       $data->gaestebuch->eintrag[$akt]->email   = eregi_replace("@"," at ",$fetched_mail);
       $data->gaestebuch->eintrag[$akt]->url     = $fetched_url;
-      $data->gaestebuch->eintrag[$akt]->message = htmlspecialchars(stripslashes(nl2br($fetch[entry_content])));
-      $data->gaestebuch->eintrag[$akt]->comment = htmlspecialchars(stripslashes($fetched_comment));
+      $data->gaestebuch->eintrag[$akt]->message = nl2br(htmlspecialchars(stripslashes($fetch[entry_content])));
+      $data->gaestebuch->eintrag[$akt]->comment = nl2br(htmlspecialchars(stripslashes($fetched_comment)));
       $data->gaestebuch->eintrag[$akt]->date    = $fetch[entry_date];
       $data->gaestebuch->eintrag[$akt]->time    = $fetch[entry_time];
       $data->gaestebuch->eintrag[$akt]->ip      = $fetch[poster_ip];

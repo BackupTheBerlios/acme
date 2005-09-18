@@ -7,21 +7,21 @@ switch($action){
       break;
    case "termin_update":
       termin_update($edit_termin_id, $edit_termin_parent_id, $edit_termin_name, $edit_termin_tpl, $edit_termin_img_small,$edit_termin_img_small_inactive,  $edit_termin_img_big, $edit_termin_top_bar, $edit_termin_left_bar, $edit_termin_right_bar, $edit_termin_foo_bar, $edit_termin_titel, $edit_termin_text, $edit_termin_groups);
-	  termin_browse();
+	  termin_browse($openterminid);
       break;
    case "termin_new":
       termin_new($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small,$new_termin_img_small_inactive,  $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
       break;
    case "termin_insert":
       termin_insert($new_termin_parent_id, $new_termin_name, $new_termin_tpl, $new_termin_img_small, $new_termin_img_small_inactive, $new_termin_img_big, $new_termin_top_bar, $new_termin_left_bar, $new_termin_right_bar, $new_termin_foo_bar, $new_termin_titel, $new_termin_text, $new_termin_groups);
-	  termin_browse();
+	  termin_browse($openterminid);
       break;
    case "termin_delete":
       termin_delete($delete_id);
-      termin_browse();
+      termin_browse($openterminid);
       break;
    case "termin_data_edit":
-      termin_data_edit($edit_id, $edit_termin_typ, $edit_termin_data_headline,$edit_termin_data_date_von, $edit_termin_data_date_bis, $edit_termin_data_Veranstalter, $edit_termin_data_Ort, $edit_termin_data_URL, $edit_termin_data_content);
+      termin_data_edit($edit_id, $edit_termin_typ, $edit_termin_data_headline,$edit_termin_data_date_von, $edit_termin_data_date_bis, $edit_termin_data_typ, $edit_termin_data_typ_int, $edit_termin_data_typ_day, $edit_termin_data_Veranstalter, $edit_termin_data_Ort, $edit_termin_data_URL, $edit_termin_data_content);
       break;
    case "termin_data_update":
       $edit_termin_data_date_von = $edit_termin_data_date_von_year . "-" . 
@@ -34,11 +34,11 @@ switch($action){
     	                           $edit_termin_data_date_bis_day  . " ".
     	                           $edit_termin_data_date_bis_time_hour . ":".
     	                           $edit_termin_data_date_bis_time_minute . ":00";
-      termin_data_update($edit_termin_data_id, $edit_termin_typ, $edit_termin_data_headline,$edit_termin_data_date_von, $edit_termin_data_date_bis, $edit_termin_data_Veranstalter, $edit_termin_data_Ort, $edit_termin_data_URL, $edit_termin_data_content);
-      termin_browse();
+      termin_data_update($edit_termin_data_id, $edit_termin_typ, $edit_termin_data_headline,$edit_termin_data_date_von, $edit_termin_data_date_bis, $edit_termin_data_typ, $edit_termin_data_typ_int, $edit_termin_data_typ_day,$edit_termin_data_Veranstalter, $edit_termin_data_Ort, $edit_termin_data_URL, $edit_termin_data_content);
+      termin_browse($openterminid);
       break;
    case "termin_data_new":
-      termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
+      termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_typ, $new_termin_data_typ_int,$new_termin_data_typ_day,$new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
       break;
    case "termin_data_insert":
       $new_termin_data_date_von = $new_termin_data_date_von_year . "-" .
@@ -53,19 +53,19 @@ switch($action){
     	                          $new_termin_data_date_bis_time_minute . ":00";
       if (count($new_termin_typ) == 0){    	                            
          echo "typ fehlt";
-         termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
+         termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_typ, $new_termin_data_typ_int, $new_termin_data_typ_day, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
       }
       else {   
-         termin_data_insert($termin_id, $new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
-         termin_browse();
+         termin_data_insert($termin_id, $new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von, $new_termin_data_date_bis,$new_termin_data_typ, $new_termin_data_typ_int, $new_termin_data_typ_day, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content);
+         termin_browse($openterminid);
       }
       break;
    case "termin_data_delete":
       termin_data_delete($delete_id);
-      termin_browse();
+      termin_browse($openterminid);
       break;
    default:
-      termin_browse();
+      termin_browse($openterminid);
       break;
 }
 
@@ -75,52 +75,59 @@ function termin_data_edit($termin_data_id){
    $result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_data_id=$termin_data_id");
        if ($result)  {
           $termin_data = mysql_fetch_object($result);
-          echo "<h1>".$lang["termin_eintrag_bearbeiten"]."</h1>".
-               "<form name = edit_termin_data action=\"" . $conf["admp"] . "&section=termine&action=termin_data_update&edit_termin_data_id=" . $termin_data->termin_data_id . "\"  method=POST>".
-               "<table class=\"reda_td\">".          
-               "<tr><td>".$lang["termin_eintrag_titel"]."</td></tr>".
-               "<tr><td><input name=edit_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_headline) . "\"></td></tr>".
+          echo "\n<h1>".$lang["termin_eintrag_bearbeiten"]."</h1>\n".
+               "<form name = edit_termin_data action=\"" . $conf["admp"] . "&section=termine&action=termin_data_update&edit_termin_data_id=" . $termin_data->termin_data_id . "\"  method=POST>\n".
+               "<table class=\"reda_td\">\n".          
+               "<tr><td colspan = 2>".$lang["termin_eintrag_titel"]."</td></tr>\n".
+               "<tr><td colspan = 2><input name=edit_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_headline) . "\"></td></tr>\n".
                "<tr><td>".$lang["termin_eintrag_von"].
                "<input  name=\"edit_termin_data_date_von_day\" size=\"2\" maxlength=\"2\"  value=\"" .  substr ($termin_data->termin_data_date_von, 8,2) . "\">.".
                "<input  name=\"edit_termin_data_date_von_month\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_von, 5,2) . "\">.".
-               "<input  name=\"edit_termin_data_date_von_year\" size=\"4\" maxlength=\"4\" value=\"" . substr ($termin_data->termin_data_date_von, 0,4) . "\">".
-  	           "<input  name=\"edit_termin_data_date_von_time_hour\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_bis, 11,2) . "\">:".
-  	           "<input  name=\"edit_termin_data_date_von_time_minute\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_bis, 14,2) . "\">".
-               "</td></tr>".
-               "<tr><td>".$lang["termin_eintrag_bis"].
+               "<input  name=\"edit_termin_data_date_von_year\" size=\"4\" maxlength=\"4\" value=\"" . substr ($termin_data->termin_data_date_von, 0,4) . "\">";
+          createsel_hour("edit_termin_data_date_von_time_hour", substr ($termin_data->termin_data_date_von, 11,2));
+          createsel_minute("edit_termin_data_date_von_time_minute", substr ($termin_data->termin_data_date_von, 14,2));
+          echo "</td>".
+               "<td>".$lang["termin_eintrag_bis"].
                "<input  name=\"edit_termin_data_date_bis_day\" size=\"2\" maxlength=\"2\"  value=\"" .  substr ($termin_data->termin_data_date_bis, 8,2) . "\">.".
                "<input  name=\"edit_termin_data_date_bis_month\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_bis, 5,2) . "\">.".
-               "<input  name=\"edit_termin_data_date_bis_year\" size=\"4\" maxlength=\"4\" value=\"" . substr ($termin_data->termin_data_date_bis, 0,4) . "\">".
-  	            "<input  name=\"edit_termin_data_date_bis_time_hour\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_bis, 11,2) . "\">:".
-               "<input  name=\"edit_termin_data_date_bis_time_minute\" size=\"2\" maxlength=\"2\" value=\"" . substr ($termin_data->termin_data_date_bis, 14,2) . "\">".
-               "</td></tr>";
+               "<input  name=\"edit_termin_data_date_bis_year\" size=\"4\" maxlength=\"4\" value=\"" . substr ($termin_data->termin_data_date_bis, 0,4) . "\">";
+          createsel_hour("edit_termin_data_date_bis_time_hour", substr ($termin_data->termin_data_date_bis, 11,2));
+          createsel_minute("edit_termin_data_date_bis_time_minute", substr ($termin_data->termin_data_date_bis, 14,2));
+               "</td></tr>\n";
           echo "<tr><td>";
           createsel_termin("edit_termin_typ", $termin_data->termin_typ);
-          echo "</td></tr>".                 
-               "<tr><td>".$lang["termin_eintrag_veranstalter"]."</td></tr>".
-               "<tr><td><input name=edit_termin_data_Veranstalter size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_Veranstalter) . "\"></td></tr>".
-               "<tr><td>".$lang["termin_eintrag_ort"]."</td></tr>".
-               "<tr><td><input name=edit_termin_data_Ort size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_Ort) . "\"></td></tr>".
-               "<tr><td>".$lang["termin_eintrag_url"]."</td></tr>".
-               "<tr><td><input name=edit_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_URL) . "\"></td></tr>".
-               "<tr><td>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
-               "<tr><td>";
+          echo "</td><td>";
+          createsel_tp("edit_termin_data_typ", $termin_data->termin_data_typ);
+          createsel_p_int("edit_termin_data_typ_int", $termin_data->termin_data_typ_int);
+          createsel_p_day("edit_termin_data_typ_day", $termin_data->termin_data_typ_day);
+          echo "</tr>\n".            
+               "<tr><td colspan = 2>".$lang["termin_eintrag_veranstalter"]."</td></tr>".
+               "<tr><td colspan = 2><input name=edit_termin_data_Veranstalter size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_Veranstalter) . "\"></td></tr>".
+               "<tr><td colspan = 2>".$lang["termin_eintrag_ort"]."</td></tr>".
+               "<tr><td colspan = 2><input name=edit_termin_data_Ort size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_Ort) . "\"></td></tr>".
+               "<tr><td colspan = 2>".$lang["termin_eintrag_url"]."</td></tr>".
+               "<tr><td colspan = 2><input name=edit_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars($termin_data->termin_data_URL) . "\"></td></tr>".
+               "<tr><td colspan = 2>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
+               "<tr><td colspan = 2>";
            write_bbc("edit_termin_data", "edit_termin_data_content");
            echo "<textarea name=\"edit_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($termin_data->termin_data_content) . "</textarea></td>".
-               "<tr><td><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
+               "<tr><td colspan = 2><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
                "</table>".
                "</form>";
           mysql_free_result($result);
           }
 
 }
-function termin_data_update($termin_data_id, $termin_typ, $termin_data_headline, $termin_data_date_von, $termin_data_date_bis, $termin_data_Veranstalter, $termin_data_Ort, $termin_data_URL, $termin_data_content){
+function termin_data_update($termin_data_id, $termin_typ, $termin_data_headline, $termin_data_date_von, $termin_data_date_bis, $termin_data_typ, $termin_data_typ_int, $termin_data_typ_day, $termin_data_Veranstalter, $termin_data_Ort, $termin_data_URL, $termin_data_content){
    global $conf, $lang;
    
    $Statement = "UPDATE ".$conf["db_namespace"]."termin_data SET ".
                 "termin_data_headline = '". $termin_data_headline . "', ".
                 "termin_data_date_von = '". $termin_data_date_von . "', ".
                 "termin_data_date_bis = '". $termin_data_date_bis . "', ".
+                "termin_data_typ = '". $termin_data_typ . "', ".
+                "termin_data_typ_int = '". $termin_data_typ_int . "', ".
+                "termin_data_typ_day = '". $termin_data_typ_day . "', ".
                 "termin_data_Veranstalter = '". $termin_data_Veranstalter . "', ".
                 "termin_data_Ort = '". $termin_data_Ort . "', ".
                 "termin_data_URL = '". $termin_data_URL . "', ".
@@ -133,7 +140,7 @@ function termin_data_update($termin_data_id, $termin_typ, $termin_data_headline,
    else{echo $lang["termin_eintrag_update_fehlgeschlagen"];};
 }
 
-function termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content){
+function termin_data_new($new_termin_typ, $new_termin_data_headline, $new_termin_data_date_von_year,$new_termin_data_date_von_month, $new_termin_data_date_von_day,$new_termin_data_date_von_time_hour,$new_termin_data_date_von_time_minute,$new_termin_data_date_bis_year,$new_termin_data_date_bis_month, $new_termin_data_date_bis_day,$new_termin_data_date_bis_time_hour,$new_termin_data_date_bis_time_minute, $new_termin_data_typ, $new_termin_data_typ_int,$new_termin_data_typ_day, $new_termin_data_Veranstalter, $new_termin_data_Ort, $new_termin_data_URL, $new_termin_data_content){
 
    global $conf, $lang;
 
@@ -147,49 +154,59 @@ if (!isset($new_termin_data_date_bis_month)){$new_termin_data_date_bis_month = s
 if (!isset($new_termin_data_date_bis_year)){$new_termin_data_date_bis_year = substr (date("Ymd"), 0,4);}
 if (!isset($new_termin_data_date_bis_time_minute)){$new_termin_data_date_bis_time_minute = "59";}
 if (!isset($new_termin_data_date_bis_time_hour)){$new_termin_data_date_bis_time_hour = "23";} 
+if (!isset($new_termin_data_typ)){$new_termin_data_typ = "T";}
+if (!isset($new_termin_data_typ_int)){$new_termin_data_typ_int = "";}
+if (!isset($new_termin_data_typ_day)){$new_termin_data_typ_day = 0;}
    echo "<h1>".$lang["termin_eintrag_anlegen"]."</h1>".
         "<form name = new_termin_data action=\"" .  $conf["admp"] . "&section=termine&action=termin_data_insert\"  method=POST>".
         "<table class=\"reda_td\">".
-        "<tr><td>".$lang["termin_eintrag_titel"]."</td></tr>".
-        "<tr><td><input name=new_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_headline)) . "\"></td></tr>".
+        "<tr><td colspan = 2>".$lang["termin_eintrag_titel"]."</td></tr>".
+        "<tr><td colspan = 2><input name=new_termin_data_headline size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_headline)) . "\"></td></tr>".
         "<tr><td>".$lang["termin_eintrag_von"].
         "<input  name=\"new_termin_data_date_von_day\" size=\"2\" maxlength=\"2\"  value=\"" .  $new_termin_data_date_von_day . "\">.".
         "<input  name=\"new_termin_data_date_von_month\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_von_month . "\">.".
-        "<input  name=\"new_termin_data_date_von_year\" size=\"4\" maxlength=\"4\" value=\"" . $new_termin_data_date_von_year . "\">".
-        "<input  name=\"new_termin_data_date_von_time_hour\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_von_time_hour . "\">:".
-        "<input  name=\"new_termin_data_date_von_time_minute\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_von_time_minute . "\">".  	
-        "</td></tr>".
-        "<tr><td>".$lang["termin_eintrag_bis"].
+        "<input  name=\"new_termin_data_date_von_year\" size=\"4\" maxlength=\"4\" value=\"" . $new_termin_data_date_von_year . "\">";
+   createsel_hour("new_termin_data_date_von_time_hour", $new_termin_data_date_von_time_hour);
+   createsel_minute("new_termin_data_date_von_time_minute", $new_termin_data_date_von_time_minute);
+   echo "</td>".
+        "<td>".$lang["termin_eintrag_bis"].
         "<input  name=\"new_termin_data_date_bis_day\" size=\"2\" maxlength=\"2\"  value=\"" .  $new_termin_data_date_bis_day . "\">.".
         "<input  name=\"new_termin_data_date_bis_month\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_bis_month . "\">.".
-        "<input  name=\"new_termin_data_date_bis_year\" size=\"4\" maxlength=\"4\" value=\"" . $new_termin_data_date_bis_year . "\">".
-        "<input  name=\"new_termin_data_date_bis_time_hour\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_bis_time_hour . "\">:".
-        "<input  name=\"new_termin_data_date_bis_time_minute\" size=\"2\" maxlength=\"2\" value=\"" . $new_termin_data_date_bis_time_minute . "\">".     
-        "</td></tr>";
+        "<input  name=\"new_termin_data_date_bis_year\" size=\"4\" maxlength=\"4\" value=\"" . $new_termin_data_date_bis_year . "\">";
+   createsel_hour("new_termin_data_date_bis_time_hour", $new_termin_data_date_bis_time_minute);
+   createsel_minute("new_termin_data_date_bis_time_minute", $new_termin_data_date_bis_time_hour);
+   echo "</td></tr>";
    echo "<tr><td>";
    createsel_termin("new_termin_typ", $new_termin_typ);
-   echo "</td></tr>".           
-        "<tr><td>".$lang["termin_eintrag_veranstalter"]."</td></tr>".
-        "<tr><td><input name=new_termin_data_Veranstalter size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_Veranstalter)) . "\"></td></tr>".
-        "<tr><td>".$lang["termin_eintrag_ort"]."</td></tr>".
-        "<tr><td><input name=new_termin_data_Ort size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_Ort)) . "\"></td></tr>".
-        "<tr><td>".$lang["termin_eintrag_url"]."</td></tr>".
-        "<tr><td><input name=new_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_URL)) . "\"></td></tr>".
-        "<tr><td>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
-        "<tr><td>";
+   echo "</td>";
+   createsel_tp("new_termin_data_typ", $new_termin_data_typ);
+   createsel_p_int("new_termin_data_typ_int", $new_termin_data_typ_int);
+   createsel_p_day("new_termin_data_typ_day", $new_termin_data_typ_day);
+   echo "</tr>".           
+        "<tr><td colspan = 2>".$lang["termin_eintrag_veranstalter"]."</td></tr>".
+        "<tr><td colspan = 2><input name=new_termin_data_Veranstalter size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_Veranstalter)) . "\"></td></tr>".
+        "<tr><td colspan = 2>".$lang["termin_eintrag_ort"]."</td></tr>".
+        "<tr><td colspan = 2><input name=new_termin_data_Ort size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_Ort)) . "\"></td></tr>".
+        "<tr><td colspan = 2>".$lang["termin_eintrag_url"]."</td></tr>".
+        "<tr><td colspan = 2><input name=new_termin_data_URL size=70 maxlength=128 value=\"" . htmlspecialchars(stripslashes($new_termin_data_URL)) . "\"></td></tr>".
+        "<tr><td colspan = 2>".$lang["termin_eintrag_beschreibung"]."</td></tr>".
+        "<tr><td colspan = 2>";
    write_bbc("new_termin_data", "new_termin_data_content");     
    echo "<textarea name=\"new_termin_data_content\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_termin_data_content)) . "</textarea></td>".
-        "<tr><td><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
+        "<tr><td colspan = 2><input type=submit name=add value=".$lang["termin_eintrag_speichern"]."></td></tr>".
         "</table>".
         "</form>";
 }
-function termin_data_insert($termin_id, $termin_typ, $termin_data_headline, $termin_data_date_von, $termin_data_date_bis, $termin_data_Veranstalter, $termin_data_Ort, $termin_data_URL, $termin_data_content){
+function termin_data_insert($termin_id, $termin_typ, $termin_data_headline, $termin_data_date_von, $termin_data_date_bis, $termin_data_typ, $termin_data_typ_int, $termin_data_typ_day,  $termin_data_Veranstalter, $termin_data_Ort, $termin_data_URL, $termin_data_content){
    global $conf, $lang;
    
    $Statement = "INSERT INTO ".$conf["db_namespace"]."termin_data  SET ".
                      "termin_data_headline = '". $termin_data_headline . "',".
                      "termin_data_date_von = '". $termin_data_date_von . "',".
                      "termin_data_date_bis = '". $termin_data_date_bis . "',".
+                     "termin_data_typ = '". $termin_data_typ . "', ".
+                     "termin_data_typ_int = '". $termin_data_typ_int . "', ".
+                     "termin_data_typ_day = '". $termin_data_typ_day . "', ".
                      "termin_data_Veranstalter = '". $termin_data_Veranstalter . "',".
                      "termin_data_Ort = '". $termin_data_Ort . "',".
                      "termin_data_URL = '". $termin_data_URL . "',".
@@ -208,7 +225,7 @@ function termin_data_delete($delete_id) {
    if($delete_result){echo $lang["termin_eintrag_delete_erfolgreich"];}
    else{echo $lang["termin_eintrag_delete_fehlgeschlagen"];};
 }
-function termin_browse() {
+function termin_browse($openterminid) {
    global $conf, $lang;
 
    echo "<h1>".$lang["termin_verwaltung"]."</h1>";
@@ -222,7 +239,7 @@ function termin_browse() {
    echo "<tr><td>".$lang["termin_termine"]."</td><td width=\"30\"> </td><td width=\"30\"> </td><td width=\"30\"> </td></tr>";
    $parent = 0;
    $h_level = 0;
-   writeterminchilds($parent,$h_level);
+   writeterminchilds($openterminid, $parent, $h_level);
    echo "</table>";
 }
 
@@ -239,7 +256,7 @@ function termin_edit($edit_id, $edit_termin_parent_id, $edit_termin_name, $edit_
       echo "<tr>";
       echo "<td colspan = \"3\"><input name=\"edit_termin_name\" size=\"30\" maxlength=\"128\" value=\"" . $termin->termin_name . "\"></td>";
       echo "<td>";
-      createsel_terminparent("edit_termin_parent_id",$row->termin_parent_id);
+      createsel_terminparent("edit_termin_parent_id", $termin->termin_parent_id);
       echo "</td>";       
       echo "</tr>";      
       echo "<tr><td>".$lang["termin_tpl"]."</td><td>".$lang["termin_logo_gross"]."</td><td>".$lang["termin_logo_klein"]."</td><td>".$lang["termin_logo_klein_inactive"]."</td></tr>";
@@ -407,7 +424,7 @@ function termin_delete($delete_id){
 }
 
 
-function writeterminchilds($parent, &$h_level){
+function writeterminchilds($openterminid, $parent, &$h_level){
    global $conf, $lang;
 
    $result = dbquery("select * from ".$conf["db_namespace"]."termin where termin_parent_id = '" . $parent . "' order by termin_name");
@@ -415,6 +432,13 @@ function writeterminchilds($parent, &$h_level){
       while ($row = mysql_fetch_object($result)){
          echo "<tr><td>";
          for ($count = 0;$count < $h_level; $count++){echo "-";}
+         if (checkterminentrys($row->termin_id) > 0){
+            if ($openterminid <> $row->termin_id){ 
+               echo "<a href=" . $conf["admp"] . "&section=termine&openterminid=".$row->termin_id.">&gt;</a>";
+            } else {
+               echo "<a href=" . $conf["admp"] . "&section=termine>&lt;</a>";
+            }      
+         }
          echo $row->termin_name."</td>";
          echo "<td>&nbsp;</td>";
          echo "<td>";
@@ -439,31 +463,32 @@ function writeterminchilds($parent, &$h_level){
           } 
           echo "</td>";
          echo "</tr>\n";
-
-         // eintraege
-         $entry_result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:" . $row->termin_id . ":%' order by termin_data_headline");
-         if ( mysql_num_rows($entry_result) > 0 ){
-            while ($entry_row = mysql_fetch_object($entry_result)){
-               echo "<tr><td>";
-               for ($count = 0;$count < $h_level; $count++){echo "-";}
-               echo "-termin: ". $entry_row->termin_data_headline . "</td>";
-               echo "<td></td>";
-               echo "<td>";
-               if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
-                  echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_edit&edit_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
+         if ($openterminid == $row->termin_id) {
+            // eintraege
+            $entry_result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:" . $row->termin_id . ":%' order by termin_data_headline");
+            if ( mysql_num_rows($entry_result) > 0 ){
+               while ($entry_row = mysql_fetch_object($entry_result)){
+                  echo "<tr><td>";
+                  for ($count = 0;$count < $h_level; $count++){echo "-";}
+                  echo "-termin: ". $entry_row->termin_data_headline . "</td>";
+                  echo "<td></td>";
+                  echo "<td>";
+                  if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
+                     echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_edit&edit_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
+                  }
+                  echo "</td>";
+                  echo "<td>";
+                  if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
+                     echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
+                  } else {echo "&nbsp;";}
+                  echo "</td>";
+                  echo "</tr>\n";
                }
-               echo "</td>";
-               echo "<td>";
-               if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
-                  echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
-               } else {echo "&nbsp;";}
-               echo "</td>";
-               echo "</tr>\n";
+               mysql_free_result($entry_result);
             }
-            mysql_free_result($entry_result);
          } 
          $h_level++;
-         writeterminchilds($row->termin_id, $h_level);
+         writeterminchilds($openterminid, $row->termin_id, $h_level);
          $h_level--;
       }
       mysql_free_result($result);
@@ -564,4 +589,85 @@ function getterminparent4select($parent, &$h_level, $grouplist, $selfid){
       mysql_free_result($result);
    }
 }   
+function createsel_hour($field,$self){
+   global $conf, $lang;
+
+   $count = 0;
+   $strcount = "";
+
+   echo "\n<select name=" . $field . ">\n";
+   for ($count = 0;$count <= 23; $count++){ 
+      $strcount = $count;
+      if (strlen($strcount)< 2){$strcount = "0".$strcount;}
+      echo "<option value= " . $strcount;
+      if ($strcount == $self){echo " selected ";}
+      echo ">".$strcount."</option>";
+   }
+   echo "\n</select>\n";
+}   
+function createsel_minute($field,$self){
+   global $conf, $lang;
+
+   $count = 0;
+   $strcount = "";
+   echo "\n<select name=" . $field . ">\n";
+   for ($count = 0;$count <= 59; $count++){ 
+      $strcount = $count;
+      if (strlen($strcount)< 2){$strcount = "0".$strcount;}
+      echo "<option value= " . $strcount;
+      if ($strcount == $self){echo " selected ";}
+      echo ">".$strcount."</option>";
+   }
+   echo "\n</select>\n";
+}   
+function createsel_tp($field,$self){
+   global $conf, $lang;
+
+   echo "\n<select name=" . $field . ">\n";
+   echo "<option value= \"T\"";
+   if ($self == "T"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_t"] ."</option>";
+   echo "<option value= \"P\"";
+   if ($self == "P"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_p"] ."</option>";
+   echo "\n</select>\n";
+}
+function createsel_p_day($field,$self){
+   global $conf, $lang;
+
+   $count =  0;
+
+   echo "\n<select name=" . $field . ">\n";
+   for($count=0; $count < 7; $count++){
+      echo "<option value= ".$count;
+      if ($self == $count){echo " selected ";}
+      echo ">". weekday_name($count) ."</option>";
+   }   
+   echo "\n</select>\n";
+}
+function createsel_p_int($field,$self){
+   global $conf, $lang;
+
+   $count = 0;
+
+   echo "\n<select name=" . $field . ">\n";
+   echo "<option value= \"\"></option>";
+   echo "<option value= \"1w\"";
+   if ($self == "1w"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_p_1w"] ."</option>";
+   /* 
+   echo "<option value= \"2w\"";
+   if ($self == "2w"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_p_2w"] ."</option>";
+   echo "<option value= \"3w\"";
+   if ($self == "3w"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_p_3w"] ."</option>";
+
+   echo "<option value= \"m\"";
+   if ($self == "m"){echo " selected ";}
+   echo ">". $lang["termin_eintrag_p_m"] ."</option>";
+   */
+
+   echo "\n</select>\n";   
+}    
 ?>
