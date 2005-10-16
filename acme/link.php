@@ -1,4 +1,6 @@
 <?php
+//  window 4 links, includes from /cms link.xxx.inc depending on the choosen modul 
+
 include("cms/config.inc");
 include($conf["cmsbase"] . "/debuglib.inc");
 include($conf["cmsbase"] . "/ets.inc");

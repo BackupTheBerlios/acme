@@ -19,31 +19,16 @@
 *
 *@return boolean check result
 */ 
-  function chkinput($str2chk,$type2chk="alpha",$mustfilled=false) {
+function chkinput($str2chk,$type2chk="alpha",$mustfilled=false) {
 
-    if (strlen($str2chk)>0) {
+   if (strlen($str2chk)>0) {
       switch ($type2chk) {
-            case "alpha" : {
-              return (chkvalalpha($str2chk));
-                  break;
-            }
-            case "email" : {
-              return (chkvalemail($str2chk));
-                  break;
-            }
-            case "http" : {
-              return (chkvalhttp($str2chk));
-                  break;
-            }
-            case "chars" : {
-              return (chkvalchars($str2chk));
-                  break;
-            }
-            case "nohtml" : {
-              return (chkNoHTML($str2chk));
-                  break;
-            }
-            default : return (chkvalalphanum($str2chk));
+            case "alpha"  :return (chkvalalpha($str2chk));
+            case "email"  :return (chkvalemail($str2chk));
+            case "http"   :return (chkvalhttp($str2chk));
+            case "chars"  :return (chkvalchars($str2chk));
+            case "nohtml" :return (chkNoHTML($str2chk));
+            default       :return (chkvalalphanum($str2chk));
           }
         } else {
           if ($mustfilled) {
@@ -61,7 +46,7 @@
 *@return boolean result of check
 */
   function chkvalalpha($str2chk) {
-    return (ereg("^[a-zA-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõöøùúûüışÿ\. ,-]+$", $str2chk));
+    return (ereg("^[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\. ,-]+$", $str2chk));
   }
 
 /**
@@ -70,7 +55,7 @@
 *@return boolean result of check
 */
   function chkvalalphanum($str2chk) {
-    return (ereg("^[a-zA-Z0-9ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõöøùúûüışÿ:\. ,?!-]+$", $str2chk));
+    return (ereg("^[a-zA-Z0-9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:\. ,?!-]+$", $str2chk));
   }
 
 /**

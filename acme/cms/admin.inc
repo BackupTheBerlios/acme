@@ -16,9 +16,9 @@ $conf["admp"] = "acme-admin.php?";
 
 include($conf["admbase"] . "/auth.inc");
 
-if ($typ=="C") {$conf["admp"] = $conf["admp"]."&typ=C";}
-if ($typ=="L") {$conf["admp"] = $conf["admp"]."&typ=L";}
-if ($typ=="A") {$conf["admp"] = $conf["admp"]."&typ=A";}
+if ($typ=="C") {$conf["admp"] = $conf["admp"]."&typ=C";}  // content section
+if ($typ=="L") {$conf["admp"] = $conf["admp"]."&typ=L";}  // layout section
+if ($typ=="A") {$conf["admp"] = $conf["admp"]."&typ=A";}  // admin section
 
 include($conf["admbase"] . "/lang/admin." . $conf["lang"] . ".inc");
 
@@ -74,7 +74,7 @@ echo "<div id=\"menu\" style=\"position:absolute; left:0px; top:0px;\">";
 echo "<table>\n";
 echo "<tr><td align = center><img src=\"" . $conf["images_admin"] . "omikron_logo.png\" alt=\"Logografik: ACME\" width=\"70\" height=\"70\" align=\"left\" border=\"0\"></td></tr>\n";
 echo "<tr><td><br></td></tr>";
-echo "<tr><td><a href=\"acme-admin.php?&typ=C\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
+echo "<tr><td><a href=\"acme-admin.php?&typ=C&section=\" class=\"navbuttonlink\">                             <img src=\"" . $conf["images_admin"] . "content.png\" alt=\"Administrationsbereich: Inhalt" . $lang["admin_content"]. "\" border=\"0\"><div style=\"position:relative; left:60px; top:-32px; width:90px; z-index:10; \">" . $lang["admin_content"]. "</div></a></td></tr>";
 
 if ($typ=="C"){
    $statement = "SELECT m.modul FROM ".$conf["db_namespace"]."module m  where m.typ='C' order by m.modul";
@@ -120,14 +120,12 @@ echo "<b>Date:</b><br>" . date("d.m.Y.") . "<br><br>";
 echo "<b>Time:</b><br>" . date("H:i") ."</td></tr>\n";
 echo "</table>\n</div>";
 echo "<div id=\"main\">\n";
-// echo "<h1 class="error">Administrationsbereich tempor&auml;r nicht verf&uuml;gbar<br>Bitte keine &Auml;nderungen durchf&uuml;hren!!!</h1><br>infos unter: icq 142499232<br>email: innomine@gmx.net<br>";
 
-// menu actions
+  // include $section .inc or display messages 
   if ($section <> "") {
-     $conf["modul"] = $section;
      include($conf["admbase"] . "/" . $section . ".inc");
   } else {
-  	 include($conf["admbase"] . "/messages.inc");
+     include($conf["admbase"] . "/messages.inc");
   }
 
 echo "</div>";

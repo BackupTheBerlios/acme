@@ -1,4 +1,7 @@
 <?php
+/*
+   gets the fields mail forms an sends a mail depending on the var $typ 
+*/
   if ($typ=="stdkontakt") {
     $mailadr= "info@spessartklinik.de";
      $subject= "Kontaktformular";

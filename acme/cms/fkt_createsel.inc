@@ -1,7 +1,5 @@
 <?php
-// Erstellt Selects
-
-
+// create selects
 function createsel_author($select_name, $id){
    global $conf, $lang;
    

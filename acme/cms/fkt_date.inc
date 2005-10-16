@@ -1,4 +1,29 @@
 <?
+function getStartEndByDate($day, $month, $year, $Start, $End) {
+   $Start = date('Y-m-d 00:00:00', mktime(0, 0, 0, $month, $day, $year)); 
+   $End   = date('Y-m-d 23:59:59', mktime(0, 0, 0, $month, $day, $year));
+}
+
+
+function getStartEndByWeek($week, $year, $Start, $End) {
+
+   $Start = beginning_date_of_week($year, $week); 
+   $End   = ending_date_of_week($year, $week);
+   
+   $dateParts = split('-', $Start); 
+   $Start = date('Y-m-d 00:00:00', mktime(0, 0, 0, $dateParts[1], ($dateParts[2]), $dateParts[0]));
+    
+   $dateParts = split('-', $End); 
+   $End = date('Y-m-d 23:59:59', mktime(0, 0, 0, $dateParts[1], ($dateParts[2]), $dateParts[0])); 
+}
+function getMonthFromDate($Date) {
+   $dateParts = split('-', $Date); 
+   return $dateParts[1]; 
+}
+function getYearFromDate($Date) {
+   $dateParts = split('-', $Date); 
+   return $dateParts[0]; 
+}
 function last_day_of_the_month($mon,$year) {
     for ($tday=28; $tday <= 31; $tday++) {
         $tdate = getdate(mktime(0,0,0,$mon,$tday,$year));
@@ -140,5 +165,23 @@ function days_span($start_date, $end_date) {
   list($year, $month, $day) = explode("-", $end_date);
   $end_time_stamp = mktime(1, 0, 0, $month, $day, $year);
   return round(($end_time_stamp - $start_time_stamp)/(24*60*60))+1;
+}
+
+function datefromweeknr($aYear, $aWeek, $aDay) {
+  $FirstDayOfWeek=1; //First day of week is Monday       
+  $BaseDate=4; //We calculate from 4/1 which is always in week 1 
+  $CJDDelta=2415019; //Based on start of Chronological Julian Day
+  $StartDate = mktime(1,0,0,01,$BaseDate,$aYear); //The date to start with
+  $StartDate = m_div($StartDate,86400)+25569;
+  $Offset = ($aWeek-1) * 7 - m_mod(floor($StartDate) + $CJDDelta + 8 - $FirstDayOfWeek,7) + $aDay - 1;
+  $StartDate = $StartDate + $Offset;
+  $StartDate = ($StartDate-25569)*86400-3600;
+  return date('D d-m-Y',$StartDate);
+}
+function m_mod($number, $div) {
+   return $number - floor($number/$div)*$div;
+}
+function m_div($number, $div) {
+   return floor($number/$div);
 }
 ?>

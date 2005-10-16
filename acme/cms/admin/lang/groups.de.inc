@@ -16,5 +16,4 @@ $lang["groups_update_erfolgreich"]="Gruppe erfolgreich ge&auml;ndert"; // ????
 $lang["groups_update_fehlgeschlagen"]="Fehler: Gruppe konnte nicht ge&auml;ndert werden"; // ???
 $lang["groups_delete_erfolgreich"]="Gruppe erfolgreich gel&ouml;scht"; // ????
 $lang["groups_delete_fehlgeschlagen"]="Fehler: Gruppe konnte nicht gel&ouml;scht werden"; // ???
-
 ?>

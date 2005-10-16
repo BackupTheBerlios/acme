@@ -3,7 +3,7 @@
 /* allgemeine Richtlinien:
 
 - Quadate: h19 w22
-- font: verdana (arial narrow zumindest im logo)
+- font: arial narrow (arial narrow zumindest im logo)
 - medinetgruen: #00A88E
 - medinetblau: #2B74B7
 
@@ -18,18 +18,18 @@ body {
         margin: 0;
         background: white;
         color: black;
-        font-family:Arial,sans-serif;
+        font-family:Arial Narrow,Arial,sans-serif;
         font-size: small;
         top: 0;
         left: 0;
         }
 a img {
         border-style:none;
-		border-width:0px;
+                border-width:0px;
         }
 img   {
         border-style:none;
-		border-width:0px;
+                border-width:0px;
         }
 form {
         margin: 0;
@@ -70,18 +70,18 @@ p  {}
   }
 
 .parent{
-	font-size:small;
-	text-align:right;
-	position:relative;
-	right:0px;
-	}
+        font-size:small;
+        text-align:right;
+        position:relative;
+        right:0px;
+        }
 .bread{
-	font-size:small;
-	text-align:left;
-	position:relative;
-	right:0px;
+        font-size:small;
+        text-align:left;
+        position:relative;
+        right:0px;
     top:15px;
-	}
+        }
 
 /* ARTIKEL */
 h1.artikel {}
@@ -92,7 +92,7 @@ h5.artikel {}
 .artikel_img_titel{
    font-size:x-small;
    }
-.artikel_author	{
+.artikel_author        {
    margin-top:0.3em;
    font-size:small;
    }
@@ -100,19 +100,19 @@ p.artikel_short_text{
    font-size:small;
    margin-top:1em;
    }
-p.artikel_long_text	{
+p.artikel_long_text        {
    margin-top:1em;
    }
 .artikel_modify_date{
-	font-size:small;
-	text-align:right;
-	position:relative;
-	right:0px;
-	}
+        font-size:small;
+        text-align:right;
+        position:relative;
+        right:0px;
+        }
 .artikel_page{
-	font-size:small;
-	text-align:left;
-	}
+        font-size:small;
+        text-align:left;
+        }
 /* *********************************** */
 /* PAGES */
 h1.page {}
@@ -120,10 +120,10 @@ h2.page {}
 h3.page {}
 h4.page {}
 h5.page {}
-.page_img_titel	{
+.page_img_titel        {
    font-size:x-small;
    }
-.page_img_big	{
+.page_img_big        {
    border-style:none;
    border-width:0px;
 }
@@ -133,7 +133,7 @@ p.page_short_text{
 p.page_long_text{
    margin-top:1em;
    }
-.page_modify_date		{
+.page_modify_date                {
    font-size:x-small;
    text-align:right;
    position:relative;
@@ -167,36 +167,36 @@ p.page_artikel_short_text {
 /* SITEMAP */
 
 .map_element_img
-		{
-		border-style:none;
-		border-width:0px;
-		}
-		
+                {
+                border-style:none;
+                border-width:0px;
+                }
+
 .map_element_text
-		{
-		font-size:small;
-		}
-		
+                {
+                font-size:small;
+                }
+
 .map_element_url
-		{
-		font-size:small;
-		}
+                {
+                font-size:small;
+                }
 /* *********************************** */
 
 /* SEARCH */
 
 .search_ul
-		{
-		margin-bottom:15px;
-		list-style-type:square;
-		font-size:small;
-		}
-		
+                {
+                margin-bottom:15px;
+                list-style-type:square;
+                font-size:small;
+                }
+
 .search_description
-		{
-		font-size:x-small;
-		}
-		
+                {
+                font-size:x-small;
+                }
+
 
 
 /* *********************************** */
@@ -217,7 +217,7 @@ p.page_artikel_short_text {
 /* rahmentabelle linkes feld (nav) */
 .rahmentable_l{
    width:200px;
-   text-align:left; 
+   text-align:left;
    vertical-align:top;
 }
 /* rahmentabelle mittleres feld (content) */
@@ -237,7 +237,7 @@ p.page_artikel_short_text {
 }
 .greenback {
    background-color:#00A88E;
-}	
+}
 /* FOOTER */
 /* die gr�ne Fusszeile */
 /* aufgerufen in home.tpl */
@@ -246,7 +246,7 @@ p.page_artikel_short_text {
    border-top-width:1px;
    border-top-color:#00A88E;
    }
-/* die schrift in der fusszeile (nav.foo) */		
+/* die schrift in der fusszeile (nav.foo) */
 /* aufgerufen in home.nav.foo.tpl */
 .footer{
    text-align:center;
@@ -257,16 +257,16 @@ p.page_artikel_short_text {
 /* *********************************** */
 /* KEY VISUALS */
 /* Bild in der rechten Spalte (in rahmentable_r) */
-.img_key_visual		{
+.img_key_visual                {
    vertical-align:top;
    width:200px;
    border-style:none;
    border-width:0px;
    margin:0px;
-} 
+}
 /* CONTENT-BEGRENZUNGS-MARKER */
 /* oben links */
-.img_cont_begr_ol			{
+.img_cont_begr_ol                        {
    margin-top:10px;
    margin-right:10px;
    margin-bottom:-30px;
@@ -278,7 +278,7 @@ p.page_artikel_short_text {
    left:-10px;
    width:16px;
    height:8px;
-   }		
+   }
 /* unten rechts */
 .img_cont_begr_ur{
    margin-top:10px;
@@ -293,7 +293,7 @@ p.page_artikel_short_text {
    right:0px;
    width:16px;
    height:8px;
-   }		
+   }
 /* NAVIGATION */
 .nav_l_farbbox_0{padding:2px;width:194px;position:relative;left:5px; background-color:#00A88E;margin-bottom:2px;margin-top:2px;}
 .nav_l_farbbox_1{padding:2px;width:189px;position:relative;left:10px;background-color:#00A88E;margin-bottom:2px;margin-top:2px;}
@@ -350,13 +350,13 @@ a.nav_foo_link  {
 .gb_box {
   border-color:#00A88E;
   color:#000000;
-  border:1px solid #000000;
+  border:1px solid;
 }
 .gb_messagebox {
   border-color:#00A88E;
   color:#000000;
   width:400px;
-  border:1px dashed #000000;
+  border:1px dashed;
 }
 .gb_commentbox {
   position:relative;
@@ -364,5 +364,50 @@ a.nav_foo_link  {
   width:395px;
   border-color:#00A88E;
   color:#000000;
-  border:1px dotted #000000;
+  border:1px dotted;
+}
+
+/* termine */
+.calender{
+   margin-top: 1em;
+   width:200px;
+   text-align:left;
+   vertical-align:top;
+}
+.calender_prev{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:left;
+}
+.calender_next{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:right;
+}
+.calender_month{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:center;
+}
+.calender_week{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:center;
+}
+.calender_day{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:center;
+}
+.calender_week_akt{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:center;
+  background-color:38f8db;
+}
+.calender_day_akt{
+  color:#000000;
+  border:1px solid #00A88E;
+  text-align:center;
+  background-color:38f8db;
 }

@@ -126,7 +126,7 @@ function messages_new($status, $new_messages_topic, $new_messages_message, $new_
         "<tr><td><textarea name=\"new_messages_message\" wrap=virtual rows=15 cols=75>" . htmlspecialchars(stripslashes($new_messages_message)) . "</textarea></td>";
    echo "</tr>".
         "<tr><td>";
-   createsel_author("new_messages_tuser", $message_tuser); 
+   createsel_author("new_messages_tuser", $new_messages_tuser); 
    echo "</td></tr>".
         "<tr><td>";          
    echo "</td></tr>".     

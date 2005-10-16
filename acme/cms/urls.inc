@@ -36,8 +36,9 @@ if ($page="urls"){
 function renderurls($id, $url_id){
    global $conf, $lang;
 
+   // if no urltyp is choosen, get the first one from the choosen url 
    if (($id == "" || $id == "0") && isset($url_id)){
-   	  $query = "select * from ".$conf["db_namespace"]."url where url_id =".$url_id;
+   	$query = "select * from ".$conf["db_namespace"]."url where url_id =".$url_id;
       $result = dbquery($query);
       if ( mysql_num_rows($result) > 0 ){
          $row = mysql_fetch_object($result);
@@ -45,6 +46,7 @@ function renderurls($id, $url_id){
       }   
    } 
 
+   // read data from url typ
    $my_result = dbquery("select * from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
    if ( mysql_num_rows($my_result) == 1 )   {
       $row = mysql_fetch_object($my_result);
@@ -63,13 +65,16 @@ function renderurls($id, $url_id){
       mysql_free_result($my_result);
       $data->urls->img_small    = getimage($url_typ_img_small);
       $data->urls->img_big      = getimage($url_typ_img_big);
-      $data->urls->text         = parse_bbcode(nltobr($url_typ_text), $page_tpl);
+      $data->urls->text         = parse_bbcode(nltobr($url_typ_text), $url_typ_tpl);
       if ($url_typ_parent <> 0){
          $data->urls->parent->name = geturl_typnamebyid($url_typ_parent);
          $data->urls->parent->url  = $conf["indexname"]."urls/".$url_typ_parent;
       }
+      // get child typs
       geturl_typ(&$data,  $url_typ_tpl, $url_typ_id);
+      // get all urls with choosen url typ
       geturl_data(&$data, $url_typ_tpl, $url_typ_id);
+      // get choosen url
       geturl_url(&$data,  $url_typ_tpl, $url_id);
       
       $bc = get_breadcrumbs("urls", $url_typ_id);
@@ -90,6 +95,7 @@ function renderurls($id, $url_id){
 }
 
 function getfirsturltypid($list){
+   // explode urltyps from url and get first url typ
    global $conf, $lang;
    
    $listarray = explode(":", $list);
@@ -99,6 +105,7 @@ function getfirsturltypid($list){
 }
 
 function geturl_typnamebyid($id){
+   // get the name of a url typ
    global $conf, $lang;
    
    $my_result = dbquery("select url_typ_name from ".$conf["db_namespace"]."url_typs where url_typ_id='".$id."'");
@@ -110,6 +117,7 @@ function geturl_typnamebyid($id){
    } else {return "";}
 }      
 function geturl_typ($data, $page_tpl, $url_typ_id){
+   // get child url typs  
    global $conf, $lang;
 
    $query = "select * from ".$conf["db_namespace"]."url_typs where url_typ_parent_id = '".$url_typ_id."' order by url_typ_name ASC";
@@ -126,7 +134,8 @@ function geturl_typ($data, $page_tpl, $url_typ_id){
    }
 
 }        
-function geturl_data($data, $page_tpl, $url_typ_id){
+function geturl_data($data, $url_typ_tpl, $url_typ_id){
+   // fill $data with url by matching url typs
    global $conf, $lang;
 
    $stmt = "order by url_name ASC";
@@ -138,12 +147,13 @@ function geturl_data($data, $page_tpl, $url_typ_id){
          $akt++;
          $data->urls->url_data[$akt]->name   = $row->url_name;
          $data->urls->url_data[$akt]->url    = $row->url_url;
-         $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
+         $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $url_typ_tpl);                           
       }
       mysql_free_result($result);     
    }
 } 
-function geturl_url($data, $page_tpl, $url_id){
+function geturl_url($data, $url_typ_tpl, $url_id){
+   // fill $data with choosen url 
    global $conf, $lang;
 
    if (isset($url_id)|| $url_id<>""|| $url_id<>0){
@@ -154,7 +164,7 @@ function geturl_url($data, $page_tpl, $url_id){
          while ( $row = mysql_fetch_object($result) ){
             $data->urls->url_data[$akt]->name   = $row->url_name;
             $data->urls->url_data[$akt]->url    = $row->url_url;
-            $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $page_tpl);                           
+            $data->urls->url_data[$akt]->text   = parse_bbcode(nltobr($row->url_text), $url_typ_tpl);                           
          }
          mysql_free_result($result);     
       }

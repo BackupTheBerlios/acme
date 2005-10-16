@@ -1,8 +1,7 @@
 <?php
 
 include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
-
-switch($action){
+switch ($_GET['action']) {
 	case "edit":
 	   $error = 0;
 	   $_SESSION['artikel_edit_page_id'] = $page_id;

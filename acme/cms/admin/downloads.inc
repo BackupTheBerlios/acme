@@ -69,7 +69,7 @@ switch($action)
 function download_add($new_download_name, $tmpname, $realname, $realsize, $new_download_text, $new_download_typ ){
    global $conf, $lang;
 
-	if ($realsize >= 500000) {echo $lang["downloads_upload_filesizeerror"];}
+	if ($realsize >= $conf["download_max_size"]) {echo $lang["downloads_upload_filesizeerror"];}
 	else {
 		if (is_uploaded_file($tmpname)) {
 			echo $lang["downloads_upload_move_rename"]."<br>";

@@ -88,8 +88,11 @@ function rendertermin($id, $p, $day, $month, $year, $week){
       $data->termine->img_big      = getimage($termin_img_big);
       $data->termine->text         = parse_bbcode(nltobr($termin_text), $termin_tpl);
       $data->termine->counter      = $termin_counter;
+      
       getterminchildsdata(&$data, $termin_id, $termin_tpl, $p, $week, $day, $month, $year);
+      
       drawCalendar(&$data, $p, $week, $day, $month, $year, $termin_id);
+      
       $bc = get_breadcrumbs("termine", $termin_id);
       
       $data->left_bar  = parse_bar($termin_tpl, $termin_left_bar, "left", $bc);
@@ -120,53 +123,62 @@ function inctermincounter($termin_id,$termin_counter) {
    dbquery($inc_query);
 }
 
-function getStartEndByDate($day, $month, $year, $Start, $End) {
-   $Start = date('Y-m-d 00:00:00', mktime(0, 0, 0, $month, $day, $year)); 
-   $End   = date('Y-m-d 23:59:59', mktime(0, 0, 0, $month, $day, $year));
-}
 
-
-function getStartEndByWeek($week, $year, $Start, $End) {
-
-   $Start = beginning_date_of_week($year, $week); 
-   $End   = ending_date_of_week($year, $week);
-   
-   $dateParts = split('-', $Start); 
-   $Start = date('Y-m-d 00:00:00', mktime(0, 0, 0, $dateParts[1], ($dateParts[2]), $dateParts[0]));
-    
-   $dateParts = split('-', $End); 
-   $End = date('Y-m-d 23:59:59', mktime(0, 0, 0, $dateParts[1], ($dateParts[2]), $dateParts[0])); 
-}
 
 function getterminchildsdata($data, $termin_id, $termin_tpl, $p, $week, $day, $month, $year){
    global $conf, $lang;
-   
+
+   // get start and end date 4 query depending on $p
+   // TODO: $p bymonth, to show all date of month   
    if ($p == "byweek") {
       getStartEndByWeek($week, $year, &$Start, &$End);
-      $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and ((termin_data_typ = 'P') OR (termin_data_typ = 'T' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "')) order by termin_data_date_von ASC";
    }
-      
    if ($p == "bydate") {
       getStartEndByDate($day, $month, $year, &$Start, &$End);
       $weekday = weekday_by_date($Start);
-      $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and ((termin_data_typ = 'P' and termin_data_typ_day = ". $weekday . ") OR (termin_data_typ = 'T' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "')) order by termin_data_date_von ASC";      
    }
-   
+   $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "' order by termin_data_date_von ASC";   
    //  echo "start:" . $Start . " End:".$End;
    $dataresult = dbquery($dataquery);
    if ( mysql_num_rows($dataresult) > 0 ){
       $akt = 0;
       while ( $datarow = mysql_fetch_object($dataresult) ){
-          $akt++;
-          $data->termine->termin_data[$akt]->von_date   = mydate2date($datarow->termin_data_date_von);
-          $data->termine->termin_data[$akt]->von_time   = mydate2time($datarow->termin_data_date_von);         
-          $data->termine->termin_data[$akt]->bis_date   = mydate2date($datarow->termin_data_date_bis);
-          $data->termine->termin_data[$akt]->bis_time   = mydate2time($datarow->termin_data_date_bis);         
-          $data->termine->termin_data[$akt]->name       = $datarow->termin_data_headline;
-          $data->termine->termin_data[$akt]->veranstalter   = $datarow->termin_data_Veranstalter;
-          $data->termine->termin_data[$akt]->ort        = $datarow->termin_data_Ort;
-          $data->termine->termin_data[$akt]->url        = $datarow->termin_data_URL;                           
-          $data->termine->termin_data[$akt]->text       = parse_bbcode(nltobr($datarow->termin_data_content), $termin_tpl);                  
+          $print = false;
+          if ($datarow->termin_data_typ == "T") {
+             $von_date       = mydate2date($datarow->termin_data_date_von);
+             $bis_date       = mydate2date($datarow->termin_data_date_bis);
+             $print = true;
+          }
+          if ($datarow->termin_data_typ == "P") {
+             $p_date_weekday = $datarow->termin_data_typ_day; 
+             if ($p == "bydate"){
+                $wd = weekday_by_date($Start);
+                if ($wd == $weekday) {
+                   $von_date       = mydate2date($Start);
+                   $bis_date       = mydate2date($Start);
+                   $print = true;
+                }   
+             }
+             if ($p == "byweek"){
+                $year  = getYearFromDate($Start);
+                $von_date = datefromweeknr($year,$week, $p_date_weekday);
+                $bis_date = von_date;
+                $print = true;
+             }     
+          }
+            
+          if($print){  
+             $akt++;
+             $data->termine->termin_data[$akt]->von_date       = $von_date;
+             $data->termine->termin_data[$akt]->bis_date       = $bis_date;
+             $data->termine->termin_data[$akt]->von_time       = mydate2time($datarow->termin_data_date_von);
+             $data->termine->termin_data[$akt]->bis_time       = mydate2time($datarow->termin_data_date_bis);         
+             $data->termine->termin_data[$akt]->name           = $datarow->termin_data_headline;
+             $data->termine->termin_data[$akt]->veranstalter   = $datarow->termin_data_Veranstalter;
+             $data->termine->termin_data[$akt]->ort            = $datarow->termin_data_Ort;
+             $data->termine->termin_data[$akt]->url            = $datarow->termin_data_URL;                           
+             $data->termine->termin_data[$akt]->text           = parse_bbcode(nltobr($datarow->termin_data_content), $termin_tpl);      
+          }                
       }
       mysql_free_result($dataresult);     
    }
@@ -190,13 +202,12 @@ function getterminnamebyid($id){
    global $conf, $lang;
    
    $my_result = dbquery("select termin_name from ".$conf["db_namespace"]."termin where termin_id='".$id."'");
-   if ( mysql_num_rows($my_result) == 1 )
-      {
+   if ( mysql_num_rows($my_result) == 1 )      {
       $row = mysql_fetch_object($my_result);
       $name = $row->termin_name;
       mysql_free_result($my_result);
       return $name;
-      }
+   }
 }       
 
 function drawCalendar($data, $p, $w, $d, $m, $y, $termin_id) {

@@ -367,7 +367,7 @@ function img_new($img_typ_id, $new_img_description, $new_img_desc_long){
 function img_add($tmpname, $realname, $realsize, $new_img_name, $new_img_description, $new_img_desc_long, $new_img_typ_id){
    global $conf, $lang;
 
-   if ($realsize >= 180000) {
+   if ($realsize >= $conf["img_max_size"]) {
         echo $lang["bilder_upload_filesizeerror"];
    } else {
       if (is_uploaded_file($tmpname)) {

@@ -465,12 +465,12 @@ function writeterminchilds($openterminid, $parent, &$h_level){
          echo "</tr>\n";
          if ($openterminid == $row->termin_id) {
             // eintraege
-            $entry_result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:" . $row->termin_id . ":%' order by termin_data_headline");
+            $entry_result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:" . $row->termin_id . ":%' and termin_data_date_bis >= NOW() order by termin_data_headline");
             if ( mysql_num_rows($entry_result) > 0 ){
                while ($entry_row = mysql_fetch_object($entry_result)){
                   echo "<tr><td>";
                   for ($count = 0;$count < $h_level; $count++){echo "-";}
-                  echo "-termin: ". $entry_row->termin_data_headline . "</td>";
+                  echo "-".$lang["termin_act"].": ". $entry_row->termin_data_headline . "</td>";
                   echo "<td></td>";
                   echo "<td>";
                   if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
@@ -480,6 +480,27 @@ function writeterminchilds($openterminid, $parent, &$h_level){
                   echo "<td>";
                   if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
                      echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";      			
+                  } else {echo "&nbsp;";}
+                  echo "</td>";
+                  echo "</tr>\n";
+               }
+               mysql_free_result($entry_result);
+            }
+            $oldentry_result = dbquery("select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:" . $row->termin_id . ":%' and termin_data_date_bis < NOW() order by termin_data_headline");
+            if ( mysql_num_rows($oldentry_result) > 0 ){
+               while ($entry_row = mysql_fetch_object($oldentry_result)){
+                  echo "<tr><td>";
+                  for ($count = 0;$count < $h_level; $count++){echo "-";}
+                  echo "-".$lang["termin_old"].": ". $entry_row->termin_data_headline . "</td>";
+                  echo "<td></td>";
+                  echo "<td>";
+                  if (acl_check("edit", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
+                     echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_edit&edit_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_edit.png\" width=\"25\" height=\"25\"></a>";       
+                  }
+                  echo "</td>";
+                  echo "<td>";
+                  if (acl_check("delete", $conf["author_groups"], $conf["author_id"], "termine", $row->termin_id) == 1) {
+                     echo "<a href=" . $conf["admp"] . "&section=termine&action=termin_data_delete&delete_id=".$entry_row->termin_data_id."><img src=\"" . $conf["images_admin"] . "icon_delete.png\" width=\"25\" height=\"25\"></a>";               
                   } else {echo "&nbsp;";}
                   echo "</td>";
                   echo "</tr>\n";
@@ -621,6 +642,7 @@ function createsel_minute($field,$self){
    echo "\n</select>\n";
 }   
 function createsel_tp($field,$self){
+   // select for a normal date(T) or a periodic date(P)
    global $conf, $lang;
 
    echo "\n<select name=" . $field . ">\n";
@@ -633,6 +655,7 @@ function createsel_tp($field,$self){
    echo "\n</select>\n";
 }
 function createsel_p_day($field,$self){
+   // creates a select for the day of periodic dates
    global $conf, $lang;
 
    $count =  0;
@@ -646,6 +669,8 @@ function createsel_p_day($field,$self){
    echo "\n</select>\n";
 }
 function createsel_p_int($field,$self){
+   // creates a select for periodic dates. 
+   // 1w weekly, 2w every 2 weeks, 3w every 3 weeks, m every month 
    global $conf, $lang;
 
    $count = 0;
@@ -655,19 +680,17 @@ function createsel_p_int($field,$self){
    echo "<option value= \"1w\"";
    if ($self == "1w"){echo " selected ";}
    echo ">". $lang["termin_eintrag_p_1w"] ."</option>";
-   /* 
+   /*
    echo "<option value= \"2w\"";
    if ($self == "2w"){echo " selected ";}
    echo ">". $lang["termin_eintrag_p_2w"] ."</option>";
    echo "<option value= \"3w\"";
    if ($self == "3w"){echo " selected ";}
    echo ">". $lang["termin_eintrag_p_3w"] ."</option>";
-
    echo "<option value= \"m\"";
    if ($self == "m"){echo " selected ";}
    echo ">". $lang["termin_eintrag_p_m"] ."</option>";
    */
-
    echo "\n</select>\n";   
 }    
 ?>

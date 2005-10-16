@@ -1,15 +1,16 @@
 <?php
 function getpageheadlinebyid($id){
-   global $conf, $lang;
-   
+   global $conf;
+
+   $headline = ""; 
+      
    $my_result = dbquery("select page_headline from ".$conf["db_namespace"]."pages where page_id='".$id."'");
-   if ( mysql_num_rows($my_result) == 1 )
-      {
+   if ( mysql_num_rows($my_result) == 1 ){
       $row = mysql_fetch_object($my_result);
       $headline = $row->page_headline;
       mysql_free_result($my_result);
-      return $headline;
-      }
+   }
+   return $headline;
 }
 function getpagenamebyid($id){
    global $conf, $lang;
@@ -30,7 +31,7 @@ function getpagenamebyidarray($ids){
    
    $names = "";
    $singlegroups = explode(":", $ids);
-   while ( list ($key, $value) = each ($singlegroups) ) {
+   while ( list ($value) = each ($singlegroups) ) {
       $my_result = dbquery("select page_name from ".$conf["db_namespace"]."pages where page_id='".$value."'");
       if ( mysql_num_rows($my_result) == 1 ) {
          $row = mysql_fetch_object($my_result);
