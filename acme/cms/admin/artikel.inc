@@ -1,7 +1,8 @@
 <?php
 
 include($conf["admbase"] . "/lang/artikel." . $conf["lang"] . ".inc");
-switch ($_GET['action']) {
+
+switch($action){
 	case "edit":
 	   $error = 0;
 	   $_SESSION['artikel_edit_page_id'] = $page_id;
@@ -288,12 +289,12 @@ function artikel_new($new_artikel_page,$new_artikel_publish_date_day,$new_artike
    echo "<tr><td colspan=\"3\">" . $lang["artikel_kurztext"]."</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
    write_bbc("artikel_new", "new_artikel_short_text");
-   echo "<textarea name=\"new_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_short_text) . "</textarea></td></tr>\n";
+   echo "<textarea name=\"new_artikel_short_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_short_text) . "</textarea><br>[<a href=\"http://omikron-webservice.de/acme_faq/index.php?title=Text_Formatting_in_ACME\" target=\"_blank\" alt=\"external link: Editing help\">Editing Help: BBCode</a>]</td></tr>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\">" . $lang["artikel_langtext"] . "</td></tr>\n";
    echo "<tr><td colspan=\"3\">";
    write_bbc("artikel_new", "new_artikel_long_text");
-   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_long_text) . "</textarea></td></tr>\n";
+   echo "<textarea name=\"new_artikel_long_text\" wrap=virtual rows=15 cols=75>" . htmlspecialchars($new_artikel_long_text) . "</textarea><br>[<a href=\"http://omikron-webservice.de/acme_faq/index.php?title=Text_Formatting_in_ACME\" target=\"_blank\" alt=\"external link: Editing help\">Editing Help: BBCode</a>]</td></tr>\n";
    echo "</td></tr>\n";
    echo "<tr><td colspan=\"3\" align=\"right\"><input type=\"submit\" name=\"add\" value=\"" . $lang["artikel_anlegen"] . "\"></td></tr>\n";
    echo "</table>\n";
