@@ -138,7 +138,6 @@ function getterminchildsdata($data, $termin_id, $termin_tpl, $p, $week, $day, $m
       $weekday = weekday_by_date($Start);
    }
    $dataquery = "select * from ".$conf["db_namespace"]."termin_data where termin_typ like '%:".$termin_id.":%' and termin_data_date_von <= '" . $End . "' and termin_data_date_bis >= '" . $Start . "' order by termin_data_date_von ASC";   
-   //  echo "start:" . $Start . " End:".$End;
    $dataresult = dbquery($dataquery);
    if ( mysql_num_rows($dataresult) > 0 ){
       $akt = 0;
