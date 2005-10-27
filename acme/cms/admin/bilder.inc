@@ -319,7 +319,7 @@ function img_typ_edit($id){
       mysql_free_result($result);
    }
 }   
-function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small,  $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows,$edit_img_typ_cols,$edit_img_typ_maxheight, $edit_img_typ_maxwidth){
+function img_typ_update($edit_img_typ_id, $edit_img_typ_name, $edit_img_typ_text, $edit_img_typ_parent_id, $edit_img_typ_tpl, $edit_img_typ_img_small, $edit_img_typ_img_small_inactive, $edit_img_typ_img_big, $edit_img_typ_top_bar, $edit_img_typ_left_bar, $edit_img_typ_right_bar, $edit_img_typ_foo_bar, $edit_img_typ_rows,$edit_img_typ_cols,$edit_img_typ_maxheight, $edit_img_typ_maxwidth){
    global $conf, $lang;
               
    $Statement = "UPDATE ".$conf["db_namespace"]."bilder_typs SET".
@@ -472,7 +472,7 @@ function img_update($img_id, $img_name, $img_description, $img_desc_long,$img_ty
 function img_update_newimg($tmpname, $realname, $realsize, $img_id, $img_name, $img_description, $img_desc_long, $img_typ_id){
    global $conf, $lang;
 
-   if ($realsize >= 180000) {
+   if ($realsize >= $conf["img_max_size"]) {
         echo $lang["bilder_upload_filesizeerror"];
    } else {
       if (is_uploaded_file($tmpname)) {
